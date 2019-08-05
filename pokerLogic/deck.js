@@ -28,6 +28,17 @@ class Deck {
     }
     return this.shuffle(deck);
   }
+
+  draw = () => {
+    if (this.cards_drawn % 52 == 0) {
+      this.cards = this.shuffle(this.cards);
+    }
+    this.cards_drawn = this.cards_drawn + 1;
+    return this.cards.pop();
+  }
+
+  returnCard = (card) => {
+    this.cards.unshift(card);
+  }
 }
-// new Deck;
 console.log(new Deck)
