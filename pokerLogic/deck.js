@@ -1,4 +1,24 @@
 class Deck {
+  constructor(){
+    this.cards_drawn = 0;
+    this.deck = newDeck();
+  }
+  shuffle = (array) => {
+    let counter = array.length;
+
+    while (counter > 0) {
+      // Pick a random index
+      let index = Math.floor(Math.random() * counter);
+      // Decrease counter by 1
+      counter--;
+      // And swap the last element with it
+      let temp = array[counter];
+      array[counter] = array[index];
+      array[index] = temp;
+    }
+    return array;
+  }
+
   newDeck = () => {
     let suits = ["s", "h", "d", "c"];
     let values = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
