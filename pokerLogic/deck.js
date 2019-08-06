@@ -1,5 +1,5 @@
 // DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
-class Deck {
+export default class Deck {
   constructor(){
     this.cards_drawn = 0;
     this.cards = this.newDeck();
@@ -44,4 +44,3 @@ class Deck {
     this.cards.unshift(card);
   }
 }
-console.log(new Deck)

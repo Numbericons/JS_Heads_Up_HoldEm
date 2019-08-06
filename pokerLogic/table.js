@@ -1,4 +1,6 @@
-class Table {
+// import Deck from "./deck.js";
+
+export default class Table {
   constructor(players, sb = 50, bb = 100){
     this.boardCards = [];
     this.deck = new Deck;
@@ -35,27 +37,27 @@ class Table {
   }
 
   determineWinner(){
-    if (this.players[1].folded || ) {
-      console.log(`Player in seat 1 wins the pot of ${this.pot}`)
-      this.players[0].chipstack += this.pot;
-      return [1];
-    } else if (this.players[0].folded || ) {
-      console.log(`Player in seat 1 wins the pot of ${this.pot}`)
-      this.players[1].chipstack += this.pot;
-      return [0];
-    } else {
-      console.log(`This hand resulted in a tie. Splitting the pot of ${self.pot}!`)
-      this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
-      this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
-      if (!this.pot % 2 === 0) {
-        if (Math.random() < .5) {
-          this.players[0].chipstack = this.players[0].chipstack + 1;
-        } else {
-          this.players[1].chipstack = this.players[1].chipstack + 1;
-        } 
-        return [2];
-      }
-    }
+    // if (this.players[1].folded || ) {
+    //   console.log(`Player in seat 1 wins the pot of ${this.pot}`)
+    //   this.players[0].chipstack += this.pot;
+    //   return [1];
+    // } else if (this.players[0].folded || ) {
+    //   console.log(`Player in seat 1 wins the pot of ${this.pot}`)
+    //   this.players[1].chipstack += this.pot;
+    //   return [0];
+    // } else {
+    //   console.log(`This hand resulted in a tie. Splitting the pot of ${self.pot}!`)
+    //   this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
+    //   this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
+    //   if (!this.pot % 2 === 0) {
+    //     if (Math.random() < .5) {
+    //       this.players[0].chipstack = this.players[0].chipstack + 1;
+    //     } else {
+    //       this.players[1].chipstack = this.players[1].chipstack + 1;
+    //     } 
+    //     return [2];
+    //   }
+    // }
   }
 
   handToStr(player){

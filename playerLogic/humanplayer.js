@@ -1,4 +1,4 @@
-class HumanPlayer {
+export default class HumanPlayer {
   constructor(position, chipstack){
     this.position = position;
     this.chipstack = chipstack || 1500;
