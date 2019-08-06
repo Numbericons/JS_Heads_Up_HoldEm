@@ -1,3 +1,4 @@
+// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 class Deck {
   constructor(){
     this.cards_drawn = 0;
