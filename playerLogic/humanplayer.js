@@ -1,9 +1,9 @@
 class HumanPlayer {
   constructor(position, chipstack){
-    this.position ();
+    this.position = position;
     this.chipstack = chipstack || 1500;
     this.folded = false;
-    this.chips_in_pot = 0;
+    this.chipsInPot = 0;
     this.hand = [];
   }
 
@@ -16,7 +16,7 @@ class HumanPlayer {
       input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
     }
     console.log(input);
-    // this.resolve_action(to_call, input, sb);
+    this.resolve_action(to_call, input, sb);
   }
 
   resolve_action(to_call, input, sb){
@@ -28,16 +28,16 @@ class HumanPlayer {
     let wager = Number(input.split(" ")[1]);
     if (input.startsWith("ca")) {
       self.chipstack = self.chipstack - to_call;
-      self.chips_in_pot = self.chips_in_pot + to_call;
+      self.chipsInPot = self.chipsInPot + to_call;
       return [wager, 'call']
     } else if (input.startsWith("bet")) {
       self.chipstack = self.chipstack - wager;
-      self.chips_in_pot = wager - sb;
+      self.chipsInPot = wager - sb;
       return [wager, 'bet']
     } 
     if (input.startsWith("ra")) {
       self.chipstack = self.chipstack - wager + sb;
-      self.chips_in_pot = self.chips_in_pot - sb;
+      self.chipsInPot = self.chipsInPot - sb;
       return [wager - to_call, 'raise']
     }
     if (input.startsWith('fo')) {
