@@ -1,10 +1,11 @@
-class Deck {
+// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
+export default class Deck {
   constructor(){
     this.cards_drawn = 0;
     this.cards = this.newDeck();
   }
 
-  shuffle = (array) => {
+  shuffle(array){
     let counter = array.length;
 
     while (counter > 0) {
@@ -17,7 +18,7 @@ class Deck {
     return array;
   }
 
-  newDeck = () => {
+  newDeck(){
     let suits = ["s", "h", "d", "c"];
     let values = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
     let deck = [];
@@ -26,10 +27,12 @@ class Deck {
         deck.push(values[j] + suits[i]);
       }
     }
+    // const response = prompt("enter action brah");
+    // console.log(response);
     return this.shuffle(deck);
   }
 
-  draw = () => {
+  draw(){
     if (this.cards_drawn % 52 == 0) {
       this.cards = this.shuffle(this.cards);
     }
@@ -37,8 +40,7 @@ class Deck {
     return this.cards.pop();
   }
 
-  returnCard = (card) => {
+  returnCard(card){
     this.cards.unshift(card);
   }
 }
-console.log(new Deck)
