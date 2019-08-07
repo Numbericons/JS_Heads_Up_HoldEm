@@ -1,6 +1,6 @@
-// import Deck from "./deck.js";
+import Deck from "./deck.js";
 
-export default class Table {
+class Table {
   constructor(players, sb = 50, bb = 100){
     this.boardCards = [];
     this.deck = new Deck;
@@ -14,7 +14,7 @@ export default class Table {
   playHand(){
     this.dealInPlayers();
     this.takeBlinds();
-    this.bettingRound(sb);
+    this.bettingRound(this.sb);
     if (this.remainingPlayers()) {
       console.log("*******-FLOP-*******");
       this.dealFlop();
@@ -46,7 +46,7 @@ export default class Table {
     //   this.players[1].chipstack += this.pot;
     //   return [0];
     // } else {
-    //   console.log(`This hand resulted in a tie. Splitting the pot of ${self.pot}!`)
+    //   console.log(`This hand resulted in a tie. Splitting the pot of ${this.pot}!`)
     //   this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
     //   this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
     //   if (!this.pot % 2 === 0) {
@@ -77,6 +77,7 @@ export default class Table {
     this.players[0].chipsInPot = this.players[0].chipsInPot + this.sb;
     this.players[1].chipstack = this.players[0].chipstack - this.sb;
     this.players[1].chipsInPot = this.players[1].chipsInPot + this.sb;
+    this.pot = this.sb + this.bb;
   }
 
   dealCard(){
@@ -108,20 +109,21 @@ export default class Table {
   }
 
   bettingRound(ifSB = 0){
-    console.log("clear");
+    // console.log("clear");
     this.showPot();
     const firstBet = this.pAction(ifSB, ifSB);
-    if (firstBet < 0 ) {
+    if (firstBet === null) {
       return this.pot;
     }
     this.pot = this.pot + firstBet[0];
     this.toggleCurrPlayer();
-    console.log("clear");
+    // console.log("clear");
     this.showPot();
     const prevBet = this.pAction(firstBet[0] - ifSB);
-    if (prevBet < 0) {
+    if (prevBet === null) {
       return this.pot;
     }
+    debugger
     this.pot = this.pot + prevBet[0];
     if (prevBet[1] === 'raise' && ifSB > 0) {
       this.pot = this.pot + firstBet[0];
@@ -135,7 +137,7 @@ export default class Table {
       this.pot = this.pot + prevBet[0];
     }
     while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-      console.log('clear');
+      // console.log('clear');
       this.showPot();
       this.toggleCurrPlayer();
       const bet = this.pAction(prevBet[0]);
@@ -153,24 +155,26 @@ export default class Table {
   }
 
   pAction(bet = 0, sb = 0){
-    toCall = this.players[this.currPlayerPos].action(bet,bb);
+    const toCall = this.players[this.currPlayerPos].action(bet,this.bb);
    
     if (!toCall) this.players[this.currPlayerPos].folded = true;
     return toCall
   }
 
   toggleCurrPlayer(){
-    if (this.currPlayer === this.players[0]){
-      this.currPlayer = this.players[1];
+    if (this.currPlayerPos === 0){
+      this.currPlayerPos = 1;
     } else  {
-      this.currPlayer = this.players[0];
+      this.currPlayerPos = 0;
     }
   }
 
   remainingPlayers() {
-    if (players[0].chipstack === 0 || players[1].chipstack === 0) return false;
-    if (players[0].folded === true || players[1].folded === true) return false;
+    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return false;
+    if (this.players[0].folded === true || this.players[1].folded === true) return false;
 
     return true;
   }
 }
+
+export default Table;

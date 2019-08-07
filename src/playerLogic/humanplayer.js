@@ -5,10 +5,11 @@ export default class HumanPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    (position === 'sb') ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }
 
   action(to_call, sb = 0){
-    console.log(`Player, you have ${this.chipstack} chips, your hand is ${self.hand.show}`)
+    console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
     let input;
     if (to_call === 0) {
       input = prompt("Enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'");
@@ -16,32 +17,32 @@ export default class HumanPlayer {
       input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
     }
     console.log(input);
-    this.resolve_action(to_call, input, sb);
+    return this.resolve_action(to_call, input, sb);
   }
 
   resolve_action(to_call, input, sb){
-    let input = input.toLowerCase;
-    if (input.startsWith('ch')) return [0, 'check'];
+    input = input.toLowerCase();
     if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
       throw "Invalid input provided";
     }
+    if (input.startsWith('ch')) return [0, 'check'];
     let wager = Number(input.split(" ")[1]);
     if (input.startsWith("ca")) {
-      self.chipstack = self.chipstack - to_call;
-      self.chipsInPot = self.chipsInPot + to_call;
-      return [wager, 'call']
+      this.chipstack = this.chipstack - to_call;
+      this.chipsInPot = this.chipsInPot + to_call;
+      return [to_call, 'call']
     } else if (input.startsWith("bet")) {
-      self.chipstack = self.chipstack - wager;
-      self.chipsInPot = wager - sb;
+      this.chipstack = this.chipstack - wager;
+      this.chipsInPot = wager - sb;
       return [wager, 'bet']
     } 
     if (input.startsWith("ra")) {
-      self.chipstack = self.chipstack - wager + sb;
-      self.chipsInPot = self.chipsInPot - sb;
+      this.chipstack = this.chipstack - wager + sb;
+      this.chipsInPot = this.chipsInPot - sb;
       return [wager - to_call, 'raise']
     }
     if (input.startsWith('fo')) {
-      self.folded = true;
+      this.folded = true;
       return null;
     }
   }

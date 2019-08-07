@@ -1,19 +1,19 @@
-const Table = require("./table");
-const HumanPlayer = require("../playerLogic/humanplayer");
+import Table from "./table";
+import HumanPlayer from "../playerLogic/humanplayer";
 
 class HoldEm {
-  constructor(initial_stack) {
+  constructor(initialChips) {
     this.initialChips = initialChips;
     this.players = [new HumanPlayer("sb", initialChips), new HumanPlayer("bb", initialChips)];
     this.dealer_pos = 0;
     this.table = new Table(this.players);
   }
 
-  play_hand(){
-    this.table.play_hand();
+  playHand(){
+    this.table.playHand();
   }
 
-  toggle_players(){
+  togglePlayers(){
     this.players.push(this.players.shift());
     if (this.players[0].position === 1) {
       this.players[0].position = 2;
@@ -24,7 +24,7 @@ class HoldEm {
     }
   }
 
-  reset_player_vars() {
+  resetPlayerVars() {
     this.players[0].folded = false;
     this.players[0].chipsInPot = 0;
     this.players[0].hand = [];
@@ -36,8 +36,9 @@ class HoldEm {
 
 let game = new HoldEm;
 while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
-  game.play_hand();
-  game.toggle_players();
+  game.playHand();
+  game.togglePlayers();
+  game.resetPlayerVars();
 }
 if (game.players[0].chipstack === 0) {
   "Seat 2 has won the match!"
