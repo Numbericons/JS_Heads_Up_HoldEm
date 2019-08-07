@@ -1,4 +1,5 @@
 import Deck from "./deck.js";
+const Hand = require('pokersolver').Hand;
 
 class Table {
   constructor(players, sb = 50, bb = 100){
@@ -11,6 +12,12 @@ class Table {
     this.currPlayerPos = 0;
   }
 
+  resetVars(){
+    this.boardCards = [];
+    this.pot = 0;
+    this.currPlayerPos = 0;
+  }
+
   playHand(){
     this.dealInPlayers();
     this.takeBlinds();
@@ -19,45 +26,61 @@ class Table {
       console.log("*******-FLOP-*******");
       this.dealFlop();
       this.showBoard();
-      this.bettingRound();
+      if (!this.allIn()) this.bettingRound();
     }
     if (this.remainingPlayers()) {
       console.log("*******-TURN-*******");
       this.dealTurn();
       this.showBoard();
-      this.bettingRound();
+      if (!this.allIn()) this.bettingRound();
     }
     if (this.remainingPlayers()) {
       console.log("*******-RIVER-*******");
       this.dealRiver();
       this.showBoard();
-      this.bettingRound();
+      if (!this.allIn()) this.bettingRound();
     }
     this.determineWinner();
   }
 
+  anyFolds(){
+    if (!this.players[0].folded && !this.players[1].folded) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   determineWinner(){
-    // if (this.players[1].folded || ) {
-    //   console.log(`Player in seat 1 wins the pot of ${this.pot}`)
-    //   this.players[0].chipstack += this.pot;
-    //   return [1];
-    // } else if (this.players[0].folded || ) {
-    //   console.log(`Player in seat 1 wins the pot of ${this.pot}`)
-    //   this.players[1].chipstack += this.pot;
-    //   return [0];
-    // } else {
-    //   console.log(`This hand resulted in a tie. Splitting the pot of ${this.pot}!`)
-    //   this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
-    //   this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
-    //   if (!this.pot % 2 === 0) {
-    //     if (Math.random() < .5) {
-    //       this.players[0].chipstack = this.players[0].chipstack + 1;
-    //     } else {
-    //       this.players[1].chipstack = this.players[1].chipstack + 1;
-    //     } 
-    //     return [2];
-    //   }
-    // }
+    var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
+    var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
+    (this.boardCards.length > 0) ? console.log(`On a board of ${this.boardCards}, `) : console.log(`Preflop, `);
+    var winners = Hand.winners([hand1, hand2]);
+    if (!this.players[0].folded && !this.players[1].folded && winners.length === 2){
+      console.log(`the hand resulted in a tie. Splitting the pot of ${this.pot} with ${hand1.descr}!`)
+      this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
+      this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
+      if (!this.pot % 2 === 0) {
+        if (Math.random() < .5) {
+          this.players[0].chipstack = this.players[0].chipstack + 1;
+        } else {
+          this.players[1].chipstack = this.players[1].chipstack + 1;
+        } 
+      }
+      return [2];
+    } else if (this.players[1].folded || winners[0] === hand1) {
+      console.log(`${this.players[0].name} wins the pot of ${this.pot}`)
+      debugger
+      if (!this.players[1].folded) console.log(` with ${hand1.descr}`)
+      this.players[0].chipstack += this.pot;
+      return [1];
+    } else {
+      console.log(`${this.players[1].name} wins the pot of ${this.pot}`)
+      debugger
+      if (!this.players[0].folded) console.log(` with ${hand2.descr}`)
+      this.players[1].chipstack += this.pot;
+      return [0];
+    }
   }
 
   handToStr(player){
@@ -73,10 +96,10 @@ class Table {
   }
 
   takeBlinds(){
-    this.players[0].chipstack = this.players[0].chipstack - this.sb;
-    this.players[0].chipsInPot = this.players[0].chipsInPot + this.sb;
-    this.players[1].chipstack = this.players[0].chipstack - this.sb;
-    this.players[1].chipsInPot = this.players[1].chipsInPot + this.sb;
+    this.players[0].chipstack -= this.sb;
+    this.players[0].chipsInPot = this.sb;
+    this.players[1].chipstack -= this.bb;
+    this.players[1].chipsInPot = this.bb;
     this.pot = this.sb + this.bb;
   }
 
@@ -123,7 +146,6 @@ class Table {
     if (prevBet === null) {
       return this.pot;
     }
-    debugger
     this.pot = this.pot + prevBet[0];
     if (prevBet[1] === 'raise' && ifSB > 0) {
       this.pot = this.pot + firstBet[0];
@@ -170,10 +192,14 @@ class Table {
   }
 
   remainingPlayers() {
-    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return false;
     if (this.players[0].folded === true || this.players[1].folded === true) return false;
-
+    
     return true;
+  }
+  
+  allIn() {
+    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
+    return false;
   }
 }
 

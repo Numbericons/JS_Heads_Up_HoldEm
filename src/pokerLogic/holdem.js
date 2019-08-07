@@ -2,7 +2,7 @@ import Table from "./table";
 import HumanPlayer from "../playerLogic/humanplayer";
 
 class HoldEm {
-  constructor(initialChips) {
+  constructor(initialChips = 1500) {
     this.initialChips = initialChips;
     this.players = [new HumanPlayer("sb", initialChips), new HumanPlayer("bb", initialChips)];
     this.dealer_pos = 0;
@@ -39,6 +39,7 @@ while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
   game.playHand();
   game.togglePlayers();
   game.resetPlayerVars();
+  game.table.resetVars(); 
 }
 if (game.players[0].chipstack === 0) {
   "Seat 2 has won the match!"

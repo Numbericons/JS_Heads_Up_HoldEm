@@ -1,7 +1,7 @@
 export default class HumanPlayer {
   constructor(position, chipstack){
     this.position = position;
-    this.chipstack = chipstack || 1500;
+    this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
@@ -12,7 +12,7 @@ export default class HumanPlayer {
     console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
     let input;
     if (to_call === 0) {
-      input = prompt("Enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'");
+      input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
     } else {
       input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
     }
@@ -28,12 +28,12 @@ export default class HumanPlayer {
     if (input.startsWith('ch')) return [0, 'check'];
     let wager = Number(input.split(" ")[1]);
     if (input.startsWith("ca")) {
-      this.chipstack = this.chipstack - to_call;
-      this.chipsInPot = this.chipsInPot + to_call;
+      this.chipstack -= to_call;
+      this.chipsInPot -= to_call;
       return [to_call, 'call']
     } else if (input.startsWith("bet")) {
-      this.chipstack = this.chipstack - wager;
-      this.chipsInPot = wager - sb;
+      this.chipstack -= wager;
+      this.chipsInPot -= sb;
       return [wager, 'bet']
     } 
     if (input.startsWith("ra")) {
