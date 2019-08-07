@@ -37,7 +37,7 @@ export default class HumanPlayer {
       return [wager, 'bet']
     } 
     if (input.startsWith("ra")) {
-      this.chipstack = this.chipstack - wager + sb;
+      this.chipstack -= wager + sb;
       this.chipsInPot = this.chipsInPot - sb;
       return [wager - to_call, 'raise']
     }

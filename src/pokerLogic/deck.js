@@ -36,7 +36,7 @@ export default class Deck {
     if (this.cards_drawn % 52 == 0) {
       this.cards = this.shuffle(this.cards);
     }
-    this.cards_drawn = this.cards_drawn + 1;
+    this.cards_drawn += 1;
     return this.cards.pop();
   }
 

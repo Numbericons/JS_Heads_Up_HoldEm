@@ -1964,6 +1964,16 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/holdem */ "./src/pokerLogic/holdem.js");
+ // import React from "react";
+// import ReactDom from "react-dom";
+// import App from "../dist/App"
+// const Root = () => {
+//   return (
+//     // <App />
+//   )
+// }
+// ReactDOM.render(element, document.getElementById('root'));
+// ReactDOM.render(<h1>Hello Poker world!</h1>, document.getElementById("root"));
 
 console.log("Game Over!");
 
@@ -2038,7 +2048,7 @@ function () {
       }
 
       if (input.startsWith("ra")) {
-        this.chipstack = this.chipstack - wager + sb;
+        this.chipstack -= wager + sb;
         this.chipsInPot = this.chipsInPot - sb;
         return [wager - to_call, 'raise'];
       }
@@ -2123,7 +2133,7 @@ function () {
         this.cards = this.shuffle(this.cards);
       }
 
-      this.cards_drawn = this.cards_drawn + 1;
+      this.cards_drawn += 1;
       return this.cards.pop();
     }
   }, {
@@ -2164,12 +2174,12 @@ var HoldEm =
 /*#__PURE__*/
 function () {
   function HoldEm() {
-    var initialChips = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
+    var initialChipstack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
 
     _classCallCheck(this, HoldEm);
 
-    this.initialChips = initialChips;
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChips), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChips)];
+    this.initialChipstack = initialChipstack;
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)];
     this.dealer_pos = 0;
     this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"](this.players);
   }
@@ -2210,6 +2220,11 @@ function () {
 var game = new HoldEm();
 
 while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
+  var section = document.querySelector('section');
+  var player1 = game.players[0];
+  var player1name = document.createElement('div');
+  player1name.innerHTML = "<h5 class=\"playername>".concat(player1.name, "<h5/>");
+  section.appendChild(player1name);
   game.playHand();
   game.togglePlayers();
   game.resetPlayerVars();
@@ -2317,32 +2332,38 @@ function () {
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
-        console.log("the hand resulted in a tie. Splitting the pot of ".concat(this.pot, " with ").concat(hand1.descr, "!"));
-        this.players[0].chipstack = this.players[0].chipstack + Math.floor(this.pot / 2);
-        this.players[1].chipstack = this.players[1].chipstack + Math.floor(this.pot / 2);
-
-        if (!this.pot % 2 === 0) {
-          if (Math.random() < .5) {
-            this.players[0].chipstack = this.players[0].chipstack + 1;
-          } else {
-            this.players[1].chipstack = this.players[1].chipstack + 1;
-          }
-        }
-
-        return [2];
-      } else if (this.players[1].folded || winners[0] === hand1) {
-        console.log("".concat(this.players[0].name, " wins the pot of ").concat(this.pot));
-        debugger;
-        if (!this.players[1].folded) console.log(" with ".concat(hand1.descr));
-        this.players[0].chipstack += this.pot;
-        return [1];
+        return this.tie(hand1);
+      } else if (this.players[1].folded || !this.players[0].folded && winners[0] === hand1) {
+        return this.winner(hand1, hand2, 0, 1);
       } else {
-        console.log("".concat(this.players[1].name, " wins the pot of ").concat(this.pot));
-        debugger;
-        if (!this.players[0].folded) console.log(" with ".concat(hand2.descr));
-        this.players[1].chipstack += this.pot;
-        return [0];
+        return this.winner(hand2, hand1, 1, 0);
       }
+    }
+  }, {
+    key: "tie",
+    value: function tie(hand) {
+      console.log("the hand resulted in a tie. Splitting the pot of ".concat(this.pot, " with ").concat(hand.descr, "!"));
+      this.players[0].chipstack += Math.floor(this.pot / 2);
+      this.players[1].chipstack += Math.floor(this.pot / 2);
+
+      if (!this.pot % 2 === 0) {
+        if (Math.random() < .5) {
+          this.players[0].chipstack += 1;
+        } else {
+          this.players[1].chipstack += 1;
+        }
+      }
+
+      return [2];
+    }
+  }, {
+    key: "winner",
+    value: function winner(winHand, loseHand, winPos, losePos) {
+      console.log("".concat(this.players[winPos].name, " wins the pot of ").concat(this.pot));
+      if (!this.players[losePos].folded) console.log(" with hand: ".concat(winHand.descr));
+      if (!this.players[losePos].chipstack === 0) console.log("".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr));
+      this.players[winPos].chipstack += this.pot;
+      return [winPos];
     }
   }, {
     key: "handToStr",
@@ -2405,7 +2426,6 @@ function () {
     key: "bettingRound",
     value: function bettingRound() {
       var ifSB = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-      // console.log("clear");
       this.showPot();
       var firstBet = this.pAction(ifSB, ifSB);
 
@@ -2413,9 +2433,8 @@ function () {
         return this.pot;
       }
 
-      this.pot = this.pot + firstBet[0];
-      this.toggleCurrPlayer(); // console.log("clear");
-
+      this.pot += firstBet[0];
+      this.toggleCurrPlayer();
       this.showPot();
       var prevBet = this.pAction(firstBet[0] - ifSB);
 
@@ -2423,10 +2442,10 @@ function () {
         return this.pot;
       }
 
-      this.pot = this.pot + prevBet[0];
+      this.pot += prevBet[0];
 
       if (prevBet[1] === 'raise' && ifSB > 0) {
-        this.pot = this.pot + firstBet[0];
+        this.pot += firstBet[0];
       }
 
       this.resolveAddBets(prevBet);
@@ -2436,21 +2455,20 @@ function () {
     key: "resolveAddBets",
     value: function resolveAddBets(prevBet) {
       if (prevBet[1].startsWith('ra')) {
-        this.pot = this.pot + prevBet[0];
+        this.pot += prevBet[0];
       }
 
       while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-        // console.log('clear');
         this.showPot();
         this.toggleCurrPlayer();
         var bet = this.pAction(prevBet[0]);
 
         if (bet[1].startsWith('ra')) {
-          this.pot = this.pot + prevBet[0];
+          this.pot += prevBet[0];
         }
 
         if (bet) {
-          this.pot = this.pot + bet[0];
+          this.pot += bet[0];
         }
       }
     }

@@ -2,9 +2,9 @@ import Table from "./table";
 import HumanPlayer from "../playerLogic/humanplayer";
 
 class HoldEm {
-  constructor(initialChips = 1500) {
-    this.initialChips = initialChips;
-    this.players = [new HumanPlayer("sb", initialChips), new HumanPlayer("bb", initialChips)];
+  constructor(initialChipstack = 1500) {
+    this.initialChipstack = initialChipstack;
+    this.players = [new HumanPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
     this.dealer_pos = 0;
     this.table = new Table(this.players);
   }
@@ -36,6 +36,11 @@ class HoldEm {
 
 let game = new HoldEm;
 while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
+  let section = document.querySelector('section');
+  let player1 = game.players[0];
+  let player1name = document.createElement('div');
+  player1name.innerHTML = `<h5 class="playername>${player1.name}<h5/>`
+  section.appendChild(player1name);
   game.playHand();
   game.togglePlayers();
   game.resetPlayerVars();
