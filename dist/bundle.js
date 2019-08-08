@@ -2217,14 +2217,29 @@ function () {
       this.players[1].hand = [];
     }
   }, {
+    key: "playerNames",
+    value: function playerNames(player1, player2) {
+      var pNameRight = document.querySelector('.player-info-name-right');
+      var pNameLeft = document.querySelector('.player-info-name-left');
+      pNameRight.innerText = "".concat(player1.name);
+      pNameLeft.innerText = "".concat(player2.name);
+    }
+  }, {
+    key: "playerChips",
+    value: function playerChips(player1, player2) {
+      var pChipsRight = document.querySelector('.player-info-chips-right');
+      var pChipsLeft = document.querySelector('.player-info-chips-left');
+      pChipsRight.innerText = "".concat(player1.chipstack, " chips");
+      pChipsLeft.innerText = "".concat(player2.chipstack, " chips");
+    }
+  }, {
     key: "newGame",
     value: function newGame() {
-      // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
-      var playername = document.querySelector('section');
-      console.log(playername);
       var player1 = this.players[0];
-      console.log(player1);
-      playername.innerText = "".concat(player1.name); // section.appendChild(playername);
+      var player2 = this.players[1];
+      this.playerNames(player1, player2);
+      this.playerChips(player1, player2); // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+      // section.appendChild(pNameR;
       // this.playHand();
       //   this.togglePlayers();
       //   this.resetPlayerVars();
