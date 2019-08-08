@@ -94,6 +94,21 @@ table {
   width: 100px;
 }
 
+.player-img-left {
+  height: 10%;
+  background-color: #a6b1b5;
+  height: 15%;
+  width: 10%;
+  align-self: center;
+}
+
+.player-img-right {
+  height: 10%;
+  background-color: #a6b1b5;
+  height: 100%;
+  width: 100px;
+}
+
 .table {
   height: 70%;
   display: flex;
@@ -101,13 +116,18 @@ table {
   flex-direction: column;
   background-color: #a6b1b5;
 }
+.table-row {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
 .table-trim {
   height: 70%;
   width: 70%;
   position: relative;
   display: flex;
   justify-content: center;
-  align-content: center;
   background-color: #5f4f35;
   border-radius: 150px;
   z-index: 1;
@@ -136,15 +156,19 @@ table {
 .actions-cont-text {
   height: 50px;
   width: 80px;
-  border: 1px black solid;
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: black;
+  color: white;
 }
 .actions-cont-bet-amt {
   height: 50px;
-  width: 120px;
+  width: 80px;
   text-align: center;
+  background-color: black;
+  border: black;
+  color: white;
 }
 
 /*# sourceMappingURL=output.css.map */
