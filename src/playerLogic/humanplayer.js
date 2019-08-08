@@ -5,16 +5,30 @@ export default class HumanPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
-    (position === 'sb') ? this.name = 'Seat 1' : this.name = 'Seat 2';
+    (position === 'sb') ? this.side = 'right' : this.side = 'left';
+    (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
+  }
+
+  text(input){
+    let textSelect = document.querySelector(".table-actions-text");
+    textSelect.innerText = input;
+  }
+
+  promptText(input){
+    let promptSelect = document.querySelector(".table-actions-prompt");
+    promptSelect.innerText = input;
   }
 
   action(to_call, sb = 0){
-    console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
+    this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
+    // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
     let input;
     if (to_call === 0) {
-      input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+      // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
     } else {
-      input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+      // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
     }
     console.log(input);
     return this.resolve_action(to_call, input, sb);
@@ -45,5 +59,20 @@ export default class HumanPlayer {
       this.folded = true;
       return null;
     }
+  }
+
+  playerName() {
+    let playerName = document.querySelector(`.player-info-name-${this.side}`);
+    playerName.innerText = `${this.name}`;
+  }
+
+  playerChips() {
+    let playerChips = document.querySelector(`.player-info-chips-${this.side}`);
+    playerChips.innerText = `${this.chipstack} chips`
+  }
+
+  render(){
+    this.playerName();
+    this.playerChips();
   }
 }

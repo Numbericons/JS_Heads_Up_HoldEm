@@ -107,6 +107,17 @@ table {
   height: 120px;
   width: 120px;
 }
+.player-info-text-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translateX(-20px);
+}
+.player-info-text-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
 .table {
   height: 70%;
@@ -139,13 +150,27 @@ table {
   background-color: green;
   border-radius: 150px;
   z-index: 3;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+.table-felt-pot {
+  font-size: 24px;
 }
 .table-actions {
   height: 120px;
   width: 80%;
   display: flex;
   justify-content: space-around;
-  transform: translateY(-130px);
+  transform: translateY(-60px);
+}
+.table-actions-text {
+  font-size: 25px;
+  transform: translateY(-100px);
+}
+.table-actions-prompt {
+  font-size: 25px;
+  transform: translateY(-100px);
 }
 
 .actions-cont {

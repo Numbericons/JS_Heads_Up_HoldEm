@@ -48,7 +48,7 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
-  // align-self: center;
+  // align-items: center;
   transform: translateY(90px);
   height: 15%;
   width: 10%;
@@ -56,6 +56,19 @@
     background-color: #a6b1b5;
     height: 120px;
     width: 120px;
+  }
+  &-text{
+    &-left{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transform: translateX(-20px);
+    }
+    &-right{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 }
 
@@ -100,13 +113,27 @@
     background-color: green;
     border-radius: 150px;
     z-index: 3;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    &-pot{
+      font-size: 24px;
+    }
   }
   &-actions{
     height: 120px;
     width: 80%;
     display: flex;
     justify-content: space-around;
-    transform: translateY(-130px);
+    transform: translateY(-60px);
+    &-text{
+      font-size: 25px;
+      transform: translateY(-100px);
+    }
+    &-prompt{
+      font-size: 25px;
+      transform: translateY(-100px);
+    }
   }
 }
 

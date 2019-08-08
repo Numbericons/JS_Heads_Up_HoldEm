@@ -2010,20 +2010,36 @@ function () {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
-    position === 'sb' ? this.name = 'Seat 1' : this.name = 'Seat 2';
+    position === 'sb' ? this.side = 'right' : this.side = 'left';
+    this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }
 
   _createClass(HumanPlayer, [{
+    key: "text",
+    value: function text(input) {
+      var textSelect = document.querySelector(".table-actions-text");
+      textSelect.innerText = input;
+    }
+  }, {
+    key: "promptText",
+    value: function promptText(input) {
+      var promptSelect = document.querySelector(".table-actions-prompt");
+      promptSelect.innerText = input;
+    }
+  }, {
     key: "action",
     value: function action(to_call) {
       var sb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      console.log("".concat(this.name, ", you have ").concat(this.chipstack, " chips, your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1])); // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
+
       var input;
 
       if (to_call === 0) {
-        input = prompt("".concat(this.name, ", enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'"));
+        // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'"));
       } else {
-        input = prompt("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'"));
+        // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'"));
       }
 
       console.log(input);
@@ -2061,6 +2077,24 @@ function () {
         this.folded = true;
         return null;
       }
+    }
+  }, {
+    key: "playerName",
+    value: function playerName() {
+      var playerName = document.querySelector(".player-info-name-".concat(this.side));
+      playerName.innerText = "".concat(this.name);
+    }
+  }, {
+    key: "playerChips",
+    value: function playerChips() {
+      var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
+      playerChips.innerText = "".concat(this.chipstack, " chips");
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.playerName();
+      this.playerChips();
     }
   }]);
 
@@ -2217,39 +2251,27 @@ function () {
       this.players[1].hand = [];
     }
   }, {
-    key: "playerNames",
-    value: function playerNames(player1, player2) {
-      var pNameRight = document.querySelector('.player-info-name-right');
-      var pNameLeft = document.querySelector('.player-info-name-left');
-      pNameRight.innerText = "".concat(player1.name);
-      pNameLeft.innerText = "".concat(player2.name);
-    }
-  }, {
-    key: "playerChips",
-    value: function playerChips(player1, player2) {
-      var pChipsRight = document.querySelector('.player-info-chips-right');
-      var pChipsLeft = document.querySelector('.player-info-chips-left');
-      pChipsRight.innerText = "".concat(player1.chipstack, " chips");
-      pChipsLeft.innerText = "".concat(player2.chipstack, " chips");
+    key: "render",
+    value: function render() {
+      this.table.render(); // this.players[0].render();
+      // this.players[1].render();
     }
   }, {
     key: "newGame",
     value: function newGame() {
-      var player1 = this.players[0];
-      var player2 = this.players[1];
-      this.playerNames(player1, player2);
-      this.playerChips(player1, player2); // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
-      // section.appendChild(pNameR;
-      // this.playHand();
-      //   this.togglePlayers();
-      //   this.resetPlayerVars();
-      //   this.table.resetVars();
-      // }
-      // if (this.players[0].chipstack === 0) {
-      //   "Seat 2 has won the match!"
-      // } else {
-      //   "Seat 1 has won the match!"
-      // }
+      while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+        this.render();
+        this.playHand();
+        this.togglePlayers();
+        this.resetPlayerVars();
+        this.table.resetVars();
+      }
+
+      if (this.players[0].chipstack === 0) {
+        "Seat 2 has won the match!";
+      } else {
+        "Seat 1 has won the match!";
+      }
     }
   }]);
 
@@ -2447,7 +2469,7 @@ function () {
     key: "bettingRound",
     value: function bettingRound() {
       var ifSB = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-      this.showPot();
+      this.render();
       var firstBet = this.pAction(ifSB, ifSB);
 
       if (firstBet === null) {
@@ -2456,7 +2478,7 @@ function () {
 
       this.pot += firstBet[0];
       this.toggleCurrPlayer();
-      this.showPot();
+      this.render();
       var prevBet = this.pAction(firstBet[0] - ifSB);
 
       if (prevBet === null) {
@@ -2480,7 +2502,7 @@ function () {
       }
 
       while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-        this.showPot();
+        this.render();
         this.toggleCurrPlayer();
         var bet = this.pAction(prevBet[0]);
 
@@ -2492,11 +2514,6 @@ function () {
           this.pot += bet[0];
         }
       }
-    }
-  }, {
-    key: "showPot",
-    value: function showPot() {
-      console.log(this.pot);
     }
   }, {
     key: "pAction",
@@ -2527,6 +2544,19 @@ function () {
     value: function allIn() {
       if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
       return false;
+    }
+  }, {
+    key: "showPot",
+    value: function showPot() {
+      var currPot = document.querySelector(".table-felt-pot");
+      currPot.innerText = "Current pot: ".concat(this.pot);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.showPot();
+      this.players[0].render();
+      this.players[1].render();
     }
   }]);
 

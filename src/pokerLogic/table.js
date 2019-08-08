@@ -136,14 +136,14 @@ class Table {
   }
 
   bettingRound(ifSB = 0){
-    this.showPot();
+    this.render();
     const firstBet = this.pAction(ifSB, ifSB);
     if (firstBet === null) {
       return this.pot;
     }
     this.pot += firstBet[0];
     this.toggleCurrPlayer();
-    this.showPot();
+    this.render();
     const prevBet = this.pAction(firstBet[0] - ifSB);
     if (prevBet === null) {
       return this.pot;
@@ -161,7 +161,7 @@ class Table {
       this.pot += prevBet[0];
     }
     while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-      this.showPot();
+      this.render();
       this.toggleCurrPlayer();
       const bet = this.pAction(prevBet[0]);
       if (bet[1].startsWith('ra')) {
@@ -171,10 +171,6 @@ class Table {
         this.pot += bet[0];
       }
     }
-  }
-
-  showPot(){
-    console.log(this.pot);
   }
 
   pAction(bet = 0, sb = 0){
@@ -201,6 +197,17 @@ class Table {
   allIn() {
     if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
     return false;
+  }
+
+  showPot(){
+    let currPot = document.querySelector(`.table-felt-pot`);
+    currPot.innerText = `Current pot: ${this.pot}`;
+  }
+
+  render(){
+    this.showPot();
+    this.players[0].render();
+    this.players[1].render();
   }
 }
 
