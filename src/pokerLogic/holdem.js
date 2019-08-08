@@ -32,22 +32,26 @@ class HoldEm {
     this.players[1].chipsInPot = 0;
     this.players[1].hand = [];
   }
+
+  newGame(){
+    // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+      let playername = document.querySelector('section');
+      console.log(playername);
+      let player1 = this.players[0];
+      console.log(player1);
+      playername.innerText = `${player1.name}`;
+      // section.appendChild(playername);
+      // this.playHand();
+    //   this.togglePlayers();
+    //   this.resetPlayerVars();
+    //   this.table.resetVars();
+    // }
+    // if (this.players[0].chipstack === 0) {
+    //   "Seat 2 has won the match!"
+    // } else {
+    //   "Seat 1 has won the match!"
+    // }
+  }
 }
 
-let game = new HoldEm;
-while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
-  let section = document.querySelector('section');
-  let player1 = game.players[0];
-  let player1name = document.createElement('div');
-  player1name.innerHTML = `<h5 class="playername>${player1.name}<h5/>`
-  section.appendChild(player1name);
-  game.playHand();
-  game.togglePlayers();
-  game.resetPlayerVars();
-  game.table.resetVars(); 
-}
-if (game.players[0].chipstack === 0) {
-  "Seat 2 has won the match!"
-} else {
-  "Seat 1 has won the match!"
-}
+export default HoldEm;

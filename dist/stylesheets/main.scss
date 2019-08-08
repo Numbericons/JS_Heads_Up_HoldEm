@@ -1,0 +1,101 @@
+.holdem-container{
+  height: 800px;
+  width: 100%;
+  background-color: #a6b1b5;
+}
+
+
+.top{
+  display: flex;
+  flex-direction: column;
+  &-bar{
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-bottom: 20px;
+    font-weight: bolder;
+    &-header{
+      font-size: 40px;
+      // color: rgb(177, 118, 15);
+    color: darkred;
+    }
+    &-author{
+      &-made{
+        font-size:16px;
+        color: black;
+      }
+      &-name{
+        font-size:16px;
+        color: black;
+      }
+    }
+  }
+}
+
+.dealer{
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  background-color: #a6b1b5;
+  &-image{
+    height: 100%;
+    width: 100px;
+  }
+}
+
+.table{
+  height: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  // align-items: center;
+  background-color: #a6b1b5;
+  &-trim{
+    height: 70%;
+    width: 70%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    // background-color: rsgb(177, 118, 15);
+    background-color: #5f4f35;
+    border-radius: 150px;
+    z-index:1;
+  }
+  &-felt{
+    height: 80%;
+    width:90%;
+    position: relative;
+    align-self: center;
+    background-color: green;
+    border-radius: 150px;
+    z-index: 3;
+  }
+  &-actions{
+    height: 120px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+  }
+}
+
+
+.actions-cont{
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  &-text{
+    height: 50px;
+    width: 80px;
+    border: 1px black solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &-bet-amt{
+    height: 50px;
+    width: 120px;
+    text-align: center;
+  }
+}

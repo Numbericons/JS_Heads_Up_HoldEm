@@ -3,18 +3,39 @@
   <head>
     <meta charset="UTF-8">
     <title>Texas Hold'em Poker</title>
-    <link rel="stylesheet" type="text/css" href="main.css" />
-    <!-- <script src="../src/index.js"></script> -->
-
+    <!-- <link rel="stylesheet" type="text/css" href="./stylesheets/main.css" /> -->
+    <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
+    <script type="text/javascript" src="bundle.js"></script>
   </head>
   <body>
-    <div>
-      <h1 class="welcome-header">Hold'em Poker!</h1>
+    <div class="holdem-container">
+      <div class="top">
+        <div class="top-bar">
+          <h1 class="top-bar-header">Texas Hold'em Poker!</h1>
+          <div class="top-bar-author">
+          </div>
+        </div>
+        <div class='dealer'>
+          <img class='dealer-image' src="./side-part-dealer.svg" alt="dealer">
+        </div>
+      </div>
+      <div class="table">
+        <div class="table-trim">
+          <div class="table-felt"></div>
+        </div>
+        <div class="table-actions">
+          <div class="actions-cont">
+            <div class="actions-cont-text">Fold</div>
+            <div class="actions-cont-text">Check</div>
+            <div class="actions-cont-text">Bet</div>
+            <input class="actions-cont-bet-amt" type="number" placeholder="Bet/Raise Amount">
+          </div>
+        </div>
+      </div>
       <h4>Open the Dev Tools and let the chips fly!</h4>
       <section>Hope to be replaced by player1name</section>
-      <img src="main_wireframe.png">
-      <script type="text/javascript" src="bundle.js"></script>
-    </div>
+          <h6 class="top-bar-author-made">Made by: Numbericons</h6>
 
+    </div>
   </body>
 </html>

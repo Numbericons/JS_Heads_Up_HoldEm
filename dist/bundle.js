@@ -1975,7 +1975,11 @@ __webpack_require__.r(__webpack_exports__);
 // ReactDOM.render(element, document.getElementById('root'));
 // ReactDOM.render(<h1>Hello Poker world!</h1>, document.getElementById("root"));
 
-console.log("Game Over!");
+document.addEventListener("DOMContentLoaded", function () {
+  var game = new _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__["default"]();
+  game.newGame();
+  console.log("Game Over!");
+});
 
 /***/ }),
 
@@ -2154,7 +2158,7 @@ function () {
 /*!**********************************!*\
   !*** ./src/pokerLogic/holdem.js ***!
   \**********************************/
-/*! no exports provided */
+/*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2212,30 +2216,32 @@ function () {
       this.players[1].chipsInPot = 0;
       this.players[1].hand = [];
     }
+  }, {
+    key: "newGame",
+    value: function newGame() {
+      // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+      var playername = document.querySelector('section');
+      console.log(playername);
+      var player1 = this.players[0];
+      console.log(player1);
+      playername.innerText = "".concat(player1.name); // section.appendChild(playername);
+      // this.playHand();
+      //   this.togglePlayers();
+      //   this.resetPlayerVars();
+      //   this.table.resetVars();
+      // }
+      // if (this.players[0].chipstack === 0) {
+      //   "Seat 2 has won the match!"
+      // } else {
+      //   "Seat 1 has won the match!"
+      // }
+    }
   }]);
 
   return HoldEm;
 }();
 
-var game = new HoldEm();
-
-while (game.players[0].chipstack > 0 && game.players[1].chipstack > 0) {
-  var section = document.querySelector('section');
-  var player1 = game.players[0];
-  var player1name = document.createElement('div');
-  player1name.innerHTML = "<h5 class=\"playername>".concat(player1.name, "<h5/>");
-  section.appendChild(player1name);
-  game.playHand();
-  game.togglePlayers();
-  game.resetPlayerVars();
-  game.table.resetVars();
-}
-
-if (game.players[0].chipstack === 0) {
-  "Seat 2 has won the match!";
-} else {
-  "Seat 1 has won the match!";
-}
+/* harmony default export */ __webpack_exports__["default"] = (HoldEm);
 
 /***/ }),
 
