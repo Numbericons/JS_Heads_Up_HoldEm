@@ -72,15 +72,18 @@ table {
 }
 .top-bar-header {
   font-size: 40px;
+  font-family: "Cabin", sans-serif;
   color: darkred;
 }
 .top-bar-author-made {
   font-size: 16px;
   color: black;
+  font-family: "Cabin", sans-serif;
 }
 .top-bar-author-name {
   font-size: 16px;
   color: black;
+  font-family: "Cabin", sans-serif;
 }
 
 .dealer {
@@ -112,11 +115,13 @@ table {
   flex-direction: column;
   align-items: center;
   transform: translateX(-20px);
+  font-family: "Cabin", sans-serif;
 }
 .player-info-text-right {
   display: flex;
   flex-direction: column;
   align-items: center;
+  font-family: "Cabin", sans-serif;
 }
 
 .table {
@@ -156,6 +161,7 @@ table {
 }
 .table-felt-pot {
   font-size: 24px;
+  font-family: "Cabin", sans-serif;
 }
 .table-actions {
   height: 120px;
@@ -167,10 +173,13 @@ table {
 .table-actions-text {
   font-size: 25px;
   transform: translateY(-100px);
+  font-family: "Cabin", sans-serif;
+  margin-bottom: 15px;
 }
 .table-actions-prompt {
   font-size: 25px;
   transform: translateY(-100px);
+  font-family: "Cabin", sans-serif;
 }
 
 .actions-cont {
@@ -179,21 +188,29 @@ table {
   justify-content: space-around;
 }
 .actions-cont-text {
-  height: 50px;
-  width: 80px;
+  height: 65px;
+  width: 110px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: black;
   color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 30px;
 }
 .actions-cont-bet-amt {
-  height: 50px;
-  width: 80px;
+  height: 65px;
+  width: 110px;
   text-align: center;
   background-color: black;
   border: black;
   color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 30px;
+}
+
+.input {
+  display: none;
 }
 
 /*# sourceMappingURL=output.css.map */

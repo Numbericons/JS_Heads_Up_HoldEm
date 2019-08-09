@@ -2,7 +2,7 @@ import Deck from "./deck.js";
 const Hand = require('pokersolver').Hand;
 
 class Table {
-  constructor(players, sb = 50, bb = 100){
+  constructor($el, players, sb = 50, bb = 100){
     this.boardCards = [];
     this.deck = new Deck;
     this.players = players;
@@ -10,6 +10,7 @@ class Table {
     this.bb = bb;
     this.pot = 0;
     this.currPlayerPos = 0;
+    this.$el = $el;
   }
 
   resetVars(){
@@ -174,6 +175,7 @@ class Table {
   }
 
   pAction(bet = 0, sb = 0){
+    this.players[this.currPlayerPos].promptAction();
     const toCall = this.players[this.currPlayerPos].action(bet,this.bb);
    
     if (!toCall) this.players[this.currPlayerPos].folded = true;
@@ -205,9 +207,30 @@ class Table {
   }
 
   render(){
+    this.setActions();
     this.showPot();
     this.players[0].render();
     this.players[1].render();
+  }
+
+
+  setActions() {
+    debugger
+    const $outDiv = $("<div");
+
+    let $foldDiv = $("<div");
+    $foldDiv.data("action", "fold");
+    $outDiv.append($foldDiv)
+
+    let $callDiv = $("<div");
+    $callDiv.data("action", "call");
+    $outDiv.append($callDiv)
+
+    let $betDiv = $("<div");
+    $betDiv.data("action", "bet");
+    $outDiv.append($betDiv)
+
+    this.$el.append($outDiv);
   }
 }
 

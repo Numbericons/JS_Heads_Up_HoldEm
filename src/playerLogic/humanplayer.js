@@ -19,18 +19,24 @@ export default class HumanPlayer {
     promptSelect.innerText = input;
   }
 
-  action(to_call, sb = 0){
+  promptAction(to_call){
     this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
     // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    let input;
+    // let input;
     if (to_call === 0) {
-      // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
       this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
+      // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
     } else {
-      // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
       this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
+      // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
     }
-    console.log(input);
+  }
+
+  action(to_call, sb = 0){
+    // while (document.querySelector(".input").innerText.length === 0) {
+    // }
+    let input = document.querySelector(".input").innerText;
+    // console.log(input);
     return this.resolve_action(to_call, input, sb);
   }
 

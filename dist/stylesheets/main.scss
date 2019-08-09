@@ -17,6 +17,7 @@
     font-weight: bolder;
     &-header{
       font-size: 40px;
+      font-family: 'Cabin', sans-serif;
       // color: rgb(177, 118, 15);
     color: darkred;
     }
@@ -24,10 +25,12 @@
       &-made{
         font-size:16px;
         color: black;
+        font-family: 'Cabin', sans-serif;
       }
       &-name{
         font-size:16px;
         color: black;
+        font-family: 'Cabin', sans-serif;
       }
     }
   }
@@ -63,11 +66,13 @@
       flex-direction: column;
       align-items: center;
       transform: translateX(-20px);
+      font-family: 'Cabin', sans-serif;
     }
     &-right{
       display: flex;
       flex-direction: column;
       align-items: center;
+      font-family: 'Cabin', sans-serif;
     }
   }
 }
@@ -118,6 +123,7 @@
     justify-content: center;
     &-pot{
       font-size: 24px;
+      font-family: 'Cabin', sans-serif;
     }
   }
   &-actions{
@@ -129,10 +135,13 @@
     &-text{
       font-size: 25px;
       transform: translateY(-100px);
+      font-family: 'Cabin', sans-serif;
+      margin-bottom: 15px;
     }
     &-prompt{
       font-size: 25px;
       transform: translateY(-100px);
+      font-family: 'Cabin', sans-serif;
     }
   }
 }
@@ -144,20 +153,28 @@
   justify-content: space-around;
 
   &-text{
-    height: 50px;
-    width: 80px;
+    height: 65px;
+    width: 110px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: black;
     color: white;
+    font-family: 'Cabin', sans-serif;
+    border-radius: 30px;
   }
   &-bet-amt{
-    height: 50px;
-    width: 80px;
+    height: 65px;
+    width: 110px;
     text-align: center;
     background-color: black;
     border: black;
     color: white;
+    font-family: 'Cabin', sans-serif;
+    border-radius: 30px;
   }
+}
+
+.input{
+  display:none;
 }

@@ -1964,7 +1964,17 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/holdem */ "./src/pokerLogic/holdem.js");
- // import React from "react";
+
+$(function () {
+  var actionsCont = $('.table-actions');
+  var game = new _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
+  game.newGame();
+}); // $(() => {
+//   const rootEl = $('.ttt');
+//   const game = new Game();
+//   new View(game, rootEl);
+// });
+// import React from "react";
 // import ReactDom from "react-dom";
 // import App from "../dist/App"
 // const Root = () => {
@@ -1974,12 +1984,11 @@ __webpack_require__.r(__webpack_exports__);
 // }
 // ReactDOM.render(element, document.getElementById('root'));
 // ReactDOM.render(<h1>Hello Poker world!</h1>, document.getElementById("root"));
-
-document.addEventListener("DOMContentLoaded", function () {
-  var game = new _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__["default"]();
-  game.newGame();
-  console.log("Game Over!");
-});
+// document.addEventListener("DOMContentLoaded", () => {
+//   const game = new HoldEm;
+//   game.newGame();
+//   console.log("Game Over!");
+// })
 
 /***/ }),
 
@@ -2027,22 +2036,25 @@ function () {
       promptSelect.innerText = input;
     }
   }, {
+    key: "promptAction",
+    value: function promptAction(to_call) {
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1])); // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
+      // let input;
+
+      if (to_call === 0) {
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'")); // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+      } else {
+        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'")); // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+      }
+    }
+  }, {
     key: "action",
     value: function action(to_call) {
       var sb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1])); // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
+      // while (document.querySelector(".input").innerText.length === 0) {
+      // }
+      var input = document.querySelector(".input").innerText; // console.log(input);
 
-      var input;
-
-      if (to_call === 0) {
-        // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
-        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'"));
-      } else {
-        // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
-        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'"));
-      }
-
-      console.log(input);
       return this.resolve_action(to_call, input, sb);
     }
   }, {
@@ -2158,7 +2170,7 @@ function () {
         for (var j = 0; j < values.length; j++) {
           deck.push(values[j] + suits[i]);
         }
-      } // const response = prompt("enter action brah");
+      } // const response = prompt("enter action");
       // console.log(response);
 
 
@@ -2211,15 +2223,16 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var HoldEm =
 /*#__PURE__*/
 function () {
-  function HoldEm() {
-    var initialChipstack = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1500;
+  function HoldEm($el) {
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;
 
     _classCallCheck(this, HoldEm);
 
+    this.$el = $el;
     this.initialChipstack = initialChipstack;
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)];
     this.dealer_pos = 0;
-    this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"](this.players);
+    this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players);
   }
 
   _createClass(HoldEm, [{
@@ -2276,7 +2289,13 @@ function () {
   }]);
 
   return HoldEm;
-}();
+}(); // <div class="actions-cont">
+//   <div class="actions-cont-text" id="fold">FOLD</div>
+//   <div class="actions-cont-text" id="check-call">CHECK/CALL</div>
+//   <div class="actions-cont-text" id="bet-raise">BET/RAISE</div>
+//   <input class="actions-cont-bet-amt" type="number" value="0">
+// </div>
+
 
 /* harmony default export */ __webpack_exports__["default"] = (HoldEm);
 
@@ -2305,9 +2324,9 @@ var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/po
 var Table =
 /*#__PURE__*/
 function () {
-  function Table(players) {
-    var sb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50;
-    var bb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 100;
+  function Table($el, players) {
+    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
+    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
 
     _classCallCheck(this, Table);
 
@@ -2318,6 +2337,7 @@ function () {
     this.bb = bb;
     this.pot = 0;
     this.currPlayerPos = 0;
+    this.$el = $el;
   }
 
   _createClass(Table, [{
@@ -2520,6 +2540,7 @@ function () {
     value: function pAction() {
       var bet = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
       var sb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      this.players[this.currPlayerPos].promptAction();
       var toCall = this.players[this.currPlayerPos].action(bet, this.bb);
       if (!toCall) this.players[this.currPlayerPos].folded = true;
       return toCall;
@@ -2554,9 +2575,26 @@ function () {
   }, {
     key: "render",
     value: function render() {
+      this.setActions();
       this.showPot();
       this.players[0].render();
       this.players[1].render();
+    }
+  }, {
+    key: "setActions",
+    value: function setActions() {
+      debugger;
+      var $outDiv = $("<div");
+      var $foldDiv = $("<div");
+      $foldDiv.data("action", "fold");
+      $outDiv.append($foldDiv);
+      var $callDiv = $("<div");
+      $callDiv.data("action", "call");
+      $outDiv.append($callDiv);
+      var $betDiv = $("<div");
+      $betDiv.data("action", "bet");
+      $outDiv.append($betDiv);
+      this.$el.append($outDiv);
     }
   }]);
 
