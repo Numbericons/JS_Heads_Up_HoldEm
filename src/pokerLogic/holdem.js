@@ -34,25 +34,19 @@ class HoldEm {
     this.players[1].hand = [];
   }
 
-  render(){
-    this.table.render();
-    // this.players[0].render();
-    // this.players[1].render();
-  }
-
   newGame(){
-    while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
-    this.render();
-    this.playHand();
-      this.togglePlayers();
-      this.resetPlayerVars();
-      this.table.resetVars();
-    }
-    if (this.players[0].chipstack === 0) {
-      "Seat 2 has won the match!"
-    } else {
-      "Seat 1 has won the match!"
-    }
+    // while (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+      this.table.render();
+      this.playHand();
+    //   this.togglePlayers();
+    //   this.resetPlayerVars();
+    //   this.table.resetVars();
+    // }
+    // if (this.players[0].chipstack === 0) {
+    //   "Seat 2 has won the match!"
+    // } else {
+    //   "Seat 1 has won the match!"
+    // }
   }
 
 }

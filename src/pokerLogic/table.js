@@ -11,37 +11,43 @@ class Table {
     this.pot = 0;
     this.currPlayerPos = 0;
     this.$el = $el;
+    this.currBet = this.sb;
+    this.bindEvents = this.bindEvents.bind(this);
+    this.roundActions = [];
+    this.currStreet = 'preflop';
   }
 
   resetVars(){
     this.boardCards = [];
     this.pot = 0;
     this.currPlayerPos = 0;
+    this.currBet = this.sb;
   }
 
   playHand(){
     this.dealInPlayers();
     this.takeBlinds();
     this.bettingRound(this.sb);
-    if (this.remainingPlayers()) {
-      console.log("*******-FLOP-*******");
-      this.dealFlop();
-      this.showBoard();
-      if (!this.allIn()) this.bettingRound();
-    }
-    if (this.remainingPlayers()) {
-      console.log("*******-TURN-*******");
-      this.dealTurn();
-      this.showBoard();
-      if (!this.allIn()) this.bettingRound();
-    }
-    if (this.remainingPlayers()) {
-      console.log("*******-RIVER-*******");
-      this.dealRiver();
-      this.showBoard();
-      if (!this.allIn()) this.bettingRound();
-    }
-    this.determineWinner();
+    // if (this.remainingPlayers()) {
+
+    //   console.log("*******-FLOP-*******");
+    //   this.dealFlop();
+    //   this.showBoard();
+    //   if (!this.allIn()) this.bettingRound();
+    // }
+    // if (this.remainingPlayers()) {
+    //   console.log("*******-TURN-*******");
+    //   this.dealTurn();
+    //   this.showBoard();
+    //   if (!this.allIn()) this.bettingRound();
+    // }
+    // if (this.remainingPlayers()) {
+    //   console.log("*******-RIVER-*******");
+    //   this.dealRiver();
+    //   this.showBoard();
+    //   if (!this.allIn()) this.bettingRound();
+    // }
+    // this.determineWinner();
   }
 
   anyFolds(){
@@ -138,23 +144,23 @@ class Table {
 
   bettingRound(ifSB = 0){
     this.render();
-    const firstBet = this.pAction(ifSB, ifSB);
-    if (firstBet === null) {
-      return this.pot;
-    }
-    this.pot += firstBet[0];
-    this.toggleCurrPlayer();
-    this.render();
-    const prevBet = this.pAction(firstBet[0] - ifSB);
-    if (prevBet === null) {
-      return this.pot;
-    }
-    this.pot += prevBet[0];
-    if (prevBet[1] === 'raise' && ifSB > 0) {
-      this.pot += firstBet[0];
-    }
-    this.resolveAddBets(prevBet);
-    return this.pot;
+    // const firstBet = this.action(ifSB, ifSB);
+    // if (firstBet === null) {
+    //   return this.pot;
+    // }
+    // this.pot += firstBet[0];
+    // this.toggleCurrPlayer();
+    // this.render();
+    // const prevBet = this.action(firstBet[0] - ifSB);
+    // if (prevBet === null) {
+    //   return this.pot;
+    // }
+    // this.pot += prevBet[0];
+    // if (prevBet[1] === 'raise' && ifSB > 0) {
+    //   this.pot += firstBet[0];
+    // }
+    // this.resolveAddBets(prevBet);
+    // return this.pot;
   }
 
   resolveAddBets(prevBet){
@@ -164,7 +170,7 @@ class Table {
     while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
       this.render();
       this.toggleCurrPlayer();
-      const bet = this.pAction(prevBet[0]);
+      const bet = this.action(prevBet[0]);
       if (bet[1].startsWith('ra')) {
         this.pot += prevBet[0];
       }
@@ -172,14 +178,6 @@ class Table {
         this.pot += bet[0];
       }
     }
-  }
-
-  pAction(bet = 0, sb = 0){
-    this.players[this.currPlayerPos].promptAction();
-    const toCall = this.players[this.currPlayerPos].action(bet,this.bb);
-   
-    if (!toCall) this.players[this.currPlayerPos].folded = true;
-    return toCall
   }
 
   toggleCurrPlayer(){
@@ -192,7 +190,6 @@ class Table {
 
   remainingPlayers() {
     if (this.players[0].folded === true || this.players[1].folded === true) return false;
-    
     return true;
   }
   
@@ -207,30 +204,109 @@ class Table {
   }
 
   render(){
-    this.setActions();
     this.showPot();
     this.players[0].render();
     this.players[1].render();
+    this.players[this.currPlayerPos].promptAction(this.currBet);
+    this.setButtons();
+    this.bindEvents();
   }
 
-
-  setActions() {
-    debugger
-    const $outDiv = $("<div");
-
-    let $foldDiv = $("<div");
+  setButtons() {
+    const $outDiv = $("<div>");
+    $outDiv.addClass("actions-cont")
+    
+    let $foldDiv = $("<button>");
     $foldDiv.data("action", "fold");
+    $foldDiv.addClass("actions-cont-text");
+    $foldDiv.html('FOLD');
     $outDiv.append($foldDiv)
-
-    let $callDiv = $("<div");
+    
+    let $callDiv = $("<button>");
     $callDiv.data("action", "call");
+    $callDiv.addClass("actions-cont-text")
+    $callDiv.html('CALL');
     $outDiv.append($callDiv)
-
-    let $betDiv = $("<div");
+    
+    let $betDiv = $("<button>");
     $betDiv.data("action", "bet");
+    $betDiv.addClass("actions-cont-text")
+    $betDiv.html('BET');
     $outDiv.append($betDiv)
 
+    this.$el.empty();
     this.$el.append($outDiv);
+  }
+
+  action($button, bet = 0, sb = 0) {
+    let playerAction = $button.data().action;
+    debugger
+    this.roundActions.concat(playerAction);
+    let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction, sb);
+    if (resolvedAction) {
+      this.pot += resolvedAction
+    }
+    this.toggleCurrPlayer();
+    this.render();
+    this.nextAction();
+    // if (playerAction === 'fold') {
+    //   // this.players[this.currPlayerPos].folded = true;
+    //   // return 0;
+    // } else if (playerAction === 'call') {
+    //   return this.currBet;
+    // } else {
+    //   return this.currBet * 2;
+    // }
+
+    // const toCall = this.players[this.currPlayerPos].action(bet, this.bb);
+
+    // if (!toCall) this.players[this.currPlayerPos].folded = true;
+    // return toCall
+  }
+
+  nextAction(){
+    debugger
+    if (this.roundActions[this.roundActions - 1] === 'fold') {
+      this.determineWinner();
+    } else if (this.allIn() && this.roundActions[this.roundActions - 1] === 'call') {
+      this.showDown();
+      this.determineWinner();
+    } else if (this.currStreet === 'river' && this.roundActions[this.roundActions - 1] === 'call') {
+      this.determineWinner();
+    } else if (this.roundActions.length > 1 && this.roundActions[this.roundActions - 1] === 'call') {
+      this.nextStreet();
+    }
+  }
+
+  showDown() {
+    while (this.boardCards.length < 5) {
+      this.dealCard();
+    }
+  }
+  
+  nextStreet(){
+    if (this.currStreet === 'preflop') {
+      this.dealFlop();
+      this.showBoard();
+      if (!this.allIn()) this.bettingRound();
+    } else if (this.currStreet === 'flop') {
+      this.dealTurn();
+      this.showBoard();
+      if (!this.allIn()) this.bettingRound();
+    } else if (this.currStreet === 'turn') {
+      this.dealRiver();
+      this.showBoard();
+      if (!this.allIn()) this.bettingRound();
+    }
+  }
+
+  bindEvents() {
+    // install a handler on the `li` elements inside the board.
+    this.$el.unbind();
+    this.$el.on("click", "button", (event => {
+      const $button = $(event.currentTarget);
+      this.action($button);
+    }));
   }
 }
 

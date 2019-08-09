@@ -41,25 +41,35 @@ export default class HumanPlayer {
   }
 
   resolve_action(to_call, input, sb){
-    input = input.toLowerCase();
-    if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
-      throw "Invalid input provided";
-    }
-    if (input.startsWith('ch')) return [0, 'check'];
-    let wager = Number(input.split(" ")[1]);
+    // input = input.toLowerCase();
+    // if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
+    //   throw "Invalid input provided";
+    // }
+    if (input.startsWith('ch')) return 0;
+    // if (input.startsWith('ch')) return [0, 'check'];
+    // let wager = Number(input.split(" ")[1]);
     if (input.startsWith("ca")) {
       this.chipstack -= to_call;
-      this.chipsInPot -= to_call;
-      return [to_call, 'call']
+      this.chipsInPot += to_call;
+      // this.chipsInPot -= to_call;
+      return to_call
+      // return [to_call, 'call']
     } else if (input.startsWith("bet")) {
-      this.chipstack -= wager;
-      this.chipsInPot -= sb;
-      return [wager, 'bet']
+      this.chipstack -= to_call * 2;
+      this.chipsInPot += sb;
+      // this.chipsInPot -= sb;
+      return 100
+      // this.chipstack -= wager;
+      // return [wager, 'bet']
     } 
     if (input.startsWith("ra")) {
-      this.chipstack -= wager + sb;
-      this.chipsInPot = this.chipsInPot - sb;
-      return [wager - to_call, 'raise']
+      this.chipstack -= 100 + to_call;
+      this.chipsInPot += sb;
+      // this.chipsInPot -= sb;
+      return 200 - to_call
+      // this.chipstack -= wager + sb;
+      // this.chipsInPot -= sb;
+      // return [wager - to_call, 'raise']
     }
     if (input.startsWith('fo')) {
       this.folded = true;
