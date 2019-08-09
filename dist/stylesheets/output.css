@@ -90,7 +90,6 @@ table {
   height: 10%;
   display: flex;
   justify-content: center;
-  background-color: #a6b1b5;
 }
 .dealer-image {
   height: 100%;
@@ -156,8 +155,13 @@ table {
   border-radius: 150px;
   z-index: 3;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.table-felt-board {
+  font-size: 50px;
+  font-family: "Cabin", sans-serif;
 }
 .table-felt-pot {
   font-size: 24px;

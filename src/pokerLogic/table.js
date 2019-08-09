@@ -13,7 +13,7 @@ class Table {
     this.$el = $el;
     this.currBet = this.sb;
     this.bindEvents = this.bindEvents.bind(this);
-    this.roundActions = [];
+    this.streetActions = [];
     this.currStreet = 'preflop';
   }
 
@@ -58,6 +58,26 @@ class Table {
     }
   }
 
+  togglePlayers() {
+    this.players.push(this.players.shift());
+    if (this.players[0].position === 1) {
+      this.players[0].position = 2;
+      this.players[1].position = 1;
+    } else {
+      this.players[0].position = 1;
+      this.players[1].position = 2;
+    }
+  }
+
+  resetPlayerVars() {
+    this.players[0].folded = false;
+    this.players[0].chipsInPot = 0;
+    this.players[0].hand = [];
+    this.players[1].folded = false;
+    this.players[1].chipsInPot = 0;
+    this.players[1].hand = [];
+  }
+
   determineWinner(){
     var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
     var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
@@ -91,7 +111,27 @@ class Table {
     if (!this.players[losePos].folded) console.log(` with hand: ${winHand.descr}`)
     if (!this.players[losePos].chipstack === 0) console.log(`${this.players[losePos].name} lost with with hand: ${loseHand.descr}`)
     this.players[winPos].chipstack += this.pot;
-    return [winPos];
+    this.handOver();
+    // return [winPos];
+  }
+
+  handOver(){
+    if (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+      if (this.players[0].chipstack === 0) {
+        alert("Seat 2 has won the match!");
+      } else {
+        alert("Seat 1 has won the match!");
+      }
+    } else {
+      this.nextHand();
+    }
+  }
+
+  nextHand(){
+    this.togglePlayers();
+    this.resetPlayerVars();
+    this.resetVars();
+    this.playHand();
   }
 
   handToStr(player){
@@ -136,10 +176,12 @@ class Table {
   }
 
   showBoard(){
-    console.log("The board is: ");
-    this.boardCards.forEach(card => {
-      console.log(card);
-    })
+    let currPot = document.querySelector(`.table-felt-board`);
+    currPot.innerText = `${this.boardCards}`;
+    // console.log("The board is: ");
+    // this.boardCards.forEach(card => {
+    //   console.log(card);
+    // })
   }
 
   bettingRound(ifSB = 0){
@@ -228,11 +270,13 @@ class Table {
     $callDiv.html('CALL');
     $outDiv.append($callDiv)
     
-    let $betDiv = $("<button>");
-    $betDiv.data("action", "bet");
-    $betDiv.addClass("actions-cont-text")
-    $betDiv.html('BET');
-    $outDiv.append($betDiv)
+    if (!this.allIn()) {
+      let $betDiv = $("<button>");
+      $betDiv.data("action", "bet");
+      $betDiv.addClass("actions-cont-text")
+      $betDiv.html('BET');
+      $outDiv.append($betDiv)
+    }
 
     this.$el.empty();
     this.$el.append($outDiv);
@@ -240,8 +284,7 @@ class Table {
 
   action($button, bet = 0, sb = 0) {
     let playerAction = $button.data().action;
-    debugger
-    this.roundActions.concat(playerAction);
+    this.streetActions = this.streetActions.concat(playerAction);
     let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction, sb);
     if (resolvedAction) {
       this.pot += resolvedAction
@@ -265,15 +308,14 @@ class Table {
   }
 
   nextAction(){
-    debugger
-    if (this.roundActions[this.roundActions - 1] === 'fold') {
+    if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
-    } else if (this.allIn() && this.roundActions[this.roundActions - 1] === 'call') {
+    } else if (this.allIn() && this.streetActions[this.streetActions.length - 1] === 'call') {
       this.showDown();
       this.determineWinner();
-    } else if (this.currStreet === 'river' && this.roundActions[this.roundActions - 1] === 'call') {
+    } else if (this.currStreet === 'river' && this.streetActions[this.streetActions.length - 1] === 'call') {
       this.determineWinner();
-    } else if (this.roundActions.length > 1 && this.roundActions[this.roundActions - 1] === 'call') {
+    } else if (this.streetActions.length > 1 && this.streetActions[this.streetActions.length - 1] === 'call') {
       this.nextStreet();
     }
   }
@@ -285,15 +327,19 @@ class Table {
   }
   
   nextStreet(){
+    this.streetActions = [];
     if (this.currStreet === 'preflop') {
+      this.currStreet = 'flop';
       this.dealFlop();
       this.showBoard();
       if (!this.allIn()) this.bettingRound();
     } else if (this.currStreet === 'flop') {
+      this.currStreet = 'turn';
       this.dealTurn();
       this.showBoard();
       if (!this.allIn()) this.bettingRound();
     } else if (this.currStreet === 'turn') {
+      this.currStreet = 'river';
       this.dealRiver();
       this.showBoard();
       if (!this.allIn()) this.bettingRound();

@@ -2336,7 +2336,7 @@ function () {
     this.$el = $el;
     this.currBet = this.sb;
     this.bindEvents = this.bindEvents.bind(this);
-    this.roundActions = [];
+    this.streetActions = [];
     this.currStreet = 'preflop';
   }
 
@@ -2383,6 +2383,29 @@ function () {
       }
     }
   }, {
+    key: "togglePlayers",
+    value: function togglePlayers() {
+      this.players.push(this.players.shift());
+
+      if (this.players[0].position === 1) {
+        this.players[0].position = 2;
+        this.players[1].position = 1;
+      } else {
+        this.players[0].position = 1;
+        this.players[1].position = 2;
+      }
+    }
+  }, {
+    key: "resetPlayerVars",
+    value: function resetPlayerVars() {
+      this.players[0].folded = false;
+      this.players[0].chipsInPot = 0;
+      this.players[0].hand = [];
+      this.players[1].folded = false;
+      this.players[1].chipsInPot = 0;
+      this.players[1].hand = [];
+    }
+  }, {
     key: "determineWinner",
     value: function determineWinner() {
       var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
@@ -2422,7 +2445,28 @@ function () {
       if (!this.players[losePos].folded) console.log(" with hand: ".concat(winHand.descr));
       if (!this.players[losePos].chipstack === 0) console.log("".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr));
       this.players[winPos].chipstack += this.pot;
-      return [winPos];
+      this.handOver(); // return [winPos];
+    }
+  }, {
+    key: "handOver",
+    value: function handOver() {
+      if (this.players[0].chipstack > 0 && this.players[1].chipstack > 0) {
+        if (this.players[0].chipstack === 0) {
+          alert("Seat 2 has won the match!");
+        } else {
+          alert("Seat 1 has won the match!");
+        }
+      } else {
+        this.nextHand();
+      }
+    }
+  }, {
+    key: "nextHand",
+    value: function nextHand() {
+      this.togglePlayers();
+      this.resetPlayerVars();
+      this.resetVars();
+      this.playHand();
     }
   }, {
     key: "handToStr",
@@ -2476,10 +2520,11 @@ function () {
   }, {
     key: "showBoard",
     value: function showBoard() {
-      console.log("The board is: ");
-      this.boardCards.forEach(function (card) {
-        console.log(card);
-      });
+      var currPot = document.querySelector(".table-felt-board");
+      currPot.innerText = "".concat(this.boardCards); // console.log("The board is: ");
+      // this.boardCards.forEach(card => {
+      //   console.log(card);
+      // })
     }
   }, {
     key: "bettingRound",
@@ -2576,11 +2621,15 @@ function () {
       $callDiv.addClass("actions-cont-text");
       $callDiv.html('CALL');
       $outDiv.append($callDiv);
-      var $betDiv = $("<button>");
-      $betDiv.data("action", "bet");
-      $betDiv.addClass("actions-cont-text");
-      $betDiv.html('BET');
-      $outDiv.append($betDiv);
+
+      if (!this.allIn()) {
+        var $betDiv = $("<button>");
+        $betDiv.data("action", "bet");
+        $betDiv.addClass("actions-cont-text");
+        $betDiv.html('BET');
+        $outDiv.append($betDiv);
+      }
+
       this.$el.empty();
       this.$el.append($outDiv);
     }
@@ -2590,8 +2639,7 @@ function () {
       var bet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
       var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       var playerAction = $button.data().action;
-      debugger;
-      this.roundActions.concat(playerAction);
+      this.streetActions = this.streetActions.concat(playerAction);
       var resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction, sb);
 
       if (resolvedAction) {
@@ -2615,16 +2663,14 @@ function () {
   }, {
     key: "nextAction",
     value: function nextAction() {
-      debugger;
-
-      if (this.roundActions[this.roundActions - 1] === 'fold') {
+      if (this.streetActions[this.streetActions - 1] === 'fold') {
         this.determineWinner();
-      } else if (this.allIn() && this.roundActions[this.roundActions - 1] === 'call') {
+      } else if (this.allIn() && this.streetActions[this.streetActions.length - 1] === 'call') {
         this.showDown();
         this.determineWinner();
-      } else if (this.currStreet === 'river' && this.roundActions[this.roundActions - 1] === 'call') {
+      } else if (this.currStreet === 'river' && this.streetActions[this.streetActions.length - 1] === 'call') {
         this.determineWinner();
-      } else if (this.roundActions.length > 1 && this.roundActions[this.roundActions - 1] === 'call') {
+      } else if (this.streetActions.length > 1 && this.streetActions[this.streetActions.length - 1] === 'call') {
         this.nextStreet();
       }
     }
@@ -2638,15 +2684,20 @@ function () {
   }, {
     key: "nextStreet",
     value: function nextStreet() {
+      this.streetActions = [];
+
       if (this.currStreet === 'preflop') {
+        this.currStreet = 'flop';
         this.dealFlop();
         this.showBoard();
         if (!this.allIn()) this.bettingRound();
       } else if (this.currStreet === 'flop') {
+        this.currStreet = 'turn';
         this.dealTurn();
         this.showBoard();
         if (!this.allIn()) this.bettingRound();
       } else if (this.currStreet === 'turn') {
+        this.currStreet = 'river';
         this.dealRiver();
         this.showBoard();
         if (!this.allIn()) this.bettingRound();
