@@ -2071,6 +2071,7 @@ function () {
       }
 
       if (input === "raise") {
+        debugger;
         this.chipstack -= 100 + to_call;
         this.chipsInPot += 100 + to_call;
         return 200 - to_call;
@@ -2324,6 +2325,7 @@ function () {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.minBet = this.bb;
     this.bindEvents = this.bindEvents.bind(this);
   }
 
@@ -2337,6 +2339,7 @@ function () {
       this.currBet = this.sb;
       this.streetActions = [];
       this.currStreet = 'preflop';
+      this.minBet = this.bb;
     }
   }, {
     key: "resetPlayerVars",
@@ -2476,16 +2479,16 @@ function () {
     value: function showBoard() {
       var currPot = document.querySelector(".table-felt-board");
       currPot.innerText = "".concat(this.boardCards);
-    } // resolveAddBets(prevBet){
-    //   if (prevBet[1].startsWith('ra')) {
-    //     this.pot += prevBet[0];
+    } // resolveAddBets(minBet){
+    //   if (minBet[1].startsWith('ra')) {
+    //     this.pot += minBet[0];
     //   }
     //   while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
     //     this.render();
     //     this.toggleCurrPlayer();
-    //     const bet = this.action(prevBet[0]);
+    //     const bet = this.action(minBet[0]);
     //     if (bet[1].startsWith('ra')) {
-    //       this.pot += prevBet[0];
+    //       this.pot += minBet[0];
     //     }
     //     if (bet) {
     //       this.pot += bet[0];
@@ -2532,6 +2535,15 @@ function () {
       this.bindEvents();
     }
   }, {
+    key: "fold",
+    value: function fold($outDiv) {
+      var $foldDiv = $("<button>");
+      $foldDiv.addClass("actions-cont-text");
+      $foldDiv.data("action", "fold");
+      $foldDiv.html('FOLD');
+      $outDiv.append($foldDiv);
+    }
+  }, {
     key: "callOrCheck",
     value: function callOrCheck($outDiv) {
       var $callDiv = $("<button>");
@@ -2546,6 +2558,19 @@ function () {
       }
 
       $outDiv.append($callDiv);
+    }
+  }, {
+    key: "betAmount",
+    value: function betAmount($outDiv) {
+      var $betAmtDiv = $("<input/>", {
+        type: 'text',
+        "class": 'actions-cont-bet-amt',
+        // placeholder: `${this.minBet}`,
+        value: "".concat(this.minBet)
+      }); // $betAmtDiv.addClass("actions-cont-text");
+
+      $betAmtDiv.data("action", "fold");
+      $outDiv.append($betAmtDiv);
     }
   }, {
     key: "betOrRaise",
@@ -2564,15 +2589,6 @@ function () {
       $outDiv.append($betDiv);
     }
   }, {
-    key: "fold",
-    value: function fold($outDiv) {
-      var $foldDiv = $("<button>");
-      $foldDiv.addClass("actions-cont-text");
-      $foldDiv.data("action", "fold");
-      $foldDiv.html('FOLD');
-      $outDiv.append($foldDiv);
-    }
-  }, {
     key: "setButtons",
     value: function setButtons() {
       var $outDiv = $("<div>");
@@ -2584,19 +2600,38 @@ function () {
         this.betOrRaise($outDiv);
       }
 
+      this.betAmount($outDiv);
       this.$el.empty();
       this.$el.append($outDiv);
-    }
+    } // determineCurrBet(action, amount){
+    //   this.currBet = (action === 'raise' || action === 'bet') ? amount : 0;
+    //   if (this.currStreet === 'preflop' && this.streetActions.length === 1){
+    //     if (action === 'call') this.currBet = 0;
+    //   } 
+    // }
+
   }, {
-    key: "determineCurrBet",
-    value: function determineCurrBet(action, amount) {
+    key: "renderCurrBet",
+    value: function renderCurrBet(action, amount) {
       this.currBet = action === 'raise' || action === 'bet' ? amount : 0;
-      this.currBet = this.currStreet === 'preflop' && this.streetActions.length === 1 ? this.currBet - this.sb : this.currBet;
+
+      if (this.currStreet === 'preflop' && this.streetActions.length === 1) {
+        if (action === 'call') this.currBet = 0;
+      }
     }
   }, {
     key: "action",
-    value: function action($button) {
-      var bet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+    value: function (_action) {
+      function action(_x) {
+        return _action.apply(this, arguments);
+      }
+
+      action.toString = function () {
+        return _action.toString();
+      };
+
+      return action;
+    }(function ($button) {
       var playerAction = $button.data().action;
 
       if (playerAction === 'fold') {
@@ -2604,7 +2639,8 @@ function () {
         return this.determineWinner();
       }
 
-      this.streetActions = this.streetActions.concat(playerAction); // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 2) ? this.sb : 0;
+      this.streetActions = this.streetActions.concat(playerAction);
+      this.determineCurrBet(action, amount); // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 2) ? this.sb : 0;
 
       var resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction); //, isSb
 
@@ -2613,10 +2649,10 @@ function () {
       }
 
       this.toggleCurrPlayer();
-      this.determineCurrBet(this.streetActions[this.streetActions.length - 1], resolvedAction);
+      this.renderCurrBet(this.streetActions[this.streetActions.length - 1], resolvedAction);
       this.render();
       this.nextAction();
-    }
+    })
   }, {
     key: "nextAction",
     value: function nextAction() {
@@ -2646,6 +2682,7 @@ function () {
     value: function nextStreet() {
       this.streetActions = [];
       this.currBet = 0;
+      this.minBet = this.bb;
 
       if (this.currStreet === 'preflop') {
         this.currStreet = 'flop';
@@ -2665,6 +2702,11 @@ function () {
       }
     }
   }, {
+    key: "setCurrBet",
+    value: function setCurrBet($input) {
+      $input;
+    }
+  }, {
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
@@ -2674,6 +2716,11 @@ function () {
         var $button = $(event.currentTarget);
 
         _this.action($button);
+      });
+      this.$el.on("click", "input", function (event) {
+        var $input = $(event.currentTarget);
+
+        _this.setCurrBet($input);
       });
     }
   }]);

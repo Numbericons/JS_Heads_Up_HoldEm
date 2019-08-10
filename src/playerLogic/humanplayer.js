@@ -52,6 +52,7 @@ export default class HumanPlayer {
       return 100
     } 
     if (input === "raise") {
+      debugger
       this.chipstack -= 100 + to_call;
       this.chipsInPot += 100 + to_call;
       return 200 - to_call

@@ -14,6 +14,7 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.minBet = this.bb;
 
     this.bindEvents = this.bindEvents.bind(this);
   }
@@ -26,6 +27,7 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.minBet = this.bb;
   }
 
   resetPlayerVars() {
@@ -149,16 +151,16 @@ class Table {
     currPot.innerText = `${this.boardCards}`;
   }
 
-  // resolveAddBets(prevBet){
-  //   if (prevBet[1].startsWith('ra')) {
-  //     this.pot += prevBet[0];
+  // resolveAddBets(minBet){
+  //   if (minBet[1].startsWith('ra')) {
+  //     this.pot += minBet[0];
   //   }
   //   while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
   //     this.render();
   //     this.toggleCurrPlayer();
-  //     const bet = this.action(prevBet[0]);
+  //     const bet = this.action(minBet[0]);
   //     if (bet[1].startsWith('ra')) {
-  //       this.pot += prevBet[0];
+  //       this.pot += minBet[0];
   //     }
   //     if (bet) {
   //       this.pot += bet[0];
@@ -199,6 +201,14 @@ class Table {
     this.bindEvents();
   }
 
+  fold($outDiv) {
+    let $foldDiv = $("<button>");
+    $foldDiv.addClass("actions-cont-text");
+    $foldDiv.data("action", "fold");
+    $foldDiv.html('FOLD');
+    $outDiv.append($foldDiv)
+  }
+
   callOrCheck($outDiv){
     let $callDiv = $("<button>");
     $callDiv.addClass("actions-cont-text")
@@ -211,6 +221,18 @@ class Table {
     }
       
     $outDiv.append($callDiv)
+  }
+
+  betAmount($outDiv){
+    let $betAmtDiv = $("<input/>", {
+      type: 'text',
+      class: 'actions-cont-bet-amt',
+      // placeholder: `${this.minBet}`,
+      value: `${this.minBet}`
+    })
+    // $betAmtDiv.addClass("actions-cont-text");
+    $betAmtDiv.data("action", "fold");
+    $outDiv.append($betAmtDiv)
   }
 
   betOrRaise($outDiv){
@@ -228,14 +250,6 @@ class Table {
     $outDiv.append($betDiv)
   }
 
-  fold($outDiv){
-    let $foldDiv = $("<button>");
-    $foldDiv.addClass("actions-cont-text");
-    $foldDiv.data("action", "fold");
-    $foldDiv.html('FOLD');
-    $outDiv.append($foldDiv)
-  }
-
   setButtons() {
     const $outDiv = $("<div>");
     $outDiv.addClass("actions-cont")
@@ -245,30 +259,41 @@ class Table {
     if (!this.allIn()) {
       this.betOrRaise($outDiv);
     }
+    this.betAmount($outDiv);
 
     this.$el.empty();
     this.$el.append($outDiv);
   }
 
-  determineCurrBet(action, amount){
+  // determineCurrBet(action, amount){
+  //   this.currBet = (action === 'raise' || action === 'bet') ? amount : 0;
+  //   if (this.currStreet === 'preflop' && this.streetActions.length === 1){
+  //     if (action === 'call') this.currBet = 0;
+  //   } 
+  // }
+
+  renderCurrBet(action, amount){
     this.currBet = (action === 'raise' || action === 'bet') ? amount : 0;
-    this.currBet = (this.currStreet === 'preflop' && this.streetActions.length === 1) ? this.currBet - this.sb : this.currBet;
+    if (this.currStreet === 'preflop' && this.streetActions.length === 1){
+      if (action === 'call') this.currBet = 0;
+    } 
   }
 
-  action($button, bet = 0) {
+  action($button) {
     let playerAction = $button.data().action;
     if (playerAction === 'fold') {
       this.players[this.currPlayerPos].folded = true;
       return this.determineWinner();
     }
     this.streetActions = this.streetActions.concat(playerAction);
+    this.determineCurrBet(action, amount)
     // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 2) ? this.sb : 0;
     let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction); //, isSb
     if (resolvedAction) {
       this.pot += resolvedAction
     }
     this.toggleCurrPlayer();
-    this.determineCurrBet(this.streetActions[this.streetActions.length - 1], resolvedAction);
+    this.renderCurrBet(this.streetActions[this.streetActions.length - 1], resolvedAction);
     this.render();
     this.nextAction();
   }
@@ -297,6 +322,7 @@ class Table {
   nextStreet(){
     this.streetActions = [];
     this.currBet = 0;
+    this.minBet = this.bb;
     if (this.currStreet === 'preflop') {
       this.currStreet = 'flop';
       this.dealFlop();
@@ -315,11 +341,19 @@ class Table {
     }
   }
 
+  setCurrBet($input){
+    $input;
+  }
+
   bindEvents() {
     this.$el.unbind();
     this.$el.on("click", "button", (event => {
       const $button = $(event.currentTarget);
       this.action($button);
+    }));
+    this.$el.on("click", "input", (event => {
+      const $input = $(event.currentTarget);
+      this.setCurrBet($input);
     }));
   }
 }
