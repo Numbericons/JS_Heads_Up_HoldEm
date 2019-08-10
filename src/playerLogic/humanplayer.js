@@ -21,57 +21,42 @@ export default class HumanPlayer {
 
   promptAction(to_call){
     this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    // let input;
     if (to_call === 0) {
-      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
-      // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet'`)
+      // this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
     } else {
-      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
-      // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise'`)
+      // this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
     }
   }
 
-  action(to_call, sb = 0){
-    // while (document.querySelector(".input").innerText.length === 0) {
-    // }
-    let input = document.querySelector(".input").innerText;
-    // console.log(input);
-    return this.resolve_action(to_call, input, sb);
-  }
+  // action(to_call, sb = 0){
+  //   // while (document.querySelector(".input").innerText.length === 0) {
+  //   // }
+  //   let input = document.querySelector(".input").innerText;
+  //   // console.log(input);
+  //   return this.resolve_action(to_call, input, sb);
+  // }
 
-  resolve_action(to_call, input, sb){
-    // input = input.toLowerCase();
-    // if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
-    //   throw "Invalid input provided";
-    // }
-    if (input.startsWith('ch')) return 0;
-    // if (input.startsWith('ch')) return [0, 'check'];
-    // let wager = Number(input.split(" ")[1]);
-    if (input.startsWith("ca")) {
+  resolve_action(to_call, input) {  //sb
+    if (input === 'check') {
+      return 0;
+    } else if (input === "call") {
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
-      // this.chipsInPot -= to_call;
       return to_call
-      // return [to_call, 'call']
-    } else if (input.startsWith("bet")) {
-      this.chipstack -= to_call * 2;
-      this.chipsInPot += sb;
-      // this.chipsInPot -= sb;
+    } else if (input === "bet") {
+      debugger
+      this.chipstack -= to_call;
+      this.chipsInPot += to_call;
       return 100
-      // this.chipstack -= wager;
-      // return [wager, 'bet']
     } 
-    if (input.startsWith("ra")) {
+    if (input === "raise") {
       this.chipstack -= 100 + to_call;
-      this.chipsInPot += sb;
-      // this.chipsInPot -= sb;
+      this.chipsInPot += 100 + to_call;
       return 200 - to_call
-      // this.chipstack -= wager + sb;
-      // this.chipsInPot -= sb;
-      // return [wager - to_call, 'raise']
     }
-    if (input.startsWith('fo')) {
+    if (input === 'fold') {
       this.folded = true;
       return null;
     }
