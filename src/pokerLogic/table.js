@@ -14,7 +14,6 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
-    this.minBet = this.bb;
 
     this.bindEvents = this.bindEvents.bind(this);
   }
@@ -27,7 +26,6 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
-    this.minBet = this.bb;
   }
 
   resetPlayerVars() {
@@ -151,23 +149,6 @@ class Table {
     currPot.innerText = `${this.boardCards}`;
   }
 
-  // resolveAddBets(minBet){
-  //   if (minBet[1].startsWith('ra')) {
-  //     this.pot += minBet[0];
-  //   }
-  //   while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-  //     this.render();
-  //     this.toggleCurrPlayer();
-  //     const bet = this.action(minBet[0]);
-  //     if (bet[1].startsWith('ra')) {
-  //       this.pot += minBet[0];
-  //     }
-  //     if (bet) {
-  //       this.pot += bet[0];
-  //     }
-  //   }
-  // }
-
   toggleCurrPlayer(){
     if (this.currPlayerPos === 0){
       this.currPlayerPos = 1;
@@ -224,14 +205,21 @@ class Table {
   }
 
   betAmount($outDiv){
+    let value;
+    if (this.currBet > 0) {
+      if (this.currBet === this.sb) {
+        value = this.bb * 2;
+      } else {
+        value = this.currBet * 2;
+      }
+    } else {
+      value = this.bb
+    } 
     let $betAmtDiv = $("<input/>", {
       type: 'text',
       class: 'actions-cont-bet-amt',
-      // placeholder: `${this.minBet}`,
-      value: `${this.minBet}`
+      value: `${value}`
     })
-    // $betAmtDiv.addClass("actions-cont-text");
-    $betAmtDiv.data("action", "fold");
     $outDiv.append($betAmtDiv)
   }
 
@@ -246,16 +234,16 @@ class Table {
       $betDiv.data("action", "raise");
       $betDiv.html('RAISE');
     }
-
     $outDiv.append($betDiv)
   }
 
   setButtons() {
     const $outDiv = $("<div>");
     $outDiv.addClass("actions-cont")
-  
+    
     this.fold($outDiv);
     this.callOrCheck($outDiv);
+    if (this.allIn()) debugger
     if (!this.allIn()) {
       this.betOrRaise($outDiv);
     }
@@ -265,18 +253,27 @@ class Table {
     this.$el.append($outDiv);
   }
 
-  // determineCurrBet(action, amount){
-  //   this.currBet = (action === 'raise' || action === 'bet') ? amount : 0;
-  //   if (this.currStreet === 'preflop' && this.streetActions.length === 1){
-  //     if (action === 'call') this.currBet = 0;
-  //   } 
-  // }
-
-  renderCurrBet(action, amount){
-    this.currBet = (action === 'raise' || action === 'bet') ? amount : 0;
+  renderCurrBet(amount){
     if (this.currStreet === 'preflop' && this.streetActions.length === 1){
-      if (action === 'call') this.currBet = 0;
-    } 
+      if (amount === 50) {
+        this.currBet = 0;
+      } else {
+        this.currBet = amount - 50;
+      }
+    } else {
+      this.currBet = (amount > 0) ? amount : 0;
+    }
+  }
+
+  handChipDiff(){
+    return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
+  }
+
+  calcBetInput(isSb){
+    let betInput = $('.actions-cont-bet-amt');
+    let totalBet = Number(betInput[0].value);
+    if (totalBet > this.players[this.currPlayerPos].chipstack) totalBet = this.players[this.currPlayerPos].chipstack - isSb;
+    return totalBet;
   }
 
   action($button) {
@@ -285,35 +282,40 @@ class Table {
       this.players[this.currPlayerPos].folded = true;
       return this.determineWinner();
     }
-    this.streetActions = this.streetActions.concat(playerAction);
-    this.determineCurrBet(action, amount)
-    // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 2) ? this.sb : 0;
-    let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction); //, isSb
+    let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
+    let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
     if (resolvedAction) {
       this.pot += resolvedAction
     }
+    this.streetActions = this.streetActions.concat(resolvedAction);
+    this.continueAction();
+  }
+  
+  continueAction(){
+    this.currBet = this.handChipDiff();
     this.toggleCurrPlayer();
-    this.renderCurrBet(this.streetActions[this.streetActions.length - 1], resolvedAction);
     this.render();
     this.nextAction();
   }
 
   nextAction(){
-    let lastAction = this.streetActions[this.streetActions.length - 1];
+    let handChipsEqual = this.handChipDiff() === 0;
     let multipleActions = this.streetActions.length > 1;
     if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
-    } else if (this.allIn() && lastAction === 'call') {
-      this.showDown();
-      this.determineWinner();
-    } else if (this.currStreet === 'river' && multipleActions && (lastAction === 'call' || lastAction === 'check')) {
-      this.determineWinner();
-    } else if (multipleActions && (lastAction === 'call' || lastAction === 'check')) {
-      this.nextStreet();
+    } else if (handChipsEqual) {
+      if (this.allIn()) {
+        this.showDown();
+        this.determineWinner();
+      } else if (this.currStreet === 'river' && multipleActions) {
+        this.determineWinner();
+      } else if (multipleActions) {
+        this.nextStreet();
+      }
     }
   }
 
-  showDown() {
+  showDown(){
     while (this.boardCards.length < 5) {
       this.dealCard();
     }
@@ -322,7 +324,6 @@ class Table {
   nextStreet(){
     this.streetActions = [];
     this.currBet = 0;
-    this.minBet = this.bb;
     if (this.currStreet === 'preflop') {
       this.currStreet = 'flop';
       this.dealFlop();
@@ -341,19 +342,11 @@ class Table {
     }
   }
 
-  setCurrBet($input){
-    $input;
-  }
-
   bindEvents() {
     this.$el.unbind();
     this.$el.on("click", "button", (event => {
       const $button = $(event.currentTarget);
       this.action($button);
-    }));
-    this.$el.on("click", "input", (event => {
-      const $input = $(event.currentTarget);
-      this.setCurrBet($input);
     }));
   }
 }

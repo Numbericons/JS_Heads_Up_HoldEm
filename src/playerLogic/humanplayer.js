@@ -22,44 +22,26 @@ export default class HumanPlayer {
   promptAction(to_call){
     this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
     if (to_call === 0) {
-      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet'`)
-      // this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
+      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
     } else {
-      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise'`)
-      // this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
+      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
     }
   }
 
-  // action(to_call, sb = 0){
-  //   // while (document.querySelector(".input").innerText.length === 0) {
-  //   // }
-  //   let input = document.querySelector(".input").innerText;
-  //   // console.log(input);
-  //   return this.resolve_action(to_call, input, sb);
-  // }
-
-  resolve_action(to_call, input) {  //sb
-    if (input === 'check') {
+  resolve_action(to_call, betInput, textInput, sb = 0) {
+    if (textInput === 'check') {
       return 0;
-    } else if (input === "call") {
-      this.chipstack -= to_call;
-      this.chipsInPot += to_call;
-      return to_call
-    } else if (input === "bet") {
-      debugger
-      this.chipstack -= to_call;
-      this.chipsInPot += to_call;
-      return 100
-    } 
-    if (input === "raise") {
-      debugger
-      this.chipstack -= 100 + to_call;
-      this.chipsInPot += 100 + to_call;
-      return 200 - to_call
-    }
-    if (input === 'fold') {
+    } else if (textInput === 'fold') {
       this.folded = true;
       return null;
+    } else if (textInput === 'call') {
+      this.chipstack -= to_call;
+      this.chipsInPot += to_call;
+      return to_call;
+    } else {
+      this.chipstack -= betInput + sb;
+      this.chipsInPot += betInput + sb;
+      return betInput + sb;
     }
   }
 
@@ -73,8 +55,14 @@ export default class HumanPlayer {
     playerChips.innerText = `${this.chipstack} chips`
   }
 
+  playerCards() {
+    let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+    playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+  }
+
   render(){
     this.playerName();
     this.playerChips();
+    this.playerCards();
   }
 }
