@@ -65,4 +65,10 @@ export default class HumanPlayer {
     this.playerChips();
     this.playerCards();
   }
+
+  resetVars(){
+    this.folded = false;
+    this.chipsInPot = 0;
+    this.hand = [];
+  }
 }

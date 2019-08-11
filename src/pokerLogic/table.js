@@ -18,6 +18,15 @@ class Table {
     this.bindEvents = this.bindEvents.bind(this);
   }
 
+  currentPlayer(){
+    return this.players[this.currPlayerPos];
+  }
+
+  otherPlayer(){
+    let otherPlayerPos = (this.currPlayerPos === 0) ? 1 : 0;
+    return this.players[otherPlayerPos];
+  }
+
   resetVars(){
     this.deck = new Deck;
     this.boardCards = [];
@@ -29,12 +38,8 @@ class Table {
   }
 
   resetPlayerVars() {
-    this.players[0].folded = false;
-    this.players[0].chipsInPot = 0;
-    this.players[0].hand = [];
-    this.players[1].folded = false;
-    this.players[1].chipsInPot = 0;
-    this.players[1].hand = [];
+    this.players[0].resetVars();
+    this.players[1].resetVars();
   }
 
   playHand(){
@@ -43,20 +48,11 @@ class Table {
     this.render();
   }
 
-  anyFolds(){
-    if (!this.players[0].folded && !this.players[1].folded) {
-      return false;
-    } else {
-      return true;
-    }
-  }
-
   togglePlayers() {
     this.players.push(this.players.shift());
     this.players[0].position = 'sb';
     this.players[1].position = 'bb';
   }
-
 
   determineWinner(){
     var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
@@ -83,7 +79,7 @@ class Table {
         this.players[1].chipstack += 1;
       }
     }
-    this.handOver();
+    this.gameOver();
   }
 
   winner(winHand, loseHand, winPos,losePos){
@@ -92,14 +88,14 @@ class Table {
     if (!this.players[losePos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
     alert(this.outputString);
     this.players[winPos].chipstack += this.pot;
-    this.handOver();
+    this.gameOver();
   }
 
-  handOver(){
+  gameOver(){
     if (this.players[0].chipstack === 0) {
-      alert(`${this.players[1].name} has won the match!`);
+      this.currentPlayer().promptText(`${this.players[1].name} has won the match!`);
     } else if (this.players[1].chipstack === 0) {
-      alert(`${this.players[1].name} has won the match!`);
+      this.currentPlayer().promptText(`${this.players[1].name} has won the match!`);
     } else {
       this.nextHand();
     }
@@ -177,7 +173,7 @@ class Table {
     this.showBoard();
     this.players[0].render();
     this.players[1].render();
-    this.players[this.currPlayerPos].promptAction(this.currBet);
+    this.currentPlayer().promptAction(this.currBet);
     this.setButtons();
     this.bindEvents();
   }
@@ -243,11 +239,10 @@ class Table {
     
     this.fold($outDiv);
     this.callOrCheck($outDiv);
-    if (this.allIn()) debugger
-    if (!this.allIn()) {
+    if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
       this.betOrRaise($outDiv);
+      this.betAmount($outDiv);
     }
-    this.betAmount($outDiv);
 
     this.$el.empty();
     this.$el.append($outDiv);
@@ -271,19 +266,21 @@ class Table {
 
   calcBetInput(isSb){
     let betInput = $('.actions-cont-bet-amt');
+    if (betInput.length === 0) return 0;
     let totalBet = Number(betInput[0].value);
-    if (totalBet > this.players[this.currPlayerPos].chipstack) totalBet = this.players[this.currPlayerPos].chipstack - isSb;
+    if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
+    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack - isSb;
     return totalBet;
   }
 
   action($button) {
     let playerAction = $button.data().action;
     if (playerAction === 'fold') {
-      this.players[this.currPlayerPos].folded = true;
+      this.currentPlayer().folded = true;
       return this.determineWinner();
     }
     let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-    let resolvedAction = this.players[this.currPlayerPos].resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
     if (resolvedAction) {
       this.pot += resolvedAction
     }
@@ -318,6 +315,7 @@ class Table {
   showDown(){
     while (this.boardCards.length < 5) {
       this.dealCard();
+      this.showBoard();
     }
   }
   

@@ -2091,6 +2091,13 @@ function () {
       this.playerChips();
       this.playerCards();
     }
+  }, {
+    key: "resetVars",
+    value: function resetVars() {
+      this.folded = false;
+      this.chipsInPot = 0;
+      this.hand = [];
+    }
   }]);
 
   return HumanPlayer;
@@ -2318,6 +2325,17 @@ function () {
   }
 
   _createClass(Table, [{
+    key: "currentPlayer",
+    value: function currentPlayer() {
+      return this.players[this.currPlayerPos];
+    }
+  }, {
+    key: "otherPlayer",
+    value: function otherPlayer() {
+      var otherPlayerPos = this.currPlayerPos === 0 ? 1 : 0;
+      return this.players[otherPlayerPos];
+    }
+  }, {
     key: "resetVars",
     value: function resetVars() {
       this.deck = new _deck_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
@@ -2331,12 +2349,8 @@ function () {
   }, {
     key: "resetPlayerVars",
     value: function resetPlayerVars() {
-      this.players[0].folded = false;
-      this.players[0].chipsInPot = 0;
-      this.players[0].hand = [];
-      this.players[1].folded = false;
-      this.players[1].chipsInPot = 0;
-      this.players[1].hand = [];
+      this.players[0].resetVars();
+      this.players[1].resetVars();
     }
   }, {
     key: "playHand",
@@ -2344,15 +2358,6 @@ function () {
       this.dealInPlayers();
       this.takeBlinds();
       this.render();
-    }
-  }, {
-    key: "anyFolds",
-    value: function anyFolds() {
-      if (!this.players[0].folded && !this.players[1].folded) {
-        return false;
-      } else {
-        return true;
-      }
     }
   }, {
     key: "togglePlayers",
@@ -2392,7 +2397,7 @@ function () {
         }
       }
 
-      this.handOver();
+      this.gameOver();
     }
   }, {
     key: "winner",
@@ -2402,15 +2407,15 @@ function () {
       if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
       alert(this.outputString);
       this.players[winPos].chipstack += this.pot;
-      this.handOver();
+      this.gameOver();
     }
   }, {
-    key: "handOver",
-    value: function handOver() {
+    key: "gameOver",
+    value: function gameOver() {
       if (this.players[0].chipstack === 0) {
-        alert("".concat(this.players[1].name, " has won the match!"));
+        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
       } else if (this.players[1].chipstack === 0) {
-        alert("".concat(this.players[1].name, " has won the match!"));
+        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
       } else {
         this.nextHand();
       }
@@ -2501,7 +2506,7 @@ function () {
       this.showBoard();
       this.players[0].render();
       this.players[1].render();
-      this.players[this.currPlayerPos].promptAction(this.currBet);
+      this.currentPlayer().promptAction(this.currBet);
       this.setButtons();
       this.bindEvents();
     }
@@ -2575,13 +2580,12 @@ function () {
       $outDiv.addClass("actions-cont");
       this.fold($outDiv);
       this.callOrCheck($outDiv);
-      if (this.allIn()) debugger;
 
-      if (!this.allIn()) {
+      if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
         this.betOrRaise($outDiv);
+        this.betAmount($outDiv);
       }
 
-      this.betAmount($outDiv);
       this.$el.empty();
       this.$el.append($outDiv);
     }
@@ -2607,8 +2611,10 @@ function () {
     key: "calcBetInput",
     value: function calcBetInput(isSb) {
       var betInput = $('.actions-cont-bet-amt');
+      if (betInput.length === 0) return 0;
       var totalBet = Number(betInput[0].value);
-      if (totalBet > this.players[this.currPlayerPos].chipstack) totalBet = this.players[this.currPlayerPos].chipstack - isSb;
+      if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
+      if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack - isSb;
       return totalBet;
     }
   }, {
@@ -2617,12 +2623,12 @@ function () {
       var playerAction = $button.data().action;
 
       if (playerAction === 'fold') {
-        this.players[this.currPlayerPos].folded = true;
+        this.currentPlayer().folded = true;
         return this.determineWinner();
       }
 
       var isSb = this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
-      var resolvedAction = this.players[this.currPlayerPos].resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
 
       if (resolvedAction) {
         this.pot += resolvedAction;
@@ -2663,6 +2669,7 @@ function () {
     value: function showDown() {
       while (this.boardCards.length < 5) {
         this.dealCard();
+        this.showBoard();
       }
     }
   }, {
