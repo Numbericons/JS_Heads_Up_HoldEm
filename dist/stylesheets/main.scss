@@ -125,6 +125,32 @@
       font-size: 50px;
       font-family: 'Cabin', sans-serif;
     }
+    &-dealer-btn-img{
+      width: 35px;
+      height: 35px;
+    }
+    &-dealer-btn-left{
+      width:100%;
+      display: flex;
+      transform: translateY(15px);
+    }
+    &-dealer-btn-left-board{
+      width:100%;
+      display: flex;
+      transform: translateY(-10px);
+    }
+    &-dealer-btn-right{
+      width:100%;
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(15px);
+    }
+    &-dealer-btn-right-board{
+      width:100%;
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(-10px);
+    }
     &-pot{
       font-size: 24px;
       font-family: 'Cabin', sans-serif;

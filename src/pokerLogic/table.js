@@ -14,6 +14,7 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.handNum = 1;
 
     this.bindEvents = this.bindEvents.bind(this);
   }
@@ -35,6 +36,16 @@ class Table {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+  }
+
+  showDealerBtn(){
+    let dealerButton = $('#table-felt-dealer-btn');
+    dealerButton.removeClass();
+    if (this.handNum % 2 === 0) {
+      (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
+    } else {
+      (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
+    }
   }
 
   resetPlayerVars() {
@@ -105,6 +116,7 @@ class Table {
     this.togglePlayers();
     this.resetPlayerVars();
     this.resetVars();
+    this.handNum += 1;
     this.playHand();
   }
 
@@ -169,6 +181,7 @@ class Table {
   }
 
   render(){
+    this.showDealerBtn();
     this.showPot();
     this.showBoard();
     this.players[0].render();
