@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Texas Hold'em Poker</title>
+    <title>No-Limit Texas Hold'em Poker</title>
     <!-- <link rel="stylesheet" type="text/css" href="./stylesheets/main.css" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
@@ -12,7 +12,7 @@
     <div class="holdem-container">
       <div class="top">
         <div class="top-bar">
-          <h1 class="top-bar-header">Texas Hold'em Poker!</h1>
+          <h1 class="top-bar-header">No-Limit Texas Hold'em Poker!</h1>
           <div class="top-bar-author">
           </div>
         </div>
@@ -27,10 +27,15 @@
             <div class='player-info-text-left'>
               <h5 class='player-info-name-left'>player2</h5>
               <h5 class='player-info-chips-left'>player2 chips</h5>
+              <h5 class='player-info-cards-left'></h5>
             </div>
           </div>
           <div class="table-trim">
             <div class="table-felt">
+              <h5 class="table-felt-board"></h5>
+              <h5 id="table-felt-dealer-btn">
+                <img class='table-felt-dealer-btn-img' src="./image/dealer-badge.svg" alt="Designed by www.flaticon.com">
+              </h5>
               <h5 class="table-felt-pot">Pot placeholder</h5>
             </div>
           </div>
@@ -39,6 +44,7 @@
             <div class='player-info-text-right'>
               <h5 class='player-info-name-right'>player1</h5>
               <h5 class='player-info-chips-right'>player1 chips</h5>
+              <h5 class='player-info-cards-right'></h5>
             </div>
           </div>
         </div>

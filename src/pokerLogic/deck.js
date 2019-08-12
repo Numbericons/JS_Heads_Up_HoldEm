@@ -27,8 +27,6 @@ export default class Deck {
         deck.push(values[j] + suits[i]);
       }
     }
-    // const response = prompt("enter action");
-    // console.log(response);
     return this.shuffle(deck);
   }
 

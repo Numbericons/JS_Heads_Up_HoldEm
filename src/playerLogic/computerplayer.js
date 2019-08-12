@@ -1,30 +1,69 @@
-export default class HumanPlayer {
-  constructor(position, chipstack){
+export default class ComputerPlayer {
+  constructor(position, chipstack) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    this.comp = true;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }
 
-  text(input){
+  text(input) {
     let textSelect = document.querySelector(".table-actions-text");
     textSelect.innerText = input;
   }
 
-  promptText(input){
+  promptText(input) {
     let promptSelect = document.querySelector(".table-actions-prompt");
     promptSelect.innerText = input;
   }
 
-  promptAction(to_call){
+  promptAction(to_call) {
     this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
     if (to_call === 0) {
       this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
     } else {
       this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
+    }
+  }
+  genBetRaise(to_call, stack){
+    let randNum = Math.random()
+    if (to_call === 0) {
+      let bet = randNum * stack;
+      return ['betRaise', bet];
+    } else {
+      let raise = randNum * stack;
+      if (raise < to_call * 2) raise = to_call * 2;
+      return ['betRaise', raise];
+    }
+  }
+
+  promptResponse(to_call, stack){
+    let randNum = Math.random()
+    if (randNum < .3333) {
+      if (to_call > 0) {
+        return ['fold'];
+      } else {
+        if (randNum < .16666) {
+          return ['check'];
+        } else {
+          return this.genBetRaise(to_call, stack);
+        }
+      }
+    } else if (randNum < .6666) {
+      if (to_call > 0) {
+        return ['call'];
+      } else {
+        return ['check'];
+      }
+    } else {
+      if (to_call === 0) {
+        return this.genBetRaise(to_call, stack);
+      } else {
+        return ['call']
+      }
     }
   }
 
@@ -55,18 +94,18 @@ export default class HumanPlayer {
     playerChips.innerText = `${this.chipstack} chips`
   }
 
-  playerCards() {
-    let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
-    playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
-  }
+  // playerCards() {
+  //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+  //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+  // }
 
-  render(){
+  render() {
     this.playerName();
     this.playerChips();
-    this.playerCards();
+    // this.playerCards();
   }
 
-  resetVars(){
+  resetVars() {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];

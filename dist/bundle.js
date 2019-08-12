@@ -1992,6 +1992,162 @@ $(function () {
 
 /***/ }),
 
+/***/ "./src/playerLogic/computerplayer.js":
+/*!*******************************************!*\
+  !*** ./src/playerLogic/computerplayer.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ComputerPlayer =
+/*#__PURE__*/
+function () {
+  function ComputerPlayer(position, chipstack) {
+    _classCallCheck(this, ComputerPlayer);
+
+    this.position = position;
+    this.chipstack = chipstack;
+    this.folded = false;
+    this.chipsInPot = 0;
+    this.hand = [];
+    this.comp = true;
+    position === 'sb' ? this.side = 'right' : this.side = 'left';
+    this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
+  }
+
+  _createClass(ComputerPlayer, [{
+    key: "text",
+    value: function text(input) {
+      var textSelect = document.querySelector(".table-actions-text");
+      textSelect.innerText = input;
+    }
+  }, {
+    key: "promptText",
+    value: function promptText(input) {
+      var promptSelect = document.querySelector(".table-actions-prompt");
+      promptSelect.innerText = input;
+    }
+  }, {
+    key: "promptAction",
+    value: function promptAction(to_call) {
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
+
+      if (to_call === 0) {
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' will bet the amount in the box to the right"));
+      } else {
+        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right"));
+      }
+    }
+  }, {
+    key: "genBetRaise",
+    value: function genBetRaise(to_call, stack) {
+      var randNum = Math.random();
+
+      if (to_call === 0) {
+        var bet = randNum * stack;
+        return ['betRaise', bet];
+      } else {
+        var raise = randNum * stack;
+        if (raise < to_call * 2) raise = to_call * 2;
+        return ['betRaise', raise];
+      }
+    }
+  }, {
+    key: "promptResponse",
+    value: function promptResponse(to_call, stack) {
+      var randNum = Math.random();
+
+      if (randNum < .3333) {
+        if (to_call > 0) {
+          return ['fold'];
+        } else {
+          if (randNum < .16666) {
+            return ['check'];
+          } else {
+            return this.genBetRaise(to_call, stack);
+          }
+        }
+      } else if (randNum < .6666) {
+        if (to_call > 0) {
+          return ['call'];
+        } else {
+          return ['check'];
+        }
+      } else {
+        if (to_call === 0) {
+          return this.genBetRaise(to_call, stack);
+        } else {
+          return ['call'];
+        }
+      }
+    }
+  }, {
+    key: "resolve_action",
+    value: function resolve_action(to_call, betInput, textInput) {
+      var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+      if (textInput === 'check') {
+        return 0;
+      } else if (textInput === 'fold') {
+        this.folded = true;
+        return null;
+      } else if (textInput === 'call') {
+        this.chipstack -= to_call;
+        this.chipsInPot += to_call;
+        return to_call;
+      } else {
+        this.chipstack -= betInput + sb;
+        this.chipsInPot += betInput + sb;
+        return betInput + sb;
+      }
+    }
+  }, {
+    key: "playerName",
+    value: function playerName() {
+      var playerName = document.querySelector(".player-info-name-".concat(this.side));
+      playerName.innerText = "".concat(this.name);
+    }
+  }, {
+    key: "playerChips",
+    value: function playerChips() {
+      var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
+      playerChips.innerText = "".concat(this.chipstack, " chips");
+    } // playerCards() {
+    //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+    //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+    // }
+
+  }, {
+    key: "render",
+    value: function render() {
+      this.playerName();
+      this.playerChips(); // this.playerCards();
+    }
+  }, {
+    key: "resetVars",
+    value: function resetVars() {
+      this.folded = false;
+      this.chipsInPot = 0;
+      this.hand = [];
+    }
+  }]);
+
+  return ComputerPlayer;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/playerLogic/humanplayer.js":
 /*!****************************************!*\
   !*** ./src/playerLogic/humanplayer.js ***!
@@ -2038,60 +2194,32 @@ function () {
   }, {
     key: "promptAction",
     value: function promptAction(to_call) {
-      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1])); // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
-      // let input;
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
 
       if (to_call === 0) {
-        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'")); // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' will bet the amount in the box to the right"));
       } else {
-        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'")); // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right"));
       }
-    }
-  }, {
-    key: "action",
-    value: function action(to_call) {
-      var sb = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      // while (document.querySelector(".input").innerText.length === 0) {
-      // }
-      var input = document.querySelector(".input").innerText; // console.log(input);
-
-      return this.resolve_action(to_call, input, sb);
     }
   }, {
     key: "resolve_action",
-    value: function resolve_action(to_call, input, sb) {
-      // input = input.toLowerCase();
-      // if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
-      //   throw "Invalid input provided";
-      // }
-      if (input.startsWith('ch')) return 0; // if (input.startsWith('ch')) return [0, 'check'];
-      // let wager = Number(input.split(" ")[1]);
+    value: function resolve_action(to_call, betInput, textInput) {
+      var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
-      if (input.startsWith("ca")) {
-        this.chipstack -= to_call;
-        this.chipsInPot += to_call; // this.chipsInPot -= to_call;
-
-        return to_call; // return [to_call, 'call']
-      } else if (input.startsWith("bet")) {
-        this.chipstack -= to_call * 2;
-        this.chipsInPot += sb; // this.chipsInPot -= sb;
-
-        return 100; // this.chipstack -= wager;
-        // return [wager, 'bet']
-      }
-
-      if (input.startsWith("ra")) {
-        this.chipstack -= 100 + to_call;
-        this.chipsInPot += sb; // this.chipsInPot -= sb;
-
-        return 200 - to_call; // this.chipstack -= wager + sb;
-        // this.chipsInPot -= sb;
-        // return [wager - to_call, 'raise']
-      }
-
-      if (input.startsWith('fo')) {
+      if (textInput === 'check') {
+        return 0;
+      } else if (textInput === 'fold') {
         this.folded = true;
         return null;
+      } else if (textInput === 'call') {
+        this.chipstack -= to_call;
+        this.chipsInPot += to_call;
+        return to_call;
+      } else {
+        this.chipstack -= betInput + sb;
+        this.chipsInPot += betInput + sb;
+        return betInput + sb;
       }
     }
   }, {
@@ -2107,10 +2235,24 @@ function () {
       playerChips.innerText = "".concat(this.chipstack, " chips");
     }
   }, {
+    key: "playerCards",
+    value: function playerCards() {
+      var playerChips = document.querySelector(".player-info-cards-".concat(this.side));
+      playerChips.innerText = "".concat(this.hand[0], " ").concat(this.hand[1]);
+    }
+  }, {
     key: "render",
     value: function render() {
       this.playerName();
       this.playerChips();
+      this.playerCards();
+    }
+  }, {
+    key: "resetVars",
+    value: function resetVars() {
+      this.folded = false;
+      this.chipsInPot = 0;
+      this.hand = [];
     }
   }]);
 
@@ -2174,9 +2316,7 @@ function () {
         for (var j = 0; j < values.length; j++) {
           deck.push(values[j] + suits[i]);
         }
-      } // const response = prompt("enter action");
-      // console.log(response);
-
+      }
 
       return this.shuffle(deck);
     }
@@ -2215,6 +2355,7 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table */ "./src/pokerLogic/table.js");
 /* harmony import */ var _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../playerLogic/humanplayer */ "./src/playerLogic/humanplayer.js");
+/* harmony import */ var _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../playerLogic/computerplayer */ "./src/playerLogic/computerplayer.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2224,17 +2365,20 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+
 var HoldEm =
 /*#__PURE__*/
 function () {
   function HoldEm($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
 
     _classCallCheck(this, HoldEm);
 
     this.$el = $el;
     this.initialChipstack = initialChipstack;
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("bb", initialChipstack)]; // this.players = [new ComputerPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
+    // this.players = [new HumanPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
+
     this.dealer_pos = 0;
     this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players);
   }
@@ -2243,29 +2387,6 @@ function () {
     key: "playHand",
     value: function playHand() {
       this.table.playHand();
-    }
-  }, {
-    key: "togglePlayers",
-    value: function togglePlayers() {
-      this.players.push(this.players.shift());
-
-      if (this.players[0].position === 1) {
-        this.players[0].position = 2;
-        this.players[1].position = 1;
-      } else {
-        this.players[0].position = 1;
-        this.players[1].position = 2;
-      }
-    }
-  }, {
-    key: "resetPlayerVars",
-    value: function resetPlayerVars() {
-      this.players[0].folded = false;
-      this.players[0].chipsInPot = 0;
-      this.players[0].hand = [];
-      this.players[1].folded = false;
-      this.players[1].chipsInPot = 0;
-      this.players[1].hand = [];
     }
   }, {
     key: "newGame",
@@ -2335,59 +2456,72 @@ function () {
     this.currPlayerPos = 0;
     this.$el = $el;
     this.currBet = this.sb;
-    this.bindEvents = this.bindEvents.bind(this);
-    this.roundActions = [];
+    this.streetActions = [];
     this.currStreet = 'preflop';
+    this.handNum = 1;
+    this.bindEvents = this.bindEvents.bind(this);
   }
 
   _createClass(Table, [{
+    key: "currentPlayer",
+    value: function currentPlayer() {
+      return this.players[this.currPlayerPos];
+    }
+  }, {
+    key: "otherPlayer",
+    value: function otherPlayer() {
+      var otherPlayerPos = this.currPlayerPos === 0 ? 1 : 0;
+      return this.players[otherPlayerPos];
+    }
+  }, {
     key: "resetVars",
     value: function resetVars() {
+      this.deck = new _deck_js__WEBPACK_IMPORTED_MODULE_0__["default"]();
       this.boardCards = [];
       this.pot = 0;
       this.currPlayerPos = 0;
       this.currBet = this.sb;
+      this.streetActions = [];
+      this.currStreet = 'preflop';
+    }
+  }, {
+    key: "showDealerBtn",
+    value: function showDealerBtn() {
+      var dealerButton = $('#table-felt-dealer-btn');
+      dealerButton.removeClass();
+
+      if (this.handNum % 2 === 0) {
+        this.boardCards.length === 0 ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
+      } else {
+        this.boardCards.length === 0 ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
+      }
+    }
+  }, {
+    key: "resetPlayerVars",
+    value: function resetPlayerVars() {
+      this.players[0].resetVars();
+      this.players[1].resetVars();
     }
   }, {
     key: "playHand",
     value: function playHand() {
       this.dealInPlayers();
       this.takeBlinds();
-      this.bettingRound(this.sb); // if (this.remainingPlayers()) {
-      //   console.log("*******-FLOP-*******");
-      //   this.dealFlop();
-      //   this.showBoard();
-      //   if (!this.allIn()) this.bettingRound();
-      // }
-      // if (this.remainingPlayers()) {
-      //   console.log("*******-TURN-*******");
-      //   this.dealTurn();
-      //   this.showBoard();
-      //   if (!this.allIn()) this.bettingRound();
-      // }
-      // if (this.remainingPlayers()) {
-      //   console.log("*******-RIVER-*******");
-      //   this.dealRiver();
-      //   this.showBoard();
-      //   if (!this.allIn()) this.bettingRound();
-      // }
-      // this.determineWinner();
+      this.render();
     }
   }, {
-    key: "anyFolds",
-    value: function anyFolds() {
-      if (!this.players[0].folded && !this.players[1].folded) {
-        return false;
-      } else {
-        return true;
-      }
+    key: "togglePlayers",
+    value: function togglePlayers() {
+      this.players.push(this.players.shift());
+      this.players[0].position = 'sb';
+      this.players[1].position = 'bb';
     }
   }, {
     key: "determineWinner",
     value: function determineWinner() {
       var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
       var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
-      this.boardCards.length > 0 ? console.log("On a board of ".concat(this.boardCards, ", ")) : console.log("Preflop, ");
+      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.boardCards, ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
@@ -2401,7 +2535,7 @@ function () {
   }, {
     key: "tie",
     value: function tie(hand) {
-      console.log("the hand resulted in a tie. Splitting the pot of ".concat(this.pot, " with ").concat(hand.descr, "!"));
+      alert(this.outputString + "the hand resulted in a tie. Splitting the pot of ".concat(this.pot, " with ").concat(hand.descr, "!"));
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
@@ -2413,16 +2547,37 @@ function () {
         }
       }
 
-      return [2];
+      this.gameOver();
     }
   }, {
     key: "winner",
     value: function winner(winHand, loseHand, winPos, losePos) {
-      console.log("".concat(this.players[winPos].name, " wins the pot of ").concat(this.pot));
-      if (!this.players[losePos].folded) console.log(" with hand: ".concat(winHand.descr));
-      if (!this.players[losePos].chipstack === 0) console.log("".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr));
+      this.outputString += "".concat(this.players[winPos].name, " wins the pot of ").concat(this.pot);
+      if (!this.players[losePos].folded) this.outputString += " with hand: ".concat(winHand.descr);
+      if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
+      alert(this.outputString);
       this.players[winPos].chipstack += this.pot;
-      return [winPos];
+      this.gameOver();
+    }
+  }, {
+    key: "gameOver",
+    value: function gameOver() {
+      if (this.players[0].chipstack === 0) {
+        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
+      } else if (this.players[1].chipstack === 0) {
+        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
+      } else {
+        this.nextHand();
+      }
+    }
+  }, {
+    key: "nextHand",
+    value: function nextHand() {
+      this.togglePlayers();
+      this.resetPlayerVars();
+      this.resetVars();
+      this.handNum += 1;
+      this.playHand();
     }
   }, {
     key: "handToStr",
@@ -2450,6 +2605,7 @@ function () {
   }, {
     key: "dealCard",
     value: function dealCard() {
+      this.currPlayerPos = 1;
       this.boardCards.push(this.deck.draw());
     }
   }, {
@@ -2462,67 +2618,10 @@ function () {
       }
     }
   }, {
-    key: "dealTurn",
-    value: function dealTurn() {
-      this.currPlayerPos = 1;
-      this.dealCard();
-    }
-  }, {
-    key: "dealRiver",
-    value: function dealRiver() {
-      this.currPlayerPos = 1;
-      this.dealCard();
-    }
-  }, {
     key: "showBoard",
     value: function showBoard() {
-      console.log("The board is: ");
-      this.boardCards.forEach(function (card) {
-        console.log(card);
-      });
-    }
-  }, {
-    key: "bettingRound",
-    value: function bettingRound() {
-      var ifSB = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 0;
-      this.render(); // const firstBet = this.action(ifSB, ifSB);
-      // if (firstBet === null) {
-      //   return this.pot;
-      // }
-      // this.pot += firstBet[0];
-      // this.toggleCurrPlayer();
-      // this.render();
-      // const prevBet = this.action(firstBet[0] - ifSB);
-      // if (prevBet === null) {
-      //   return this.pot;
-      // }
-      // this.pot += prevBet[0];
-      // if (prevBet[1] === 'raise' && ifSB > 0) {
-      //   this.pot += firstBet[0];
-      // }
-      // this.resolveAddBets(prevBet);
-      // return this.pot;
-    }
-  }, {
-    key: "resolveAddBets",
-    value: function resolveAddBets(prevBet) {
-      if (prevBet[1].startsWith('ra')) {
-        this.pot += prevBet[0];
-      }
-
-      while (!this.players[0].chipsInPot === this.players[0].chipsInPot) {
-        this.render();
-        this.toggleCurrPlayer();
-        var bet = this.action(prevBet[0]);
-
-        if (bet[1].startsWith('ra')) {
-          this.pot += prevBet[0];
-        }
-
-        if (bet) {
-          this.pot += bet[0];
-        }
-      }
+      var currPot = document.querySelector(".table-felt-board");
+      currPot.innerText = "".concat(this.boardCards);
     }
   }, {
     key: "toggleCurrPlayer",
@@ -2552,80 +2651,204 @@ function () {
       currPot.innerText = "Current pot: ".concat(this.pot);
     }
   }, {
+    key: "resolvePlayerPrompt",
+    value: function resolvePlayerPrompt(response) {
+      if (response[0] === 'fold') {
+        this.action(null, 'fold');
+      } else if (response[0] === 'call') {
+        this.action(null, 'call');
+      } else if (response[0] === 'check') {
+        this.action(null, 'check');
+      } else {
+        // let betInput = $('.actions-cont-bet-amt');
+        // betInput.value = response[1];
+        this.action(null, 'bet', Math.ceil(response[1]));
+      }
+    }
+  }, {
+    key: "promptPlayer",
+    value: function promptPlayer() {
+      var response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
+
+      if (response) {
+        this.resolvePlayerPrompt(response);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
+      this.showDealerBtn();
       this.showPot();
+      this.showBoard();
       this.players[0].render();
       this.players[1].render();
-      this.players[this.currPlayerPos].promptAction(this.currBet);
       this.setButtons();
       this.bindEvents();
+      this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+      if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
+    }
+  }, {
+    key: "fold",
+    value: function fold($outDiv) {
+      var $foldDiv = $("<button>");
+      $foldDiv.addClass("actions-cont-text");
+      $foldDiv.data("action", "fold");
+      $foldDiv.html('FOLD');
+      $outDiv.append($foldDiv);
+    }
+  }, {
+    key: "callOrCheck",
+    value: function callOrCheck($outDiv) {
+      var $callDiv = $("<button>");
+      $callDiv.addClass("actions-cont-text");
+
+      if (this.currBet === 0) {
+        $callDiv.data("action", "check");
+        $callDiv.html('CHECK');
+      } else {
+        $callDiv.data("action", "call");
+        $callDiv.html('CALL');
+      }
+
+      $outDiv.append($callDiv);
+    }
+  }, {
+    key: "betAmount",
+    value: function betAmount($outDiv) {
+      var value;
+
+      if (this.currBet > 0) {
+        if (this.currBet === this.sb) {
+          value = this.bb * 2;
+        } else {
+          value = this.currBet * 2;
+        }
+      } else {
+        value = this.bb;
+      }
+
+      var $betAmtDiv = $("<input/>", {
+        type: 'text',
+        "class": 'actions-cont-bet-amt',
+        value: "".concat(value)
+      });
+      $outDiv.append($betAmtDiv);
+    }
+  }, {
+    key: "betOrRaise",
+    value: function betOrRaise($outDiv) {
+      var $betDiv = $("<button>");
+      $betDiv.addClass("actions-cont-text");
+
+      if (this.currBet === 0) {
+        $betDiv.data("action", "bet");
+        $betDiv.html('BET');
+      } else {
+        $betDiv.data("action", "raise");
+        $betDiv.html('RAISE');
+      }
+
+      $outDiv.append($betDiv);
     }
   }, {
     key: "setButtons",
     value: function setButtons() {
       var $outDiv = $("<div>");
       $outDiv.addClass("actions-cont");
-      var $foldDiv = $("<button>");
-      $foldDiv.data("action", "fold");
-      $foldDiv.addClass("actions-cont-text");
-      $foldDiv.html('FOLD');
-      $outDiv.append($foldDiv);
-      var $callDiv = $("<button>");
-      $callDiv.data("action", "call");
-      $callDiv.addClass("actions-cont-text");
-      $callDiv.html('CALL');
-      $outDiv.append($callDiv);
-      var $betDiv = $("<button>");
-      $betDiv.data("action", "bet");
-      $betDiv.addClass("actions-cont-text");
-      $betDiv.html('BET');
-      $outDiv.append($betDiv);
+      this.fold($outDiv);
+      this.callOrCheck($outDiv);
+
+      if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
+        this.betOrRaise($outDiv);
+        this.betAmount($outDiv);
+      }
+
       this.$el.empty();
       this.$el.append($outDiv);
     }
   }, {
+    key: "renderCurrBet",
+    value: function renderCurrBet(amount) {
+      if (this.currStreet === 'preflop' && this.streetActions.length === 1) {
+        if (amount === 50) {
+          this.currBet = 0;
+        } else {
+          this.currBet = amount - 50;
+        }
+      } else {
+        this.currBet = amount > 0 ? amount : 0;
+      }
+    }
+  }, {
+    key: "handChipDiff",
+    value: function handChipDiff() {
+      return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
+    }
+  }, {
+    key: "calcBetInput",
+    value: function calcBetInput(isSb) {
+      var betInput = $('.actions-cont-bet-amt');
+      if (betInput.length === 0) return 0;
+      var totalBet = Number(betInput[0].value);
+      if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
+      if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack - isSb;
+      return totalBet;
+    }
+  }, {
     key: "action",
-    value: function action($button) {
-      var bet = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-      var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
-      var playerAction = $button.data().action;
-      debugger;
-      this.roundActions.concat(playerAction);
-      var resolvedAction = this.players[this.currPlayerPos].resolve_action(this.currBet, playerAction, sb);
+    value: function action($button, compAction, compBetRaise) {
+      var playerAction;
+      playerAction = $button ? $button.data().action : compAction;
+
+      if (playerAction === 'fold') {
+        this.currentPlayer().folded = true;
+        return this.determineWinner();
+      }
+
+      var isSb = this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
+      var betRaise;
+
+      if (compBetRaise) {
+        if (compBetRaise < this.bb) compBetRaise = this.bb;
+        betRaise = compBetRaise;
+      } else {
+        betRaise = this.calcBetInput(isSb);
+      }
+
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, isSb);
 
       if (resolvedAction) {
         this.pot += resolvedAction;
       }
 
+      this.streetActions = this.streetActions.concat(resolvedAction);
+      this.continueAction();
+    }
+  }, {
+    key: "continueAction",
+    value: function continueAction() {
+      this.currBet = this.handChipDiff();
       this.toggleCurrPlayer();
       this.render();
-      this.nextAction(); // if (playerAction === 'fold') {
-      //   // this.players[this.currPlayerPos].folded = true;
-      //   // return 0;
-      // } else if (playerAction === 'call') {
-      //   return this.currBet;
-      // } else {
-      //   return this.currBet * 2;
-      // }
-      // const toCall = this.players[this.currPlayerPos].action(bet, this.bb);
-      // if (!toCall) this.players[this.currPlayerPos].folded = true;
-      // return toCall
+      this.nextAction();
     }
   }, {
     key: "nextAction",
     value: function nextAction() {
-      debugger;
+      var handChipsEqual = this.handChipDiff() === 0;
+      var multipleActions = this.streetActions.length > 1;
 
-      if (this.roundActions[this.roundActions - 1] === 'fold') {
+      if (this.streetActions[this.streetActions - 1] === 'fold') {
         this.determineWinner();
-      } else if (this.allIn() && this.roundActions[this.roundActions - 1] === 'call') {
-        this.showDown();
-        this.determineWinner();
-      } else if (this.currStreet === 'river' && this.roundActions[this.roundActions - 1] === 'call') {
-        this.determineWinner();
-      } else if (this.roundActions.length > 1 && this.roundActions[this.roundActions - 1] === 'call') {
-        this.nextStreet();
+      } else if (handChipsEqual) {
+        if (this.allIn()) {
+          this.showDown();
+          this.determineWinner();
+        } else if (this.currStreet === 'river' && multipleActions) {
+          this.determineWinner();
+        } else if (multipleActions) {
+          this.nextStreet();
+        }
       }
     }
   }, {
@@ -2633,23 +2856,30 @@ function () {
     value: function showDown() {
       while (this.boardCards.length < 5) {
         this.dealCard();
+        this.showBoard();
       }
     }
   }, {
     key: "nextStreet",
     value: function nextStreet() {
+      this.streetActions = [];
+      this.currBet = 0;
+
       if (this.currStreet === 'preflop') {
+        this.currStreet = 'flop';
         this.dealFlop();
         this.showBoard();
-        if (!this.allIn()) this.bettingRound();
+        if (!this.allIn()) this.render();
       } else if (this.currStreet === 'flop') {
-        this.dealTurn();
+        this.currStreet = 'turn';
+        this.dealCard();
         this.showBoard();
-        if (!this.allIn()) this.bettingRound();
+        if (!this.allIn()) this.render();
       } else if (this.currStreet === 'turn') {
-        this.dealRiver();
+        this.currStreet = 'river';
+        this.dealCard();
         this.showBoard();
-        if (!this.allIn()) this.bettingRound();
+        if (!this.allIn()) this.render();
       }
     }
   }, {
@@ -2657,7 +2887,6 @@ function () {
     value: function bindEvents() {
       var _this = this;
 
-      // install a handler on the `li` elements inside the board.
       this.$el.unbind();
       this.$el.on("click", "button", function (event) {
         var $button = $(event.currentTarget);

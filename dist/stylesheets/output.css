@@ -55,7 +55,7 @@ table {
 .holdem-container {
   height: 800px;
   width: 100%;
-  background-color: #b7d5ea;
+  background-color: #a6b1b5;
 }
 
 .top {
@@ -90,7 +90,6 @@ table {
   height: 10%;
   display: flex;
   justify-content: center;
-  background-color: #a6b1b5;
 }
 .dealer-image {
   height: 100%;
@@ -156,8 +155,39 @@ table {
   border-radius: 150px;
   z-index: 3;
   display: flex;
-  align-items: flex-end;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.table-felt-board {
+  font-size: 50px;
+  font-family: "Cabin", sans-serif;
+}
+.table-felt-dealer-btn-img {
+  width: 35px;
+  height: 35px;
+}
+.table-felt-dealer-btn-left {
+  width: 100%;
+  display: flex;
+  transform: translateY(15px);
+}
+.table-felt-dealer-btn-left-board {
+  width: 100%;
+  display: flex;
+  transform: translateY(-10px);
+}
+.table-felt-dealer-btn-right {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(15px);
+}
+.table-felt-dealer-btn-right-board {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  transform: translateY(-10px);
 }
 .table-felt-pot {
   font-size: 24px;
@@ -207,10 +237,6 @@ table {
   color: white;
   font-family: "Cabin", sans-serif;
   border-radius: 30px;
-}
-
-.input {
-  display: none;
 }
 
 /*# sourceMappingURL=output.css.map */

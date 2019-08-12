@@ -1,7 +1,7 @@
 .holdem-container{
   height: 800px;
   width: 100%;
-  background-color: #b7d5ea;
+  background-color: #a6b1b5;
 }
 
 
@@ -40,7 +40,6 @@
   height: 10%;
   display: flex;
   justify-content: center;
-  background-color: #a6b1b5;
   &-image{
     height: 100%;
     width: 100px;
@@ -119,8 +118,39 @@
     border-radius: 150px;
     z-index: 3;
     display: flex;
-    align-items: flex-end;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    &-board{
+      font-size: 50px;
+      font-family: 'Cabin', sans-serif;
+    }
+    &-dealer-btn-img{
+      width: 35px;
+      height: 35px;
+    }
+    &-dealer-btn-left{
+      width:100%;
+      display: flex;
+      transform: translateY(15px);
+    }
+    &-dealer-btn-left-board{
+      width:100%;
+      display: flex;
+      transform: translateY(-10px);
+    }
+    &-dealer-btn-right{
+      width:100%;
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(15px);
+    }
+    &-dealer-btn-right-board{
+      width:100%;
+      display: flex;
+      justify-content: flex-end;
+      transform: translateY(-10px);
+    }
     &-pot{
       font-size: 24px;
       font-family: 'Cabin', sans-serif;
@@ -173,8 +203,4 @@
     font-family: 'Cabin', sans-serif;
     border-radius: 30px;
   }
-}
-
-.input{
-  display:none;
 }
