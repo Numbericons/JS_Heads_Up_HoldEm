@@ -1992,6 +1992,165 @@ $(function () {
 
 /***/ }),
 
+/***/ "./src/playerLogic/computerplayer.js":
+/*!*******************************************!*\
+  !*** ./src/playerLogic/computerplayer.js ***!
+  \*******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var ComputerPlayer =
+/*#__PURE__*/
+function () {
+  function ComputerPlayer(position, chipstack) {
+    _classCallCheck(this, ComputerPlayer);
+
+    this.position = position;
+    this.chipstack = chipstack;
+    this.folded = false;
+    this.chipsInPot = 0;
+    this.hand = [];
+    this.comp = true;
+    position === 'sb' ? this.side = 'right' : this.side = 'left';
+    this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
+  }
+
+  _createClass(ComputerPlayer, [{
+    key: "text",
+    value: function text(input) {
+      var textSelect = document.querySelector(".table-actions-text");
+      textSelect.innerText = input;
+    }
+  }, {
+    key: "promptText",
+    value: function promptText(input) {
+      var promptSelect = document.querySelector(".table-actions-prompt");
+      promptSelect.innerText = input;
+    }
+  }, {
+    key: "promptAction",
+    value: function promptAction(to_call) {
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
+
+      if (to_call === 0) {
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' will bet the amount in the box to the right"));
+      } else {
+        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right"));
+      }
+    }
+  }, {
+    key: "genBetRaise",
+    value: function genBetRaise(to_call, stack) {
+      var randNum = Math.random();
+
+      if (to_call === 0) {
+        var bet = randNum * stack;
+        return ['betRaise', bet];
+      } else {
+        var raise = randNum * stack;
+        if (raise < to_call * 2) raise = to_call * 2;
+        return ['betRaise', raise];
+      }
+    }
+  }, {
+    key: "promptResponse",
+    value: function promptResponse(to_call, stack) {
+      var randNum = Math.random();
+
+      if (randNum < .3333) {
+        if (to_call > 0) {
+          return ['fold'];
+        } else {
+          if (randNum < .16666) {
+            return ['check'];
+          } else {
+            return this.genBetRaise(to_call, stack);
+          }
+        }
+      } else if (randNum < .6666) {
+        if (to_call > 0) {
+          return ['call'];
+        } else {
+          return ['check'];
+        }
+      } else {
+        if (to_call === 0) {
+          return this.genBetRaise(to_call, stack);
+        } else {
+          return ['call'];
+        }
+      }
+    }
+  }, {
+    key: "resolve_action",
+    value: function resolve_action(to_call, betInput, textInput) {
+      var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+
+      if (textInput === 'check') {
+        return 0;
+      } else if (textInput === 'fold') {
+        this.folded = true;
+        return null;
+      } else if (textInput === 'call') {
+        this.chipstack -= to_call;
+        this.chipsInPot += to_call;
+        return to_call;
+      } else {
+        this.chipstack -= betInput + sb;
+        this.chipsInPot += betInput + sb;
+        return betInput + sb;
+      }
+    }
+  }, {
+    key: "playerName",
+    value: function playerName() {
+      var playerName = document.querySelector(".player-info-name-".concat(this.side));
+      playerName.innerText = "".concat(this.name);
+    }
+  }, {
+    key: "playerChips",
+    value: function playerChips() {
+      var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
+      playerChips.innerText = "".concat(this.chipstack, " chips");
+    }
+  }, {
+    key: "playerCards",
+    value: function playerCards() {
+      var playerChips = document.querySelector(".player-info-cards-".concat(this.side));
+      playerChips.innerText = "".concat(this.hand[0], " ").concat(this.hand[1]);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      this.playerName();
+      this.playerChips();
+      this.playerCards();
+    }
+  }, {
+    key: "resetVars",
+    value: function resetVars() {
+      this.folded = false;
+      this.chipsInPot = 0;
+      this.hand = [];
+    }
+  }]);
+
+  return ComputerPlayer;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/playerLogic/humanplayer.js":
 /*!****************************************!*\
   !*** ./src/playerLogic/humanplayer.js ***!
@@ -2199,11 +2358,13 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table */ "./src/pokerLogic/table.js");
 /* harmony import */ var _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../playerLogic/humanplayer */ "./src/playerLogic/humanplayer.js");
+/* harmony import */ var _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../playerLogic/computerplayer */ "./src/playerLogic/computerplayer.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -2217,8 +2378,10 @@ function () {
     _classCallCheck(this, HoldEm);
 
     this.$el = $el;
-    this.initialChipstack = initialChipstack;
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)];
+    this.initialChipstack = initialChipstack; // this.players = [new HumanPlayer("sb", initialChipstack), new ComputerPlayer("bb", initialChipstack)];
+
+    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)]; // this.players = [new HumanPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
+
     this.dealer_pos = 0;
     this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players);
   }
@@ -2227,29 +2390,6 @@ function () {
     key: "playHand",
     value: function playHand() {
       this.table.playHand();
-    }
-  }, {
-    key: "togglePlayers",
-    value: function togglePlayers() {
-      this.players.push(this.players.shift());
-
-      if (this.players[0].position === 1) {
-        this.players[0].position = 2;
-        this.players[1].position = 1;
-      } else {
-        this.players[0].position = 1;
-        this.players[1].position = 2;
-      }
-    }
-  }, {
-    key: "resetPlayerVars",
-    value: function resetPlayerVars() {
-      this.players[0].folded = false;
-      this.players[0].chipsInPot = 0;
-      this.players[0].hand = [];
-      this.players[1].folded = false;
-      this.players[1].chipsInPot = 0;
-      this.players[1].hand = [];
     }
   }, {
     key: "newGame",
@@ -2517,20 +2657,25 @@ function () {
     key: "resolvePlayerPrompt",
     value: function resolvePlayerPrompt(response) {
       if (response[0] === 'fold') {
-        this.action(_, 'fold');
+        this.action(null, 'fold');
       } else if (response[0] === 'call') {
-        this.action(_, 'call');
+        this.action(null, 'call');
+      } else if (response[0] === 'check') {
+        this.action(null, 'check');
       } else {
-        var betInput = $('.actions-cont-bet-amt');
-        betInput.value = response[1];
-        this.action(_, 'bet');
+        // let betInput = $('.actions-cont-bet-amt');
+        // betInput.value = response[1];
+        this.action(null, 'bet', Math.ceil(response[1]));
       }
     }
   }, {
     key: "promptPlayer",
     value: function promptPlayer() {
-      var response = this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
-      if (response) this.resolvePlayerPrompt(response);
+      var response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
+
+      if (response) {
+        this.resolvePlayerPrompt(response);
+      }
     }
   }, {
     key: "render",
@@ -2542,7 +2687,8 @@ function () {
       this.players[1].render();
       this.setButtons();
       this.bindEvents();
-      this.promptPlayer();
+      this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+      if (this.currentPlayer().comp) this.promptPlayer();
     }
   }, {
     key: "fold",
@@ -2653,8 +2799,9 @@ function () {
     }
   }, {
     key: "action",
-    value: function action($button, compAction) {
-      var playerAction = $button.data().action || compAction;
+    value: function action($button, compAction, compBetRaise) {
+      var playerAction;
+      playerAction = $button ? $button.data().action : compAction;
 
       if (playerAction === 'fold') {
         this.currentPlayer().folded = true;
@@ -2662,7 +2809,16 @@ function () {
       }
 
       var isSb = this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
-      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
+      var betRaise;
+
+      if (compBetRaise) {
+        if (compBetRaise < this.bb) compBetRaise = this.bb;
+        betRaise = compBetRaise;
+      } else {
+        betRaise = this.calcBetInput(isSb);
+      }
+
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, isSb);
 
       if (resolvedAction) {
         this.pot += resolvedAction;

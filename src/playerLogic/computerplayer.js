@@ -5,28 +5,29 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    this.comp = true;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }
 
-  // text(input) {
-  //   let textSelect = document.querySelector(".table-actions-text");
-  //   textSelect.innerText = input;
-  // }
+  text(input) {
+    let textSelect = document.querySelector(".table-actions-text");
+    textSelect.innerText = input;
+  }
 
-  // promptText(input) {
-  //   let promptSelect = document.querySelector(".table-actions-prompt");
-  //   promptSelect.innerText = input;
-  // }
+  promptText(input) {
+    let promptSelect = document.querySelector(".table-actions-prompt");
+    promptSelect.innerText = input;
+  }
 
-  // promptAction(to_call) {
-  //   this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
-  //   if (to_call === 0) {
-  //     this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
-  //   } else {
-  //     this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
-  //   }
-  // }
+  promptAction(to_call) {
+    this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
+    if (to_call === 0) {
+      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
+    } else {
+      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
+    }
+  }
   genBetRaise(to_call, stack){
     let randNum = Math.random()
     if (to_call === 0) {
@@ -39,9 +40,7 @@ export default class ComputerPlayer {
     }
   }
 
-  promptAction(to_call, stack){
-    debugger
-    // let index = Math.floor(Math.random() * counter);
+  promptResponse(to_call, stack){
     let randNum = Math.random()
     if (randNum < .3333) {
       if (to_call > 0) {
@@ -54,9 +53,17 @@ export default class ComputerPlayer {
         }
       }
     } else if (randNum < .6666) {
-      return ['call'];
+      if (to_call > 0) {
+        return ['call'];
+      } else {
+        return ['check'];
+      }
     } else {
-      return this.genBetRaise(to_call, stack);
+      if (to_call === 0) {
+        return this.genBetRaise(to_call, stack);
+      } else {
+        return ['call']
+      }
     }
   }
 

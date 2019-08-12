@@ -182,19 +182,23 @@ class Table {
 
   resolvePlayerPrompt(response){
     if (response[0] === 'fold') {
-      this.action(_, 'fold');
+      this.action(null, 'fold');
     } else if (response[0] === 'call') {
-      this.action(_, 'call');
+      this.action(null, 'call');
+    } else if (response[0] === 'check') {
+      this.action(null, 'check');
     } else {
-      let betInput = $('.actions-cont-bet-amt');
-      betInput.value = response[1];
-      this.action(_, 'bet');
+      // let betInput = $('.actions-cont-bet-amt');
+      // betInput.value = response[1];
+      this.action(null, 'bet', Math.ceil(response[1]));
     }
   }
 
   promptPlayer(){
-    let response = this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
-    if (response) this.resolvePlayerPrompt(response);
+    let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
+    if (response) {
+      this.resolvePlayerPrompt(response);
+    }
   }
 
   render(){
@@ -205,7 +209,8 @@ class Table {
     this.players[1].render();
     this.setButtons();
     this.bindEvents();
-    this.promptPlayer();
+    this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+    if (this.currentPlayer().comp) this.promptPlayer();
   }
 
   fold($outDiv) {
@@ -303,14 +308,22 @@ class Table {
     return totalBet;
   }
 
-  action($button, compAction) {
-    let playerAction = $button.data().action || compAction;
+  action($button, compAction, compBetRaise) {
+    let playerAction;
+    playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.currentPlayer().folded = true;
       return this.determineWinner();
     }
     let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), this.calcBetInput(isSb), playerAction, isSb);
+    let betRaise;
+    if (compBetRaise) {
+      if (compBetRaise < this.bb) compBetRaise = this.bb;
+      betRaise = compBetRaise;
+    } else {
+      betRaise = this.calcBetInput(isSb);
+    }
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, isSb);
     if (resolvedAction) {
       this.pot += resolvedAction
     }
