@@ -2121,19 +2121,16 @@ function () {
     value: function playerChips() {
       var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
       playerChips.innerText = "".concat(this.chipstack, " chips");
-    }
-  }, {
-    key: "playerCards",
-    value: function playerCards() {
-      var playerChips = document.querySelector(".player-info-cards-".concat(this.side));
-      playerChips.innerText = "".concat(this.hand[0], " ").concat(this.hand[1]);
-    }
+    } // playerCards() {
+    //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+    //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+    // }
+
   }, {
     key: "render",
     value: function render() {
       this.playerName();
-      this.playerChips();
-      this.playerCards();
+      this.playerChips(); // this.playerCards();
     }
   }, {
     key: "resetVars",
@@ -2373,14 +2370,14 @@ var HoldEm =
 /*#__PURE__*/
 function () {
   function HoldEm($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 1500;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
 
     _classCallCheck(this, HoldEm);
 
     this.$el = $el;
-    this.initialChipstack = initialChipstack; // this.players = [new HumanPlayer("sb", initialChipstack), new ComputerPlayer("bb", initialChipstack)];
-
-    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack), new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("bb", initialChipstack)]; // this.players = [new HumanPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
+    this.initialChipstack = initialChipstack;
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("bb", initialChipstack)]; // this.players = [new ComputerPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
+    // this.players = [new HumanPlayer("sb", initialChipstack), new HumanPlayer("bb", initialChipstack)];
 
     this.dealer_pos = 0;
     this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players);
@@ -2688,7 +2685,7 @@ function () {
       this.setButtons();
       this.bindEvents();
       this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
-      if (this.currentPlayer().comp) this.promptPlayer();
+      if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
     }
   }, {
     key: "fold",

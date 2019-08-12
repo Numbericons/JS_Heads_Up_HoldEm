@@ -94,15 +94,15 @@ export default class ComputerPlayer {
     playerChips.innerText = `${this.chipstack} chips`
   }
 
-  playerCards() {
-    let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
-    playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
-  }
+  // playerCards() {
+  //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+  //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+  // }
 
   render() {
     this.playerName();
     this.playerChips();
-    this.playerCards();
+    // this.playerCards();
   }
 
   resetVars() {

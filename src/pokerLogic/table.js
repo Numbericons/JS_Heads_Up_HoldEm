@@ -210,7 +210,7 @@ class Table {
     this.setButtons();
     this.bindEvents();
     this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
-    if (this.currentPlayer().comp) this.promptPlayer();
+    if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0 )) this.promptPlayer();
   }
 
   fold($outDiv) {
