@@ -180,15 +180,32 @@ class Table {
     currPot.innerText = `Current pot: ${this.pot}`;
   }
 
+  resolvePlayerPrompt(response){
+    if (response[0] === 'fold') {
+      this.action(_, 'fold');
+    } else if (response[0] === 'call') {
+      this.action(_, 'call');
+    } else {
+      let betInput = $('.actions-cont-bet-amt');
+      betInput.value = response[1];
+      this.action(_, 'bet');
+    }
+  }
+
+  promptPlayer(){
+    let response = this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+    if (response) this.resolvePlayerPrompt(response);
+  }
+
   render(){
     this.showDealerBtn();
     this.showPot();
     this.showBoard();
     this.players[0].render();
     this.players[1].render();
-    this.currentPlayer().promptAction(this.currBet);
     this.setButtons();
     this.bindEvents();
+    this.promptPlayer();
   }
 
   fold($outDiv) {
@@ -286,8 +303,8 @@ class Table {
     return totalBet;
   }
 
-  action($button) {
-    let playerAction = $button.data().action;
+  action($button, compAction) {
+    let playerAction = $button.data().action || compAction;
     if (playerAction === 'fold') {
       this.currentPlayer().folded = true;
       return this.determineWinner();

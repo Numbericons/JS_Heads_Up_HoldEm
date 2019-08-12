@@ -2514,6 +2514,25 @@ function () {
       currPot.innerText = "Current pot: ".concat(this.pot);
     }
   }, {
+    key: "resolvePlayerPrompt",
+    value: function resolvePlayerPrompt(response) {
+      if (response[0] === 'fold') {
+        this.action(_, 'fold');
+      } else if (response[0] === 'call') {
+        this.action(_, 'call');
+      } else {
+        var betInput = $('.actions-cont-bet-amt');
+        betInput.value = response[1];
+        this.action(_, 'bet');
+      }
+    }
+  }, {
+    key: "promptPlayer",
+    value: function promptPlayer() {
+      var response = this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+      if (response) this.resolvePlayerPrompt(response);
+    }
+  }, {
     key: "render",
     value: function render() {
       this.showDealerBtn();
@@ -2521,9 +2540,9 @@ function () {
       this.showBoard();
       this.players[0].render();
       this.players[1].render();
-      this.currentPlayer().promptAction(this.currBet);
       this.setButtons();
       this.bindEvents();
+      this.promptPlayer();
     }
   }, {
     key: "fold",
@@ -2634,8 +2653,8 @@ function () {
     }
   }, {
     key: "action",
-    value: function action($button) {
-      var playerAction = $button.data().action;
+    value: function action($button, compAction) {
+      var playerAction = $button.data().action || compAction;
 
       if (playerAction === 'fold') {
         this.currentPlayer().folded = true;
