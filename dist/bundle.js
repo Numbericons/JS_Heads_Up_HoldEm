@@ -2795,6 +2795,21 @@ function () {
       return totalBet;
     }
   }, {
+    key: "calcCompBetRaise",
+    value: function calcCompBetRaise(compBetRaise, isSb) {
+      var totalBet;
+
+      if (compBetRaise > this.currentPlayer().chipstack) {
+        totalBet = this.currentPlayer().chipstack - isSb;
+      } else if (compBetRaise > this.otherPlayer().chipstack) {
+        totalBet = this.otherPlayer().chipstack - isSb;
+      } else {
+        totalBet = compBetRaise;
+      }
+
+      return totalBet;
+    }
+  }, {
     key: "action",
     value: function action($button, compAction, compBetRaise) {
       var playerAction;
@@ -2810,7 +2825,7 @@ function () {
 
       if (compBetRaise) {
         if (compBetRaise < this.bb) compBetRaise = this.bb;
-        betRaise = compBetRaise;
+        betRaise = this.calcCompBetRaise(compBetRaise, isSb); // betRaise = compBetRaise;
       } else {
         betRaise = this.calcBetInput(isSb);
       }

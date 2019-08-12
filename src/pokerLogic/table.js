@@ -308,6 +308,18 @@ class Table {
     return totalBet;
   }
 
+  calcCompBetRaise(compBetRaise, isSb){
+    let totalBet;
+    if (compBetRaise > this.currentPlayer().chipstack) {
+      totalBet = this.currentPlayer().chipstack - isSb;
+    } else if (compBetRaise > this.otherPlayer().chipstack) {
+      totalBet = this.otherPlayer().chipstack - isSb
+    } else {
+      totalBet = compBetRaise;
+    }
+    return totalBet;
+  }
+
   action($button, compAction, compBetRaise) {
     let playerAction;
     playerAction = ($button) ? $button.data().action : compAction;
@@ -319,7 +331,8 @@ class Table {
     let betRaise;
     if (compBetRaise) {
       if (compBetRaise < this.bb) compBetRaise = this.bb;
-      betRaise = compBetRaise;
+      betRaise = this.calcCompBetRaise(compBetRaise, isSb);
+      // betRaise = compBetRaise;
     } else {
       betRaise = this.calcBetInput(isSb);
     }
