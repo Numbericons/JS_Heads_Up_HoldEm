@@ -2197,9 +2197,9 @@ function () {
       this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
 
       if (to_call === 0) {
-        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' will bet the amount in the box to the right"));
+        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet'"));
       } else {
-        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right"));
+        this.promptText("It costs $".concat(to_call, " to call"));
       }
     }
   }, {
@@ -2535,7 +2535,7 @@ function () {
   }, {
     key: "tie",
     value: function tie(hand) {
-      alert(this.outputString + "the hand resulted in a tie. Splitting the pot of ".concat(this.pot, " with ").concat(hand.descr, "!"));
+      alert(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!"));
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
@@ -2552,7 +2552,7 @@ function () {
   }, {
     key: "winner",
     value: function winner(winHand, loseHand, winPos, losePos) {
-      this.outputString += "".concat(this.players[winPos].name, " wins the pot of ").concat(this.pot);
+      this.outputString += "".concat(this.players[winPos].name, " wins the pot of $").concat(this.pot);
       if (!this.players[losePos].folded) this.outputString += " with hand: ".concat(winHand.descr);
       if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
       alert(this.outputString);
@@ -2648,7 +2648,7 @@ function () {
     key: "showPot",
     value: function showPot() {
       var currPot = document.querySelector(".table-felt-pot");
-      currPot.innerText = "Current pot: ".concat(this.pot);
+      currPot.innerText = "Current pot: $".concat(this.pot);
     }
   }, {
     key: "resolvePlayerPrompt",

@@ -22,9 +22,9 @@ export default class HumanPlayer {
   promptAction(to_call){
     this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
     if (to_call === 0) {
-      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
+      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet'`)
     } else {
-      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
+      this.promptText(`It costs $${to_call} to call`)
     }
   }
 

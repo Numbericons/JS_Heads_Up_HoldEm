@@ -80,7 +80,7 @@ class Table {
   }
 
   tie(hand){
-    alert(this.outputString + `the hand resulted in a tie. Splitting the pot of ${this.pot} with ${hand.descr}!`)
+    alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
     if (!this.pot % 2 === 0) {
@@ -94,7 +94,7 @@ class Table {
   }
 
   winner(winHand, loseHand, winPos,losePos){
-    this.outputString += `${this.players[winPos].name} wins the pot of ${this.pot}`;
+    this.outputString += `${this.players[winPos].name} wins the pot of $${this.pot}`;
     if (!this.players[losePos].folded) this.outputString += ` with hand: ${winHand.descr}`;
     if (!this.players[losePos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
     alert(this.outputString);
@@ -177,7 +177,7 @@ class Table {
 
   showPot(){
     let currPot = document.querySelector(`.table-felt-pot`);
-    currPot.innerText = `Current pot: ${this.pot}`;
+    currPot.innerText = `Current pot: $${this.pot}`;
   }
 
   resolvePlayerPrompt(response){

@@ -63,11 +63,10 @@ table {
   flex-direction: column;
 }
 .top-bar {
-  height: 70px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin-bottom: 20px;
   font-weight: bolder;
 }
 .top-bar-header {
@@ -121,6 +120,11 @@ table {
   flex-direction: column;
   align-items: center;
   font-family: "Cabin", sans-serif;
+}
+.player-info-background {
+  background-position-x: -30px;
+  background-position-y: -30px;
+  background-image: url("../image/deck200.png");
 }
 
 .table {
