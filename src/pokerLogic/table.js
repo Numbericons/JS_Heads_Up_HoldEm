@@ -1,4 +1,5 @@
 import Deck from "./deck.js";
+import Board from "./board.js";
 const Hand = require('pokersolver').Hand;
 
 class Table {
