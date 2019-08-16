@@ -1,4 +1,5 @@
 // DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
+import Card from './card';
 export default class Deck {
   constructor(){
     this.cards_drawn = 0;
@@ -24,14 +25,15 @@ export default class Deck {
     let deck = [];
     for (let i = 0; i < suits.length; i++) {
       for (let j = 0; j < values.length; j++) {
-        deck.push(values[j] + suits[i]);
+        // deck.push(values[j] + suits[i]);
+        deck.push(new Card(values[j], suits[i]));
       }
     }
     return this.shuffle(deck);
   }
 
   draw(){
-    if (this.cards_drawn % 52 == 0) {
+    if (this.cards_drawn > 0 && this.cards_drawn % 52 == 0) {
       this.cards = this.shuffle(this.cards);
     }
     this.cards_drawn += 1;

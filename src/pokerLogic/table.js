@@ -66,9 +66,12 @@ class Table {
   }
 
   determineWinner(){
-    var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
-    var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
-    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.boardCards}, `: `Preflop, `
+    var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
+    debugger
+    var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
+    // var hand2 = Hand.solve(this.players[0].hand.concat(this.boardCards));
+    // var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
+    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.showBoard}, `: `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
     if (!this.players[0].folded && !this.players[1].folded && winners.length === 2){
       return this.tie(hand1);
@@ -120,8 +123,11 @@ class Table {
     this.playHand();
   }
 
-  handToStr(player){
-    let playerHand = player.hand.join(" ");
+  handToStrArr(player){
+    let playerHand = player.hand.map(card => {
+      return `${card.rank}${card.suit}`;
+    })
+    // let playerHand = player.hand.join(" ");
     return playerHand;
   }
 
@@ -152,9 +158,17 @@ class Table {
     }
   }
 
+  textBoard(){
+    let textBoard = this.boardCards.map(card => {
+      return `${card.rank}${card.suit}`
+    })
+    return textBoard;
+  }
   showBoard(){
-    let currPot = document.querySelector(`.table-felt-board`);
-    currPot.innerText = `${this.boardCards}`;
+    let currBoard = document.querySelector(`.table-felt-board`);
+    let boardInnerText = this.textBoard();
+    currBoard.innerText = boardInnerText;
+    // currBoard.innerText = `${this.boardCards}`;
   }
 
   toggleCurrPlayer(){
@@ -209,7 +223,7 @@ class Table {
     this.players[1].render();
     this.setButtons();
     this.bindEvents();
-    this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0 )) this.promptPlayer();
   }
 
@@ -374,25 +388,25 @@ class Table {
       this.showBoard();
     }
   }
+
+  stepStreet(flopBool){
+    (flopBool) ? this.dealFlop() : this.dealCard();
+    this.showBoard();
+    if (!this.allIn()) this.render();
+  }
   
   nextStreet(){
     this.streetActions = [];
     this.currBet = 0;
     if (this.currStreet === 'preflop') {
       this.currStreet = 'flop';
-      this.dealFlop();
-      this.showBoard();
-      if (!this.allIn()) this.render();
+      this.stepStreet(true);
     } else if (this.currStreet === 'flop') {
       this.currStreet = 'turn';
-      this.dealCard();
-      this.showBoard();
-      if (!this.allIn()) this.render();
+      this.stepStreet();
     } else if (this.currStreet === 'turn') {
       this.currStreet = 'river';
-      this.dealCard();
-      this.showBoard();
-      if (!this.allIn()) this.render();
+      this.stepStreet();
     }
   }
 

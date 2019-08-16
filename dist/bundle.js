@@ -2032,20 +2032,17 @@ function () {
     }
   }, {
     key: "promptText",
-    value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-actions-prompt");
-      promptSelect.innerText = input;
+    value: function promptText(input) {// let promptSelect = document.querySelector(".table-actions-prompt");
+      // promptSelect.innerText = input;
     }
   }, {
     key: "promptAction",
-    value: function promptAction(to_call) {
-      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
-
-      if (to_call === 0) {
-        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet' will bet the amount in the box to the right"));
-      } else {
-        this.promptText("It costs ".concat(to_call, " to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right"));
-      }
+    value: function promptAction(to_call) {// this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
+      // if (to_call === 0) {
+      //   this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
+      // } else {
+      //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
+      // }
     }
   }, {
     key: "genBetRaise",
@@ -2121,11 +2118,12 @@ function () {
     value: function playerChips() {
       var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
       playerChips.innerText = "".concat(this.chipstack, " chips");
-    } // playerCards() {
-    //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
-    //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
-    // }
-
+    }
+  }, {
+    key: "playerCards",
+    value: function playerCards() {//   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
+      //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+    }
   }, {
     key: "render",
     value: function render() {
@@ -2194,7 +2192,7 @@ function () {
   }, {
     key: "promptAction",
     value: function promptAction(to_call) {
-      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0], " ").concat(this.hand[1]));
+      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0].rank).concat(this.hand[0].suit, " ").concat(this.hand[1].rank).concat(this.hand[1].suit));
 
       if (to_call === 0) {
         this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet'"));
@@ -2237,8 +2235,10 @@ function () {
   }, {
     key: "playerCards",
     value: function playerCards() {
-      var playerChips = document.querySelector(".player-info-cards-".concat(this.side));
-      playerChips.innerText = "".concat(this.hand[0], " ").concat(this.hand[1]);
+      if (this.hand[0]) {
+        var playerCards = document.querySelector(".player-info-cards-".concat(this.side));
+        playerCards.innerText = "".concat(this.hand[0].rank).concat(this.hand[0].suit, " ").concat(this.hand[1].rank).concat(this.hand[1].suit);
+      }
     }
   }, {
     key: "render",
@@ -2263,6 +2263,56 @@ function () {
 
 /***/ }),
 
+/***/ "./src/pokerLogic/card.js":
+/*!********************************!*\
+  !*** ./src/pokerLogic/card.js ***!
+  \********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Card; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Card =
+/*#__PURE__*/
+function () {
+  function Card(rank, suit, img_pos_x, img_pos_y, revealed) {
+    _classCallCheck(this, Card);
+
+    this.suit = suit;
+    this.rank = rank;
+    this.img_pos_x = img_pos_x;
+    this.img_pos_y = img_pos_y;
+    this.revealed = revealed;
+  }
+
+  _createClass(Card, [{
+    key: "render",
+    value: function render(ele_name) {
+      var element = $(ele_name); // element.style.background-position-x = `${this.img_pos_x}`;
+      // element.style.background-position-y = `${this.img_pos_y}`;
+      // element.style.color = 'blue';
+    }
+  }, {
+    key: "show",
+    value: function show() {
+      return "".concat(this.rank).concat(this.suit);
+    }
+  }]);
+
+  return Card;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/pokerLogic/deck.js":
 /*!********************************!*\
   !*** ./src/pokerLogic/deck.js ***!
@@ -2273,6 +2323,7 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Deck; });
+/* harmony import */ var _card__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./card */ "./src/pokerLogic/card.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2280,6 +2331,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 // DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
+
+
 var Deck =
 /*#__PURE__*/
 function () {
@@ -2314,7 +2367,8 @@ function () {
 
       for (var i = 0; i < suits.length; i++) {
         for (var j = 0; j < values.length; j++) {
-          deck.push(values[j] + suits[i]);
+          // deck.push(values[j] + suits[i]);
+          deck.push(new _card__WEBPACK_IMPORTED_MODULE_0__["default"](values[j], suits[i]));
         }
       }
 
@@ -2323,7 +2377,7 @@ function () {
   }, {
     key: "draw",
     value: function draw() {
-      if (this.cards_drawn % 52 == 0) {
+      if (this.cards_drawn > 0 && this.cards_drawn % 52 == 0) {
         this.cards = this.shuffle(this.cards);
       }
 
@@ -2519,9 +2573,12 @@ function () {
   }, {
     key: "determineWinner",
     value: function determineWinner() {
-      var hand1 = Hand.solve(this.players[0].hand.concat(this.boardCards));
-      var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
-      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.boardCards, ", ") : "Preflop, ";
+      var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
+      debugger;
+      var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard())); // var hand2 = Hand.solve(this.players[0].hand.concat(this.boardCards));
+      // var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
+
+      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.showBoard, ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
@@ -2580,9 +2637,12 @@ function () {
       this.playHand();
     }
   }, {
-    key: "handToStr",
-    value: function handToStr(player) {
-      var playerHand = player.hand.join(" ");
+    key: "handToStrArr",
+    value: function handToStrArr(player) {
+      var playerHand = player.hand.map(function (card) {
+        return "".concat(card.rank).concat(card.suit);
+      }); // let playerHand = player.hand.join(" ");
+
       return playerHand;
     }
   }, {
@@ -2618,10 +2678,19 @@ function () {
       }
     }
   }, {
+    key: "textBoard",
+    value: function textBoard() {
+      var textBoard = this.boardCards.map(function (card) {
+        return "".concat(card.rank).concat(card.suit);
+      });
+      return textBoard;
+    }
+  }, {
     key: "showBoard",
     value: function showBoard() {
-      var currPot = document.querySelector(".table-felt-board");
-      currPot.innerText = "".concat(this.boardCards);
+      var currBoard = document.querySelector(".table-felt-board");
+      var boardInnerText = this.textBoard();
+      currBoard.innerText = boardInnerText; // currBoard.innerText = `${this.boardCards}`;
     }
   }, {
     key: "toggleCurrPlayer",
@@ -2684,7 +2753,7 @@ function () {
       this.players[1].render();
       this.setButtons();
       this.bindEvents();
-      this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
     }
   }, {
@@ -2875,6 +2944,13 @@ function () {
       }
     }
   }, {
+    key: "stepStreet",
+    value: function stepStreet(flopBool) {
+      flopBool ? this.dealFlop() : this.dealCard();
+      this.showBoard();
+      if (!this.allIn()) this.render();
+    }
+  }, {
     key: "nextStreet",
     value: function nextStreet() {
       this.streetActions = [];
@@ -2882,19 +2958,13 @@ function () {
 
       if (this.currStreet === 'preflop') {
         this.currStreet = 'flop';
-        this.dealFlop();
-        this.showBoard();
-        if (!this.allIn()) this.render();
+        this.stepStreet(true);
       } else if (this.currStreet === 'flop') {
         this.currStreet = 'turn';
-        this.dealCard();
-        this.showBoard();
-        if (!this.allIn()) this.render();
+        this.stepStreet();
       } else if (this.currStreet === 'turn') {
         this.currStreet = 'river';
-        this.dealCard();
-        this.showBoard();
-        if (!this.allIn()) this.render();
+        this.stepStreet();
       }
     }
   }, {

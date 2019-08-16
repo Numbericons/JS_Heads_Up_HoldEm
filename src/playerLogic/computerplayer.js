@@ -16,17 +16,17 @@ export default class ComputerPlayer {
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
-    promptSelect.innerText = input;
+    // let promptSelect = document.querySelector(".table-actions-prompt");
+    // promptSelect.innerText = input;
   }
 
   promptAction(to_call) {
-    this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    if (to_call === 0) {
-      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
-    } else {
-      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
-    }
+    // this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
+    // if (to_call === 0) {
+    //   this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
+    // } else {
+    //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
+    // }
   }
   genBetRaise(to_call, stack){
     let randNum = Math.random()
@@ -94,10 +94,10 @@ export default class ComputerPlayer {
     playerChips.innerText = `${this.chipstack} chips`
   }
 
-  // playerCards() {
+  playerCards() {
   //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
   //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
-  // }
+  }
 
   render() {
     this.playerName();
