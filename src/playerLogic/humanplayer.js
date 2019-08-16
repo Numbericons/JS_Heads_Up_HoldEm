@@ -9,10 +9,10 @@ export default class HumanPlayer {
     (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }
 
-  text(input){
-    let textSelect = document.querySelector(".table-actions-text");
-    textSelect.innerText = input;
-  }
+  // text(input){
+  //   let textSelect = document.querySelector(".table-actions-text");
+  //   textSelect.innerText = input;
+  // }
 
   promptText(input){
     let promptSelect = document.querySelector(".table-actions-prompt");
@@ -20,7 +20,7 @@ export default class HumanPlayer {
   }
 
   promptAction(to_call){
-    this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
+    // this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
     if (to_call === 0) {
       this.promptText(`${this.name}, enter 'check', 'fold', or 'bet'`)
     } else {
@@ -57,8 +57,12 @@ export default class HumanPlayer {
 
   playerCards() {
     if (this.hand[0]) {
-      let playerCards = document.querySelector(`.player-info-cards-${this.side}`);
-      playerCards.innerText = `${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`
+      let playerCard1 = document.querySelector(`.player-info-cards-${this.side}-1`);
+      let playerCard2 = document.querySelector(`.player-info-cards-${this.side}-2`);
+      this.hand[0].render(playerCard1, "45%", "67%");
+      this.hand[1].render(playerCard2, "45%", "67%");
+      // let playerCards = document.querySelector(`.player-info-cards-${this.side}`);
+      // playerCards.innerText = `${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`
     }
   }
 

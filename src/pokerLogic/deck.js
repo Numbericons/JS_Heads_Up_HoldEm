@@ -1,4 +1,3 @@
-// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 import Card from './card';
 export default class Deck {
   constructor(){
@@ -21,12 +20,13 @@ export default class Deck {
 
   newDeck(){
     let suits = ["s", "h", "d", "c"];
-    let values = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+    let values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"];
     let deck = [];
     for (let i = 0; i < suits.length; i++) {
       for (let j = 0; j < values.length; j++) {
-        // deck.push(values[j] + suits[i]);
-        deck.push(new Card(values[j], suits[i]));
+        let pos_x = j * -78 - 6;
+        const pos_y = i * -114 - 8;
+        deck.push(new Card(values[j], suits[i], pos_x, pos_y, true));
       }
     }
     return this.shuffle(deck);

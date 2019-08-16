@@ -79,7 +79,7 @@
     justify-content: space-around;
     width: 160px;
     height: 100%;
-    &-p1-1{
+    &-right-1{
       height: 80%; //80%  .16
       width: 45%; //40%    .1143  .57 * 140 px   80%
       background-position-x: -6px;
@@ -87,7 +87,7 @@
       background-image: url("../image/deck400.png");
       border-radius: 7px;
     }
-    &-p1-2{
+    &-right-2{
       height: 80%; //80%  .16
       width: 45%; //40%    .1143  .57 * 140 px   80%
       background-position-x: -6px; //-84 - -6 = -78
@@ -115,7 +115,7 @@
     justify-content: space-around;
   }
   &-trim{
-    height: 70%;
+    height: 60%;
     width: 70%;
     position: relative;
     display: flex;
@@ -138,8 +138,11 @@
     align-items: center;
     flex-direction: column;
     &-board{
-      font-size: 50px;
-      font-family: 'Cabin', sans-serif;
+      width: 400px;
+      height: 222px;
+      display: flex;
+      // font-size: 50px;
+      // font-family: 'Cabin', sans-serif;
     }
     &-dealer-btn-img{
       width: 35px;
@@ -177,16 +180,16 @@
     width: 80%;
     display: flex;
     justify-content: space-around;
-    transform: translateY(-60px);
-    &-text{
-      font-size: 25px;
-      transform: translateY(-100px);
-      font-family: 'Cabin', sans-serif;
-      margin-bottom: 15px;
-    }
+    transform: translateY(-260px);
+    // &-text{
+    //   font-size: 25px;
+    //   transform: translateY(-100px);
+    //   font-family: 'Cabin', sans-serif;
+    //   margin-bottom: 15px;
+    // }
     &-prompt{
       font-size: 25px;
-      transform: translateY(-100px);
+      transform: translateY(-280px);
       font-family: 'Cabin', sans-serif;
     }
   }

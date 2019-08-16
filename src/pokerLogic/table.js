@@ -67,11 +67,8 @@ class Table {
 
   determineWinner(){
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
-    debugger
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
-    // var hand2 = Hand.solve(this.players[0].hand.concat(this.boardCards));
-    // var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
-    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.showBoard}, `: `Preflop, `
+    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard}, `: `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
     if (!this.players[0].folded && !this.players[1].folded && winners.length === 2){
       return this.tie(hand1);
@@ -164,11 +161,34 @@ class Table {
     })
     return textBoard;
   }
+
+  showFlop(){
+    let card1 = document.querySelector(`.table-felt-board-flop-1`);
+    this.boardCards[0].render(card1)
+    let card2 = document.querySelector(`.table-felt-board-flop-2`);
+    debugger
+    this.boardCards[1].render(card2)
+    let card3 = document.querySelector(`.table-felt-board-flop-3`);
+    this.boardCards[2].render(card3)
+  }
+
+  showTurn(){
+    let card4 = document.querySelector(`.table-felt-board-turn`);
+    this.boardCards[3].render(card4)
+  }
+
+  showRiver(){
+    let card5 = document.querySelector(`.table-felt-board-river`);
+    this.boardCards[4].render(card5)
+  }
+
   showBoard(){
-    let currBoard = document.querySelector(`.table-felt-board`);
-    let boardInnerText = this.textBoard();
-    currBoard.innerText = boardInnerText;
-    // currBoard.innerText = `${this.boardCards}`;
+    if (this.boardCards[0]) this.showFlop();
+    if (this.boardCards[3]) this.showTurn();
+    if (this.boardCards[4]) this.showRiver();
+    // let currBoard = document.querySelector(`.table-felt-board`);
+    // let boardInnerText = this.textBoard();
+    // currBoard.innerText = boardInnerText;
   }
 
   toggleCurrPlayer(){

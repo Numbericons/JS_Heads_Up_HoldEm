@@ -2175,15 +2175,13 @@ function () {
     this.hand = [];
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
-  }
+  } // text(input){
+  //   let textSelect = document.querySelector(".table-actions-text");
+  //   textSelect.innerText = input;
+  // }
+
 
   _createClass(HumanPlayer, [{
-    key: "text",
-    value: function text(input) {
-      var textSelect = document.querySelector(".table-actions-text");
-      textSelect.innerText = input;
-    }
-  }, {
     key: "promptText",
     value: function promptText(input) {
       var promptSelect = document.querySelector(".table-actions-prompt");
@@ -2192,8 +2190,7 @@ function () {
   }, {
     key: "promptAction",
     value: function promptAction(to_call) {
-      this.text("".concat(this.name, ", your hand is ").concat(this.hand[0].rank).concat(this.hand[0].suit, " ").concat(this.hand[1].rank).concat(this.hand[1].suit));
-
+      // this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
       if (to_call === 0) {
         this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet'"));
       } else {
@@ -2236,8 +2233,11 @@ function () {
     key: "playerCards",
     value: function playerCards() {
       if (this.hand[0]) {
-        var playerCards = document.querySelector(".player-info-cards-".concat(this.side));
-        playerCards.innerText = "".concat(this.hand[0].rank).concat(this.hand[0].suit, " ").concat(this.hand[1].rank).concat(this.hand[1].suit);
+        var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
+        var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
+        this.hand[0].render(playerCard1, "45%", "67%");
+        this.hand[1].render(playerCard2, "45%", "67%"); // let playerCards = document.querySelector(`.player-info-cards-${this.side}`);
+        // playerCards.innerText = `${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`
       }
     }
   }, {
@@ -2279,6 +2279,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 var Card =
 /*#__PURE__*/
 function () {
@@ -2294,10 +2295,15 @@ function () {
 
   _createClass(Card, [{
     key: "render",
-    value: function render(ele_name) {
-      var element = $(ele_name); // element.style.background-position-x = `${this.img_pos_x}`;
-      // element.style.background-position-y = `${this.img_pos_y}`;
-      // element.style.color = 'blue';
+    value: function render(element, width, height) {
+      element.style.backgroundPositionX = "".concat(this.img_pos_x, "px");
+      element.style.backgroundPositionY = "".concat(this.img_pos_y, "px");
+      element.style.width = width; //40%    .1143  .57 * 140 px   80%
+
+      element.style.height = height; //80%  .16
+
+      element.style.backgroundImage = 'url("./image/deck400.png")';
+      element.style.borderRadius = "7px";
     }
   }, {
     key: "show",
@@ -2330,7 +2336,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 
 
 var Deck =
@@ -2362,13 +2367,14 @@ function () {
     key: "newDeck",
     value: function newDeck() {
       var suits = ["s", "h", "d", "c"];
-      var values = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+      var values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K"];
       var deck = [];
 
       for (var i = 0; i < suits.length; i++) {
         for (var j = 0; j < values.length; j++) {
-          // deck.push(values[j] + suits[i]);
-          deck.push(new _card__WEBPACK_IMPORTED_MODULE_0__["default"](values[j], suits[i]));
+          var pos_x = j * -78 - 6;
+          var pos_y = i * -114 - 8;
+          deck.push(new _card__WEBPACK_IMPORTED_MODULE_0__["default"](values[j], suits[i], pos_x, pos_y, true));
         }
       }
 
@@ -2574,11 +2580,8 @@ function () {
     key: "determineWinner",
     value: function determineWinner() {
       var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
-      debugger;
-      var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard())); // var hand2 = Hand.solve(this.players[0].hand.concat(this.boardCards));
-      // var hand2 = Hand.solve(this.players[1].hand.concat(this.boardCards));
-
-      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.showBoard, ", ") : "Preflop, ";
+      var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
+      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.textBoard, ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
@@ -2686,11 +2689,36 @@ function () {
       return textBoard;
     }
   }, {
+    key: "showFlop",
+    value: function showFlop() {
+      var card1 = document.querySelector(".table-felt-board-flop-1");
+      this.boardCards[0].render(card1);
+      var card2 = document.querySelector(".table-felt-board-flop-2");
+      debugger;
+      this.boardCards[1].render(card2);
+      var card3 = document.querySelector(".table-felt-board-flop-3");
+      this.boardCards[2].render(card3);
+    }
+  }, {
+    key: "showTurn",
+    value: function showTurn() {
+      var card4 = document.querySelector(".table-felt-board-turn");
+      this.boardCards[3].render(card4);
+    }
+  }, {
+    key: "showRiver",
+    value: function showRiver() {
+      var card5 = document.querySelector(".table-felt-board-river");
+      this.boardCards[4].render(card5);
+    }
+  }, {
     key: "showBoard",
     value: function showBoard() {
-      var currBoard = document.querySelector(".table-felt-board");
-      var boardInnerText = this.textBoard();
-      currBoard.innerText = boardInnerText; // currBoard.innerText = `${this.boardCards}`;
+      if (this.boardCards[0]) this.showFlop();
+      if (this.boardCards[3]) this.showTurn();
+      if (this.boardCards[4]) this.showRiver(); // let currBoard = document.querySelector(`.table-felt-board`);
+      // let boardInnerText = this.textBoard();
+      // currBoard.innerText = boardInnerText;
     }
   }, {
     key: "toggleCurrPlayer",

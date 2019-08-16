@@ -128,7 +128,7 @@ table {
   width: 160px;
   height: 100%;
 }
-.player-info-cards-p1-1 {
+.player-info-cards-right-1 {
   height: 80%;
   width: 45%;
   background-position-x: -6px;
@@ -136,7 +136,7 @@ table {
   background-image: url("../image/deck400.png");
   border-radius: 7px;
 }
-.player-info-cards-p1-2 {
+.player-info-cards-right-2 {
   height: 80%;
   width: 45%;
   background-position-x: -6px;
@@ -158,7 +158,7 @@ table {
   justify-content: space-around;
 }
 .table-trim {
-  height: 70%;
+  height: 60%;
   width: 70%;
   position: relative;
   display: flex;
@@ -181,8 +181,9 @@ table {
   flex-direction: column;
 }
 .table-felt-board {
-  font-size: 50px;
-  font-family: "Cabin", sans-serif;
+  width: 400px;
+  height: 222px;
+  display: flex;
 }
 .table-felt-dealer-btn-img {
   width: 35px;
@@ -219,17 +220,11 @@ table {
   width: 80%;
   display: flex;
   justify-content: space-around;
-  transform: translateY(-60px);
-}
-.table-actions-text {
-  font-size: 25px;
-  transform: translateY(-100px);
-  font-family: "Cabin", sans-serif;
-  margin-bottom: 15px;
+  transform: translateY(-260px);
 }
 .table-actions-prompt {
   font-size: 25px;
-  transform: translateY(-100px);
+  transform: translateY(-280px);
   font-family: "Cabin", sans-serif;
 }
 
