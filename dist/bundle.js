@@ -2121,14 +2121,20 @@ function () {
     }
   }, {
     key: "playerCards",
-    value: function playerCards() {//   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
-      //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+    value: function playerCards() {
+      if (this.hand[0]) {
+        var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
+        var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
+        this.hand[0].render(playerCard1, "51%", "67%");
+        this.hand[1].render(playerCard2, "51%", "67%");
+      }
     }
   }, {
     key: "render",
     value: function render() {
       this.playerName();
-      this.playerChips(); // this.playerCards();
+      this.playerChips();
+      this.playerCards();
     }
   }, {
     key: "resetVars",
@@ -2235,9 +2241,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
         var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
-        this.hand[0].render(playerCard1, "45%", "67%");
-        this.hand[1].render(playerCard2, "45%", "67%"); // let playerCards = document.querySelector(`.player-info-cards-${this.side}`);
-        // playerCards.innerText = `${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`
+        this.hand[0].render(playerCard1, "51%", "67%");
+        this.hand[1].render(playerCard2, "51%", "67%");
       }
     }
   }, {
@@ -2294,16 +2299,42 @@ function () {
   }
 
   _createClass(Card, [{
-    key: "render",
-    value: function render(element, width, height) {
-      element.style.backgroundPositionX = "".concat(this.img_pos_x, "px");
-      element.style.backgroundPositionY = "".concat(this.img_pos_y, "px");
+    key: "display",
+    value: function display(element, width, height) {
+      element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
       element.style.width = width; //40%    .1143  .57 * 140 px   80%
 
       element.style.height = height; //80%  .16
 
       element.style.backgroundImage = 'url("./image/deck400.png")';
       element.style.borderRadius = "7px";
+      element.style.marginLeft = "10px";
+    }
+  }, {
+    key: "hide",
+    value: function hide(element, width, height) {
+      element.style.backgroundPosition = ' -2px -4px';
+      element.style.width = width;
+      element.style.height = height;
+      element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
+      element.style.borderRadius = "7px";
+      element.style.marginLeft = "10px";
+      element.style.backgroundSize = "75px 112px";
+    }
+  }, {
+    key: "render",
+    value: function render(element, width, height) {
+      this.revealed ? this.display(element, width, height) : this.hide(element, width, height);
+    }
+  }, {
+    key: "unrender",
+    value: function unrender(element) {
+      element.style.backgroundPositionX = "0px";
+      element.style.backgroundPositionY = "0px";
+      element.style.width = "0%";
+      element.style.height = "0%";
+      element.style.borderRadius = "7px";
+      element.style.marginLeft = "10px";
     }
   }, {
     key: "show",
@@ -2581,7 +2612,7 @@ function () {
     value: function determineWinner() {
       var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
       var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
-      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.textBoard, ", ") : "Preflop, ";
+      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.textBoard(), ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
@@ -2631,10 +2662,32 @@ function () {
       }
     }
   }, {
+    key: "clearFlop",
+    value: function clearFlop() {
+      for (var i = 0; i < 3; i++) {
+        var card = document.querySelector(".table-felt-board-flop-".concat(i + 1));
+        this.boardCards[i].unrender(card);
+      }
+    }
+  }, {
+    key: "clearTurnRiver",
+    value: function clearTurnRiver(street) {
+      var card = document.querySelector(".table-felt-board-".concat(street));
+      street === 'turn' ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
+    }
+  }, {
+    key: "clearBoard",
+    value: function clearBoard() {
+      if (this.boardCards[0]) this.clearFlop();
+      if (this.boardCards[3]) this.clearTurnRiver("turn");
+      if (this.boardCards[4]) this.clearTurnRiver("river");
+    }
+  }, {
     key: "nextHand",
     value: function nextHand() {
       this.togglePlayers();
       this.resetPlayerVars();
+      this.clearBoard();
       this.resetVars();
       this.handNum += 1;
       this.playHand();
@@ -2644,17 +2697,23 @@ function () {
     value: function handToStrArr(player) {
       var playerHand = player.hand.map(function (card) {
         return "".concat(card.rank).concat(card.suit);
-      }); // let playerHand = player.hand.join(" ");
-
+      });
       return playerHand;
+    }
+  }, {
+    key: "dealPlayerCard",
+    value: function dealPlayerCard(pos, revealed) {
+      var card = this.deck.draw();
+      card.revealed = revealed;
+      this.players[pos].hand.push(card);
     }
   }, {
     key: "dealInPlayers",
     value: function dealInPlayers() {
-      this.players[1].hand.push(this.deck.draw());
-      this.players[0].hand.push(this.deck.draw());
-      this.players[1].hand.push(this.deck.draw());
-      this.players[0].hand.push(this.deck.draw());
+      this.dealPlayerCard(1, false);
+      this.dealPlayerCard(0, true);
+      this.dealPlayerCard(1, false);
+      this.dealPlayerCard(0, true);
     }
   }, {
     key: "takeBlinds",
@@ -2692,33 +2751,30 @@ function () {
     key: "showFlop",
     value: function showFlop() {
       var card1 = document.querySelector(".table-felt-board-flop-1");
-      this.boardCards[0].render(card1);
+      this.boardCards[0].render(card1, "17.5%", "52%");
       var card2 = document.querySelector(".table-felt-board-flop-2");
-      debugger;
-      this.boardCards[1].render(card2);
+      this.boardCards[1].render(card2, "17.5%", "52%");
       var card3 = document.querySelector(".table-felt-board-flop-3");
-      this.boardCards[2].render(card3);
+      this.boardCards[2].render(card3, "17.5%", "52%");
     }
   }, {
     key: "showTurn",
     value: function showTurn() {
       var card4 = document.querySelector(".table-felt-board-turn");
-      this.boardCards[3].render(card4);
+      this.boardCards[3].render(card4, "17.5%", "52%");
     }
   }, {
     key: "showRiver",
     value: function showRiver() {
       var card5 = document.querySelector(".table-felt-board-river");
-      this.boardCards[4].render(card5);
+      this.boardCards[4].render(card5, "17.5%", "52%");
     }
   }, {
     key: "showBoard",
     value: function showBoard() {
       if (this.boardCards[0]) this.showFlop();
       if (this.boardCards[3]) this.showTurn();
-      if (this.boardCards[4]) this.showRiver(); // let currBoard = document.querySelector(`.table-felt-board`);
-      // let boardInnerText = this.textBoard();
-      // currBoard.innerText = boardInnerText;
+      if (this.boardCards[4]) this.showRiver();
     }
   }, {
     key: "toggleCurrPlayer",
@@ -2757,8 +2813,6 @@ function () {
       } else if (response[0] === 'check') {
         this.action(null, 'check');
       } else {
-        // let betInput = $('.actions-cont-bet-amt');
-        // betInput.value = response[1];
         this.action(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -2922,7 +2976,7 @@ function () {
 
       if (compBetRaise) {
         if (compBetRaise < this.bb) compBetRaise = this.bb;
-        betRaise = this.calcCompBetRaise(compBetRaise, isSb); // betRaise = compBetRaise;
+        betRaise = this.calcCompBetRaise(compBetRaise, isSb);
       } else {
         betRaise = this.calcBetInput(isSb);
       }

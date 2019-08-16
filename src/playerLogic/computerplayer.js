@@ -95,14 +95,18 @@ export default class ComputerPlayer {
   }
 
   playerCards() {
-  //   let playerChips = document.querySelector(`.player-info-cards-${this.side}`);
-  //   playerChips.innerText = `${this.hand[0]} ${this.hand[1]}`
+    if (this.hand[0]) {
+      let playerCard1 = document.querySelector(`.player-info-cards-${this.side}-1`);
+      let playerCard2 = document.querySelector(`.player-info-cards-${this.side}-2`);
+      this.hand[0].render(playerCard1, "51%", "67%");
+      this.hand[1].render(playerCard2, "51%", "67%");
+    }
   }
 
   render() {
     this.playerName();
     this.playerChips();
-    // this.playerCards();
+    this.playerCards();
   }
 
   resetVars() {

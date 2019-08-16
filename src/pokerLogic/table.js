@@ -68,7 +68,7 @@ class Table {
   determineWinner(){
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
-    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard}, `: `Preflop, `
+    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard()}, `: `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
     if (!this.players[0].folded && !this.players[1].folded && winners.length === 2){
       return this.tie(hand1);
@@ -112,9 +112,28 @@ class Table {
     }
   }
 
+  clearFlop(){
+    for (let i =0; i< 3; i++) {
+      let card = document.querySelector(`.table-felt-board-flop-${i+1}`);
+      this.boardCards[i].unrender(card);
+    }
+  }
+
+  clearTurnRiver(street){
+    let card = document.querySelector(`.table-felt-board-${street}`);
+    (street === 'turn') ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
+  }
+
+  clearBoard(){
+    if (this.boardCards[0]) this.clearFlop();
+    if (this.boardCards[3]) this.clearTurnRiver("turn");
+    if (this.boardCards[4]) this.clearTurnRiver("river");
+  }
+
   nextHand(){
     this.togglePlayers();
     this.resetPlayerVars();
+    this.clearBoard();
     this.resetVars();
     this.handNum += 1;
     this.playHand();
@@ -124,15 +143,20 @@ class Table {
     let playerHand = player.hand.map(card => {
       return `${card.rank}${card.suit}`;
     })
-    // let playerHand = player.hand.join(" ");
     return playerHand;
   }
 
+  dealPlayerCard(pos, revealed){
+    let card = this.deck.draw();
+    card.revealed = revealed;
+    this.players[pos].hand.push(card);
+  }
+
   dealInPlayers(){
-    this.players[1].hand.push(this.deck.draw());
-    this.players[0].hand.push(this.deck.draw());
-    this.players[1].hand.push(this.deck.draw());
-    this.players[0].hand.push(this.deck.draw());
+    this.dealPlayerCard(1, false);
+    this.dealPlayerCard(0, true);
+    this.dealPlayerCard(1, false);
+    this.dealPlayerCard(0, true);
   }
 
   takeBlinds(){
@@ -164,31 +188,27 @@ class Table {
 
   showFlop(){
     let card1 = document.querySelector(`.table-felt-board-flop-1`);
-    this.boardCards[0].render(card1)
+    this.boardCards[0].render(card1, "17.5%", "52%")
     let card2 = document.querySelector(`.table-felt-board-flop-2`);
-    debugger
-    this.boardCards[1].render(card2)
+    this.boardCards[1].render(card2, "17.5%", "52%")
     let card3 = document.querySelector(`.table-felt-board-flop-3`);
-    this.boardCards[2].render(card3)
+    this.boardCards[2].render(card3, "17.5%", "52%")
   }
 
   showTurn(){
     let card4 = document.querySelector(`.table-felt-board-turn`);
-    this.boardCards[3].render(card4)
+    this.boardCards[3].render(card4, "17.5%", "52%")
   }
 
   showRiver(){
     let card5 = document.querySelector(`.table-felt-board-river`);
-    this.boardCards[4].render(card5)
+    this.boardCards[4].render(card5, "17.5%", "52%")
   }
 
   showBoard(){
     if (this.boardCards[0]) this.showFlop();
     if (this.boardCards[3]) this.showTurn();
     if (this.boardCards[4]) this.showRiver();
-    // let currBoard = document.querySelector(`.table-felt-board`);
-    // let boardInnerText = this.textBoard();
-    // currBoard.innerText = boardInnerText;
   }
 
   toggleCurrPlayer(){
@@ -222,8 +242,6 @@ class Table {
     } else if (response[0] === 'check') {
       this.action(null, 'check');
     } else {
-      // let betInput = $('.actions-cont-bet-amt');
-      // betInput.value = response[1];
       this.action(null, 'bet', Math.ceil(response[1]));
     }
   }
@@ -366,7 +384,6 @@ class Table {
     if (compBetRaise) {
       if (compBetRaise < this.bb) compBetRaise = this.bb;
       betRaise = this.calcCompBetRaise(compBetRaise, isSb);
-      // betRaise = compBetRaise;
     } else {
       betRaise = this.calcBetInput(isSb);
     }

@@ -40,6 +40,7 @@
   display: flex;
   justify-content: center;
   &-image{
+    margin-bottom: -7px;
     height: 100%;
     width: 100px;
   }
@@ -141,6 +142,7 @@
       width: 400px;
       height: 222px;
       display: flex;
+      margin-top: 80px;
       // font-size: 50px;
       // font-family: 'Cabin', sans-serif;
     }
@@ -151,24 +153,24 @@
     &-dealer-btn-left{
       width:100%;
       display: flex;
-      transform: translateY(15px);
+      transform: translateY(-130px);
     }
     &-dealer-btn-left-board{
       width:100%;
       display: flex;
-      transform: translateY(-10px);
+      transform: translateY(-125px);
     }
     &-dealer-btn-right{
       width:100%;
       display: flex;
       justify-content: flex-end;
-      transform: translateY(15px);
+      transform: translateY(-130px);
     }
     &-dealer-btn-right-board{
       width:100%;
       display: flex;
       justify-content: flex-end;
-      transform: translateY(-10px);
+      transform: translateY(-125px);
     }
     &-pot{
       font-size: 24px;

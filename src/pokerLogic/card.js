@@ -8,13 +8,36 @@ export default class Card {
     this.revealed = revealed;
   }
 
-  render(element, width, height){
-    element.style.backgroundPositionX = `${this.img_pos_x}px`;
-    element.style.backgroundPositionY = `${this.img_pos_y}px`;
+  display(element, width, height){
+    element.style.backgroundPosition = `${this.img_pos_x}px ${this.img_pos_y}px`;
     element.style.width = width; //40%    .1143  .57 * 140 px   80%
     element.style.height = height; //80%  .16
     element.style.backgroundImage = 'url("./image/deck400.png")';
     element.style.borderRadius = "7px";
+    element.style.marginLeft = "10px";
+  }
+
+  hide(element, width, height){
+    element.style.backgroundPosition = ' -2px -4px';
+    element.style.width = width; 
+    element.style.height = height;
+    element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
+    element.style.borderRadius = "7px";
+    element.style.marginLeft = "10px";
+    element.style.backgroundSize = "75px 112px";
+  }
+
+  render(element, width, height){
+    (this.revealed) ? this.display(element, width, height) : this.hide(element, width, height);
+  }
+
+  unrender(element){
+    element.style.backgroundPositionX = "0px";
+    element.style.backgroundPositionY = "0px";
+    element.style.width = "0%";
+    element.style.height = "0%";
+    element.style.borderRadius = "7px";
+    element.style.marginLeft = "10px";
   }
 
   show() {

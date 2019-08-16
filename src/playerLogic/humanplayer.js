@@ -59,10 +59,8 @@ export default class HumanPlayer {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-cards-${this.side}-1`);
       let playerCard2 = document.querySelector(`.player-info-cards-${this.side}-2`);
-      this.hand[0].render(playerCard1, "45%", "67%");
-      this.hand[1].render(playerCard2, "45%", "67%");
-      // let playerCards = document.querySelector(`.player-info-cards-${this.side}`);
-      // playerCards.innerText = `${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`
+      this.hand[0].render(playerCard1, "51%", "67%");
+      this.hand[1].render(playerCard2, "51%", "67%");
     }
   }
 
