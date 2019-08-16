@@ -53,7 +53,7 @@ table {
 }
 
 .holdem-container {
-  height: 800px;
+  height: 1200px;
   width: 100%;
   background-color: #a6b1b5;
 }
@@ -100,8 +100,9 @@ table {
   flex-direction: column;
   justify-content: end;
   transform: translateY(90px);
-  height: 15%;
-  width: 10%;
+  height: 26.5%;
+  width: 17%;
+  align-items: center;
 }
 .player-info-img {
   background-color: #a6b1b5;
@@ -121,12 +122,28 @@ table {
   align-items: center;
   font-family: "Cabin", sans-serif;
 }
-.player-info-background {
-  background-position-x: -30px;
-  background-position-y: -30px;
-  background-image: url("../image/deck200.png");
+.player-info-cards {
+  display: flex;
+  justify-content: space-around;
+  width: 160px;
+  height: 100%;
 }
-
+.player-info-cards-p1-1 {
+  height: 80%;
+  width: 45%;
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
+.player-info-cards-p1-2 {
+  height: 80%;
+  width: 45%;
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
 .table {
   height: 70%;
   display: flex;
