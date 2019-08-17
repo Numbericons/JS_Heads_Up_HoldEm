@@ -2179,6 +2179,7 @@ function () {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    this.comp = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
   } // text(input){
@@ -2733,10 +2734,10 @@ function () {
   }, {
     key: "dealInPlayers",
     value: function dealInPlayers() {
-      this.dealPlayerCard(1, false);
-      this.dealPlayerCard(0, true);
-      this.dealPlayerCard(1, false);
-      this.dealPlayerCard(0, true);
+      this.dealPlayerCard(1, !this.players[1].comp);
+      this.dealPlayerCard(0, !this.players[0].comp);
+      this.dealPlayerCard(1, !this.players[1].comp);
+      this.dealPlayerCard(0, !this.players[0].comp);
     }
   }, {
     key: "takeBlinds",
@@ -3041,8 +3042,18 @@ function () {
       }
     }
   }, {
+    key: "revealCards",
+    value: function revealCards() {
+      this.players[0].cards[0].revealed = true;
+      this.players[0].cards[1].revealed = true;
+      this.players[1].cards[0].revealed = true;
+      this.players[1].cards[1].revealed = true;
+    }
+  }, {
     key: "showDown",
     value: function showDown() {
+      this.revealCards();
+
       while (this.boardCards.length < 5) {
         this.dealCard();
         this.showBoard();

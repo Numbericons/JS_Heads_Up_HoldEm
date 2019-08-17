@@ -5,6 +5,7 @@ export default class HumanPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    this.comp = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
   }

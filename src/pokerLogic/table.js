@@ -154,10 +154,10 @@ class Table {
   }
 
   dealInPlayers(){
-    this.dealPlayerCard(1, false);
-    this.dealPlayerCard(0, true);
-    this.dealPlayerCard(1, false);
-    this.dealPlayerCard(0, true);
+    this.dealPlayerCard(1, !this.players[1].comp);
+    this.dealPlayerCard(0, !this.players[0].comp);
+    this.dealPlayerCard(1, !this.players[1].comp);
+    this.dealPlayerCard(0, !this.players[0].comp);
   }
 
   takeBlinds(){
@@ -420,7 +420,14 @@ class Table {
     }
   }
 
+  revealCards(){
+    this.players[0].cards[0].revealed = true;
+    this.players[0].cards[1].revealed = true;
+    this.players[1].cards[0].revealed = true;
+    this.players[1].cards[1].revealed = true;
+  }
   showDown(){
+    this.revealCards();
     while (this.boardCards.length < 5) {
       this.dealCard();
       this.showBoard();
