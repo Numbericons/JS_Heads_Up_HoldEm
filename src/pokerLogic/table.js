@@ -126,10 +126,11 @@ class Table {
   }
 
   gameOver(){
+    debugger
     if (this.players[0].chipstack === 0) {
-      this.currentPlayer().promptText(`${this.players[1].name} has won the match!`);
+      this.board.currentPlayer().promptText(`${this.players[1].name} has won the match!`);
     } else if (this.players[1].chipstack === 0) {
-      this.currentPlayer().promptText(`${this.players[1].name} has won the match!`);
+      this.board.currentPlayer().promptText(`${this.players[0].name} has won the match!`);
     } else {
       this.nextHand();
     }
@@ -142,19 +143,18 @@ class Table {
     }
   }
 
-  clearTurnRiver(street){
-    let card = document.querySelector(`.table-felt-board-${street}`);
-    (street === 'turn') ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
-  }
+  // clearTurnRiver(street){
+  //   let card = document.querySelector(`.table-felt-board-${street}`);
+  //   (street === 'turn') ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
+  // }
 
-  clearBoard(){
-    if (this.boardCards[0]) this.clearFlop();
-    if (this.boardCards[3]) this.clearTurnRiver("turn");
-    if (this.boardCards[4]) this.clearTurnRiver("river");
-  }
+  // clearBoard(){
+  //   if (this.boardCards[0]) this.clearFlop();
+  //   if (this.boardCards[3]) this.clearTurnRiver("turn");
+  //   if (this.boardCards[4]) this.clearTurnRiver("river");
+  // }
 
   nextHand(){
-    debugger
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

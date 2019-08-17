@@ -132,12 +132,20 @@ export default class Board {
     this.dealPlayerCard(0, !this.players[0].comp);
   }
 
+  blindPlayer(player, blind){
+    if (player.chipstack > blind) {
+      player.chipstack -= blind;
+      player.chipsInPot = blind;
+    } else {
+      player.chipsInPot = player.chipstack;
+      player.chipstack = 0;
+    }
+  }
+
   takeBlinds() {
-    this.players[0].chipstack -= this.sb;
-    this.players[0].chipsInPot = this.sb;
-    this.players[1].chipstack -= this.bb;
-    this.players[1].chipsInPot = this.bb;
-    this.pot = this.sb + this.bb;
+    const sbTotal = this.blindPlayer(this.players[0], this.sb);
+    const bbTotal = this.blindPlayer(this.players[1], this.bb);
+    this.pot = sbTotal + bbTotal;
   }
 
   dealCard() {

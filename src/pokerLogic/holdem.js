@@ -10,13 +10,17 @@ class HoldEm {
     this.dealer_pos = 0;
     this.table = new Table($el, this.players);
   }
-  
+
   render(){
     this.table.board.render();
   }
+
+  playHand(){
+    this.table.board.playHand();
+  }
   newGame(){
       this.render();
-      this.table.playHand();
+      this.playHand();
   }
 }
 

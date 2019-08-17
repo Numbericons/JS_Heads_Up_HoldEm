@@ -2448,13 +2448,22 @@ function () {
       this.dealPlayerCard(0, !this.players[0].comp);
     }
   }, {
+    key: "blindPlayer",
+    value: function blindPlayer(player, blind) {
+      if (player.chipstack > blind) {
+        player.chipstack -= blind;
+        player.chipsInPot = blind;
+      } else {
+        player.chipsInPot = player.chipstack;
+        player.chipstack = 0;
+      }
+    }
+  }, {
     key: "takeBlinds",
     value: function takeBlinds() {
-      this.players[0].chipstack -= this.sb;
-      this.players[0].chipsInPot = this.sb;
-      this.players[1].chipstack -= this.bb;
-      this.players[1].chipsInPot = this.bb;
-      this.pot = this.sb + this.bb;
+      var sbTotal = this.blindPlayer(this.players[0], this.sb);
+      var bbTotal = this.blindPlayer(this.players[1], this.bb);
+      this.pot = sbTotal + bbTotal;
     }
   }, {
     key: "dealCard",
@@ -3020,10 +3029,15 @@ function () {
       this.table.board.render();
     }
   }, {
+    key: "playHand",
+    value: function playHand() {
+      this.table.board.playHand();
+    }
+  }, {
     key: "newGame",
     value: function newGame() {
       this.render();
-      this.table.playHand();
+      this.playHand();
     }
   }]);
 
@@ -3201,10 +3215,12 @@ function () {
   }, {
     key: "gameOver",
     value: function gameOver() {
+      debugger;
+
       if (this.players[0].chipstack === 0) {
-        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
+        this.board.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
       } else if (this.players[1].chipstack === 0) {
-        this.currentPlayer().promptText("".concat(this.players[1].name, " has won the match!"));
+        this.board.currentPlayer().promptText("".concat(this.players[0].name, " has won the match!"));
       } else {
         this.nextHand();
       }
@@ -3216,24 +3232,19 @@ function () {
         var card = document.querySelector(".table-felt-board-flop-".concat(i + 1));
         this.boardCards[i].unrender(card);
       }
-    }
-  }, {
-    key: "clearTurnRiver",
-    value: function clearTurnRiver(street) {
-      var card = document.querySelector(".table-felt-board-".concat(street));
-      street === 'turn' ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
-    }
-  }, {
-    key: "clearBoard",
-    value: function clearBoard() {
-      if (this.boardCards[0]) this.clearFlop();
-      if (this.boardCards[3]) this.clearTurnRiver("turn");
-      if (this.boardCards[4]) this.clearTurnRiver("river");
-    }
+    } // clearTurnRiver(street){
+    //   let card = document.querySelector(`.table-felt-board-${street}`);
+    //   (street === 'turn') ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
+    // }
+    // clearBoard(){
+    //   if (this.boardCards[0]) this.clearFlop();
+    //   if (this.boardCards[3]) this.clearTurnRiver("turn");
+    //   if (this.boardCards[4]) this.clearTurnRiver("river");
+    // }
+
   }, {
     key: "nextHand",
     value: function nextHand() {
-      debugger;
       this.togglePlayers();
       this.resetPlayerVars();
       this.board.clearBoard();
