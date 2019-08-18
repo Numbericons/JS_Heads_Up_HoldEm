@@ -2280,6 +2280,7 @@ function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Board; });
 /* harmony import */ var _deck__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./deck */ "./src/pokerLogic/deck.js");
+/* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./button */ "./src/pokerLogic/button.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -2287,6 +2288,9 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
+
+
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
 
 var Board =
 /*#__PURE__*/
@@ -2300,17 +2304,16 @@ function () {
 
     this.boardCards = [];
     this.deck = new _deck__WEBPACK_IMPORTED_MODULE_0__["default"]();
+    this.button = new _button__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this);
     this.players = players;
     this.sb = sb;
     this.bb = bb;
     this.table = table;
     this.pot = 0;
     this.currPlayerPos = 0;
-    this.$el = $el;
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
-    this.bindEvents = this.bindEvents.bind(this);
   }
 
   _createClass(Board, [{
@@ -2364,7 +2367,6 @@ function () {
 
       this.dealInPlayers();
       this.takeBlinds();
-      this.render();
     }
   }, {
     key: "determineWinner",
@@ -2518,11 +2520,7 @@ function () {
       } else {
         this.currPlayerPos = 0;
       }
-    } // remainingPlayers() {
-    //   if (this.players[0].folded === true || this.players[1].folded === true) return false;
-    //   return true;
-    // }
-
+    }
   }, {
     key: "allIn",
     value: function allIn() {
@@ -2570,89 +2568,11 @@ function () {
       this.showPot();
       this.showBoard();
       this.renderPlayers();
-      this.setButtons();
-      this.bindEvents();
+      debugger;
+      this.button.setButtons();
+      this.button.bindEvents();
       if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
-    }
-  }, {
-    key: "fold",
-    value: function fold($outDiv) {
-      var $foldDiv = $("<button>");
-      $foldDiv.addClass("actions-cont-text");
-      $foldDiv.data("action", "fold");
-      $foldDiv.html('FOLD');
-      $outDiv.append($foldDiv);
-    }
-  }, {
-    key: "callOrCheck",
-    value: function callOrCheck($outDiv) {
-      var $callDiv = $("<button>");
-      $callDiv.addClass("actions-cont-text");
-
-      if (this.currBet === 0) {
-        $callDiv.data("action", "check");
-        $callDiv.html('CHECK');
-      } else {
-        $callDiv.data("action", "call");
-        $callDiv.html('CALL');
-      }
-
-      $outDiv.append($callDiv);
-    }
-  }, {
-    key: "betAmount",
-    value: function betAmount($outDiv) {
-      var value;
-
-      if (this.currBet > 0) {
-        if (this.currBet === this.sb) {
-          value = this.bb * 2;
-        } else {
-          value = this.currBet * 2;
-        }
-      } else {
-        value = this.bb;
-      }
-
-      var $betAmtDiv = $("<input/>", {
-        type: 'text',
-        "class": 'actions-cont-bet-amt',
-        value: "".concat(value)
-      });
-      $outDiv.append($betAmtDiv);
-    }
-  }, {
-    key: "betOrRaise",
-    value: function betOrRaise($outDiv) {
-      var $betDiv = $("<button>");
-      $betDiv.addClass("actions-cont-text");
-
-      if (this.currBet === 0) {
-        $betDiv.data("action", "bet");
-        $betDiv.html('BET');
-      } else {
-        $betDiv.data("action", "raise");
-        $betDiv.html('RAISE');
-      }
-
-      $outDiv.append($betDiv);
-    }
-  }, {
-    key: "setButtons",
-    value: function setButtons() {
-      var $outDiv = $("<div>");
-      $outDiv.addClass("actions-cont");
-      this.fold($outDiv);
-      this.callOrCheck($outDiv);
-
-      if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
-        this.betOrRaise($outDiv);
-        this.betAmount($outDiv);
-      }
-
-      this.$el.empty();
-      this.$el.append($outDiv);
     }
   }, {
     key: "handChipDiff",
@@ -2783,6 +2703,121 @@ function () {
         this.stepStreet();
       }
     }
+  }]);
+
+  return Board;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/pokerLogic/button.js":
+/*!**********************************!*\
+  !*** ./src/pokerLogic/button.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Button; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Button =
+/*#__PURE__*/
+function () {
+  function Button($el, board) {
+    _classCallCheck(this, Button);
+
+    this.$el = $el;
+    this.board = board;
+    this.bindEvents = this.bindEvents.bind(this);
+  }
+
+  _createClass(Button, [{
+    key: "fold",
+    value: function fold($outDiv) {
+      var $foldDiv = $("<button>");
+      $foldDiv.addClass("actions-cont-text");
+      $foldDiv.data("action", "fold");
+      $foldDiv.html('FOLD');
+      $outDiv.append($foldDiv);
+    }
+  }, {
+    key: "callOrCheck",
+    value: function callOrCheck($outDiv) {
+      var $callDiv = $("<button>");
+      $callDiv.addClass("actions-cont-text");
+
+      if (this.board.currBet === 0) {
+        $callDiv.data("action", "check");
+        $callDiv.html('CHECK');
+      } else {
+        $callDiv.data("action", "call");
+        $callDiv.html('CALL');
+      }
+
+      $outDiv.append($callDiv);
+    }
+  }, {
+    key: "betAmount",
+    value: function betAmount($outDiv) {
+      var value;
+
+      if (this.board.currBet > 0) {
+        if (this.board.currBet === this.board.sb) {
+          value = this.board.bb * 2;
+        } else {
+          value = this.board.currBet * 2;
+        }
+      } else {
+        value = this.board.bb;
+      }
+
+      var $betAmtDiv = $("<input/>", {
+        type: 'text',
+        "class": 'actions-cont-bet-amt',
+        value: "".concat(value)
+      });
+      $outDiv.append($betAmtDiv);
+    }
+  }, {
+    key: "betOrRaise",
+    value: function betOrRaise($outDiv) {
+      var $betDiv = $("<button>");
+      $betDiv.addClass("actions-cont-text");
+
+      if (this.board.currBet === 0) {
+        $betDiv.data("action", "bet");
+        $betDiv.html('BET');
+      } else {
+        $betDiv.data("action", "raise");
+        $betDiv.html('RAISE');
+      }
+
+      $outDiv.append($betDiv);
+    }
+  }, {
+    key: "setButtons",
+    value: function setButtons() {
+      var $outDiv = $("<div>");
+      $outDiv.addClass("actions-cont");
+      this.fold($outDiv);
+      this.callOrCheck($outDiv);
+
+      if (!this.board.allIn() && this.board.currentPlayer().chipstack > this.board.currBet) {
+        this.betOrRaise($outDiv);
+        this.betAmount($outDiv);
+      }
+
+      this.$el.empty();
+      this.$el.append($outDiv);
+    }
   }, {
     key: "bindEvents",
     value: function bindEvents() {
@@ -2792,12 +2827,12 @@ function () {
       this.$el.on("click", "button", function (event) {
         var $button = $(event.currentTarget);
 
-        _this.action($button);
+        _this.board.action($button);
       });
     }
   }]);
 
-  return Board;
+  return Button;
 }();
 
 
@@ -3042,8 +3077,7 @@ function () {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _deck_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./deck.js */ "./src/pokerLogic/deck.js");
-/* harmony import */ var _board_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./board.js */ "./src/pokerLogic/board.js");
+/* harmony import */ var _board_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board.js */ "./src/pokerLogic/board.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -3051,9 +3085,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 
-
-
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
 
 var Table =
 /*#__PURE__*/
@@ -3064,7 +3095,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, players, sb, bb, this);
+    this.board = new _board_js__WEBPACK_IMPORTED_MODULE_0__["default"]($el, players, sb, bb, this);
     this.boardCards = [];
     this.players = players;
     this.handNum = 1;
@@ -3099,7 +3130,7 @@ function () {
   }, {
     key: "removeButtons",
     value: function removeButtons() {
-      this.board.$el.empty();
+      this.board.button.$el.empty();
     }
   }, {
     key: "playHand",
@@ -3115,75 +3146,7 @@ function () {
       this.board.resetVars();
       this.handNum += 1;
       this.playHand();
-    } // fold($outDiv) {
-    //   let $foldDiv = $("<button>");
-    //   $foldDiv.addClass("actions-cont-text");
-    //   $foldDiv.data("action", "fold");
-    //   $foldDiv.html('FOLD');
-    //   $outDiv.append($foldDiv)
-    // }
-    // callOrCheck($outDiv) {
-    //   let $callDiv = $("<button>");
-    //   $callDiv.addClass("actions-cont-text")
-    //   if (this.currBet === 0) {
-    //     $callDiv.data("action", "check");
-    //     $callDiv.html('CHECK');
-    //   } else {
-    //     $callDiv.data("action", "call");
-    //     $callDiv.html('CALL');
-    //   }
-    //   $outDiv.append($callDiv)
-    // }
-    // betAmount($outDiv) {
-    //   let value;
-    //   if (this.currBet > 0) {
-    //     if (this.currBet === this.sb) {
-    //       value = this.bb * 2;
-    //     } else {
-    //       value = this.currBet * 2;
-    //     }
-    //   } else {
-    //     value = this.bb
-    //   }
-    //   let $betAmtDiv = $("<input/>", {
-    //     type: 'text',
-    //     class: 'actions-cont-bet-amt',
-    //     value: `${value}`
-    //   })
-    //   $outDiv.append($betAmtDiv)
-    // }
-    // betOrRaise($outDiv) {
-    //   let $betDiv = $("<button>");
-    //   $betDiv.addClass("actions-cont-text")
-    //   if (this.currBet === 0) {
-    //     $betDiv.data("action", "bet");
-    //     $betDiv.html('BET');
-    //   } else {
-    //     $betDiv.data("action", "raise");
-    //     $betDiv.html('RAISE');
-    //   }
-    //   $outDiv.append($betDiv)
-    // }
-    // setButtons() {
-    //   const $outDiv = $("<div>");
-    //   $outDiv.addClass("actions-cont")
-    //   this.fold($outDiv);
-    //   this.callOrCheck($outDiv);
-    //   if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
-    //     this.betOrRaise($outDiv);
-    //     this.betAmount($outDiv);
-    //   }
-    //   this.$el.empty();
-    //   this.$el.append($outDiv);
-    // }
-    // bindEvents() {
-    //   this.$el.unbind();
-    //   this.$el.on("click", "button", (event => {
-    //     const $button = $(event.currentTarget);
-    //     this.action($button);
-    //   }));
-    // }
-
+    }
   }]);
 
   return Table;

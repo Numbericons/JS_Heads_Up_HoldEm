@@ -1,6 +1,4 @@
-import Deck from "./deck.js";
 import Board from "./board.js";
-const Hand = require('pokersolver').Hand;
 
 class Table {
   constructor($el, players, sb = 50, bb = 100){
@@ -34,7 +32,7 @@ class Table {
   }
 
   removeButtons(){
-    this.board.$el.empty();
+    this.board.button.$el.empty();
   }
 
   playHand(){
@@ -49,84 +47,6 @@ class Table {
     this.handNum += 1;
     this.playHand();
   }
-
-  // fold($outDiv) {
-  //   let $foldDiv = $("<button>");
-  //   $foldDiv.addClass("actions-cont-text");
-  //   $foldDiv.data("action", "fold");
-  //   $foldDiv.html('FOLD');
-  //   $outDiv.append($foldDiv)
-  // }
-
-  // callOrCheck($outDiv) {
-  //   let $callDiv = $("<button>");
-  //   $callDiv.addClass("actions-cont-text")
-  //   if (this.currBet === 0) {
-  //     $callDiv.data("action", "check");
-  //     $callDiv.html('CHECK');
-  //   } else {
-  //     $callDiv.data("action", "call");
-  //     $callDiv.html('CALL');
-  //   }
-
-  //   $outDiv.append($callDiv)
-  // }
-
-  // betAmount($outDiv) {
-  //   let value;
-  //   if (this.currBet > 0) {
-  //     if (this.currBet === this.sb) {
-  //       value = this.bb * 2;
-  //     } else {
-  //       value = this.currBet * 2;
-  //     }
-  //   } else {
-  //     value = this.bb
-  //   }
-  //   let $betAmtDiv = $("<input/>", {
-  //     type: 'text',
-  //     class: 'actions-cont-bet-amt',
-  //     value: `${value}`
-  //   })
-  //   $outDiv.append($betAmtDiv)
-  // }
-
-  // betOrRaise($outDiv) {
-  //   let $betDiv = $("<button>");
-  //   $betDiv.addClass("actions-cont-text")
-
-  //   if (this.currBet === 0) {
-  //     $betDiv.data("action", "bet");
-  //     $betDiv.html('BET');
-  //   } else {
-  //     $betDiv.data("action", "raise");
-  //     $betDiv.html('RAISE');
-  //   }
-  //   $outDiv.append($betDiv)
-  // }
-
-  // setButtons() {
-  //   const $outDiv = $("<div>");
-  //   $outDiv.addClass("actions-cont")
-
-  //   this.fold($outDiv);
-  //   this.callOrCheck($outDiv);
-  //   if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
-  //     this.betOrRaise($outDiv);
-  //     this.betAmount($outDiv);
-  //   }
-
-  //   this.$el.empty();
-  //   this.$el.append($outDiv);
-  // }
-
-  // bindEvents() {
-  //   this.$el.unbind();
-  //   this.$el.on("click", "button", (event => {
-  //     const $button = $(event.currentTarget);
-  //     this.action($button);
-  //   }));
-  // }
 }
 
 export default Table;

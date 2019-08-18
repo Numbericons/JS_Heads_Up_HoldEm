@@ -1,20 +1,21 @@
 import Deck from './deck'
+import Button from './button'
+const Hand = require('pokersolver').Hand;
+
 export default class Board {
   constructor($el, players, sb = 50, bb = 100, table) {
     this.boardCards = [];
     this.deck = new Deck;
+    this.button = new Button($el, this);
     this.players = players;
     this.sb = sb;
     this.bb = bb;
     this.table = table;
     this.pot = 0;
     this.currPlayerPos = 0;
-    this.$el = $el; 
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
-
-    this.bindEvents = this.bindEvents.bind(this);
   }
 
   currentPlayer() {
@@ -59,7 +60,6 @@ export default class Board {
     }  
     this.dealInPlayers();
     this.takeBlinds();
-    this.render();
   }
 
   determineWinner() {
@@ -196,11 +196,6 @@ export default class Board {
     }
   }
 
-  // remainingPlayers() {
-  //   if (this.players[0].folded === true || this.players[1].folded === true) return false;
-  //   return true;
-  // }
-
   allIn() {
     if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
     return false;
@@ -240,80 +235,11 @@ export default class Board {
     this.showPot();
     this.showBoard();
     this.renderPlayers();
-    this.setButtons();
-    this.bindEvents();
+    debugger
+    this.button.setButtons();
+    this.button.bindEvents();
     if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
-  }
-
-  fold($outDiv) {
-    let $foldDiv = $("<button>");
-    $foldDiv.addClass("actions-cont-text");
-    $foldDiv.data("action", "fold");
-    $foldDiv.html('FOLD');
-    $outDiv.append($foldDiv)
-  }
-
-  callOrCheck($outDiv) {
-    let $callDiv = $("<button>");
-    $callDiv.addClass("actions-cont-text")
-    if (this.currBet === 0) {
-      $callDiv.data("action", "check");
-      $callDiv.html('CHECK');
-    } else {
-      $callDiv.data("action", "call");
-      $callDiv.html('CALL');
-    }
-
-    $outDiv.append($callDiv)
-  }
-
-  betAmount($outDiv) {
-    let value;
-    if (this.currBet > 0) {
-      if (this.currBet === this.sb) {
-        value = this.bb * 2;
-      } else {
-        value = this.currBet * 2;
-      }
-    } else {
-      value = this.bb
-    }
-    let $betAmtDiv = $("<input/>", {
-      type: 'text',
-      class: 'actions-cont-bet-amt',
-      value: `${value}`
-    })
-    $outDiv.append($betAmtDiv)
-  }
-
-  betOrRaise($outDiv) {
-    let $betDiv = $("<button>");
-    $betDiv.addClass("actions-cont-text")
-
-    if (this.currBet === 0) {
-      $betDiv.data("action", "bet");
-      $betDiv.html('BET');
-    } else {
-      $betDiv.data("action", "raise");
-      $betDiv.html('RAISE');
-    }
-    $outDiv.append($betDiv)
-  }
-
-  setButtons() {
-    const $outDiv = $("<div>");
-    $outDiv.addClass("actions-cont")
-
-    this.fold($outDiv);
-    this.callOrCheck($outDiv);
-    if (!this.allIn() && this.currentPlayer().chipstack > this.currBet) {
-      this.betOrRaise($outDiv);
-      this.betAmount($outDiv);
-    }
-
-    this.$el.empty();
-    this.$el.append($outDiv);
   }
 
   handChipDiff() {
@@ -422,13 +348,5 @@ export default class Board {
       this.currStreet = 'river';
       this.stepStreet();
     }
-  }
-
-  bindEvents() {
-    this.$el.unbind();
-    this.$el.on("click", "button", (event => {
-      const $button = $(event.currentTarget);
-      this.action($button);
-    }));
   }
 }
