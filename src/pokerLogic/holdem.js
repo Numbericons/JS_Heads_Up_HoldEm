@@ -6,7 +6,7 @@ class HoldEm {
   constructor($el, initialChipstack = 5000) {
     this.$el = $el;
     this.initialChipstack = initialChipstack;
-    this.players = [new HumanPlayer("sb", initialChipstack), new ComputerPlayer("bb", initialChipstack)];
+    this.players = [new HumanPlayer("sb", 5000), new ComputerPlayer("bb", 5000)];
     this.dealer_pos = 0;
     this.table = new Table($el, this.players);
   }

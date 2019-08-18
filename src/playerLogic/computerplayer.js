@@ -28,7 +28,7 @@ export default class ComputerPlayer {
     //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
     // }
   }
-  genBetRaise(to_call, stack){
+  genBetRaise(to_call, stack, pot){
     let randNum = Math.random()
     if (to_call === 0) {
       let bet = randNum * stack;
@@ -40,7 +40,7 @@ export default class ComputerPlayer {
     }
   }
 
-  promptResponse(to_call, stack){
+  promptResponse(to_call, stack, pot){
     let randNum = Math.random()
     if (randNum < .3333) {
       if (to_call > 0) {
@@ -49,7 +49,7 @@ export default class ComputerPlayer {
         if (randNum < .16666) {
           return ['check'];
         } else {
-          return this.genBetRaise(to_call, stack);
+          return this.genBetRaise(to_call, stack, pot);
         }
       }
     } else if (randNum < .6666) {
@@ -60,7 +60,7 @@ export default class ComputerPlayer {
       }
     } else {
       if (to_call === 0) {
-        return this.genBetRaise(to_call, stack);
+        return this.genBetRaise(to_call, stack, pot);
       } else {
         return ['call']
       }

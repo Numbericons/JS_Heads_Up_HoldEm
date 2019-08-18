@@ -52,6 +52,11 @@ export default class Board {
   }
 
   playHand() {
+    if (this.allIn()) {
+      debugger
+      this.table.removeButtons();
+      return;
+    }  
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
@@ -65,9 +70,9 @@ export default class Board {
     if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
       return this.tie(hand1);
     } else if (this.players[1].folded || (!this.players[0].folded && winners[0] === hand1)) {
-      return this.winner(hand1, hand2, 0, 1);
+      this.winner(hand1, hand2, 0, 1);
     } else {
-      return this.winner(hand2, hand1, 1, 0);
+      this.winner(hand2, hand1, 1, 0);
     }
   }
 
@@ -82,34 +87,27 @@ export default class Board {
         this.players[1].chipstack += 1;
       }
     }
-    this.table.gameOver();
+    this.table.handOver();
   }
 
   winner(winHand, loseHand, winPos, losePos) {
     this.outputString += `${this.players[winPos].name} wins the pot of $${this.pot}`;
     if (!this.players[losePos].folded) this.outputString += ` with hand: ${winHand.descr}`;
     if (!this.players[losePos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
-    alert(this.outputString);
     this.players[winPos].chipstack += this.pot;
-    this.table.gameOver();
-  }
-
-  clearFlop() {
-    for (let i = 0; i < 3; i++) {
-      let card = document.querySelector(`.table-felt-board-flop-${i + 1}`);
-      this.boardCards[i].unrender(card);
-    }
-  }
-
-  clearTurnRiver(street) {
-    let card = document.querySelector(`.table-felt-board-${street}`);
-    (street === 'turn') ? this.boardCards[3].unrender(card) : this.boardCards[4].unrender(card);
+    this.renderPlayers();
+    alert(this.outputString);
+    // this.renderPlayers().then(res => {
+    //   alert(this.outputString);
+    // })
+    this.table.handOver();
   }
 
   clearBoard() {
-    if (this.boardCards[0]) this.clearFlop();
-    if (this.boardCards[3]) this.clearTurnRiver("turn");
-    if (this.boardCards[4]) this.clearTurnRiver("river");
+    for (let i = 0; i < this.boardCards.length; i++) {
+      let card = document.querySelector(`.table-felt-board-card-${i + 1}`);
+      this.boardCards[i].unrender(card);
+    }
   }
 
   handToStrArr(player) {
@@ -132,13 +130,23 @@ export default class Board {
     this.dealPlayerCard(0, !this.players[0].comp);
   }
 
+  chkBlindAllIn(){
+    if (this.otherPlayer().chipstack === 0) {
+      return this.handChipDiff();
+    } else {
+      return this.currBet; 
+    }
+  }
+
   blindPlayer(player, blind){
     if (player.chipstack > blind) {
       player.chipstack -= blind;
       player.chipsInPot = blind;
+      return blind;
     } else {
       player.chipsInPot = player.chipstack;
       player.chipstack = 0;
+      return player.chipsInPot;
     }
   }
 
@@ -167,29 +175,17 @@ export default class Board {
     return textBoard;
   }
 
-  showFlop() {
-    let card1 = document.querySelector(`.table-felt-board-flop-1`);
-    this.boardCards[0].render(card1, "17.5%", "52%")
-    let card2 = document.querySelector(`.table-felt-board-flop-2`);
-    this.boardCards[1].render(card2, "17.5%", "52%")
-    let card3 = document.querySelector(`.table-felt-board-flop-3`);
-    this.boardCards[2].render(card3, "17.5%", "52%")
-  }
-
-  showTurn() {
-    let card4 = document.querySelector(`.table-felt-board-turn`);
-    this.boardCards[3].render(card4, "17.5%", "52%")
-  }
-
-  showRiver() {
-    let card5 = document.querySelector(`.table-felt-board-river`);
-    this.boardCards[4].render(card5, "17.5%", "52%")
+  showBoardCard(pos){
+    let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
+    this.boardCards[pos].render(card, "17.5%", "52%")
   }
 
   showBoard() {
-    if (this.boardCards[0]) this.showFlop();
-    if (this.boardCards[3]) this.showTurn();
-    if (this.boardCards[4]) this.showRiver();
+    for (let i = 0; i < this.boardCards.length; i++) {
+      // setTimeout(() => {
+        this.showBoardCard(i);
+      // }, 1000);
+    }
   }
 
   toggleCurrPlayer() {
@@ -234,15 +230,19 @@ export default class Board {
     }
   }
 
+  renderPlayers(){
+    this.players[0].render();
+    this.players[1].render();
+  }
+
   render() {
     this.showDealerBtn();
     this.showPot();
     this.showBoard();
-    this.players[0].render();
-    this.players[1].render();
+    this.renderPlayers();
     this.setButtons();
     this.bindEvents();
-    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.currBet, this.currentPlayer.chipstack);
+    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
   }
 
@@ -316,18 +316,6 @@ export default class Board {
     this.$el.append($outDiv);
   }
 
-  renderCurrBet(amount) {
-    if (this.currStreet === 'preflop' && this.streetActions.length === 1) {
-      if (amount === 50) {
-        this.currBet = 0;
-      } else {
-        this.currBet = amount - 50;
-      }
-    } else {
-      this.currBet = (amount > 0) ? amount : 0;
-    }
-  }
-
   handChipDiff() {
     return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
   }
@@ -337,7 +325,7 @@ export default class Board {
     if (betInput.length === 0) return 0;
     let totalBet = Number(betInput[0].value);
     if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
-    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack - isSb;
+    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
     return totalBet;
   }
 
@@ -346,7 +334,7 @@ export default class Board {
     if (compBetRaise > this.currentPlayer().chipstack) {
       totalBet = this.currentPlayer().chipstack - isSb;
     } else if (compBetRaise > this.otherPlayer().chipstack) {
-      totalBet = this.otherPlayer().chipstack - isSb
+      totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
     } else {
       totalBet = compBetRaise;
     }
@@ -401,10 +389,10 @@ export default class Board {
   }
 
   revealCards() {
-    this.players[0].hand[0].revealed = true;
-    this.players[0].hand[1].revealed = true;
-    this.players[1].hand[0].revealed = true;
-    this.players[1].hand[1].revealed = true;
+    this.players.forEach(player => {
+      player.hand[0].revealed = true;
+      player.hand[1].revealed = true;
+    })
   }
 
   showDown() {

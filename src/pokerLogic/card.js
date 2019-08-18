@@ -28,7 +28,7 @@ export default class Card {
   }
 
   render(element, width, height){
-    (this.revealed) ? this.display(element, width, height) : this.hide(element, width, height);
+    (this.revealed) ? this.display(element, width, height) : this.hide(element, width, height)
   }
 
   unrender(element){
