@@ -1,3 +1,4 @@
+import "babel-polyfill";
 import Deck from './deck'
 import Button from './button'
 const Hand = require('pokersolver').Hand;
@@ -16,6 +17,7 @@ export default class Board {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.lastShownCard = 0;
   }
 
   currentPlayer() {
@@ -180,14 +182,24 @@ export default class Board {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  startCard(){
+    if (this.currStreet === 'flop') {
+      return 0;
+    } else {
+      return this.boardCards.length - 1;
+    }
+  }
+
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
     this.boardCards[pos].render(card, "17.5%", "52%")
   }
 
-  showBoard() {
-    for (let i = 0; i < this.boardCards.length; i++) {
-      // await this.sleep(5000);
+  async showBoard() {
+    debugger
+    if (this.boardCards.length === 0) return;
+    for (let i = this.startCard(); i < this.boardCards.length; i++) {
+      await this.sleep(500);
       this.showBoardCard(i);
       // setTimeout(this.showBoardCard(i), 5000);
     };
