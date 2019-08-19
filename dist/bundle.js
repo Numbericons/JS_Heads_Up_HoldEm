@@ -1963,12 +1963,12 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/holdem */ "./src/pokerLogic/holdem.js");
+/* harmony import */ var _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/table */ "./src/pokerLogic/table.js");
 
 $(function () {
   var actionsCont = $('.table-actions');
-  var game = new _pokerLogic_holdem__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  game.newGame();
+  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
+  table.playHand();
 }); // $(() => {
 //   const rootEl = $('.ttt');
 //   const game = new Game();
@@ -2367,6 +2367,7 @@ function () {
 
       this.dealInPlayers();
       this.takeBlinds();
+      this.render();
     }
   }, {
     key: "determineWinner",
@@ -2499,6 +2500,13 @@ function () {
       return textBoard;
     }
   }, {
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    }
+  }, {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
@@ -2508,9 +2516,11 @@ function () {
     key: "showBoard",
     value: function showBoard() {
       for (var i = 0; i < this.boardCards.length; i++) {
-        // setTimeout(() => {
-        this.showBoardCard(i); // }, 1000);
+        // await this.sleep(5000);
+        this.showBoardCard(i); // setTimeout(this.showBoardCard(i), 5000);
       }
+
+      ;
     }
   }, {
     key: "toggleCurrPlayer",
@@ -2566,9 +2576,8 @@ function () {
     value: function render() {
       this.showDealerBtn();
       this.showPot();
-      this.showBoard();
       this.renderPlayers();
-      debugger;
+      this.showBoard();
       this.button.setButtons();
       this.button.bindEvents();
       if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
@@ -3006,16 +3015,16 @@ function () {
 
 /***/ }),
 
-/***/ "./src/pokerLogic/holdem.js":
-/*!**********************************!*\
-  !*** ./src/pokerLogic/holdem.js ***!
-  \**********************************/
+/***/ "./src/pokerLogic/table.js":
+/*!*********************************!*\
+  !*** ./src/pokerLogic/table.js ***!
+  \*********************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./table */ "./src/pokerLogic/table.js");
+/* harmony import */ var _board_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board.js */ "./src/pokerLogic/board.js");
 /* harmony import */ var _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../playerLogic/humanplayer */ "./src/playerLogic/humanplayer.js");
 /* harmony import */ var _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../playerLogic/computerplayer */ "./src/playerLogic/computerplayer.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -3028,76 +3037,18 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var HoldEm =
-/*#__PURE__*/
-function () {
-  function HoldEm($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
-
-    _classCallCheck(this, HoldEm);
-
-    this.$el = $el;
-    this.initialChipstack = initialChipstack;
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", 5000), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("bb", 5000)];
-    this.dealer_pos = 0;
-    this.table = new _table__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players);
-  }
-
-  _createClass(HoldEm, [{
-    key: "render",
-    value: function render() {
-      this.table.board.render();
-    }
-  }, {
-    key: "playHand",
-    value: function playHand() {
-      this.table.board.playHand();
-    }
-  }, {
-    key: "newGame",
-    value: function newGame() {
-      this.render();
-      this.playHand();
-    }
-  }]);
-
-  return HoldEm;
-}();
-
-/* harmony default export */ __webpack_exports__["default"] = (HoldEm);
-
-/***/ }),
-
-/***/ "./src/pokerLogic/table.js":
-/*!*********************************!*\
-  !*** ./src/pokerLogic/table.js ***!
-  \*********************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _board_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./board.js */ "./src/pokerLogic/board.js");
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-
-
 var Table =
 /*#__PURE__*/
 function () {
-  function Table($el, players) {
+  function Table($el) {
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
 
     _classCallCheck(this, Table);
 
-    this.board = new _board_js__WEBPACK_IMPORTED_MODULE_0__["default"]($el, players, sb, bb, this);
-    this.boardCards = [];
-    this.players = players;
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_1__["default"]("sb", initialChipstack), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("bb", initialChipstack)];
+    this.board = new _board_js__WEBPACK_IMPORTED_MODULE_0__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
   }
 

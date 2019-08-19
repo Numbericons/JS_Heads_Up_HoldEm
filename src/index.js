@@ -1,9 +1,9 @@
-import HoldEm from './pokerLogic/holdem';
+import Table from './pokerLogic/table';
 
 $(() => {
   const actionsCont = $('.table-actions');
-  const game = new HoldEm(actionsCont);
-  game.newGame();
+  const table = new Table(actionsCont);
+  table.playHand();
 });
 
 // $(() => {

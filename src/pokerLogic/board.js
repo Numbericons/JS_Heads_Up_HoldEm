@@ -60,6 +60,7 @@ export default class Board {
     }  
     this.dealInPlayers();
     this.takeBlinds();
+    this.render();
   }
 
   determineWinner() {
@@ -175,6 +176,10 @@ export default class Board {
     return textBoard;
   }
 
+  sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
     this.boardCards[pos].render(card, "17.5%", "52%")
@@ -182,10 +187,10 @@ export default class Board {
 
   showBoard() {
     for (let i = 0; i < this.boardCards.length; i++) {
-      // setTimeout(() => {
-        this.showBoardCard(i);
-      // }, 1000);
-    }
+      // await this.sleep(5000);
+      this.showBoardCard(i);
+      // setTimeout(this.showBoardCard(i), 5000);
+    };
   }
 
   toggleCurrPlayer() {
@@ -233,9 +238,8 @@ export default class Board {
   render() {
     this.showDealerBtn();
     this.showPot();
-    this.showBoard();
     this.renderPlayers();
-    debugger
+    this.showBoard();
     this.button.setButtons();
     this.button.bindEvents();
     if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);

@@ -1,10 +1,11 @@
 import Board from "./board.js";
+import HumanPlayer from "../playerLogic/humanplayer";
+import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, players, sb = 50, bb = 100){
-    this.board = new Board($el, players, sb, bb, this)
-    this.boardCards = [];
-    this.players = players;
+  constructor($el, initialChipstack = 5000, sb = 50, bb = 100){
+    this.players = [new HumanPlayer("sb", initialChipstack), new ComputerPlayer("bb", initialChipstack)];
+    this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
   }
 
