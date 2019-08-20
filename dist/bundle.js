@@ -13189,14 +13189,14 @@ function () {
   }, {
     key: "playerName",
     value: function playerName() {
-      var playerName = document.querySelector(".player-info-name-".concat(this.side));
+      var playerName = document.querySelector(".player-info-chip-text-name-".concat(this.side));
       playerName.innerText = "".concat(this.name);
     }
   }, {
     key: "playerChips",
     value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
-      playerChips.innerText = "".concat(this.chipstack, " chips");
+      var playerChips = document.querySelector(".player-info-chip-text-chips-".concat(this.side));
+      playerChips.innerText = "$".concat(this.chipstack, " chips");
     }
   }, {
     key: "playerCards",
@@ -13204,8 +13204,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
         var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
-        this.hand[0].render(playerCard1, "51%", "67%");
-        this.hand[1].render(playerCard2, "51%", "67%");
+        this.hand[0].render(playerCard1, "54%", "97%");
+        this.hand[1].render(playerCard2, "54%", "97%");
       }
     }
   }, {
@@ -13306,14 +13306,14 @@ function () {
   }, {
     key: "playerName",
     value: function playerName() {
-      var playerName = document.querySelector(".player-info-name-".concat(this.side));
+      var playerName = document.querySelector(".player-info-chip-text-name-".concat(this.side));
       playerName.innerText = "".concat(this.name);
     }
   }, {
     key: "playerChips",
     value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-chips-".concat(this.side));
-      playerChips.innerText = "".concat(this.chipstack, " chips");
+      var playerChips = document.querySelector(".player-info-chip-text-chips-".concat(this.side));
+      playerChips.innerText = "$".concat(this.chipstack, " chips");
     }
   }, {
     key: "playerCards",
@@ -13321,8 +13321,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
         var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
-        this.hand[0].render(playerCard1, "51%", "67%");
-        this.hand[1].render(playerCard2, "51%", "67%");
+        this.hand[0].render(playerCard1, "54%", "97%");
+        this.hand[1].render(playerCard2, "54%", "97%");
       }
     }
   }, {
@@ -13619,39 +13619,37 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                debugger;
-
                 if (!(this.boardCards.length === 0)) {
-                  _context.next = 3;
+                  _context.next = 2;
                   break;
                 }
 
                 return _context.abrupt("return");
 
-              case 3:
+              case 2:
                 i = this.startCard();
 
-              case 4:
+              case 3:
                 if (!(i < this.boardCards.length)) {
-                  _context.next = 11;
+                  _context.next = 10;
                   break;
                 }
 
-                _context.next = 7;
+                _context.next = 6;
                 return this.sleep(500);
 
-              case 7:
+              case 6:
                 this.showBoardCard(i); // setTimeout(this.showBoardCard(i), 5000);
 
-              case 8:
+              case 7:
                 i++;
-                _context.next = 4;
+                _context.next = 3;
                 break;
 
-              case 11:
+              case 10:
                 ;
 
-              case 12:
+              case 11:
               case "end":
                 return _context.stop();
             }

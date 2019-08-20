@@ -196,7 +196,6 @@ export default class Board {
   }
 
   async showBoard() {
-    debugger
     if (this.boardCards.length === 0) return;
     for (let i = this.startCard(); i < this.boardCards.length; i++) {
       await this.sleep(500);

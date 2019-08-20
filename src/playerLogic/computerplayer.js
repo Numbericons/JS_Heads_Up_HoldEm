@@ -85,21 +85,21 @@ export default class ComputerPlayer {
   }
 
   playerName() {
-    let playerName = document.querySelector(`.player-info-name-${this.side}`);
+    let playerName = document.querySelector(`.player-info-chip-text-name-${this.side}`);
     playerName.innerText = `${this.name}`;
   }
 
   playerChips() {
-    let playerChips = document.querySelector(`.player-info-chips-${this.side}`);
-    playerChips.innerText = `${this.chipstack} chips`
+    let playerChips = document.querySelector(`.player-info-chip-text-chips-${this.side}`);
+    playerChips.innerText = `$${this.chipstack} chips`
   }
 
   playerCards() {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-cards-${this.side}-1`);
       let playerCard2 = document.querySelector(`.player-info-cards-${this.side}-2`);
-      this.hand[0].render(playerCard1, "51%", "67%");
-      this.hand[1].render(playerCard2, "51%", "67%");
+      this.hand[0].render(playerCard1, "54%", "97%");
+      this.hand[1].render(playerCard2, "54%", "97%");
     }
   }
 
