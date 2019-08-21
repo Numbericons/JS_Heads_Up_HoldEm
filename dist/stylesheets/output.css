@@ -93,138 +93,34 @@ table {
 .dealer-image {
   margin-bottom: -7px;
   height: 100%;
-  width: 140px;
-}
-
-.player-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transform: translateY(90px);
-  height: 26.5%;
-  width: 17%;
-  margin: -40px 0px 0px 10px;
-}
-.player-info-img {
-  background-color: #a6b1b5;
-  height: 120px;
   width: 120px;
 }
-.player-info-text-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translateX(-20px);
-  font-family: "Cabin", sans-serif;
-}
-.player-info-text-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Cabin", sans-serif;
-}
-.player-info-cards {
+
+.actions-cont {
+  width: 50%;
   display: flex;
   justify-content: space-around;
-  width: 160px;
-  height: 100%;
-  margin: 30px 0px 0px 75px;
 }
-.player-info-cards-left-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("../image/deck400.png");
-  border-radius: 7px;
-}
-.player-info-cards-left-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("../image/deck400.png");
-  border-radius: 7px;
-}
-.player-info-cards-right-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("../image/deck400.png");
-  border-radius: 7px;
-}
-.player-info-cards-right-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("../image/deck400.png");
-  border-radius: 7px;
-}
-.player-info-chip-right {
+.actions-cont-text {
+  height: 65px;
+  width: 110px;
   display: flex;
-  width: 70%;
-  padding: 0 25px;
-  height: 50px;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 25px;
-  background-color: #494747;
-  color: white;
-}
-.player-info-chip-right-text {
-  display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-left: 30px;
-}
-.player-info-chip-right-text-name-right {
-  font-size: 15px;
-  height: 20px;
-}
-.player-info-chip-right-text-chips-right {
-  font-size: 15px;
-}
-.player-info-chip-right-img-right {
-  float: left;
-  margin: 0 10px 0 -25px;
-  height: 80px;
-  width: 80px;
-  border-radius: 50%;
-  transform: translateY(-10px);
-}
-.player-info-chip-left {
-  display: flex;
-  width: 70%;
-  padding: 0 25px;
-  height: 50px;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 25px;
-  background-color: #494747;
+  background-color: black;
   color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 30px;
 }
-.player-info-chip-left-text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-left: 30px;
-}
-.player-info-chip-left-text-name-left {
-  font-size: 15px;
-  height: 20px;
-}
-.player-info-chip-left-text-chips-left {
-  font-size: 15px;
-}
-.player-info-chip-left-img-left {
-  float: left;
-  margin: 0 10px 0 -25px;
-  height: 80px;
-  width: 80px;
-  border-radius: 50%;
-  transform: translateY(-10px);
-}
-
-#player-info-chip-line {
-  border-bottom: 1px solid white;
-  width: 170%;
-  transform: translateY(14px);
+.actions-cont-bet-amt {
+  height: 65px;
+  width: 110px;
+  text-align: center;
+  background-color: black;
+  border: black;
+  color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 30px;
 }
 
 .table {
@@ -242,7 +138,7 @@ table {
 }
 .table-trim {
   height: 60%;
-  width: 70%;
+  width: 60%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -312,31 +208,142 @@ table {
   font-family: "Cabin", sans-serif;
 }
 
-.actions-cont {
-  width: 50%;
+.player-info-left {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px -10px 0px -20px;
+}
+.player-info-left-cards {
   display: flex;
   justify-content: space-around;
+  width: 160px;
+  height: 100%;
+  margin: 20px 0px 0px 10px;
 }
-.actions-cont-text {
-  height: 65px;
-  width: 110px;
+.player-info-left-cards-1 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
+.player-info-left-cards-2 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
+.player-info-left-chip {
   display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #494747;
+  color: white;
+}
+.player-info-left-chip-text {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: black;
-  color: white;
-  font-family: "Cabin", sans-serif;
-  border-radius: 30px;
+  margin-right: 30px;
 }
-.actions-cont-bet-amt {
-  height: 65px;
-  width: 110px;
-  text-align: center;
-  background-color: black;
-  border: black;
+.player-info-left-chip-text-name {
+  font-size: 15px;
+  height: 20px;
+}
+.player-info-left-chip-text-chips {
+  font-size: 15px;
+}
+.player-info-left-chip-img {
+  float: left;
+  margin: 0 10px 0 -25px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  transform: translate(35px, -10px);
+}
+
+.player-info-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px 0px 0px -20px;
+}
+.player-info-right-cards {
+  display: flex;
+  justify-content: space-around;
+  width: 160px;
+  height: 100%;
+  margin: 20px 0px 0px 65px;
+}
+.player-info-right-cards-1 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
+.player-info-right-cards-2 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("../image/deck400.png");
+  border-radius: 7px;
+}
+.player-info-right-chip {
+  display: flex;
+  justify-content: flex-end;
+  width: 70%;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #494747;
   color: white;
-  font-family: "Cabin", sans-serif;
-  border-radius: 30px;
+  margin-left: 20px;
+}
+.player-info-right-chip-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 240px;
+}
+.player-info-right-chip-text-name {
+  font-size: 15px;
+  height: 20px;
+}
+.player-info-right-chip-text-chips {
+  font-size: 15px;
+}
+.player-info-right-chip-img {
+  float: left;
+  margin: 0 10px 0 -40px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  transform: translateY(-10px);
+}
+
+#player-info-left-chip-line {
+  border-bottom: 1px solid white;
+  width: 170%;
+  transform: translateY(14px);
+}
+
+#player-info-right-chip-line {
+  border-bottom: 1px solid white;
+  width: 100%;
+  transform: translateY(14px);
 }
 
 /*# sourceMappingURL=output.css.map */

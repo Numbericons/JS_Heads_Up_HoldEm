@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8">
     <title>No-Limit Texas Hold'em Poker</title>
-    <!-- <link rel="stylesheet" type="text/css" href="./stylesheets/main.css" /> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
     <script type="text/javascript" src="bundle.js"></script>
@@ -22,24 +21,22 @@
       </div>
       <div class="table">
         <div class="table-row">
-          <div class='player-info'>
-            <div class='player-info-cards'>
-              <div class='player-info-cards-left-1'></div>
-              <div class='player-info-cards-left-2'></div>
+          <div class='player-info-left'>
+            <div class='player-info-left-cards'>
+              <div class='player-info-left-cards-1'></div>
+              <div class='player-info-left-cards-2'></div>
             </div>
-            <div class="player-info-chip-left">
-              <div class='player-info-chip-text'>
-                <h5 class='player-info-chip-text-name-left'>player2</h5>
-                <div id="player-info-chip-line"></div>
-                <h5 class='player-info-chip-text-chips-left'>player2 chips</h5>
-                <!-- <h5 class='player-info-cards-left'></h5> -->
+            <div class="player-info-left-chip">
+              <div class='player-info-left-chip-text'>
+                <h5 class='player-info-left-chip-text-name'>player2</h5>
+                <div id="player-info-left-chip-line"></div>
+                <h5 class='player-info-left-chip-text-chips'>player2 chips</h5>
               </div>
-              <img class='player-info-chip-img-left' src="./image/oreo.png" alt="player" width="96" height="96">
+              <img class='player-info-left-chip-img' src="./image/malko2.jpg" alt="player" width="96" height="96">
             </div>
           </div>
           <div class="table-trim">
             <div class="table-felt">
-              <!-- <h5 class="table-felt-board"></h5> -->
               <div class="table-felt-board">
                 <div class="table-felt-board-card-1"></div>
                 <div class="table-felt-board-card-2"></div>
@@ -56,45 +53,30 @@
               <h5 class="table-felt-pot">Pot placeholder</h5>
             </div>
           </div>
-          <div class='player-info'>
-            <!-- <img class='player-info-img' src="./image/deck.png" alt="player 1"> -->
-            <div class='player-info-cards'>
-              <div class='player-info-cards-right-1'></div>
-              <div class='player-info-cards-right-2'></div>
+          <div class='player-info-right'>
+            <div class='player-info-right-cards'>
+              <div class='player-info-right-cards-1'></div>
+              <div class='player-info-right-cards-2'></div>
             </div>
-            <div class='player-info-chip-right'>
-              <img class='player-info-chip-img-right' src="./image/oreo.png" alt="player" width="96" height="96">
-              <div class='player-info-chip-text'>
-                <h5 class='player-info-chip-text-name-right'>player1</h5>
-                <div id="player-info-chip-line"></div>
-                <h5 class='player-info-chip-text-chips-right'>player1 chips</h5>
+            <div class='player-info-right-chip'>
+              <!-- <img class='player-info-right-chip-img' src="./image/MattDamonCartoon6.jpg" alt="player" width="96" height="96"> -->
+              <img class='player-info-right-chip-img' src="./image/MattDamonScuffedUp.jpg" alt="player" width="96" height="96">
+              <div class='player-info-right-chip-text'>
+                <h5 class='player-info-right-chip-text-name'>player1</h5>
+                <div id="player-info-right-chip-line"></div>
+                <h5 class='player-info-right-chip-text-chips'>player1 chips</h5>
               </div>
             </div>
           </div>
         </div>
         <h3></h3>
         <h3 class="table-actions-prompt">Hello from prompt!</h3>
-        <!-- <h3 class="table-actions-text">Hello from action text!</h3> -->
         <div class="table-actions">
-          <!-- <div class="actions-cont">
-            <div class="actions-cont-text" id="fold">FOLD</div>
-            <div class="actions-cont-text" id="check-call">CHECK/CALL</div>
-            <div class="actions-cont-text" id="bet-raise">BET/RAISE</div>
-            <input class="actions-cont-bet-amt" type="number" value="0">
-          </div> -->
         </div>
       </div>
       <h4>Open the Dev Tools and let the chips fly!</h4>
       <h6 class="top-bar-author-made">Made by: Numbericons</h6>
       <p class="input"></p>
     </div>
-    <!-- <script>
-      document.getElementById("fold").addEventListener("click", handleFold);
-
-      function handleFold() {
-        document.querySelector(".table-actions-prompt").innerText = "FOLDED!";
-        document.querySelector(".input").innerText = "fold";
-      }
-    </script> -->
   </body>
 </html>

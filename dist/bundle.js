@@ -13100,7 +13100,7 @@ function () {
     this.hand = [];
     this.comp = true;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
-    this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
+    this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
   }
 
   _createClass(ComputerPlayer, [{
@@ -13118,7 +13118,7 @@ function () {
     key: "promptAction",
     value: function promptAction(to_call) {// this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
       // if (to_call === 0) {
-      //   this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
+      //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
       // } else {
       //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
       // }
@@ -13189,23 +13189,23 @@ function () {
   }, {
     key: "playerName",
     value: function playerName() {
-      var playerName = document.querySelector(".player-info-chip-text-name-".concat(this.side));
+      var playerName = document.querySelector(".player-info-".concat(this.side, "-chip-text-name"));
       playerName.innerText = "".concat(this.name);
     }
   }, {
     key: "playerChips",
     value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-chip-text-chips-".concat(this.side));
+      var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack, " chips");
     }
   }, {
     key: "playerCards",
     value: function playerCards() {
       if (this.hand[0]) {
-        var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
-        var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
-        this.hand[0].render(playerCard1, "54%", "97%");
-        this.hand[1].render(playerCard2, "54%", "97%");
+        var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
+        var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
+        this.hand[0].render(playerCard1, "54%", "89%");
+        this.hand[1].render(playerCard2, "54%", "89%");
       }
     }
   }, {
@@ -13260,7 +13260,7 @@ function () {
     this.hand = [];
     this.comp = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
-    this.side === 'right' ? this.name = 'Seat 1' : this.name = 'Seat 2';
+    this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
   } // text(input){
   //   let textSelect = document.querySelector(".table-actions-text");
   //   textSelect.innerText = input;
@@ -13278,7 +13278,7 @@ function () {
     value: function promptAction(to_call) {
       // this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
       if (to_call === 0) {
-        this.promptText("".concat(this.name, ", enter 'check', 'fold', or 'bet'"));
+        this.promptText("Enter 'check', 'fold', or 'bet'");
       } else {
         this.promptText("It costs $".concat(to_call, " to call"));
       }
@@ -13306,23 +13306,23 @@ function () {
   }, {
     key: "playerName",
     value: function playerName() {
-      var playerName = document.querySelector(".player-info-chip-text-name-".concat(this.side));
+      var playerName = document.querySelector(".player-info-".concat(this.side, "-chip-text-name"));
       playerName.innerText = "".concat(this.name);
     }
   }, {
     key: "playerChips",
     value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-chip-text-chips-".concat(this.side));
+      var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack, " chips");
     }
   }, {
     key: "playerCards",
     value: function playerCards() {
       if (this.hand[0]) {
-        var playerCard1 = document.querySelector(".player-info-cards-".concat(this.side, "-1"));
-        var playerCard2 = document.querySelector(".player-info-cards-".concat(this.side, "-2"));
-        this.hand[0].render(playerCard1, "54%", "97%");
-        this.hand[1].render(playerCard2, "54%", "97%");
+        var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
+        var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
+        this.hand[0].render(playerCard1, "54%", "89%");
+        this.hand[1].render(playerCard2, "54%", "89%");
       }
     }
   }, {

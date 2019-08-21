@@ -1,0 +1,136 @@
+.player-info-left{
+  display: flex;
+  flex-direction: column;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px -10px 0px -20px;
+  &-cards{
+    display: flex;
+    justify-content: space-around;
+    width: 160px;
+    height: 100%;
+    margin: 20px 0px 0px 10px;
+    &-1{
+      background-position-x: -6px;
+      background-position-y: -8px;
+      background-image: url("../image/deck400.png");
+      border-radius: 7px;
+    }
+    &-2{
+      background-position-x: -6px; //-84 - -6 = -78
+      background-position-y: -8px; //-122 - -8 = -114
+      background-image: url("../image/deck400.png");
+      border-radius: 7px;
+    }
+  }
+  &-chip{
+    display: flex;
+    justify-content: flex-end;
+    width: 80%;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #494747;
+    color: white;
+    &-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-right: 30px;
+      &-name{
+        font-size: 15px;
+        height: 20px;
+      }
+      &-chips{
+        font-size: 15px;
+      }
+    }
+    &-img{
+      float: left;
+      margin: 0 10px 0 -25px;
+      height: 80px;
+      width: 80px;
+      border-radius: 50%;
+      transform: translate(35px, -10px);
+    }
+  }
+}
+
+.player-info-right{
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px 0px 0px -20px;
+  &-cards{
+    display: flex;
+    justify-content: space-around;
+    width: 160px;
+    height: 100%;
+    margin: 20px 0px 0px 65px;
+    &-1{
+      background-position-x: -6px;
+      background-position-y: -8px;
+      background-image: url("../image/deck400.png");
+      border-radius: 7px;
+    }
+    &-2{
+      background-position-x: -6px; //-84 - -6 = -78
+      background-position-y: -8px; //-122 - -8 = -114
+      background-image: url("../image/deck400.png");
+      border-radius: 7px;
+    }
+  }
+  &-chip{
+    display: flex;
+    justify-content: flex-end;
+    width: 70%;
+    padding: 0 25px;
+    height: 50px;
+    font-size: 16px;
+    line-height: 50px;
+    border-radius: 25px;
+    background-color: #494747;
+    color: white;
+    margin-left: 20px;
+    &-text {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 240px;
+      &-name{
+        font-size: 15px;
+        height: 20px;
+      }
+      &-chips{
+        font-size: 15px;
+      }
+    }
+    &-img{
+      float: left;
+      margin: 0 10px 0 -40px;
+      height: 80px;
+      width: 80px;
+      border-radius: 50%;
+      transform: translateY(-10px);
+    }
+  }
+}
+
+#player-info-left-chip-line{
+   border-bottom: 1px solid white;
+    width: 170%;
+    transform: translateY(14px);
+}
+#player-info-right-chip-line{
+   border-bottom: 1px solid white;
+    width: 100%;
+    transform: translateY(14px);
+}

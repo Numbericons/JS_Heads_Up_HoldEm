@@ -31,7 +31,8 @@
     "build": "webpack",
     "start": "webpack-dev-server",
     "webpack": "webpack --watch --mode=development",
-    "dev": "sass --watch input.scss:output.css"
+    "sass": "sass --watch dist/stylesheets/input.scss:dist/stylesheets/output.css",
+    "dev": "concurrently \"npm run sass\" \"npm run webpack\""
   },
   "repository": {
     "type": "git",
