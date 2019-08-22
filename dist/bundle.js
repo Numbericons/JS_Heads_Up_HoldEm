@@ -13081,6 +13081,10 @@ $(function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13113,20 +13117,17 @@ function () {
     }
   }, {
     key: "promptText",
-    value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-actions-prompt");
-      promptSelect.innerText = input;
+    value: function promptText(input) {// let promptSelect = document.querySelector(".table-actions-prompt");
+      // promptSelect.innerText = input;
     }
   }, {
     key: "promptAction",
-    value: function promptAction() {
-      // this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
+    value: function promptAction(to_call) {// this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
       // if (to_call === 0) {
       //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
       // } else {
       //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
       // }
-      return this.promptText('Processing..');
     }
   }, {
     key: "genBetRaise",
@@ -13143,34 +13144,124 @@ function () {
       }
     }
   }, {
-    key: "promptResponse",
-    value: function promptResponse(to_call, stack, pot) {
-      var randNum = Math.random();
-
-      if (randNum < .3333) {
-        if (to_call > 0) {
-          return ['fold'];
-        } else {
-          if (randNum < .16666) {
-            return ['check'];
-          } else {
-            return this.genBetRaise(to_call, stack, pot);
-          }
-        }
-      } else if (randNum < .6666) {
-        if (to_call > 0) {
-          return ['call'];
-        } else {
-          return ['check'];
-        }
-      } else {
-        if (to_call === 0) {
-          return this.genBetRaise(to_call, stack, pot);
-        } else {
-          return ['call'];
-        }
-      }
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
     }
+  }, {
+    key: "promptResponse",
+    value: function () {
+      var _promptResponse = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee(to_call, stack, pot) {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.sleep(2000).then(this.resolvePrompt(to_call, stack, pot));
+
+              case 2:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function promptResponse(_x, _x2, _x3) {
+        return _promptResponse.apply(this, arguments);
+      }
+
+      return promptResponse;
+    }()
+  }, {
+    key: "resolvePrompt",
+    value: function () {
+      var _resolvePrompt = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee2(to_call, stack, pot) {
+        var randNum;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                randNum = Math.random();
+
+                if (!(randNum < .3333)) {
+                  _context2.next = 13;
+                  break;
+                }
+
+                if (!(to_call > 0)) {
+                  _context2.next = 6;
+                  break;
+                }
+
+                return _context2.abrupt("return", ['fold']);
+
+              case 6:
+                if (!(randNum < .16666)) {
+                  _context2.next = 10;
+                  break;
+                }
+
+                return _context2.abrupt("return", ['check']);
+
+              case 10:
+                return _context2.abrupt("return", this.genBetRaise(to_call, stack, pot));
+
+              case 11:
+                _context2.next = 26;
+                break;
+
+              case 13:
+                if (!(randNum < .6666)) {
+                  _context2.next = 21;
+                  break;
+                }
+
+                if (!(to_call > 0)) {
+                  _context2.next = 18;
+                  break;
+                }
+
+                return _context2.abrupt("return", ['call']);
+
+              case 18:
+                return _context2.abrupt("return", ['check']);
+
+              case 19:
+                _context2.next = 26;
+                break;
+
+              case 21:
+                if (!(to_call === 0)) {
+                  _context2.next = 25;
+                  break;
+                }
+
+                return _context2.abrupt("return", this.genBetRaise(to_call, stack, pot));
+
+              case 25:
+                return _context2.abrupt("return", ['call']);
+
+              case 26:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function resolvePrompt(_x4, _x5, _x6) {
+        return _resolvePrompt.apply(this, arguments);
+      }
+
+      return resolvePrompt;
+    }()
   }, {
     key: "resolve_action",
     value: function resolve_action(to_call, betInput, textInput) {
@@ -13654,7 +13745,7 @@ function () {
                 }
 
                 _context.next = 6;
-                return this.sleep(500);
+                return this.sleep(700);
 
               case 6:
                 this.showBoardCard(i); // setTimeout(this.showBoardCard(i), 5000);

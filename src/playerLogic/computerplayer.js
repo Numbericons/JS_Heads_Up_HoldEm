@@ -18,18 +18,17 @@ export default class ComputerPlayer {
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
-    promptSelect.innerText = input;
+    // let promptSelect = document.querySelector(".table-actions-prompt");
+    // promptSelect.innerText = input;
   }
 
-  promptAction() {
+  promptAction(to_call) {
     // this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
     // if (to_call === 0) {
     //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
     // } else {
     //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
     // }
-    return this.promptText('Processing..');
   }
   genBetRaise(to_call, stack, pot){
     let randNum = Math.random()
@@ -43,7 +42,15 @@ export default class ComputerPlayer {
     }
   }
 
-  promptResponse(to_call, stack, pot){
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async promptResponse(to_call, stack, pot){
+    await this.sleep(2000).then(this.resolvePrompt(to_call, stack, pot));
+  }
+
+  async resolvePrompt(to_call, stack, pot){
     let randNum = Math.random()
     if (randNum < .3333) {
       if (to_call > 0) {
