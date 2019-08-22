@@ -40,33 +40,56 @@
       display: flex;
       margin-top: 80px;
       // font-size: 50px;
-      // font-family: 'Cabin', sans-serif;
+      &-bet-player-1{
+        font-family: 'Cabin', sans-serif;
+        // margin-left: 60px;
+        align-self: center;
+        margin-right: 103px;
+        padding: 10px;
+      }
+      &-bet-player-2{
+        font-family: 'Cabin', sans-serif;
+        margin-right: 20px;
+        align-self: center;
+      }
     }
-    &-dealer-btn-img{
-      width: 35px;
-      height: 35px;
-    }
-    &-dealer-btn-left{
-      width:100%;
+    &-dealer-btn{
       display: flex;
-      transform: translateY(-130px);
-    }
-    &-dealer-btn-left-board{
-      width:100%;
-      display: flex;
-      transform: translateY(-125px);
-    }
-    &-dealer-btn-right{
-      width:100%;
-      display: flex;
-      justify-content: flex-end;
-      transform: translateY(-130px);
-    }
-    &-dealer-btn-right-board{
-      width:100%;
-      display: flex;
-      justify-content: flex-end;
-      transform: translateY(-125px);
+      justify-content: space-between;
+      height: 20%;
+      // border: 1px solid black;
+      width: 100%;
+      transform: translateY(-110px);
+      align-items: center;
+      &-img{
+        width: 35px;
+        height: 35px;
+      }
+      &-left{
+        width:22%;
+        // transform: translateY(-19px);
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
+      }
+      &-left-board{
+        width:22%;
+        display: flex;
+        transform: translateY(-20px);
+      }
+      &-right{
+        width:22%;
+        display: flex;
+        justify-content: flex-end;
+        // transform: translateY(-19px);
+        align-items: baseline;
+      }
+      &-right-board{
+        width:22%;
+        display: flex;
+        justify-content: flex-end;
+        // transform: translateY(-20px);
+      }
     }
     &-pot{
       font-size: 24px;

@@ -165,31 +165,50 @@ table {
   display: flex;
   margin-top: 80px;
 }
+.table-felt-board-bet-player-1 {
+  font-family: "Cabin", sans-serif;
+  align-self: center;
+  margin-right: 103px;
+  padding: 10px;
+}
+.table-felt-board-bet-player-2 {
+  font-family: "Cabin", sans-serif;
+  margin-right: 20px;
+  align-self: center;
+}
+.table-felt-dealer-btn {
+  display: flex;
+  justify-content: space-between;
+  height: 20%;
+  width: 100%;
+  transform: translateY(-110px);
+  align-items: center;
+}
 .table-felt-dealer-btn-img {
   width: 35px;
   height: 35px;
 }
 .table-felt-dealer-btn-left {
-  width: 100%;
+  width: 22%;
   display: flex;
-  transform: translateY(-130px);
+  justify-content: flex-end;
+  align-items: baseline;
 }
 .table-felt-dealer-btn-left-board {
-  width: 100%;
+  width: 22%;
   display: flex;
-  transform: translateY(-125px);
+  transform: translateY(-20px);
 }
 .table-felt-dealer-btn-right {
-  width: 100%;
+  width: 22%;
   display: flex;
   justify-content: flex-end;
-  transform: translateY(-130px);
+  align-items: baseline;
 }
 .table-felt-dealer-btn-right-board {
-  width: 100%;
+  width: 22%;
   display: flex;
   justify-content: flex-end;
-  transform: translateY(-125px);
 }
 .table-felt-pot {
   font-size: 24px;

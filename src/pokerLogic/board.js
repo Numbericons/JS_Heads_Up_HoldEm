@@ -207,7 +207,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "52%")
+    this.boardCards[pos].render(card, "17.5%", "58%")
   }
 
   async showBoard() {
