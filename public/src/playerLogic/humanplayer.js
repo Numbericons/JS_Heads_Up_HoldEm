@@ -67,8 +67,7 @@ export default class HumanPlayer {
     this.playerName();
     this.playerChips();
     this.playerCards();
-    let chipVal = (this.streetChipsInPot > 0) ? '$' + this.streetChipsInPot : "";
-    $(`.table-felt-board-bet-player-1`).text(chipVal);
+    $(`.table-felt-board-bet-player-1`).text('$' + this.streetChipsInPot);
   }
 
   resetVars(){

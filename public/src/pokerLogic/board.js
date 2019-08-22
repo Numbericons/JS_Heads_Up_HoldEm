@@ -84,7 +84,6 @@ export default class Board {
   }
 
   tie(hand) {
-    this.revealCards();
     alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
@@ -241,11 +240,7 @@ export default class Board {
     }
   }
 
-  async promptPlayer() {
-    this.button.$el.empty();
-    this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
-    await this.sleep(wait);
+  promptPlayer() {
     let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
     if (response) {
       this.resolvePlayerPrompt(response);

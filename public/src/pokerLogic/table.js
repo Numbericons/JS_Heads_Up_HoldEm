@@ -1,4 +1,3 @@
-import "babel-polyfill";
 import Board from "./board.js";
 import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
@@ -41,12 +40,7 @@ class Table {
     this.board.playHand();
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  async nextHand(){
-    await this.sleep(3000);
+  nextHand(){
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

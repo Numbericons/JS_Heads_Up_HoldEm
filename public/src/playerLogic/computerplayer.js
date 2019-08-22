@@ -1,3 +1,4 @@
+import "babel-polyfill";
 export default class ComputerPlayer {
   constructor(position, chipstack) {
     this.position = position;
@@ -18,8 +19,8 @@ export default class ComputerPlayer {
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
-    promptSelect.innerText = input;
+    // let promptSelect = document.querySelector(".table-actions-prompt");
+    // promptSelect.innerText = input;
   }
 
   promptAction(to_call) {
@@ -41,7 +42,11 @@ export default class ComputerPlayer {
       return ['betRaise', raise];
     }
   }
-  
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   promptResponse(to_call, stack, pot){
     let randNum = Math.random()
     if (randNum < .3333) {
@@ -111,8 +116,7 @@ export default class ComputerPlayer {
     this.playerName();
     this.playerChips();
     this.playerCards();
-    let chipVal = (this.streetChipsInPot > 0) ? '$' + this.streetChipsInPot : "";
-    $(`.table-felt-board-bet-player-2`).text(chipVal);
+    $(`.table-felt-board-bet-player-2`).text('$' + this.streetChipsInPot);
   }
 
   resetVars() {
