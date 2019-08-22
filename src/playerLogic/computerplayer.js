@@ -18,17 +18,18 @@ export default class ComputerPlayer {
   }
 
   promptText(input) {
-    // let promptSelect = document.querySelector(".table-actions-prompt");
-    // promptSelect.innerText = input;
+    let promptSelect = document.querySelector(".table-actions-prompt");
+    promptSelect.innerText = input;
   }
 
-  promptAction(to_call) {
+  promptAction() {
     // this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
     // if (to_call === 0) {
     //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
     // } else {
     //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
     // }
+    return this.promptText('Processing..');
   }
   genBetRaise(to_call, stack, pot){
     let randNum = Math.random()
@@ -102,8 +103,8 @@ export default class ComputerPlayer {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
-      this.hand[0].render(playerCard1, "54%", "89%");
-      this.hand[1].render(playerCard2, "54%", "89%");
+      this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
+      this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
     }
   }
 

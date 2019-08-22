@@ -198,7 +198,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "58%")
+    this.boardCards[pos].render(card, "17.5%", "58%", true)
   }
 
   async showBoard() {
@@ -337,10 +337,7 @@ export default class Board {
   }
 
   revealCards() {
-    this.players.forEach(player => {
-      player.hand[0].revealed = true;
-      player.hand[1].revealed = true;
-    })
+    this.players.forEach(player => { player.revealed = true })
   }
 
   showDown() {

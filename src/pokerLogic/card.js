@@ -5,30 +5,31 @@ export default class Card {
     this.rank = rank;
     this.img_pos_x = img_pos_x;
     this.img_pos_y = img_pos_y;
-    this.revealed = revealed;
   }
 
   display(element, width, height){
+    // element.empty();
+    element.style.backgroundImage = 'url("./image/deck400.png")';
     element.style.backgroundPosition = `${this.img_pos_x}px ${this.img_pos_y}px`;
     element.style.width = width; //40%    .1143  .57 * 140 px   80%
     element.style.height = height; //80%  .16
-    element.style.backgroundImage = 'url("./image/deck400.png")';
     element.style.borderRadius = "7px";
     element.style.marginLeft = "10px";
+    element.style.backgroundSize = "";
   }
 
   hide(element, width, height){
+    element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
     element.style.backgroundPosition = ' -2px -4px';
     element.style.width = width; 
     element.style.height = height;
-    element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
     element.style.borderRadius = "7px";
     element.style.marginLeft = "10px";
     element.style.backgroundSize = "75px 112px";
   }
 
-  render(element, width, height){
-    (this.revealed) ? this.display(element, width, height) : this.hide(element, width, height)
+  render(element, width, height, revealed){
+    (revealed) ? this.display(element, width, height) : this.hide(element, width, height)
   }
 
   unrender(element){

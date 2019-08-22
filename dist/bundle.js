@@ -13113,17 +13113,20 @@ function () {
     }
   }, {
     key: "promptText",
-    value: function promptText(input) {// let promptSelect = document.querySelector(".table-actions-prompt");
-      // promptSelect.innerText = input;
+    value: function promptText(input) {
+      var promptSelect = document.querySelector(".table-actions-prompt");
+      promptSelect.innerText = input;
     }
   }, {
     key: "promptAction",
-    value: function promptAction(to_call) {// this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
+    value: function promptAction() {
+      // this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
       // if (to_call === 0) {
       //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
       // } else {
       //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
       // }
+      return this.promptText('Processing..');
     }
   }, {
     key: "genBetRaise",
@@ -13208,8 +13211,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, "54%", "89%");
-        this.hand[1].render(playerCard2, "54%", "89%");
+        this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
+        this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
       }
     }
   }, {
@@ -13326,8 +13329,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, "54%", "89%");
-        this.hand[1].render(playerCard2, "54%", "89%");
+        this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
+        this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
       }
     }
   }, {
@@ -13621,7 +13624,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "58%");
+      this.boardCards[pos].render(card, "17.5%", "58%", true);
     }
   }, {
     key: "showBoard",
@@ -13831,8 +13834,7 @@ function () {
     key: "revealCards",
     value: function revealCards() {
       this.players.forEach(function (player) {
-        player.hand[0].revealed = true;
-        player.hand[1].revealed = true;
+        player.revealed = true;
       });
     }
   }, {
@@ -14034,36 +14036,37 @@ function () {
     this.rank = rank;
     this.img_pos_x = img_pos_x;
     this.img_pos_y = img_pos_y;
-    this.revealed = revealed;
   }
 
   _createClass(Card, [{
     key: "display",
     value: function display(element, width, height) {
+      // element.empty();
+      element.style.backgroundImage = 'url("./image/deck400.png")';
       element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
       element.style.width = width; //40%    .1143  .57 * 140 px   80%
 
       element.style.height = height; //80%  .16
 
-      element.style.backgroundImage = 'url("./image/deck400.png")';
       element.style.borderRadius = "7px";
       element.style.marginLeft = "10px";
+      element.style.backgroundSize = "";
     }
   }, {
     key: "hide",
     value: function hide(element, width, height) {
+      element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
       element.style.backgroundPosition = ' -2px -4px';
       element.style.width = width;
       element.style.height = height;
-      element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
       element.style.borderRadius = "7px";
       element.style.marginLeft = "10px";
       element.style.backgroundSize = "75px 112px";
     }
   }, {
     key: "render",
-    value: function render(element, width, height) {
-      this.revealed ? this.display(element, width, height) : this.hide(element, width, height);
+    value: function render(element, width, height, revealed) {
+      revealed ? this.display(element, width, height) : this.hide(element, width, height);
     }
   }, {
     key: "unrender",
