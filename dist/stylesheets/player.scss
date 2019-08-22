@@ -14,13 +14,13 @@
     &-1{
       background-position-x: -6px;
       background-position-y: -8px;
-      background-image: url("../image/deck400.png");
+      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-radius: 7px;
     }
     &-2{
       background-position-x: -6px; //-84 - -6 = -78
       background-position-y: -8px; //-122 - -8 = -114
-      background-image: url("../image/deck400.png");
+      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-radius: 7px;
     }
   }
@@ -77,13 +77,13 @@
     &-1{
       background-position-x: -6px;
       background-position-y: -8px;
-      background-image: url("../image/deck400.png");
+      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-radius: 7px;
     }
     &-2{
       background-position-x: -6px; //-84 - -6 = -78
       background-position-y: -8px; //-122 - -8 = -114
-      background-image: url("../image/deck400.png");
+      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-radius: 7px;
     }
   }
@@ -123,15 +123,6 @@
     }
   }
 }
-
-// .player-info-left-cards{
-//   display: flex;
-//   justify-content: space-around;
-//   width: 160px;
-//   height: 100%;
-//   margin: 20px 0px 0px 10px;
-// }
-
 #player-info-left-chip-line{
    border-bottom: 1px solid white;
     width: 170%;

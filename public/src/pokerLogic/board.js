@@ -104,9 +104,6 @@ export default class Board {
     this.players[winPos].chipstack += this.pot;
     this.renderPlayers();
     alert(this.outputString);
-    // this.renderPlayers().then(res => {
-    //   alert(this.outputString);
-    // })
     this.table.handOver();
   }
 
@@ -206,7 +203,6 @@ export default class Board {
     for (let i = this.startCard(); i < this.boardCards.length; i++) {
       await this.sleep(500);
       this.showBoardCard(i);
-      // setTimeout(this.showBoardCard(i), 5000);
     };
   }
 

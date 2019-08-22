@@ -9,7 +9,7 @@ export default class Card {
 
   display(element, width, height){
     // element.empty();
-    element.style.backgroundImage = 'url("./image/deck400.png")';
+    element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
     element.style.backgroundPosition = `${this.img_pos_x}px ${this.img_pos_y}px`;
     element.style.width = width; //40%    .1143  .57 * 140 px   80%
     element.style.height = height; //80%  .16
@@ -19,7 +19,7 @@ export default class Card {
   }
 
   hide(element, width, height){
-    element.style.backgroundImage = 'url("./image/cardback_red_acorn2.jpg")';
+    element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/cardback_red_acorn2.jpg")';
     element.style.backgroundPosition = ' -2px -4px';
     element.style.width = width; 
     element.style.height = height;
