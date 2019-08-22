@@ -39,17 +39,6 @@ export default class Board {
     this.currStreet = 'preflop';
   }
 
-  // showDealerBtn() {
-  //   dealerButton.removeClass();
-  //   if (this.table.handNum % 2 === 0) {
-  //     let dealerButtonLeft = $('#table-felt-dealer-btn-img');
-  //     let dealerButtonRight = $('#table-felt-dealer-btn-img');
-  //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
-  //   } else {
-  //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
-  //   }
-  // }
-
   showDealerBtn() {
     if (this.table.handNum % 2 === 0) {
       $('#dealer-right-img').addClass("display-none");
@@ -160,9 +149,11 @@ export default class Board {
     if (player.chipstack > blind) {
       player.chipstack -= blind;
       player.chipsInPot = blind;
+      player.streetChipsInPot = blind;
       return blind;
     } else {
       player.chipsInPot = player.chipstack;
+      player.streetChipsInPot = player.chipstack;
       player.chipstack = 0;
       return player.chipsInPot;
     }
@@ -337,6 +328,7 @@ export default class Board {
         this.showDown();
         this.determineWinner();
       } else if (this.currStreet === 'river' && multipleActions) {
+        this.revealCards();
         this.determineWinner();
       } else if (multipleActions) {
         this.nextStreet();
@@ -368,6 +360,8 @@ export default class Board {
   nextStreet() {
     this.streetActions = [];
     this.currBet = 0;
+    this.players[0].streetChipsInPot = 0;
+    this.players[1].streetChipsInPot = 0;
     if (this.currStreet === 'preflop') {
       this.currStreet = 'flop';
       this.stepStreet(true);

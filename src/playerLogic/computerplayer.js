@@ -4,8 +4,10 @@ export default class ComputerPlayer {
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = true;
+    this.revealed = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
   }
@@ -76,10 +78,12 @@ export default class ComputerPlayer {
     } else if (textInput === 'call') {
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
+      this.streetChipsInPot += to_call;
       return to_call;
     } else {
       this.chipstack -= betInput + sb;
       this.chipsInPot += betInput + sb;
+      this.streetChipsInPot += betInput + sb;
       return betInput + sb;
     }
   }
@@ -107,11 +111,13 @@ export default class ComputerPlayer {
     this.playerName();
     this.playerChips();
     this.playerCards();
+    $(`.table-felt-board-bet-player-2`).text('$' + this.streetChipsInPot);
   }
 
   resetVars() {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
+    this.revealed = false;
   }
 }

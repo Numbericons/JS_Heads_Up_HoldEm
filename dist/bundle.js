@@ -13097,8 +13097,10 @@ function () {
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = true;
+    this.revealed = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
   }
@@ -13179,10 +13181,12 @@ function () {
       } else if (textInput === 'call') {
         this.chipstack -= to_call;
         this.chipsInPot += to_call;
+        this.streetChipsInPot += to_call;
         return to_call;
       } else {
         this.chipstack -= betInput + sb;
         this.chipsInPot += betInput + sb;
+        this.streetChipsInPot += betInput + sb;
         return betInput + sb;
       }
     }
@@ -13214,6 +13218,7 @@ function () {
       this.playerName();
       this.playerChips();
       this.playerCards();
+      $(".table-felt-board-bet-player-2").text('$' + this.streetChipsInPot);
     }
   }, {
     key: "resetVars",
@@ -13221,6 +13226,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
+      this.revealed = false;
     }
   }]);
 
@@ -13257,15 +13263,13 @@ function () {
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = false;
+    this.revealed = true;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-  } // text(input){
-  //   let textSelect = document.querySelector(".table-actions-text");
-  //   textSelect.innerText = input;
-  // }
-
+  }
 
   _createClass(HumanPlayer, [{
     key: "promptText",
@@ -13276,7 +13280,6 @@ function () {
   }, {
     key: "promptAction",
     value: function promptAction(to_call) {
-      // this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
       if (to_call === 0) {
         this.promptText("Enter 'check', 'fold', or 'bet'");
       } else {
@@ -13296,10 +13299,12 @@ function () {
       } else if (textInput === 'call') {
         this.chipstack -= to_call;
         this.chipsInPot += to_call;
+        this.streetChipsInPot += to_call;
         return to_call;
       } else {
         this.chipstack -= betInput + sb;
         this.chipsInPot += betInput + sb;
+        this.streetChipsInPot += betInput + sb;
         return betInput + sb;
       }
     }
@@ -13331,12 +13336,14 @@ function () {
       this.playerName();
       this.playerChips();
       this.playerCards();
+      $(".table-felt-board-bet-player-1").text('$' + this.streetChipsInPot);
     }
   }, {
     key: "resetVars",
     value: function resetVars() {
       this.folded = false;
       this.chipsInPot = 0;
+      this.streetChipsInPot = 0;
       this.hand = [];
     }
   }]);
@@ -13424,17 +13431,7 @@ function () {
       this.currBet = this.sb;
       this.streetActions = [];
       this.currStreet = 'preflop';
-    } // showDealerBtn() {
-    //   dealerButton.removeClass();
-    //   if (this.table.handNum % 2 === 0) {
-    //     let dealerButtonLeft = $('#table-felt-dealer-btn-img');
-    //     let dealerButtonRight = $('#table-felt-dealer-btn-img');
-    //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
-    //   } else {
-    //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
-    //   }
-    // }
-
+    }
   }, {
     key: "showDealerBtn",
     value: function showDealerBtn() {
@@ -13565,9 +13562,11 @@ function () {
       if (player.chipstack > blind) {
         player.chipstack -= blind;
         player.chipsInPot = blind;
+        player.streetChipsInPot = blind;
         return blind;
       } else {
         player.chipsInPot = player.chipstack;
+        player.streetChipsInPot = player.chipstack;
         player.chipstack = 0;
         return player.chipsInPot;
       }
@@ -13821,6 +13820,7 @@ function () {
           this.showDown();
           this.determineWinner();
         } else if (this.currStreet === 'river' && multipleActions) {
+          this.revealCards();
           this.determineWinner();
         } else if (multipleActions) {
           this.nextStreet();
@@ -13857,6 +13857,8 @@ function () {
     value: function nextStreet() {
       this.streetActions = [];
       this.currBet = 0;
+      this.players[0].streetChipsInPot = 0;
+      this.players[1].streetChipsInPot = 0;
 
       if (this.currStreet === 'preflop') {
         this.currStreet = 'flop';

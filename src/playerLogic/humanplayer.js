@@ -4,16 +4,13 @@ export default class HumanPlayer {
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = false;
+    this.revealed = true;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
   }
-
-  // text(input){
-  //   let textSelect = document.querySelector(".table-actions-text");
-  //   textSelect.innerText = input;
-  // }
 
   promptText(input){
     let promptSelect = document.querySelector(".table-actions-prompt");
@@ -21,7 +18,6 @@ export default class HumanPlayer {
   }
 
   promptAction(to_call){
-    // this.text(`${this.name}, your hand is ${this.hand[0].rank}${this.hand[0].suit} ${this.hand[1].rank}${this.hand[1].suit}`)
     if (to_call === 0) {
       this.promptText(`Enter 'check', 'fold', or 'bet'`)
     } else {
@@ -38,10 +34,12 @@ export default class HumanPlayer {
     } else if (textInput === 'call') {
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
+      this.streetChipsInPot += to_call;
       return to_call;
     } else {
       this.chipstack -= betInput + sb;
       this.chipsInPot += betInput + sb;
+      this.streetChipsInPot += betInput + sb;
       return betInput + sb;
     }
   }
@@ -69,11 +67,13 @@ export default class HumanPlayer {
     this.playerName();
     this.playerChips();
     this.playerCards();
+    $(`.table-felt-board-bet-player-1`).text('$' + this.streetChipsInPot);
   }
 
   resetVars(){
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
   }
 }

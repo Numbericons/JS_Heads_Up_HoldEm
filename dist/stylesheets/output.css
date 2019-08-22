@@ -168,13 +168,14 @@ table {
 .table-felt-board-bet-player-1 {
   font-family: "Cabin", sans-serif;
   align-self: center;
-  margin-right: 103px;
+  margin-right: 20px;
   padding: 10px;
 }
 .table-felt-board-bet-player-2 {
   font-family: "Cabin", sans-serif;
-  margin-right: 20px;
+  margin-right: 105px;
   align-self: center;
+  padding: 15px;
 }
 .table-felt-dealer-btn {
   display: flex;
@@ -193,11 +194,12 @@ table {
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
+  margin-left: 45px;
 }
 .table-felt-dealer-btn-left-board {
   width: 22%;
   display: flex;
-  transform: translateY(-20px);
+  margin-right: 15px;
 }
 .table-felt-dealer-btn-right {
   width: 22%;
