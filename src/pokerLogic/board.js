@@ -39,13 +39,28 @@ export default class Board {
     this.currStreet = 'preflop';
   }
 
+  // showDealerBtn() {
+  //   dealerButton.removeClass();
+  //   if (this.table.handNum % 2 === 0) {
+  //     let dealerButtonLeft = $('#table-felt-dealer-btn-img');
+  //     let dealerButtonRight = $('#table-felt-dealer-btn-img');
+  //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
+  //   } else {
+  //     (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
+  //   }
+  // }
+
   showDealerBtn() {
-    let dealerButton = $('#table-felt-dealer-btn');
-    dealerButton.removeClass();
     if (this.table.handNum % 2 === 0) {
-      (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-left") : dealerButton.addClass("table-felt-dealer-btn-left-board");
+      $('#dealer-right-img').addClass("display-none");
+      let button = $('#dealer-left-img');
+      button.removeClass();
+      (this.boardCards.length === 0) ? button.addClass("table-felt-dealer-btn-left") : button.addClass("table-felt-dealer-btn-left-board");
     } else {
-      (this.boardCards.length === 0) ? dealerButton.addClass("table-felt-dealer-btn-right") : dealerButton.addClass("table-felt-dealer-btn-right-board");
+      $('#dealer-left-img').addClass("display-none");
+      let button = $('#dealer-right-img');
+      button.removeClass();
+      (this.boardCards.length === 0) ? button.addClass("table-felt-dealer-btn-right") : button.addClass("table-felt-dealer-btn-right-board");
     }
   }
 

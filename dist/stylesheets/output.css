@@ -208,6 +208,10 @@ table {
   font-family: "Cabin", sans-serif;
 }
 
+.display-none {
+  display: none;
+}
+
 .player-info-left {
   display: flex;
   flex-direction: column;
