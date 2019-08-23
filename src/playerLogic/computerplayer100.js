@@ -1,3 +1,4 @@
+//RandoLongBall
 export default class ComputerPlayer {
   constructor(position, chipstack) {
     this.position = position;
@@ -24,59 +25,41 @@ export default class ComputerPlayer {
 
   promptAction(to_call) {
   }
-
   genBetRaise(to_call, stack, pot){
-    let randNum = Math.random() * stack * to_call / pot;
-    debugger
-    if (randNum < to_call / pot) {
-      return ['betRaise', pot * .5]
-    } else if (randNum > to_call / pot * 2) {
-      return ['betRaise', pot * 2]
+    let randNum = Math.random()
+    if (to_call === 0) {
+      let bet = randNum * stack;
+      return ['betRaise', bet];
     } else {
-      return ['betRaise', randNum]
+      let raise = randNum * stack;
+      if (raise < to_call * 2) raise = to_call * 2;
+      return ['betRaise', raise];
     }
   }
-
-  // genBetRaise(to_call, stack, pot){
-  //   // let randNum = Math.random()
-  //   if (to_call === 0) {
-  //     let bet = randNum * stack;
-  //     return ['betRaise', bet];
-  //   } else {
-  //     let raise = randNum * stack;
-  //     if (raise < to_call * 2) raise = to_call * 2;
-  //     return ['betRaise', raise];
-  //   }
-  // }
   
   promptResponse(to_call, stack, pot){
-    debugger
-    let betFactor;
-    (to_call === 0) ? betFactor = 1 : betFactor = to_call;
-    let randNum = Math.random() * betFactor / pot;
-    if (randNum < .33333 ) {
-      if (betFactor > 0) {
+    let randNum = Math.random()
+    if (randNum < .3333) {
+      if (to_call > 0) {
         return ['fold'];
       } else {
-        // if (randNum < .16666) {
+        if (randNum < .16666) {
           return ['check'];
-        // } else {
-          // return this.genBetRaise(to_call, stack, pot);
-        // }
+        } else {
+          return this.genBetRaise(to_call, stack, pot);
+        }
       }
     } else if (randNum < .6666) {
-      if (betFactor > 0) {
+      if (to_call > 0) {
         return ['call'];
       } else {
         return ['check'];
       }
     } else {
-      if (betFactor === 0) {
-        return this.genBetRaise(betFactor, stack, pot);
-      } else if (betFactor < .5) {
-        return ['call']
+      if (to_call === 0) {
+        return this.genBetRaise(to_call, stack, pot);
       } else {
-        return this.genBetRaise(betFactor, stack, pot);
+        return ['call']
       }
     }
   }

@@ -204,7 +204,6 @@ export default class Board {
     for (let i = this.startCard(); i < this.boardCards.length; i++) {
       await this.sleep(500);
       this.showBoardCard(i);
-      // setTimeout(this.showBoardCard(i), 5000);
     };
   }
 
@@ -243,7 +242,7 @@ export default class Board {
     this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
     await this.sleep(wait);
-    let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
+    let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
     if (response) {
       this.resolvePlayerPrompt(response);
     }

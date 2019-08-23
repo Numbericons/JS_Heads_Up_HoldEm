@@ -13119,53 +13119,62 @@ function () {
     }
   }, {
     key: "promptAction",
-    value: function promptAction(to_call) {// this.text(`${this.name}, your hand is ${this.hand[0].rank} ${this.hand[1]}.suit`)
-      // if (to_call === 0) {
-      //   this.promptText(`Enter 'check', 'fold', or 'bet' will bet the amount in the box to the right`)
-      // } else {
-      //   this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' will raise the amount in the box to the right`)
-      // }
-    }
+    value: function promptAction(to_call) {}
   }, {
     key: "genBetRaise",
     value: function genBetRaise(to_call, stack, pot) {
-      var randNum = Math.random();
+      var randNum = Math.random() * stack * to_call / pot;
+      debugger;
 
-      if (to_call === 0) {
-        var bet = randNum * stack;
-        return ['betRaise', bet];
+      if (randNum < to_call / pot) {
+        return ['betRaise', pot * .5];
+      } else if (randNum > to_call / pot * 2) {
+        return ['betRaise', pot * 2];
       } else {
-        var raise = randNum * stack;
-        if (raise < to_call * 2) raise = to_call * 2;
-        return ['betRaise', raise];
+        return ['betRaise', randNum];
       }
-    }
+    } // genBetRaise(to_call, stack, pot){
+    //   // let randNum = Math.random()
+    //   if (to_call === 0) {
+    //     let bet = randNum * stack;
+    //     return ['betRaise', bet];
+    //   } else {
+    //     let raise = randNum * stack;
+    //     if (raise < to_call * 2) raise = to_call * 2;
+    //     return ['betRaise', raise];
+    //   }
+    // }
+
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, stack, pot) {
-      var randNum = Math.random();
+      debugger;
+      var betFactor;
+      to_call === 0 ? betFactor = 1 : betFactor = to_call;
+      var randNum = Math.random() * betFactor / pot;
 
-      if (randNum < .3333) {
-        if (to_call > 0) {
+      if (randNum < .33333) {
+        if (betFactor > 0) {
           return ['fold'];
         } else {
-          if (randNum < .16666) {
-            return ['check'];
-          } else {
-            return this.genBetRaise(to_call, stack, pot);
-          }
+          // if (randNum < .16666) {
+          return ['check']; // } else {
+          // return this.genBetRaise(to_call, stack, pot);
+          // }
         }
       } else if (randNum < .6666) {
-        if (to_call > 0) {
+        if (betFactor > 0) {
           return ['call'];
         } else {
           return ['check'];
         }
       } else {
-        if (to_call === 0) {
-          return this.genBetRaise(to_call, stack, pot);
-        } else {
+        if (betFactor === 0) {
+          return this.genBetRaise(betFactor, stack, pot);
+        } else if (betFactor < .5) {
           return ['call'];
+        } else {
+          return this.genBetRaise(betFactor, stack, pot);
         }
       }
     }
@@ -13677,7 +13686,7 @@ function () {
                 return this.sleep(500);
 
               case 6:
-                this.showBoardCard(i); // setTimeout(this.showBoardCard(i), 5000);
+                this.showBoardCard(i);
 
               case 7:
                 i++;
@@ -13753,7 +13762,7 @@ function () {
                 return this.sleep(wait);
 
               case 5:
-                response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack);
+                response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
 
                 if (response) {
                   this.resolvePlayerPrompt(response);
