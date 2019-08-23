@@ -84,7 +84,6 @@ export default class Board {
   }
 
   tie(hand) {
-    this.revealCards();
     alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
@@ -95,6 +94,7 @@ export default class Board {
         this.players[1].chipstack += 1;
       }
     }
+    this.renderPlayers();
     this.table.handOver();
   }
 

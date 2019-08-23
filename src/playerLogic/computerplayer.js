@@ -22,62 +22,48 @@ export default class ComputerPlayer {
     promptSelect.innerText = input;
   }
 
-  promptAction(to_call) {
+  promptAction() {
+  }
+
+  maxBetRaise(num, stack) {
+    return (num > stack) ? ['betRaise', stack] : ['betRaise', num];
   }
 
   genBetRaise(to_call, stack, pot){
-    let randNum = Math.random() * stack * to_call / pot;
-    debugger
+    let randNum = Math.random() * 2 * pot;   //pot 1000  to_call 500  stack = 5000
+    let betRaise;
     if (randNum < to_call / pot) {
-      return ['betRaise', pot * .5]
-    } else if (randNum > to_call / pot * 2) {
-      return ['betRaise', pot * 2]
+      return this.maxBetRaise(pot * .5, stack);
+    } else if (randNum > 1.6 * pot) {
+      betRaise = pot * Math.random() + pot;
+      return this.maxBetRaise(betRaise, stack);
     } else {
-      return ['betRaise', randNum]
+      betRaise = (randNum > pot) ? pot : randNum;
+      return this.maxBetRaise(betRaise, stack);
     }
   }
-
-  // genBetRaise(to_call, stack, pot){
-  //   // let randNum = Math.random()
-  //   if (to_call === 0) {
-  //     let bet = randNum * stack;
-  //     return ['betRaise', bet];
-  //   } else {
-  //     let raise = randNum * stack;
-  //     if (raise < to_call * 2) raise = to_call * 2;
-  //     return ['betRaise', raise];
-  //   }
-  // }
   
   promptResponse(to_call, stack, pot){
-    debugger
-    let betFactor;
-    (to_call === 0) ? betFactor = 1 : betFactor = to_call;
-    let randNum = Math.random() * betFactor / pot;
-    if (randNum < .33333 ) {
-      if (betFactor > 0) {
+    let adjToCall;
+    // (to_call === 0) ? betFactor = 2 : betFactor = pot / to_call;
+    (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
+    let randNum = Math.random();
+    let potOdds = adjToCall / (adjToCall + pot); 
+    // if (randNum < .33333) {
+    if (randNum < potOdds) {
+      if (to_call > 0) {
         return ['fold'];
       } else {
-        // if (randNum < .16666) {
           return ['check'];
-        // } else {
-          // return this.genBetRaise(to_call, stack, pot);
-        // }
       }
-    } else if (randNum < .6666) {
-      if (betFactor > 0) {
+    } else if (randNum < potOdds * 1.5) {
+      if (to_call > 0) {
         return ['call'];
       } else {
         return ['check'];
       }
     } else {
-      if (betFactor === 0) {
-        return this.genBetRaise(betFactor, stack, pot);
-      } else if (betFactor < .5) {
-        return ['call']
-      } else {
-        return this.genBetRaise(betFactor, stack, pot);
-      }
+        return this.genBetRaise(to_call, stack, pot);
     }
   }
 

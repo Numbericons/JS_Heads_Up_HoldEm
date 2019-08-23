@@ -13119,63 +13119,52 @@ function () {
     }
   }, {
     key: "promptAction",
-    value: function promptAction(to_call) {}
+    value: function promptAction() {}
+  }, {
+    key: "maxBetRaise",
+    value: function maxBetRaise(num, stack) {
+      return num > stack ? ['betRaise', stack] : ['betRaise', num];
+    }
   }, {
     key: "genBetRaise",
     value: function genBetRaise(to_call, stack, pot) {
-      var randNum = Math.random() * stack * to_call / pot;
-      debugger;
+      var randNum = Math.random() * 2 * pot; //pot 1000  to_call 500  stack = 5000
+
+      var betRaise;
 
       if (randNum < to_call / pot) {
-        return ['betRaise', pot * .5];
-      } else if (randNum > to_call / pot * 2) {
-        return ['betRaise', pot * 2];
+        return this.maxBetRaise(pot * .5, stack);
+      } else if (randNum > 1.6 * pot) {
+        betRaise = pot * Math.random() + pot;
+        return this.maxBetRaise(betRaise, stack);
       } else {
-        return ['betRaise', randNum];
+        betRaise = randNum > pot ? pot : randNum;
+        return this.maxBetRaise(betRaise, stack);
       }
-    } // genBetRaise(to_call, stack, pot){
-    //   // let randNum = Math.random()
-    //   if (to_call === 0) {
-    //     let bet = randNum * stack;
-    //     return ['betRaise', bet];
-    //   } else {
-    //     let raise = randNum * stack;
-    //     if (raise < to_call * 2) raise = to_call * 2;
-    //     return ['betRaise', raise];
-    //   }
-    // }
-
+    }
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, stack, pot) {
-      debugger;
-      var betFactor;
-      to_call === 0 ? betFactor = 1 : betFactor = to_call;
-      var randNum = Math.random() * betFactor / pot;
+      var adjToCall; // (to_call === 0) ? betFactor = 2 : betFactor = pot / to_call;
 
-      if (randNum < .33333) {
-        if (betFactor > 0) {
+      to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
+      var randNum = Math.random();
+      var potOdds = adjToCall / (adjToCall + pot); // if (randNum < .33333) {
+
+      if (randNum < potOdds) {
+        if (to_call > 0) {
           return ['fold'];
         } else {
-          // if (randNum < .16666) {
-          return ['check']; // } else {
-          // return this.genBetRaise(to_call, stack, pot);
-          // }
+          return ['check'];
         }
-      } else if (randNum < .6666) {
-        if (betFactor > 0) {
+      } else if (randNum < potOdds * 1.5) {
+        if (to_call > 0) {
           return ['call'];
         } else {
           return ['check'];
         }
       } else {
-        if (betFactor === 0) {
-          return this.genBetRaise(betFactor, stack, pot);
-        } else if (betFactor < .5) {
-          return ['call'];
-        } else {
-          return this.genBetRaise(betFactor, stack, pot);
-        }
+        return this.genBetRaise(to_call, stack, pot);
       }
     }
   }, {
@@ -13500,7 +13489,6 @@ function () {
   }, {
     key: "tie",
     value: function tie(hand) {
-      this.revealCards();
       alert(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!"));
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
@@ -13513,6 +13501,7 @@ function () {
         }
       }
 
+      this.renderPlayers();
       this.table.handOver();
     }
   }, {
