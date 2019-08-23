@@ -105,9 +105,6 @@ export default class Board {
     this.players[winPos].chipstack += this.pot;
     this.renderPlayers();
     alert(this.outputString);
-    // this.renderPlayers().then(res => {
-    //   alert(this.outputString);
-    // })
     this.table.handOver();
   }
 
@@ -125,7 +122,7 @@ export default class Board {
     return playerHand;
   }
 
-  dealPlayerCard(pos, revealed) {
+  async dealPlayerCard(pos, revealed) {
     let card = this.deck.draw();
     card.revealed = revealed;
     this.players[pos].hand.push(card);
