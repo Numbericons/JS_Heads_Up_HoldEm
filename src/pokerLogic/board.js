@@ -59,11 +59,6 @@ export default class Board {
   }
 
   playHand() {
-    if (this.allIn()) {
-      debugger
-      this.table.removeButtons();
-      return;
-    }  
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
@@ -135,23 +130,30 @@ export default class Board {
     this.dealPlayerCard(0, !this.players[0].comp);
   }
 
-  chkBlindAllIn(){
-    if (this.otherPlayer().chipstack === 0) {
-      return this.handChipDiff();
-    } else {
-      return this.currBet; 
-    }
-  }
+  // chkBlindAllIn(){
+  //   if (this.otherPlayer().chipstack === 0) {
+  //     return this.handChipDiff();
+  //   } else {
+  //     return this.currBet; 
+  //   }
+  // }
 
   blindPlayer(player, blind){
+    let villain = (this.players[0] === player) ? this.players[1] : this.players[0];
+    if (blind >= villain.chipsInPot + villain.chipstack) {
+      player.chipsInPot = villain.chipsInPot + villain.chipstack;
+      player.streetChipsInPot = player.chipsInPot;
+      player.chipstack -= player.chipsInPot;
+      return player.chipsInPot;
+    }
     if (player.chipstack > blind) {
       player.chipstack -= blind;
       player.chipsInPot = blind;
       player.streetChipsInPot = blind;
       return blind;
     } else {
-      player.chipsInPot = player.chipstack;
-      player.streetChipsInPot = player.chipstack;
+      player.chipsInPot += player.chipstack;
+      player.streetChipsInPot = player.chipsInPot;
       player.chipstack = 0;
       return player.chipsInPot;
     }
@@ -258,9 +260,15 @@ export default class Board {
     this.showPot();
     this.renderPlayers();
     this.showBoard();
+    if (this.allIn()) {
+      this.showDown();
+      this.determineWinner();
+      return;
+    }
     this.button.setButtons();
     this.button.bindEvents();
-    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
+    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
+    // if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
   }
 
@@ -325,7 +333,7 @@ export default class Board {
     if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
     } else if (handChipsEqual) {
-      if (this.allIn()) {
+      if (this.allIn()) {   // remove as render handles logic
         this.showDown();
         this.determineWinner();
       } else if (this.currStreet === 'river' && multipleActions) {

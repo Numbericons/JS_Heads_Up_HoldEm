@@ -13132,7 +13132,7 @@ function () {
 
       var betRaise;
 
-      if (randNum < to_call / pot) {
+      if (randNum < to_call * 2) {
         return this.maxBetRaise(pot * .5, stack);
       } else if (randNum > 1.6 * pot) {
         betRaise = pot * Math.random() + pot;
@@ -13460,12 +13460,6 @@ function () {
   }, {
     key: "playHand",
     value: function playHand() {
-      if (this.allIn()) {
-        debugger;
-        this.table.removeButtons();
-        return;
-      }
-
       this.dealInPlayers();
       this.takeBlinds();
       this.render();
@@ -13567,27 +13561,34 @@ function () {
       this.dealPlayerCard(0, !this.players[0].comp);
       this.dealPlayerCard(1, !this.players[1].comp);
       this.dealPlayerCard(0, !this.players[0].comp);
-    }
-  }, {
-    key: "chkBlindAllIn",
-    value: function chkBlindAllIn() {
-      if (this.otherPlayer().chipstack === 0) {
-        return this.handChipDiff();
-      } else {
-        return this.currBet;
-      }
-    }
+    } // chkBlindAllIn(){
+    //   if (this.otherPlayer().chipstack === 0) {
+    //     return this.handChipDiff();
+    //   } else {
+    //     return this.currBet; 
+    //   }
+    // }
+
   }, {
     key: "blindPlayer",
     value: function blindPlayer(player, blind) {
+      var villain = this.players[0] === player ? this.players[1] : this.players[0];
+
+      if (blind >= villain.chipsInPot + villain.chipstack) {
+        player.chipsInPot = villain.chipsInPot + villain.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
+        player.chipstack -= player.chipsInPot;
+        return player.chipsInPot;
+      }
+
       if (player.chipstack > blind) {
         player.chipstack -= blind;
         player.chipsInPot = blind;
         player.streetChipsInPot = blind;
         return blind;
       } else {
-        player.chipsInPot = player.chipstack;
-        player.streetChipsInPot = player.chipstack;
+        player.chipsInPot += player.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
         player.chipstack = 0;
         return player.chipsInPot;
       }
@@ -13784,9 +13785,17 @@ function () {
       this.showPot();
       this.renderPlayers();
       this.showBoard();
+
+      if (this.allIn()) {
+        this.showDown();
+        this.determineWinner();
+        return;
+      }
+
       this.button.setButtons();
       this.button.bindEvents();
-      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
+      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack); // if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
+
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
     }
   }, {
@@ -13867,6 +13876,7 @@ function () {
         this.determineWinner();
       } else if (handChipsEqual) {
         if (this.allIn()) {
+          // remove as render handles logic
           this.showDown();
           this.determineWinner();
         } else if (this.currStreet === 'river' && multipleActions) {
