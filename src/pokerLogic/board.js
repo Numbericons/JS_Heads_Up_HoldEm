@@ -18,6 +18,7 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.song = new Audio('./audio/PianoAndRobin103.wav')
   }
 
   currentPlayer() {
@@ -298,6 +299,7 @@ export default class Board {
   }
 
   action($button, compAction, compBetRaise) {
+    this.song.play();
     let playerAction;
     playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {

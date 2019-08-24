@@ -13409,6 +13409,7 @@ function () {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.song = new Audio('./audio/PianoAndRobin103.wav');
   }
 
   _createClass(Board, [{
@@ -13831,6 +13832,7 @@ function () {
   }, {
     key: "action",
     value: function action($button, compAction, compBetRaise) {
+      this.song.play();
       var playerAction;
       playerAction = $button ? $button.data().action : compAction;
 
