@@ -4,14 +4,15 @@ export default class HumanPlayer {
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
     this.hand = [];
+    this.comp = false;
+    this.revealed = true;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
-    (this.side === 'right') ? this.name = 'Seat 1' : this.name = 'Seat 2';
-  }
-
-  text(input){
-    let textSelect = document.querySelector(".table-actions-text");
-    textSelect.innerText = input;
+    (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.chipsBet = new Audio('./audio/chipsTop.mp3');
+    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
+    this.check = new Audio('./audio/cardSlide1_check.wav');
   }
 
   promptText(input){
@@ -20,75 +21,66 @@ export default class HumanPlayer {
   }
 
   promptAction(to_call){
-    this.text(`${this.name}, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    // console.log(`${this.name}, you have ${this.chipstack} chips, your hand is ${this.hand[0]} ${this.hand[1]}`)
-    // let input;
     if (to_call === 0) {
-      this.promptText(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`)
-      // input = prompt(`${this.name}, enter 'check', 'fold', or 'bet' followed by an amount i.e. 'bet 100'`);
+      this.promptText(`Enter 'check', 'fold', or 'bet'`)
     } else {
-      this.promptText(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`)
-      // input = prompt(`It costs ${to_call} to call. Enter 'call', 'fold', 'raise' followed by an amount i.e. 'raise 300'`);
+      this.promptText(`It costs $${to_call} to call`)
     }
   }
 
-  action(to_call, sb = 0){
-    // while (document.querySelector(".input").innerText.length === 0) {
-    // }
-    let input = document.querySelector(".input").innerText;
-    // console.log(input);
-    return this.resolve_action(to_call, input, sb);
-  }
-
-  resolve_action(to_call, input, sb){
-    // input = input.toLowerCase();
-    // if (!input === "ch" &&  !input === "ca" && input === !"bet" && !input === "ra") {
-    //   throw "Invalid input provided";
-    // }
-    if (input.startsWith('ch')) return 0;
-    // if (input.startsWith('ch')) return [0, 'check'];
-    // let wager = Number(input.split(" ")[1]);
-    if (input.startsWith("ca")) {
-      this.chipstack -= to_call;
-      this.chipsInPot += to_call;
-      // this.chipsInPot -= to_call;
-      return to_call
-      // return [to_call, 'call']
-    } else if (input.startsWith("bet")) {
-      this.chipstack -= to_call * 2;
-      this.chipsInPot += sb;
-      // this.chipsInPot -= sb;
-      return 100
-      // this.chipstack -= wager;
-      // return [wager, 'bet']
-    } 
-    if (input.startsWith("ra")) {
-      this.chipstack -= 100 + to_call;
-      this.chipsInPot += sb;
-      // this.chipsInPot -= sb;
-      return 200 - to_call
-      // this.chipstack -= wager + sb;
-      // this.chipsInPot -= sb;
-      // return [wager - to_call, 'raise']
-    }
-    if (input.startsWith('fo')) {
+  resolve_action(to_call, betInput, textInput, sb = 0) {
+    if (textInput === 'check') {
+      this.check.play();
+      return 0;
+    } else if (textInput === 'fold') {
       this.folded = true;
       return null;
+    } else if (textInput === 'call') {
+      this.chipsCall.play();
+      this.chipstack -= to_call;
+      this.chipsInPot += to_call;
+      this.streetChipsInPot += to_call;
+      return to_call;
+    } else {
+      this.chipsBet.play();
+      this.chipstack -= betInput + sb;
+      this.chipsInPot += betInput + sb;
+      this.streetChipsInPot += betInput + sb;
+      return betInput + sb;
     }
   }
 
   playerName() {
-    let playerName = document.querySelector(`.player-info-name-${this.side}`);
+    let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
     playerName.innerText = `${this.name}`;
   }
 
   playerChips() {
-    let playerChips = document.querySelector(`.player-info-chips-${this.side}`);
-    playerChips.innerText = `${this.chipstack} chips`
+    let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
+    playerChips.innerText = `$${this.chipstack} chips`
+  }
+
+  playerCards() {
+    if (this.hand[0]) {
+      let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
+      let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
+      this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
+      this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+    }
   }
 
   render(){
     this.playerName();
     this.playerChips();
+    this.playerCards();
+    let chipVal = (this.streetChipsInPot > 0) ? '$' + this.streetChipsInPot : "";
+    $(`.table-felt-board-bet-player-1`).text(chipVal);
+  }
+
+  resetVars(){
+    this.folded = false;
+    this.chipsInPot = 0;
+    this.streetChipsInPot = 0;
+    this.hand = [];
   }
 }

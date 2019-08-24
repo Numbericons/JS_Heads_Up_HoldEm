@@ -53,9 +53,9 @@ table {
 }
 
 .holdem-container {
-  height: 800px;
+  height: 1200px;
   width: 100%;
-  background-color: #b7d5ea;
+  background-color: #a6b1b5;
 }
 
 .top {
@@ -63,11 +63,10 @@ table {
   flex-direction: column;
 }
 .top-bar {
-  height: 70px;
+  height: 50px;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  margin-bottom: 20px;
   font-weight: bolder;
 }
 .top-bar-header {
@@ -90,96 +89,11 @@ table {
   height: 10%;
   display: flex;
   justify-content: center;
-  background-color: #a6b1b5;
 }
 .dealer-image {
+  margin-bottom: -7px;
   height: 100%;
   width: 100px;
-}
-
-.player-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transform: translateY(90px);
-  height: 15%;
-  width: 10%;
-}
-.player-info-img {
-  background-color: #a6b1b5;
-  height: 120px;
-  width: 120px;
-}
-.player-info-text-left {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translateX(-20px);
-  font-family: "Cabin", sans-serif;
-}
-.player-info-text-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: "Cabin", sans-serif;
-}
-
-.table {
-  height: 70%;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: #a6b1b5;
-}
-.table-row {
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: space-around;
-}
-.table-trim {
-  height: 70%;
-  width: 70%;
-  position: relative;
-  display: flex;
-  justify-content: center;
-  background-color: #5f4f35;
-  border-radius: 150px;
-  z-index: 1;
-}
-.table-felt {
-  height: 80%;
-  width: 90%;
-  position: relative;
-  align-self: center;
-  background-color: green;
-  border-radius: 150px;
-  z-index: 3;
-  display: flex;
-  align-items: flex-end;
-  justify-content: center;
-}
-.table-felt-pot {
-  font-size: 24px;
-  font-family: "Cabin", sans-serif;
-}
-.table-actions {
-  height: 120px;
-  width: 80%;
-  display: flex;
-  justify-content: space-around;
-  transform: translateY(-60px);
-}
-.table-actions-text {
-  font-size: 25px;
-  transform: translateY(-100px);
-  font-family: "Cabin", sans-serif;
-  margin-bottom: 15px;
-}
-.table-actions-prompt {
-  font-size: 25px;
-  transform: translateY(-100px);
-  font-family: "Cabin", sans-serif;
 }
 
 .actions-cont {
@@ -209,8 +123,252 @@ table {
   border-radius: 30px;
 }
 
-.input {
+.table {
+  height: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: #a6b1b5;
+}
+.table-row {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+}
+.table-trim {
+  height: 60%;
+  width: 60%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  background-color: #5f4f35;
+  border-radius: 150px;
+  z-index: 1;
+}
+.table-felt {
+  height: 80%;
+  width: 90%;
+  position: relative;
+  align-self: center;
+  background-color: green;
+  border-radius: 150px;
+  z-index: 3;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+.table-felt-board {
+  width: 400px;
+  height: 222px;
+  display: flex;
+  margin-top: 80px;
+}
+.table-felt-board-bet-player-1 {
+  font-family: "Cabin", sans-serif;
+  align-self: center;
+  margin-right: 20px;
+  padding: 10px;
+}
+.table-felt-board-bet-player-2 {
+  font-family: "Cabin", sans-serif;
+  margin-right: 105px;
+  align-self: center;
+  padding: 15px;
+}
+.table-felt-dealer-btn {
+  display: flex;
+  justify-content: space-between;
+  height: 20%;
+  width: 100%;
+  transform: translateY(-110px);
+  align-items: center;
+}
+.table-felt-dealer-btn-img {
+  width: 35px;
+  height: 35px;
+}
+.table-felt-dealer-btn-left {
+  width: 22%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+  margin-left: 45px;
+}
+.table-felt-dealer-btn-left-board {
+  width: 22%;
+  display: flex;
+  margin-right: 15px;
+}
+.table-felt-dealer-btn-right {
+  width: 22%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: baseline;
+}
+.table-felt-dealer-btn-right-board {
+  width: 22%;
+  display: flex;
+  justify-content: flex-end;
+}
+.table-felt-pot {
+  font-size: 24px;
+  font-family: "Cabin", sans-serif;
+}
+.table-actions {
+  height: 120px;
+  width: 80%;
+  display: flex;
+  justify-content: space-around;
+  transform: translateY(-260px);
+}
+.table-actions-prompt {
+  font-size: 25px;
+  transform: translateY(-280px);
+  font-family: "Cabin", sans-serif;
+}
+
+.display-none {
   display: none;
+}
+
+.player-info-left {
+  display: flex;
+  flex-direction: column;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px -10px 0px -20px;
+}
+.player-info-left-cards {
+  display: flex;
+  justify-content: space-around;
+  width: 160px;
+  height: 100%;
+  margin: 20px 0px 0px 10px;
+}
+.player-info-left-cards-1 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  border-radius: 7px;
+}
+.player-info-left-cards-2 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  border-radius: 7px;
+}
+.player-info-left-chip {
+  display: flex;
+  justify-content: flex-end;
+  width: 80%;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #494747;
+  color: white;
+}
+.player-info-left-chip-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 30px;
+}
+.player-info-left-chip-text-name {
+  font-size: 15px;
+  height: 20px;
+}
+.player-info-left-chip-text-chips {
+  font-size: 15px;
+}
+.player-info-left-chip-img {
+  float: left;
+  margin: 0 10px 0 -25px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  transform: translate(35px, -10px);
+}
+
+.player-info-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  transform: translateY(90px);
+  height: 26.5%;
+  width: 17%;
+  margin: -40px 0px 0px -20px;
+}
+.player-info-right-cards {
+  display: flex;
+  justify-content: space-around;
+  width: 160px;
+  height: 100%;
+  margin: 20px 0px 0px 65px;
+}
+.player-info-right-cards-1 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  border-radius: 7px;
+}
+.player-info-right-cards-2 {
+  background-position-x: -6px;
+  background-position-y: -8px;
+  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  border-radius: 7px;
+}
+.player-info-right-chip {
+  display: flex;
+  justify-content: flex-end;
+  width: 70%;
+  padding: 0 25px;
+  height: 50px;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 25px;
+  background-color: #494747;
+  color: white;
+  margin-left: 20px;
+}
+.player-info-right-chip-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 240px;
+}
+.player-info-right-chip-text-name {
+  font-size: 15px;
+  height: 20px;
+}
+.player-info-right-chip-text-chips {
+  font-size: 15px;
+}
+.player-info-right-chip-img {
+  float: left;
+  margin: 0 10px 0 -40px;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  transform: translateY(-10px);
+}
+
+#player-info-left-chip-line {
+  border-bottom: 1px solid white;
+  width: 170%;
+  transform: translateY(14px);
+}
+
+#player-info-right-chip-line {
+  border-bottom: 1px solid white;
+  width: 100%;
+  transform: translateY(14px);
 }
 
 /*# sourceMappingURL=output.css.map */

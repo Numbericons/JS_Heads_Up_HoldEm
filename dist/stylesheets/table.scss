@@ -1,0 +1,116 @@
+.table{
+  height: 70%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  // align-items: center;
+  background-color: #a6b1b5;
+  &-row{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+  }
+  &-trim{
+    height: 60%;
+    width: 60%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    // background-color: rsgb(177, 118, 15);
+    background-color: #5f4f35;
+    border-radius: 150px;
+    z-index:1;
+  }
+  &-felt{
+    height: 80%;
+    width:90%;
+    position: relative;
+    align-self: center;
+    background-color: green;
+    border-radius: 150px;
+    z-index: 3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+    &-board{
+      width: 400px;
+      height: 222px;
+      display: flex;
+      margin-top: 80px;
+      // font-size: 50px;
+      &-bet-player-1{
+        font-family: 'Cabin', sans-serif;
+        // margin-left: 60px;
+        align-self: center;
+        margin-right: 20px;
+        padding: 10px;
+      }
+      &-bet-player-2{
+        font-family: 'Cabin', sans-serif;
+        margin-right: 105px;
+        align-self: center;
+        padding: 15px;
+      }
+    }
+    &-dealer-btn{
+      display: flex;
+      justify-content: space-between;
+      height: 20%;
+      // border: 1px solid black;
+      width: 100%;
+      transform: translateY(-110px);
+      align-items: center;
+      &-img{
+        width: 35px;
+        height: 35px;
+      }
+      &-left{
+        width:22%;
+        // transform: translateY(-19px);
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
+        margin-left: 45px;
+      }
+      &-left-board{
+        width:22%;
+        display: flex;
+        margin-right: 15px;
+      }
+      &-right{
+        width:22%;
+        display: flex;
+        justify-content: flex-end;
+        align-items: baseline;
+      }
+      &-right-board{
+        width:22%;
+        display: flex;
+        justify-content: flex-end;
+        // transform: translateY(-20px);
+      }
+    }
+    &-pot{
+      font-size: 24px;
+      font-family: 'Cabin', sans-serif;
+    }
+  }
+  &-actions{
+    height: 120px;
+    width: 80%;
+    display: flex;
+    justify-content: space-around;
+    transform: translateY(-260px);
+    &-prompt{
+      font-size: 25px;
+      transform: translateY(-280px);
+      font-family: 'Cabin', sans-serif;
+    }
+  }
+}
+
+.display-none{
+  display: none;
+}
