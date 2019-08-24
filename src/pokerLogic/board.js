@@ -207,7 +207,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "58%", true)
+    this.boardCards[pos].render(card, "17.5%", "63%", true)
   }
 
   async showBoard() {
@@ -232,8 +232,11 @@ export default class Board {
   }
 
   showPot() {
-    let currPot = document.querySelector(`.table-felt-pot`);
-    currPot.innerText = `Current pot: $${this.pot}`;
+    let currPotText = document.querySelector(`.current-pot-text`);
+    currPotText.innerText = `Current pot: $${this.pot}`;
+
+    let currPotNum = document.querySelector(`.table-felt-pot`);
+    currPotNum.innerText = `$${this.pot}`;
   }
 
   resolvePlayerPrompt(response) {

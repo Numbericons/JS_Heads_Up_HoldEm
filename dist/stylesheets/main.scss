@@ -5,37 +5,6 @@
   background-color: #a6b1b5;
 }
 
-
-.top{
-  display: flex;
-  flex-direction: column;
-  &-bar{
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    font-weight: bolder;
-    &-header{
-      font-size: 40px;
-      font-family: 'Cabin', sans-serif;
-      // color: rgb(177, 118, 15);
-    color: darkred;
-    }
-    &-author{
-      &-made{
-        font-size:16px;
-        color: black;
-        font-family: 'Cabin', sans-serif;
-      }
-      &-name{
-        font-size:16px;
-        color: black;
-        font-family: 'Cabin', sans-serif;
-      }
-    }
-  }
-}
-
 .dealer{
   height: 10%;
   display: flex;
@@ -47,32 +16,11 @@
   }
 }
 
-
-
-.actions-cont{
-  width: 50%;
-  display: flex;
-  justify-content: space-around;
-
+.current-pot{
+  margin-left:15px;
   &-text{
-    height: 65px;
-    width: 110px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: black;
-    color: white;
     font-family: 'Cabin', sans-serif;
-    border-radius: 30px;
-  }
-  &-bet-amt{
-    height: 65px;
-    width: 110px;
-    text-align: center;
-    background-color: black;
-    border: black;
-    color: white;
-    font-family: 'Cabin', sans-serif;
-    border-radius: 30px;
+    font-weight: 700;
+    border-radius: 15px;
   }
 }

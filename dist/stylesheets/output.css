@@ -58,33 +58,6 @@ table {
   background-color: #a6b1b5;
 }
 
-.top {
-  display: flex;
-  flex-direction: column;
-}
-.top-bar {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  font-weight: bolder;
-}
-.top-bar-header {
-  font-size: 40px;
-  font-family: "Cabin", sans-serif;
-  color: darkred;
-}
-.top-bar-author-made {
-  font-size: 16px;
-  color: black;
-  font-family: "Cabin", sans-serif;
-}
-.top-bar-author-name {
-  font-size: 16px;
-  color: black;
-  font-family: "Cabin", sans-serif;
-}
-
 .dealer {
   height: 10%;
   display: flex;
@@ -96,31 +69,13 @@ table {
   width: 100px;
 }
 
-.actions-cont {
-  width: 50%;
-  display: flex;
-  justify-content: space-around;
+.current-pot {
+  margin-left: 15px;
 }
-.actions-cont-text {
-  height: 65px;
-  width: 110px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: black;
-  color: white;
+.current-pot-text {
   font-family: "Cabin", sans-serif;
-  border-radius: 30px;
-}
-.actions-cont-bet-amt {
-  height: 65px;
-  width: 110px;
-  text-align: center;
-  background-color: black;
-  border: black;
-  color: white;
-  font-family: "Cabin", sans-serif;
-  border-radius: 30px;
+  font-weight: 700;
+  border-radius: 15px;
 }
 
 .table {
@@ -137,8 +92,8 @@ table {
   justify-content: space-around;
 }
 .table-trim {
-  height: 60%;
-  width: 60%;
+  height: 55%;
+  width: 55%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -224,9 +179,11 @@ table {
   transform: translateY(-260px);
 }
 .table-actions-prompt {
+  height: 27px;
   font-size: 25px;
   transform: translateY(-280px);
   font-family: "Cabin", sans-serif;
+  margin-top: -10px;
 }
 
 .display-none {
@@ -369,6 +326,89 @@ table {
   border-bottom: 1px solid white;
   width: 100%;
   transform: translateY(14px);
+}
+
+.top {
+  height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-help {
+  margin: 0px 150px 0px 20px;
+}
+.top-header {
+  font-weight: bolder;
+  font-size: 40px;
+  font-family: "Cabin", sans-serif;
+  color: darkred;
+}
+.top-about {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 40px;
+}
+.top-about-author {
+  font-size: 16px;
+  color: black;
+  font-family: "Cabin", sans-serif;
+  margin: 20px;
+}
+.top-about-links {
+  display: flex;
+  justify-content: space-around;
+}
+
+.actions-cont {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+.actions-cont-text {
+  height: 55px;
+  width: 105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 30px;
+  font-size: 18px;
+  font-weight: 700;
+}
+.actions-cont-bet-amt {
+  height: 46px;
+  width: 90px;
+  text-align: center;
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  font-family: "Cabin", sans-serif;
+  border-radius: 15px;
+  font-size: 20px;
+}
+
+.betsize-cont {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+.betsize-cont-text {
+  height: 25px;
+  width: 105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 700;
 }
 
 /*# sourceMappingURL=output.css.map */

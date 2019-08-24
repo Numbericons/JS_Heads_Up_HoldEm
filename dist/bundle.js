@@ -13090,7 +13090,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ComputerPlayer =
 /*#__PURE__*/
 function () {
-  function ComputerPlayer(position, chipstack) {
+  function ComputerPlayer(position, chipstack, cardDims) {
     _classCallCheck(this, ComputerPlayer);
 
     this.position = position;
@@ -13101,6 +13101,7 @@ function () {
     this.hand = [];
     this.comp = true;
     this.revealed = false;
+    this.cardDims = cardDims;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
@@ -13213,8 +13214,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
-        this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
       }
     }
   }, {
@@ -13262,7 +13263,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var HumanPlayer =
 /*#__PURE__*/
 function () {
-  function HumanPlayer(position, chipstack) {
+  function HumanPlayer(position, chipstack, cardDims) {
     _classCallCheck(this, HumanPlayer);
 
     this.position = position;
@@ -13273,6 +13274,7 @@ function () {
     this.hand = [];
     this.comp = false;
     this.revealed = true;
+    this.cardDims = cardDims;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
@@ -13290,9 +13292,10 @@ function () {
     key: "promptAction",
     value: function promptAction(to_call) {
       if (to_call === 0) {
-        this.promptText("Enter 'check', 'fold', or 'bet'");
+        // this.promptText(`Enter 'check', 'fold', or 'bet'`)
+        this.promptText("");
       } else {
-        this.promptText("It costs $".concat(to_call, " to call"));
+        this.promptText("$".concat(to_call, " to call"));
       }
     }
   }, {
@@ -13338,8 +13341,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
-        this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
       }
     }
   }, {
@@ -13709,7 +13712,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "58%", true);
+      this.boardCards[pos].render(card, "17.5%", "63%", true);
     }
   }, {
     key: "showBoard",
@@ -13784,8 +13787,10 @@ function () {
   }, {
     key: "showPot",
     value: function showPot() {
-      var currPot = document.querySelector(".table-felt-pot");
-      currPot.innerText = "Current pot: $".concat(this.pot);
+      var currPotText = document.querySelector(".current-pot-text");
+      currPotText.innerText = "Current pot: $".concat(this.pot);
+      var currPotNum = document.querySelector(".table-felt-pot");
+      currPotNum.innerText = "$".concat(this.pot);
     }
   }, {
     key: "resolvePlayerPrompt",
@@ -14336,10 +14341,11 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "87%"];
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
   }

@@ -1,5 +1,5 @@
 export default class ComputerPlayer {
-  constructor(position, chipstack) {
+  constructor(position, chipstack, cardDims) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -8,6 +8,7 @@ export default class ComputerPlayer {
     this.hand = [];
     this.comp = true;
     this.revealed = false;
+    this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
@@ -106,8 +107,8 @@ export default class ComputerPlayer {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
-      this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
-      this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+      this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+      this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
     }
   }
 

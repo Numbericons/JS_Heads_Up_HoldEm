@@ -1,0 +1,32 @@
+.top{
+  height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &-help{
+    margin: 0px 150px 0px 20px;
+  }
+  &-header{
+    font-weight: bolder;
+    font-size: 40px;
+    font-family: 'Cabin', sans-serif;
+    // color: rgb(177, 118, 15);
+    color: darkred;
+  }
+  &-about{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 40px;
+    &-author{
+      font-size:16px;
+      color: black;
+      font-family: 'Cabin', sans-serif;
+      margin: 20px;
+    }
+    &-links{
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+}

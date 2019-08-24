@@ -12,8 +12,8 @@
     justify-content: space-around;
   }
   &-trim{
-    height: 60%;
-    width: 60%;
+    height: 55%;
+    width: 55%;
     position: relative;
     display: flex;
     justify-content: center;
@@ -104,9 +104,11 @@
     justify-content: space-around;
     transform: translateY(-260px);
     &-prompt{
+      height: 27px;
       font-size: 25px;
       transform: translateY(-280px);
       font-family: 'Cabin', sans-serif;
+      margin-top: -10px;
     }
   }
 }

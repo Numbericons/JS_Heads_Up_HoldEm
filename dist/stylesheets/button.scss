@@ -1,0 +1,50 @@
+.actions-cont{
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+  &-text{
+    height: 55px;
+    width: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-family: 'Cabin', sans-serif;
+    border-radius: 30px;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  &-bet-amt{
+    height: 46px;
+    width: 90px;
+    text-align: center;
+    background-color: white;
+    border: 2px solid black;
+    color: black;
+    font-family: 'Cabin', sans-serif;
+    border-radius: 15px;
+    font-size: 20px;
+  }
+}
+
+.betsize-cont{
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+  &-text{
+    height: 25px;
+    width: 105px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+    color: white;
+    font-family: 'Cabin', sans-serif;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+}
