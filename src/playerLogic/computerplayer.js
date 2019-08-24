@@ -12,6 +12,7 @@ export default class ComputerPlayer {
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
     this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
+    this.check = new Audio('./audio/cardSlide1_check.wav');
   }
 
   text(input) {
@@ -71,6 +72,7 @@ export default class ComputerPlayer {
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
+      this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;

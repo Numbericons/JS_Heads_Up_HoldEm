@@ -13105,6 +13105,7 @@ function () {
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
     this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
+    this.check = new Audio('./audio/cardSlide1_check.wav');
   }
 
   _createClass(ComputerPlayer, [{
@@ -13175,6 +13176,7 @@ function () {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
       if (textInput === 'check') {
+        this.check.play();
         return 0;
       } else if (textInput === 'fold') {
         this.folded = true;
@@ -13275,6 +13277,7 @@ function () {
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('./audio/chipsTop.mp3');
     this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
+    this.check = new Audio('./audio/cardSlide1_check.wav');
   }
 
   _createClass(HumanPlayer, [{
@@ -13298,6 +13301,7 @@ function () {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
       if (textInput === 'check') {
+        this.check.play();
         return 0;
       } else if (textInput === 'fold') {
         this.folded = true;
