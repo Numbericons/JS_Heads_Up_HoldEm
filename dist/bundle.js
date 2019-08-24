@@ -13103,6 +13103,8 @@ function () {
     this.revealed = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.chipsBet = new Audio('./audio/chipsTop.mp3');
+    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
   }
 
   _createClass(ComputerPlayer, [{
@@ -13178,11 +13180,13 @@ function () {
         this.folded = true;
         return null;
       } else if (textInput === 'call') {
+        this.chipsCall.play();
         this.chipstack -= to_call;
         this.chipsInPot += to_call;
         this.streetChipsInPot += to_call;
         return to_call;
       } else {
+        this.chipsBet.play();
         this.chipstack -= betInput + sb;
         this.chipsInPot += betInput + sb;
         this.streetChipsInPot += betInput + sb;
@@ -13269,6 +13273,8 @@ function () {
     this.revealed = true;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.chipsBet = new Audio('./audio/chipsTop.mp3');
+    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
   }
 
   _createClass(HumanPlayer, [{
@@ -13297,11 +13303,13 @@ function () {
         this.folded = true;
         return null;
       } else if (textInput === 'call') {
+        this.chipsCall.play();
         this.chipstack -= to_call;
         this.chipsInPot += to_call;
         this.streetChipsInPot += to_call;
         return to_call;
       } else {
+        this.chipsBet.play();
         this.chipstack -= betInput + sb;
         this.chipsInPot += betInput + sb;
         this.streetChipsInPot += betInput + sb;
@@ -13409,7 +13417,9 @@ function () {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
-    this.song = new Audio('./audio/PianoAndRobin103.wav');
+    this.shuffle = new Audio('./audio/shuffle2.mp3');
+    this.cardTurn = new Audio('./audio/cardTurnOver.mp3');
+    this.chips = new Audio('./audio/chipsTop.mp3');
   }
 
   _createClass(Board, [{
@@ -13460,11 +13470,36 @@ function () {
     }
   }, {
     key: "playHand",
-    value: function playHand() {
-      this.dealInPlayers();
-      this.takeBlinds();
-      this.render();
-    }
+    value: function () {
+      var _playHand = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // this.shuffle.play();
+                // await this.sleep(10000).then(res => {
+                this.shuffle.play(); // })
+
+                this.dealInPlayers();
+                this.takeBlinds();
+                this.render();
+
+              case 4:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function playHand() {
+        return _playHand.apply(this, arguments);
+      }
+
+      return playHand;
+    }()
   }, {
     key: "determineWinner",
     value: function determineWinner() {
@@ -13531,11 +13566,11 @@ function () {
     value: function () {
       var _dealPlayerCard = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee(pos, revealed) {
+      regeneratorRuntime.mark(function _callee2(pos, revealed) {
         var card;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 card = this.deck.draw();
                 card.revealed = revealed;
@@ -13543,10 +13578,10 @@ function () {
 
               case 3:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function dealPlayerCard(_x, _x2) {
@@ -13603,10 +13638,36 @@ function () {
     }
   }, {
     key: "dealCard",
-    value: function dealCard() {
-      this.currPlayerPos = 1;
-      this.boardCards.push(this.deck.draw());
-    }
+    value: function () {
+      var _dealCard = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee3() {
+        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                this.currPlayerPos = 1;
+                this.boardCards.push(this.deck.draw());
+                _context3.next = 4;
+                return this.sleep(500);
+
+              case 4:
+                this.cardTurn.play();
+
+              case 5:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function dealCard() {
+        return _dealCard.apply(this, arguments);
+      }
+
+      return dealCard;
+    }()
   }, {
     key: "dealFlop",
     value: function dealFlop() {
@@ -13651,29 +13712,29 @@ function () {
     value: function () {
       var _showBoard = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee2() {
+      regeneratorRuntime.mark(function _callee4() {
         var i;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context2.prev = _context2.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 if (!(this.boardCards.length === 0)) {
-                  _context2.next = 2;
+                  _context4.next = 2;
                   break;
                 }
 
-                return _context2.abrupt("return");
+                return _context4.abrupt("return");
 
               case 2:
                 i = this.startCard();
 
               case 3:
                 if (!(i < this.boardCards.length)) {
-                  _context2.next = 10;
+                  _context4.next = 10;
                   break;
                 }
 
-                _context2.next = 6;
+                _context4.next = 6;
                 return this.sleep(500);
 
               case 6:
@@ -13681,7 +13742,7 @@ function () {
 
               case 7:
                 i++;
-                _context2.next = 3;
+                _context4.next = 3;
                 break;
 
               case 10:
@@ -13689,10 +13750,10 @@ function () {
 
               case 11:
               case "end":
-                return _context2.stop();
+                return _context4.stop();
             }
           }
-        }, _callee2, this);
+        }, _callee4, this);
       }));
 
       function showBoard() {
@@ -13728,10 +13789,12 @@ function () {
       if (response[0] === 'fold') {
         this.action(null, 'fold');
       } else if (response[0] === 'call') {
+        this.chips.play();
         this.action(null, 'call');
       } else if (response[0] === 'check') {
         this.action(null, 'check');
       } else {
+        this.chips.play();
         this.action(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -13740,16 +13803,16 @@ function () {
     value: function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3() {
+      regeneratorRuntime.mark(function _callee5() {
         var wait, response;
-        return regeneratorRuntime.wrap(function _callee3$(_context3) {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
           while (1) {
-            switch (_context3.prev = _context3.next) {
+            switch (_context5.prev = _context5.next) {
               case 0:
                 this.button.$el.empty();
                 this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 2500 : 1200;
-                _context3.next = 5;
+                _context5.next = 5;
                 return this.sleep(wait);
 
               case 5:
@@ -13761,10 +13824,10 @@ function () {
 
               case 7:
               case "end":
-                return _context3.stop();
+                return _context5.stop();
             }
           }
-        }, _callee3, this);
+        }, _callee5, this);
       }));
 
       function promptPlayer() {
@@ -13832,9 +13895,7 @@ function () {
   }, {
     key: "action",
     value: function action($button, compAction, compBetRaise) {
-      this.song.play();
-      var playerAction;
-      playerAction = $button ? $button.data().action : compAction;
+      var playerAction = $button ? $button.data().action : compAction;
 
       if (playerAction === 'fold') {
         this.currentPlayer().folded = true;
@@ -14333,7 +14394,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.sleep(3000);
+                return this.sleep(2000);
 
               case 2:
                 this.togglePlayers();

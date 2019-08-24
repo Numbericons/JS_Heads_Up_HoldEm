@@ -46,7 +46,7 @@ class Table {
   }
 
   async nextHand(){
-    await this.sleep(3000);
+    await this.sleep(2000);
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

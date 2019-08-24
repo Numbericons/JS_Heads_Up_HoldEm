@@ -18,7 +18,9 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
-    this.song = new Audio('./audio/PianoAndRobin103.wav')
+    this.shuffle = new Audio('./audio/shuffle2.mp3');
+    this.cardTurn = new Audio('./audio/cardTurnOver.mp3');
+    this.chips = new Audio('./audio/chipsTop.mp3')
   }
 
   currentPlayer() {
@@ -59,7 +61,11 @@ export default class Board {
     this.players[1].resetVars();
   }
 
-  playHand() {
+  async playHand() {
+    // this.shuffle.play();
+    // await this.sleep(10000).then(res => {
+      this.shuffle.play();
+    // })
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
@@ -166,9 +172,11 @@ export default class Board {
     this.pot = sbTotal + bbTotal;
   }
 
-  dealCard() {
+  async dealCard() {
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
+    await this.sleep(500);
+    this.cardTurn.play();
   }
 
   dealFlop() {
@@ -232,10 +240,12 @@ export default class Board {
     if (response[0] === 'fold') {
       this.action(null, 'fold');
     } else if (response[0] === 'call') {
+      this.chips.play();
       this.action(null, 'call');
     } else if (response[0] === 'check') {
       this.action(null, 'check');
     } else {
+      this.chips.play();
       this.action(null, 'bet', Math.ceil(response[1]));
     }
   }
@@ -299,9 +309,7 @@ export default class Board {
   }
 
   action($button, compAction, compBetRaise) {
-    this.song.play();
-    let playerAction;
-    playerAction = ($button) ? $button.data().action : compAction;
+    let playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.currentPlayer().folded = true;
       return this.determineWinner();

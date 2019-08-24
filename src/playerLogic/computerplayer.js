@@ -10,6 +10,8 @@ export default class ComputerPlayer {
     this.revealed = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.chipsBet = new Audio('./audio/chipsTop.mp3');
+    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
   }
 
   text(input) {
@@ -74,11 +76,13 @@ export default class ComputerPlayer {
       this.folded = true;
       return null;
     } else if (textInput === 'call') {
+      this.chipsCall.play();
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
       this.streetChipsInPot += to_call;
       return to_call;
     } else {
+      this.chipsBet.play();
       this.chipstack -= betInput + sb;
       this.chipsInPot += betInput + sb;
       this.streetChipsInPot += betInput + sb;
