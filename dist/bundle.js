@@ -13206,7 +13206,7 @@ function () {
     key: "playerChips",
     value: function playerChips() {
       var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
-      playerChips.innerText = "$".concat(this.chipstack, " chips");
+      playerChips.innerText = "$".concat(this.chipstack);
     }
   }, {
     key: "playerCards",
@@ -13333,7 +13333,7 @@ function () {
     key: "playerChips",
     value: function playerChips() {
       var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
-      playerChips.innerText = "$".concat(this.chipstack, " chips");
+      playerChips.innerText = "$".concat(this.chipstack);
     }
   }, {
     key: "playerCards",
@@ -13787,7 +13787,7 @@ function () {
   }, {
     key: "showPot",
     value: function showPot() {
-      var currPotText = document.querySelector(".current-pot-text");
+      var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
       var currPotNum = document.querySelector(".table-felt-pot");
       currPotNum.innerText = "$".concat(this.pot);
@@ -14102,20 +14102,40 @@ function () {
       $outDiv.append($betDiv);
     }
   }, {
+    key: "betSizeButton",
+    value: function betSizeButton($betsizeDiv, size, allIn) {
+      var $betDiv = $("<button>");
+      $betDiv.addClass("betsize-cont-text");
+      $betDiv.html("".concat(size));
+      $betsizeDiv.append($betDiv);
+    }
+  }, {
+    key: "betSizeButtons",
+    value: function betSizeButtons($betsizeDiv) {
+      this.betSizeButton($betsizeDiv, "1/2 Pot");
+      this.betSizeButton($betsizeDiv, "3/4 Pot");
+      this.betSizeButton($betsizeDiv, "Pot");
+      this.betSizeButton($betsizeDiv, "All In");
+    }
+  }, {
     key: "setButtons",
     value: function setButtons() {
+      this.$el.empty();
       var $outDiv = $("<div>");
       $outDiv.addClass("actions-cont");
+      var $betsizeDiv = $("<div>");
+      $betsizeDiv.addClass("betsize-cont");
       this.fold($outDiv);
       this.callOrCheck($outDiv);
 
       if (!this.board.allIn() && this.board.currentPlayer().chipstack > this.board.currBet) {
         this.betOrRaise($outDiv);
         this.betAmount($outDiv);
+        this.betSizeButtons($betsizeDiv);
       }
 
-      this.$el.empty();
       this.$el.append($outDiv);
+      this.$el.append($betsizeDiv);
     }
   }, {
     key: "bindEvents",

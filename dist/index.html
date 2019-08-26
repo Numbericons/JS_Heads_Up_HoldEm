@@ -5,16 +5,28 @@
     <title>No-Limit Texas Hold'em Poker</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
+    <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Rye&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Syncopate&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nobile&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Oldenburg&display=swap" rel="stylesheet">
     <script type="text/javascript" src="bundle.js"></script>
   </head>
   <body>
     <div class="holdem-container">
       <div class="top">
-        <div class="top-help">
-          Need Help?
+        <div class="top-left">
+          <div class="top-left-help">
+            <img class='top-left-help-image' src="https://js-holdem.s3-us-west-1.amazonaws.com/side-part-dealer.svg" alt="dealer">
+            <h5 class="top-left-help-text">Need Help?</h5>
+          </div>
+          <div class="top-left-current-pot">
+            <h5 class="top-left-current-pot-text"></h5>
+          </div>
         </div>
         <div class="top-title">
-          <h1 class="top-header">No-Limit Texas Hold'em Poker</h1>
+          <h1 class="top-header">JavaScript Hold'em Poker</h1>
+          <!-- <h1 class="top-header">No-Limit Texas Hold'em Poker</h1> -->
         </div>
         <div class="top-about">
           <h5 class="top-about-author">Made by Zachary Oliver</h5>
@@ -24,12 +36,9 @@
           </div>
         </div>
       </div>
-      <div class="current-pot">
-        <h5 class="current-pot-text"></h5>
-      </div>
-          <!-- <div class='dealer'> -->
-            <!-- <img class='dealer-image' src="https://js-holdem.s3-us-west-1.amazonaws.com/side-part-dealer.svg" alt="dealer"> -->
-            <!-- <img class='dealer-image' src="./image/side-part-dealer3.jpg" alt="dealer"> -->
+      <!-- <div class='dealer'> -->
+        <!-- <img class='dealer-image' src="https://js-holdem.s3-us-west-1.amazonaws.com/side-part-dealer.svg" alt="dealer"> -->
+        <!-- <img class='dealer-image' src="./image/side-part-dealer3.jpg" alt="dealer"> -->
           <!-- </div> -->
       <div class="table">
         <div class="table-row">
@@ -40,9 +49,9 @@
             </div>
             <div class="player-info-left-chip">
               <div class='player-info-left-chip-text'>
-                <h5 class='player-info-left-chip-text-name'>player2</h5>
+                <h5 class='player-info-left-chip-text-name'></h5>
                 <div id="player-info-left-chip-line"></div>
-                <h5 class='player-info-left-chip-text-chips'>player2 chips</h5>
+                <h5 class='player-info-left-chip-text-chips'></h5>
               </div>
               <img class='player-info-left-chip-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/malko2.jpg" alt="player" width="96" height="96">
               <!-- <img class='player-info-right-chip-img' src="./image/malko2Small.jpg" alt="player" width="96" height="96"> -->
@@ -80,9 +89,9 @@
               <img class='player-info-right-chip-img' src="./image/MattDamonScuffedUpSmall.jpg" alt="player" width="96" height="96">
               <!-- <img class='player-info-right-chip-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/MattDamonScuffedUp.jpg" alt="player" width="96" height="96"> -->
               <div class='player-info-right-chip-text'>
-                <h5 class='player-info-right-chip-text-name'>player1</h5>
+                <h5 class='player-info-right-chip-text-name'></h5>
                 <div id="player-info-right-chip-line"></div>
-                <h5 class='player-info-right-chip-text-chips'>player1 chips</h5>
+                <h5 class='player-info-right-chip-text-chips'></h5>
               </div>
             </div>
           </div>

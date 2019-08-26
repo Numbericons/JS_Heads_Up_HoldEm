@@ -232,7 +232,7 @@ export default class Board {
   }
 
   showPot() {
-    let currPotText = document.querySelector(`.current-pot-text`);
+    let currPotText = document.querySelector(`.top-left-current-pot-text`);
     currPotText.innerText = `Current pot: $${this.pot}`;
 
     let currPotNum = document.querySelector(`.table-felt-pot`);

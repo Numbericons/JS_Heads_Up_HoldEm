@@ -59,7 +59,7 @@ export default class HumanPlayer {
 
   playerChips() {
     let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack} chips`
+    playerChips.innerText = `$${this.chipstack}`
   }
 
   playerCards() {

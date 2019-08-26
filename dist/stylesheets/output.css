@@ -69,15 +69,6 @@ table {
   width: 100px;
 }
 
-.current-pot {
-  margin-left: 15px;
-}
-.current-pot-text {
-  font-family: "Cabin", sans-serif;
-  font-weight: 700;
-  border-radius: 15px;
-}
-
 .table {
   height: 70%;
   display: flex;
@@ -121,16 +112,20 @@ table {
   margin-top: 80px;
 }
 .table-felt-board-bet-player-1 {
-  font-family: "Cabin", sans-serif;
+  font-family: "Nobile", sans-serif;
+  font-weight: 900;
   align-self: center;
   margin-right: 20px;
   padding: 10px;
+  font-weight: 700;
 }
 .table-felt-board-bet-player-2 {
-  font-family: "Cabin", sans-serif;
+  font-family: "Nobile", sans-serif;
+  font-weight: 900;
   margin-right: 105px;
   align-self: center;
   padding: 15px;
+  font-weight: 700;
 }
 .table-felt-dealer-btn {
   display: flex;
@@ -169,7 +164,8 @@ table {
 }
 .table-felt-pot {
   font-size: 24px;
-  font-family: "Cabin", sans-serif;
+  font-family: "Nobile", sans-serif;
+  font-weight: 900;
 }
 .table-actions {
   height: 120px;
@@ -177,12 +173,14 @@ table {
   display: flex;
   justify-content: space-around;
   transform: translateY(-260px);
+  flex-direction: column;
+  align-items: center;
 }
 .table-actions-prompt {
   height: 27px;
   font-size: 25px;
   transform: translateY(-280px);
-  font-family: "Cabin", sans-serif;
+  font-family: "Lora", serif;
   margin-top: -10px;
 }
 
@@ -239,9 +237,11 @@ table {
 .player-info-left-chip-text-name {
   font-size: 15px;
   height: 20px;
+  font-family: "Oldenburg", cursive;
 }
 .player-info-left-chip-text-chips {
   font-size: 15px;
+  font-family: "Oldenburg", cursive;
 }
 .player-info-left-chip-img {
   float: left;
@@ -301,10 +301,12 @@ table {
   width: 240px;
 }
 .player-info-right-chip-text-name {
+  font-family: "Oldenburg", cursive;
   font-size: 15px;
   height: 20px;
 }
 .player-info-right-chip-text-chips {
+  font-family: "Oldenburg", cursive;
   font-size: 15px;
 }
 .player-info-right-chip-img {
@@ -334,13 +336,28 @@ table {
   justify-content: space-between;
   align-items: center;
 }
-.top-help {
+.top-left-help {
   margin: 0px 150px 0px 20px;
+  display: flex;
+  align-items: center;
+  font-family: "Nobile", sans-serif;
+}
+.top-left-help-image {
+  width: 50px;
+}
+.top-left-current-pot {
+  margin-left: 15px;
+}
+.top-left-current-pot-text {
+  font-family: "Nobile", sans-serif;
+  font-weight: 700;
+  transform: translate(0px, 20px);
+  border-radius: 15px;
 }
 .top-header {
   font-weight: bolder;
   font-size: 40px;
-  font-family: "Cabin", sans-serif;
+  font-family: "Rye", cursive;
   color: darkred;
 }
 .top-about {
@@ -352,12 +369,13 @@ table {
 .top-about-author {
   font-size: 16px;
   color: black;
-  font-family: "Cabin", sans-serif;
+  font-family: "Rye", cursive;
   margin: 20px;
 }
 .top-about-links {
   display: flex;
   justify-content: space-around;
+  font-family: "Rye", cursive;
 }
 
 .actions-cont {
@@ -398,8 +416,8 @@ table {
   margin-top: 5px;
 }
 .betsize-cont-text {
-  height: 25px;
-  width: 105px;
+  height: 20px;
+  width: 95px;
   display: flex;
   justify-content: center;
   align-items: center;

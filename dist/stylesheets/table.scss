@@ -41,17 +41,21 @@
       margin-top: 80px;
       // font-size: 50px;
       &-bet-player-1{
-        font-family: 'Cabin', sans-serif;
+        font-family: 'Nobile', sans-serif;
+        font-weight: 900;
         // margin-left: 60px;
         align-self: center;
         margin-right: 20px;
         padding: 10px;
+        font-weight: 700;
       }
       &-bet-player-2{
-        font-family: 'Cabin', sans-serif;
+        font-family: 'Nobile', sans-serif;
+        font-weight: 900;
         margin-right: 105px;
         align-self: center;
         padding: 15px;
+        font-weight: 700;
       }
     }
     &-dealer-btn{
@@ -94,7 +98,8 @@
     }
     &-pot{
       font-size: 24px;
-      font-family: 'Cabin', sans-serif;
+      font-family: 'Nobile', sans-serif;
+      font-weight: 900;
     }
   }
   &-actions{
@@ -103,11 +108,13 @@
     display: flex;
     justify-content: space-around;
     transform: translateY(-260px);
+    flex-direction: column;
+    align-items: center;
     &-prompt{
       height: 27px;
       font-size: 25px;
       transform: translateY(-280px);
-      font-family: 'Cabin', sans-serif;
+      font-family: 'Lora', serif;
       margin-top: -10px;
     }
   }

@@ -95,7 +95,7 @@ export default class ComputerPlayer {
 
   playerChips() {
     let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack} chips`
+    playerChips.innerText = `$${this.chipstack}`
   }
 
   playerCards() {

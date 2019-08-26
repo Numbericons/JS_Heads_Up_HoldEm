@@ -1,16 +1,33 @@
-.top{
+
+ .top{
   height: 110px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  &-help{
-    margin: 0px 150px 0px 20px;
+  &-left{
+    &-help{
+      margin: 0px 150px 0px 20px;
+      display: flex;
+      align-items: center;
+      font-family: 'Nobile', sans-serif;
+      &-image{
+        width: 50px;
+      }
+    }
+    &-current-pot{
+      margin-left:15px;
+      &-text{
+        font-family: 'Nobile', sans-serif;
+        font-weight: 700;
+        transform: translate(0px, 20px);
+        border-radius: 15px;
+      }
+    }
   }
   &-header{
     font-weight: bolder;
     font-size: 40px;
-    font-family: 'Cabin', sans-serif;
-    // color: rgb(177, 118, 15);
+    font-family: 'Rye', cursive;
     color: darkred;
   }
   &-about{
@@ -21,12 +38,13 @@
     &-author{
       font-size:16px;
       color: black;
-      font-family: 'Cabin', sans-serif;
+      font-family: 'Rye', cursive;
       margin: 20px;
     }
     &-links{
       display: flex;
       justify-content: space-around;
+      font-family: 'Rye', cursive;
     }
   }
 }
