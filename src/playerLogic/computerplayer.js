@@ -37,7 +37,8 @@ export default class ComputerPlayer {
     let randNum = Math.random() * 2 * pot;   //pot 1000  to_call 500  stack = 5000
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBetRaise(pot * .5, stack);
+      return this.maxBetRaise(to_call * 2, stack);
+      // return this.maxBetRaise(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;
       return this.maxBetRaise(betRaise, stack);

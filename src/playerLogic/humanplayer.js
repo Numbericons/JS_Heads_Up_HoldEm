@@ -45,10 +45,10 @@ export default class HumanPlayer {
       return to_call;
     } else {
       this.chipsBet.play();
-      this.chipstack -= betInput + sb;
-      this.chipsInPot += betInput + sb;
-      this.streetChipsInPot += betInput + sb;
-      return betInput + sb;
+      this.chipstack = this.chipstack - betInput + sb;
+      this.chipsInPot += betInput - sb;
+      this.streetChipsInPot += betInput - sb;
+      return betInput - sb; //+
     }
   }
 
