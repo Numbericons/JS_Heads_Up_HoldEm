@@ -25,11 +25,9 @@ The deck was built from a sprite sheet. When the deck is populated with cards, t
 
 This project utilized the poker solver library to determine relative hand strength and for the computer to determine their actions.
 
-JS Heads Up HoldEm was created primarily in simple HTMl SCSS and jQuery for an added challenge and to drill the fundamentals. jQuery is utilized to select and add style and other attributes to elements.
+JS Heads Up HoldEm was created primarily in simple HTMl SCSS and the JavaScript jQuery library for an added challenge and to drill the fundamentals. jQuery is utilized to select and add style and other attributes to elements.
 
-Playlists are the central feature of this website.  To reduce redundancy, the same song can be added to multiple playlists and a playlist can have many songs. After all, it is not a traditional library where one user checks out a song for their playlist, making it unavailable to the rest of the population. To accomplish this, an entry in a join table of Songlists, foreign keys to songs and playlists, is created to make the association.
-
-When viewing a playlist, the Songlist associations are used to select a random song from the playlist and then fetch the associated album and its art to display to the user. Below is the snippet showing how the JSON attribute of album art is set for a playlist:
+The computer player uses pot odds (the amount wagered compared to the entire amount of the pot) combined with JavaScripts Math.random function to the appropriate actions.
 
 ``` javascript
   promptResponse(to_call, stack, pot){
