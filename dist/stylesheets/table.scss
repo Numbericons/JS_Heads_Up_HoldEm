@@ -3,8 +3,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  // align-items: center;
-  background-color: #a6b1b5;
+  // background-color: #a6b1b5;
   &-row{
     height: 100%;
     width: 100%;
@@ -41,7 +40,7 @@
       margin-top: 80px;
       // font-size: 50px;
       &-bet-player-1{
-        font-family: 'Nobile', sans-serif;
+        font-family: 'Oldenburg', cursive;
         font-weight: 900;
         // margin-left: 60px;
         align-self: center;
@@ -50,7 +49,7 @@
         font-weight: 700;
       }
       &-bet-player-2{
-        font-family: 'Nobile', sans-serif;
+        font-family: 'Oldenburg', cursive;
         font-weight: 900;
         margin-right: 105px;
         align-self: center;
@@ -98,7 +97,7 @@
     }
     &-pot{
       font-size: 24px;
-      font-family: 'Nobile', sans-serif;
+      font-family: 'Oldenburg', cursive;
       font-weight: 900;
     }
   }
@@ -106,28 +105,34 @@
     display: flex;
     justify-content: space-between;
     width: 90%;
+    transform: translateY(-260px);
     &-actions{
       height: 120px;
       width: 80%;
       display: flex;
       justify-content: space-around;
-      transform: translateY(-260px);
       flex-direction: column;
       align-items: center;
       margin-left: 200px;
       &-prompt{
         height: 27px;
         font-size: 25px;
-        transform: translateY(-280px);
-        font-family: 'Lora', serif;
+        transform: translateY(-20px);
+        font-family: 'Oldenburg', cursive;
         margin-top: -10px;
       }
+    }
+    &-header{
+      font-size: 20px;
+      font-family: 'Oldenburg', cursive;
+      margin-bottom: 5px;
     }
     &-chat{
       height: 100px;
       width:  200px;
       outline: 1px solid black;
-      transform: translateY(-260px)
+      font-family: 'Oldenburg', cursive;
+      font-size: 14px;
     }
   }
 }

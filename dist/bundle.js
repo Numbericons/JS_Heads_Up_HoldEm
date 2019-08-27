@@ -13712,7 +13712,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "66%", true);
+      this.boardCards[pos].render(card, "17.5%", "69%", true);
     }
   }, {
     key: "showBoard",
@@ -13781,7 +13781,10 @@ function () {
   }, {
     key: "allIn",
     value: function allIn() {
-      if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
+      if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) {
+        return true;
+      }
+
       return false;
     }
   }, {
@@ -13857,14 +13860,14 @@ function () {
       this.showDealerBtn();
       this.showPot();
       this.renderPlayers();
-      this.showBoard();
 
-      if (this.allIn()) {
+      if (this.allIn() && this.handChipDiff() === 0) {
         this.showDown();
         this.determineWinner();
         return;
       }
 
+      this.showBoard();
       this.button.setButtons();
       this.button.bindEvents();
       if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack); // if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
@@ -13923,6 +13926,15 @@ function () {
       return betRaise;
     }
   }, {
+    key: "resolveAction",
+    value: function resolveAction(betRaise, playerAction) {
+      var resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+
+      if (resolvedPlayerAction) {
+        this.pot += resolvedPlayerAction;
+      }
+    }
+  }, {
     key: "action",
     value: function action($button, compAction, compBetRaise) {
       var playerAction = $button ? $button.data().action : compAction;
@@ -13930,24 +13942,11 @@ function () {
       if (playerAction === 'fold') {
         this.currentPlayer().folded = true;
         return this.determineWinner();
-      } // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-      // let betRaise;
-      // if (compBetRaise) {
-      //   if (compBetRaise < this.bb) compBetRaise = this.bb;
-      //   betRaise = this.calcCompBetRaise(compBetRaise, isSb);
-      // } else {
-      //   betRaise = this.calcBetInput(isSb);
-      // }
-
-
-      var betRaise = this.isCompBet(compBetRaise);
-      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
-
-      if (resolvedAction) {
-        this.pot += resolvedAction;
       }
 
-      this.streetActions = this.streetActions.concat(resolvedAction);
+      var betRaise = this.isCompBet(compBetRaise);
+      var resolved = this.resolveAction(betRaise, playerAction);
+      this.streetActions = this.streetActions.concat(resolved);
       this.continueAction();
     }
   }, {
@@ -13956,7 +13955,7 @@ function () {
       this.currBet = this.handChipDiff();
       this.toggleCurrPlayer();
       this.render();
-      this.nextAction();
+      if (!this.allIn() && this.handChipDiff() === 0) this.nextAction();
     }
   }, {
     key: "nextAction",
@@ -14169,6 +14168,21 @@ function () {
         _this.board.action($button);
       });
     }
+  }, {
+    key: "bindNewGame",
+    value: function bindNewGame(table) {
+      this.$el.unbind();
+      var $outDiv = $("<div>");
+      var $newGame = $("<button>");
+      $newGame.html('NEW GAME');
+      $newGame.addClass("actions-cont-new-game");
+      $outDiv.addClass("actions-cont");
+      $outDiv.append($newGame);
+      this.$el.append($outDiv);
+      this.$el.on("click", "button", function (event) {
+        table.newGame();
+      });
+    }
   }]);
 
   return Button;
@@ -14378,16 +14392,22 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "91%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];
 
     _classCallCheck(this, Table);
 
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
+    this.win1 = new Audio('./audio/win1.wav');
+    this.win2 = new Audio('./audio/win2.wav');
+    this.win3 = new Audio('./audio/win2.wav');
+    this.loss1 = new Audio('./audio/loss1.wav');
+    this.loss2 = new Audio('./audio/loss2.wav');
+    this.loss3 = new Audio('./audio/loss3.wav');
   }
 
   _createClass(Table, [{
@@ -14404,14 +14424,89 @@ function () {
       this.board.players[1].position = 'bb';
     }
   }, {
+    key: "winSound",
+    value: function winSound(rng) {
+      if (rng < .333) {
+        this.win1.play();
+      } else if (rng < .666) {
+        this.win2.play();
+      } else {
+        this.win3.play();
+      }
+    }
+  }, {
+    key: "lossSound",
+    value: function lossSound(rng) {
+      if (rng < .333) {
+        this.loss1.play();
+      } else if (rng < .666) {
+        this.loss2.play();
+      } else {
+        this.loss3.play();
+      }
+    }
+  }, {
+    key: "sampleWinLoss",
+    value: function sampleWinLoss() {
+      var rng = Math.random();
+
+      if (this.board.currentPlayer().chipstack === 0 && this.board.currentPlayer().comp) {
+        this.winSound(rng);
+      } else {
+        this.lossSound(rng);
+      }
+    }
+  }, {
+    key: "resultSound",
+    value: function () {
+      var _resultSound = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.sleep(1500);
+
+              case 2:
+                this.sampleWinLoss();
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function resultSound() {
+        return _resultSound.apply(this, arguments);
+      }
+
+      return resultSound;
+    }()
+  }, {
+    key: "newGame",
+    value: function newGame() {
+      location.reload();
+    }
+  }, {
+    key: "result",
+    value: function result() {
+      this.removeButtons();
+      this.resultSound();
+      this.board.button.bindNewGame(this);
+    }
+  }, {
     key: "handOver",
     value: function handOver() {
       if (this.board.currentPlayer().chipstack === 0) {
-        this.removeButtons();
         this.board.otherPlayer().promptText("".concat(this.board.otherPlayer().name, " has won the match!"));
+        this.result();
       } else if (this.board.otherPlayer().chipstack === 0) {
-        this.removeButtons();
         this.board.currentPlayer().promptText("".concat(this.board.currentPlayer().name, " has won the match!"));
+        this.result();
       } else {
         this.nextHand();
       }
@@ -14438,17 +14533,17 @@ function () {
     value: function () {
       var _nextHand = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
-        return regeneratorRuntime.wrap(function _callee$(_context) {
+      regeneratorRuntime.mark(function _callee2() {
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
           while (1) {
-            switch (_context.prev = _context.next) {
+            switch (_context2.prev = _context2.next) {
               case 0:
                 if (!(this.handNum > 0)) {
-                  _context.next = 3;
+                  _context2.next = 3;
                   break;
                 }
 
-                _context.next = 3;
+                _context2.next = 3;
                 return this.sleep(2000);
 
               case 3:
@@ -14461,10 +14556,10 @@ function () {
 
               case 9:
               case "end":
-                return _context.stop();
+                return _context2.stop();
             }
           }
-        }, _callee, this);
+        }, _callee2, this);
       }));
 
       function nextHand() {

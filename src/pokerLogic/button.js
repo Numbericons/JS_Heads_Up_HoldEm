@@ -99,4 +99,19 @@ export default class Button {
       this.board.action($button);
     }));
   }
+
+  bindNewGame(table){
+    this.$el.unbind();
+    const $outDiv = $("<div>");
+    let $newGame = $("<button>");
+
+    $newGame.html('NEW GAME');
+    $newGame.addClass("actions-cont-new-game")
+    $outDiv.addClass("actions-cont")
+    $outDiv.append($newGame);
+    this.$el.append($outDiv);
+    this.$el.on("click", "button", (event => {
+      table.newGame();
+    }));
+  }
 }

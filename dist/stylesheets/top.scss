@@ -9,7 +9,7 @@
       margin: 0px 150px 0px 20px;
       display: flex;
       align-items: center;
-      font-family: 'Nobile', sans-serif;
+      font-family: 'Oldenburg', cursive;
       &-image{
         width: 50px;
       }
@@ -17,7 +17,7 @@
     &-current-pot{
       margin-left:15px;
       &-text{
-        font-family: 'Nobile', sans-serif;
+        font-family: 'Oldenburg', cursive;
         font-weight: 700;
         transform: translate(0px, 20px);
         border-radius: 15px;
@@ -38,13 +38,14 @@
     &-author{
       font-size:16px;
       color: black;
-      font-family: 'Rye', cursive;
+      // font-family: 'Rye', cursive;
+      font-family: 'Oldenburg', cursive;
       margin: 20px;
     }
     &-links{
       display: flex;
       justify-content: space-around;
-      font-family: 'Rye', cursive;
+      font-family: 'Oldenburg', cursive;
     }
   }
 }

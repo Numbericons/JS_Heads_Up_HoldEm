@@ -206,7 +206,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "66%", true)
+    this.boardCards[pos].render(card, "17.5%", "69%", true)
   }
 
   async showBoard() {
@@ -226,7 +226,9 @@ export default class Board {
   }
 
   allIn() {
-    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) return true;
+    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) {
+      return true
+    }
     return false;
   }
 
@@ -272,12 +274,12 @@ export default class Board {
     this.showDealerBtn();
     this.showPot();
     this.renderPlayers();
-    this.showBoard();
-    if (this.allIn()) {
+    if (this.allIn() && this.handChipDiff() === 0) {
       this.showDown();
       this.determineWinner();
       return;
     }
+    this.showBoard();
     this.button.setButtons();
     this.button.bindEvents();
     if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
@@ -327,26 +329,22 @@ export default class Board {
     return betRaise;
   }
 
+  resolveAction(betRaise, playerAction){
+    let resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+    if (resolvedPlayerAction) {
+      this.pot += resolvedPlayerAction;
+    }
+  }
+
   action($button, compAction, compBetRaise) {
     let playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.currentPlayer().folded = true;
       return this.determineWinner();
     }
-    // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-    // let betRaise;
-    // if (compBetRaise) {
-    //   if (compBetRaise < this.bb) compBetRaise = this.bb;
-    //   betRaise = this.calcCompBetRaise(compBetRaise, isSb);
-    // } else {
-    //   betRaise = this.calcBetInput(isSb);
-    // }
     let betRaise = this.isCompBet(compBetRaise);
-    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
-    if (resolvedAction) {
-      this.pot += resolvedAction
-    }
-    this.streetActions = this.streetActions.concat(resolvedAction);
+    let resolved = this.resolveAction(betRaise, playerAction);
+    this.streetActions = this.streetActions.concat(resolved);
     this.continueAction();
   }
 
@@ -354,7 +352,7 @@ export default class Board {
     this.currBet = this.handChipDiff();
     this.toggleCurrPlayer();
     this.render();
-    this.nextAction();
+    if (!this.allIn() && this.handChipDiff() === 0)  this.nextAction();
   }
 
   nextAction() {

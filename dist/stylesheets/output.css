@@ -55,7 +55,7 @@ table {
 .holdem-container {
   height: 1200px;
   width: 1450px;
-  background-color: #a6b1b5;
+  background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
 }
 
 .dealer {
@@ -79,7 +79,6 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: #a6b1b5;
 }
 .table-row {
   height: 100%;
@@ -117,7 +116,7 @@ body {
   margin-top: 80px;
 }
 .table-felt-board-bet-player-1 {
-  font-family: "Nobile", sans-serif;
+  font-family: "Oldenburg", cursive;
   font-weight: 900;
   align-self: center;
   margin-right: 20px;
@@ -125,7 +124,7 @@ body {
   font-weight: 700;
 }
 .table-felt-board-bet-player-2 {
-  font-family: "Nobile", sans-serif;
+  font-family: "Oldenburg", cursive;
   font-weight: 900;
   margin-right: 105px;
   align-self: center;
@@ -169,20 +168,20 @@ body {
 }
 .table-felt-pot {
   font-size: 24px;
-  font-family: "Nobile", sans-serif;
+  font-family: "Oldenburg", cursive;
   font-weight: 900;
 }
 .table-bottom {
   display: flex;
   justify-content: space-between;
   width: 90%;
+  transform: translateY(-260px);
 }
 .table-bottom-actions {
   height: 120px;
   width: 80%;
   display: flex;
   justify-content: space-around;
-  transform: translateY(-260px);
   flex-direction: column;
   align-items: center;
   margin-left: 200px;
@@ -190,15 +189,21 @@ body {
 .table-bottom-actions-prompt {
   height: 27px;
   font-size: 25px;
-  transform: translateY(-280px);
-  font-family: "Lora", serif;
+  transform: translateY(-20px);
+  font-family: "Oldenburg", cursive;
   margin-top: -10px;
+}
+.table-bottom-header {
+  font-size: 20px;
+  font-family: "Oldenburg", cursive;
+  margin-bottom: 5px;
 }
 .table-bottom-chat {
   height: 100px;
   width: 200px;
   outline: 1px solid black;
-  transform: translateY(-260px);
+  font-family: "Oldenburg", cursive;
+  font-size: 14px;
 }
 
 .display-none {
@@ -357,7 +362,7 @@ body {
   margin: 0px 150px 0px 20px;
   display: flex;
   align-items: center;
-  font-family: "Nobile", sans-serif;
+  font-family: "Oldenburg", cursive;
 }
 .top-left-help-image {
   width: 50px;
@@ -366,7 +371,7 @@ body {
   margin-left: 15px;
 }
 .top-left-current-pot-text {
-  font-family: "Nobile", sans-serif;
+  font-family: "Oldenburg", cursive;
   font-weight: 700;
   transform: translate(0px, 20px);
   border-radius: 15px;
@@ -386,13 +391,13 @@ body {
 .top-about-author {
   font-size: 16px;
   color: black;
-  font-family: "Rye", cursive;
+  font-family: "Oldenburg", cursive;
   margin: 20px;
 }
 .top-about-links {
   display: flex;
   justify-content: space-around;
-  font-family: "Rye", cursive;
+  font-family: "Oldenburg", cursive;
 }
 
 .actions-cont {
@@ -409,10 +414,12 @@ body {
   align-items: center;
   background-color: black;
   color: white;
+  border-color: black;
   font-family: "Cabin", sans-serif;
-  border-radius: 30px;
-  font-size: 18px;
+  border-radius: 50px;
+  font-size: 16px;
   font-weight: 700;
+  cursor: pointer;
 }
 .actions-cont-bet-amt {
   height: 46px;
@@ -425,6 +432,21 @@ body {
   border-radius: 15px;
   font-size: 20px;
 }
+.actions-cont-new-game {
+  height: 55px;
+  width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border-color: black;
+  font-family: "Cabin", sans-serif;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
 
 .betsize-cont {
   width: 50%;
@@ -434,16 +456,18 @@ body {
 }
 .betsize-cont-text {
   height: 20px;
-  width: 95px;
+  width: 85px;
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: black;
+  border-color: black;
   color: white;
   font-family: "Cabin", sans-serif;
-  border-radius: 20px;
+  border-radius: 40px;
   font-size: 10px;
   font-weight: 700;
+  cursor: pointer;
 }
 
 /*# sourceMappingURL=output.css.map */
