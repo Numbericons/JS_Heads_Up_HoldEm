@@ -40,7 +40,20 @@ export default class Card {
     element.style.marginLeft = "10px";
   }
 
+  showSuit(){
+    switch (this.suit) {
+      case "s":
+        return "\u2660"
+      case "h":
+        return "\u2661"
+      case "d":
+        return "\u2662"
+      case "c":
+        return "\u2663"
+    }
+  }
   show() {
-    return `${this.rank}${this.suit}`
+    return `${this.rank}${this.showSuit()}`
+    // return `${this.rank}${this.suit}`
   }
 }

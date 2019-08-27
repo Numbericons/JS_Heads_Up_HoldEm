@@ -62,9 +62,9 @@ export default class Board {
   }
 
   async playHand() {
-    // this.shuffle.play();
     // await this.sleep(10000).then(res => {
-      this.shuffle.play();
+    this.shuffle.play();
+    // this.deck.shuffleSound();
     // })
     this.dealInPlayers();
     this.takeBlinds();
@@ -187,7 +187,8 @@ export default class Board {
 
   textBoard() {
     let textBoard = this.boardCards.map(card => {
-      return `${card.rank}${card.suit}`
+      return card.show();
+      // return `${card.rank}${card.suit}`
     })
     return textBoard;
   }

@@ -3,6 +3,7 @@ export default class Deck {
   constructor(){
     this.cards_drawn = 0;
     this.cards = this.newDeck();
+    this.shuffle = new Audio('./audio/shuffle2.mp3');
   }
 
   shuffle(array){
@@ -17,6 +18,15 @@ export default class Deck {
     }
     return array;
   }
+
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  // async shuffleSound(){
+  //   await this.sleep(2000);
+  //   this.shuffle.play();
+  // }
 
   newDeck(){
     let suits = ["s", "h", "d", "c"];

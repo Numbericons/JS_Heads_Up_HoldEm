@@ -13484,9 +13484,9 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                // this.shuffle.play();
                 // await this.sleep(10000).then(res => {
-                this.shuffle.play(); // })
+                this.shuffle.play(); // this.deck.shuffleSound();
+                // })
 
                 this.dealInPlayers();
                 this.takeBlinds();
@@ -13688,7 +13688,7 @@ function () {
     key: "textBoard",
     value: function textBoard() {
       var textBoard = this.boardCards.map(function (card) {
-        return "".concat(card.rank).concat(card.suit);
+        return card.show(); // return `${card.rank}${card.suit}`
       });
       return textBoard;
     }
@@ -14261,9 +14261,26 @@ function () {
       element.style.marginLeft = "10px";
     }
   }, {
+    key: "showSuit",
+    value: function showSuit() {
+      switch (this.suit) {
+        case "s":
+          return "\u2660";
+
+        case "h":
+          return "\u2661";
+
+        case "d":
+          return "\u2662";
+
+        case "c":
+          return "\u2663";
+      }
+    }
+  }, {
     key: "show",
     value: function show() {
-      return "".concat(this.rank).concat(this.suit);
+      return "".concat(this.rank).concat(this.showSuit()); // return `${this.rank}${this.suit}`
     }
   }]);
 
@@ -14301,6 +14318,7 @@ function () {
 
     this.cards_drawn = 0;
     this.cards = this.newDeck();
+    this.shuffle = new Audio('./audio/shuffle2.mp3');
   }
 
   _createClass(Deck, [{
@@ -14318,6 +14336,17 @@ function () {
 
       return array;
     }
+  }, {
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    } // async shuffleSound(){
+    //   await this.sleep(2000);
+    //   this.shuffle.play();
+    // }
+
   }, {
     key: "newDeck",
     value: function newDeck() {
