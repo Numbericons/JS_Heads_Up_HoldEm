@@ -3,6 +3,13 @@
 [Live Link](https://acesandeights.firebaseapp.com//)
 ![Screen Shot 2019-08-26 at 12 02 05 PM](https://user-images.githubusercontent.com/16912968/63716023-e4bebb80-c7f9-11e9-8be3-afd72c9e597a.png)
 
+### Technologies and Libraries:
+ 1. jQuery
+ 2. HTML
+ 3. SCSS/CSS
+ 4. JavaScript
+ 5. Poker Solver
+
 JS_Heads_Up_Holdem is a JavaScript project designed and built by me alone in one week. The site provides the user with the experience of battling wits against an artifical intelligence embodiment of the legendary Teddy KGB as Mike McDermott from the movie Rounders.
 
 The deck was built from a sprite sheet. When the deck is populated with cards, the relative position on intended card is specified by coordinates.
@@ -53,20 +60,12 @@ The computer player uses pot odds (the amount wagered compared to the entire amo
   }
 ```
 
-
 ### Site Features:
 
 * Fully featured No Limit Texas Hold'em
 * Computer AI for the player to battle
 * Dynamic playing cards
 * Card and chip sounds
-
-### Technologies and Libraries:
- 1. jQuery
- 2. HTML
- 3. SCSS/CSS
- 4. JavaScript
- 5. Poker Solver
 
 ### Features to be Implemented:
  1. Chipstack visual representations
