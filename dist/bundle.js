@@ -13045,7 +13045,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/table */ "./src/pokerLogic/table.js");
 
 $(function () {
-  var actionsCont = $('.table-actions');
+  var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
   table.playHand();
 }); // $(() => {
@@ -13112,13 +13112,13 @@ function () {
   _createClass(ComputerPlayer, [{
     key: "text",
     value: function text(input) {
-      var textSelect = document.querySelector(".table-actions-text");
+      var textSelect = document.querySelector(".table-bottom-actions-text");
       textSelect.innerText = input;
     }
   }, {
     key: "promptText",
     value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-actions-prompt");
+      var promptSelect = document.querySelector(".table-bottom-actions-prompt");
       promptSelect.innerText = input;
     }
   }, {
@@ -13126,8 +13126,8 @@ function () {
     value: function promptAction() {}
   }, {
     key: "maxBetRaise",
-    value: function maxBetRaise(num, stack) {
-      return num > stack ? ['betRaise', stack] : ['betRaise', num];
+    value: function maxBetRaise(num, stack, to_call) {
+      return num + to_call > stack ? ['betRaise', stack] : ['betRaise', num];
     }
   }, {
     key: "genBetRaise",
@@ -13140,20 +13140,19 @@ function () {
         return this.maxBetRaise(to_call * 2, stack); // return this.maxBetRaise(pot * .5, stack);
       } else if (randNum > 1.6 * pot) {
         betRaise = pot * Math.random() + pot;
-        return this.maxBetRaise(betRaise, stack);
+        return this.maxBetRaise(betRaise, stack, to_call);
       } else {
         betRaise = randNum > pot ? pot : randNum;
-        return this.maxBetRaise(betRaise, stack);
+        return this.maxBetRaise(betRaise, stack, to_call);
       }
     }
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, stack, pot) {
-      var adjToCall; // (to_call === 0) ? betFactor = 2 : betFactor = pot / to_call;
-
+      var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
-      var potOdds = adjToCall / (adjToCall + pot); // if (randNum < .33333) {
+      var potOdds = adjToCall / (adjToCall + pot);
 
       if (randNum < potOdds) {
         if (to_call > 0) {
@@ -13285,7 +13284,7 @@ function () {
   _createClass(HumanPlayer, [{
     key: "promptText",
     value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-actions-prompt");
+      var promptSelect = document.querySelector(".table-bottom-actions-prompt");
       promptSelect.innerText = input;
     }
   }, {
@@ -13524,9 +13523,16 @@ function () {
       }
     }
   }, {
+    key: "renderChat",
+    value: function renderChat(str) {
+      var chat = $('.table-bottom-chat');
+      chat.val(str);
+    }
+  }, {
     key: "tie",
     value: function tie(hand) {
-      alert(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!"));
+      this.renderChat(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!")); // alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
+
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
@@ -13549,7 +13555,8 @@ function () {
       if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
       this.players[winPos].chipstack += this.pot;
       this.renderPlayers();
-      alert(this.outputString);
+      this.renderChat(this.outputString); // alert(this.outputString);
+
       this.table.handOver();
     }
   }, {
@@ -13604,14 +13611,7 @@ function () {
       this.dealPlayerCard(0, !this.players[0].comp);
       this.dealPlayerCard(1, !this.players[1].comp);
       this.dealPlayerCard(0, !this.players[0].comp);
-    } // chkBlindAllIn(){
-    //   if (this.otherPlayer().chipstack === 0) {
-    //     return this.handChipDiff();
-    //   } else {
-    //     return this.currBet; 
-    //   }
-    // }
-
+    }
   }, {
     key: "blindPlayer",
     value: function blindPlayer(player, blind) {
@@ -13712,7 +13712,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "63%", true);
+      this.boardCards[pos].render(card, "17.5%", "66%", true);
     }
   }, {
     key: "showBoard",
@@ -13878,28 +13878,49 @@ function () {
     }
   }, {
     key: "calcBetInput",
-    value: function calcBetInput(isSb) {
+    value: function calcBetInput() {
+      var sb = this.isSb();
       var betInput = $('.actions-cont-bet-amt');
       if (betInput.length === 0) return 0;
       var totalBet = Number(betInput[0].value);
-      if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
-      if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
+      if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - sb;
+      if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
       return totalBet;
     }
   }, {
     key: "calcCompBetRaise",
     value: function calcCompBetRaise(compBetRaise, isSb) {
+      var sb = this.isSb();
       var totalBet;
 
       if (compBetRaise > this.currentPlayer().chipstack) {
-        totalBet = this.currentPlayer().chipstack - isSb;
+        totalBet = this.currentPlayer().chipstack - sb;
       } else if (compBetRaise > this.otherPlayer().chipstack) {
-        totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
+        totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
       } else {
         totalBet = compBetRaise;
       }
 
       return totalBet;
+    }
+  }, {
+    key: "isSb",
+    value: function isSb() {
+      return this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
+    }
+  }, {
+    key: "isCompBet",
+    value: function isCompBet(compBetRaise) {
+      var betRaise;
+
+      if (compBetRaise) {
+        if (compBetRaise < this.bb) compBetRaise = this.bb;
+        betRaise = this.calcCompBetRaise(compBetRaise);
+      } else {
+        betRaise = this.calcBetInput();
+      }
+
+      return betRaise;
     }
   }, {
     key: "action",
@@ -13909,19 +13930,18 @@ function () {
       if (playerAction === 'fold') {
         this.currentPlayer().folded = true;
         return this.determineWinner();
-      }
+      } // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
+      // let betRaise;
+      // if (compBetRaise) {
+      //   if (compBetRaise < this.bb) compBetRaise = this.bb;
+      //   betRaise = this.calcCompBetRaise(compBetRaise, isSb);
+      // } else {
+      //   betRaise = this.calcBetInput(isSb);
+      // }
 
-      var isSb = this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
-      var betRaise;
 
-      if (compBetRaise) {
-        if (compBetRaise < this.bb) compBetRaise = this.bb;
-        betRaise = this.calcCompBetRaise(compBetRaise, isSb);
-      } else {
-        betRaise = this.calcBetInput(isSb);
-      }
-
-      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, isSb);
+      var betRaise = this.isCompBet(compBetRaise);
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
 
       if (resolvedAction) {
         this.pot += resolvedAction;
@@ -13947,7 +13967,7 @@ function () {
       if (this.streetActions[this.streetActions - 1] === 'fold') {
         this.determineWinner();
       } else if (handChipsEqual) {
-        if (this.allIn()) {
+        if (this.allIn() && this.handChipDiff() === 0) {
           // remove as render handles logic
           this.showDown();
           this.determineWinner();
@@ -14361,7 +14381,7 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "87%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "91%"];
 
     _classCallCheck(this, Table);
 
@@ -14423,10 +14443,15 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
+                if (!(this.handNum > 0)) {
+                  _context.next = 3;
+                  break;
+                }
+
+                _context.next = 3;
                 return this.sleep(2000);
 
-              case 2:
+              case 3:
                 this.togglePlayers();
                 this.resetPlayerVars();
                 this.board.clearBoard();
@@ -14434,7 +14459,7 @@ function () {
                 this.handNum += 1;
                 this.playHand();
 
-              case 8:
+              case 9:
               case "end":
                 return _context.stop();
             }

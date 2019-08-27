@@ -17,7 +17,7 @@ export default class HumanPlayer {
   }
 
   promptText(input){
-    let promptSelect = document.querySelector(".table-actions-prompt");
+    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
     promptSelect.innerText = input;
   }
 

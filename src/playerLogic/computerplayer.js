@@ -17,20 +17,20 @@ export default class ComputerPlayer {
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-actions-text");
+    let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
+    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
     promptSelect.innerText = input;
   }
 
   promptAction() {
   }
 
-  maxBetRaise(num, stack) {
-    return (num > stack) ? ['betRaise', stack] : ['betRaise', num];
+  maxBetRaise(num, stack, to_call) {
+    return (num + to_call > stack) ? ['betRaise', stack] : ['betRaise', num];
   }
 
   genBetRaise(to_call, stack, pot){
@@ -41,20 +41,18 @@ export default class ComputerPlayer {
       // return this.maxBetRaise(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;
-      return this.maxBetRaise(betRaise, stack);
+      return this.maxBetRaise(betRaise, stack, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
-      return this.maxBetRaise(betRaise, stack);
+      return this.maxBetRaise(betRaise, stack, to_call);
     }
   }
   
   promptResponse(to_call, stack, pot){
     let adjToCall;
-    // (to_call === 0) ? betFactor = 2 : betFactor = pot / to_call;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
     let potOdds = adjToCall / (adjToCall + pot); 
-    // if (randNum < .33333) {
     if (randNum < potOdds) {
       if (to_call > 0) {
         return ['fold'];

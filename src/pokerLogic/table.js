@@ -4,7 +4,7 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, initialChipstack = 5000, sb = 50, bb = 100, cardDims = ["54%", "87%"]){
+  constructor($el, initialChipstack = 5000, sb = 50, bb = 100, cardDims = ["54%", "91%"]){
     this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
@@ -46,7 +46,7 @@ class Table {
   }
 
   async nextHand(){
-    await this.sleep(2000);
+    if (this.handNum > 0) await this.sleep(2000);
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

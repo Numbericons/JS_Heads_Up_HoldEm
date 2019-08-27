@@ -16,12 +16,12 @@ export default class ComputerPlayer {
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-actions-text");
+    let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
+    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
     promptSelect.innerText = input;
   }
 

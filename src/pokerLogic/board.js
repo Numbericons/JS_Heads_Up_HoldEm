@@ -85,8 +85,14 @@ export default class Board {
     }
   }
 
+  renderChat(str){
+    let chat = $('.table-bottom-chat');
+    chat.val(str);
+  }
+
   tie(hand) {
-    alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
+    this.renderChat(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
+    // alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
     if (!this.pot % 2 === 0) {
@@ -106,7 +112,8 @@ export default class Board {
     if (!this.players[losePos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
     this.players[winPos].chipstack += this.pot;
     this.renderPlayers();
-    alert(this.outputString);
+    this.renderChat(this.outputString);
+    // alert(this.outputString);
     this.table.handOver();
   }
 
@@ -136,14 +143,6 @@ export default class Board {
     this.dealPlayerCard(1, !this.players[1].comp);
     this.dealPlayerCard(0, !this.players[0].comp);
   }
-
-  // chkBlindAllIn(){
-  //   if (this.otherPlayer().chipstack === 0) {
-  //     return this.handChipDiff();
-  //   } else {
-  //     return this.currBet; 
-  //   }
-  // }
 
   blindPlayer(player, blind){
     let villain = (this.players[0] === player) ? this.players[1] : this.players[0];
@@ -207,7 +206,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "63%", true)
+    this.boardCards[pos].render(card, "17.5%", "66%", true)
   }
 
   async showBoard() {
@@ -290,25 +289,42 @@ export default class Board {
     return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
   }
 
-  calcBetInput(isSb) {
+  calcBetInput() {
+    let sb = this.isSb();
     let betInput = $('.actions-cont-bet-amt');
     if (betInput.length === 0) return 0;
     let totalBet = Number(betInput[0].value);
-    if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - isSb;
-    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
+    if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - sb;
+    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
     return totalBet;
   }
 
   calcCompBetRaise(compBetRaise, isSb) {
+    let sb = this.isSb();
     let totalBet;
     if (compBetRaise > this.currentPlayer().chipstack) {
-      totalBet = this.currentPlayer().chipstack - isSb;
+      totalBet = this.currentPlayer().chipstack - sb;
     } else if (compBetRaise > this.otherPlayer().chipstack) {
-      totalBet = this.otherPlayer().chipstack + this.handChipDiff() - isSb;
+      totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
     } else {
       totalBet = compBetRaise;
     }
     return totalBet;
+  }
+
+  isSb(){
+    return (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
+  }
+
+  isCompBet(compBetRaise){
+    let betRaise;
+    if (compBetRaise) {
+      if (compBetRaise < this.bb) compBetRaise = this.bb;
+      betRaise = this.calcCompBetRaise(compBetRaise);
+    } else {
+      betRaise = this.calcBetInput();
+    }
+    return betRaise;
   }
 
   action($button, compAction, compBetRaise) {
@@ -317,15 +333,16 @@ export default class Board {
       this.currentPlayer().folded = true;
       return this.determineWinner();
     }
-    let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-    let betRaise;
-    if (compBetRaise) {
-      if (compBetRaise < this.bb) compBetRaise = this.bb;
-      betRaise = this.calcCompBetRaise(compBetRaise, isSb);
-    } else {
-      betRaise = this.calcBetInput(isSb);
-    }
-    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, isSb);
+    // let isSb = (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
+    // let betRaise;
+    // if (compBetRaise) {
+    //   if (compBetRaise < this.bb) compBetRaise = this.bb;
+    //   betRaise = this.calcCompBetRaise(compBetRaise, isSb);
+    // } else {
+    //   betRaise = this.calcBetInput(isSb);
+    // }
+    let betRaise = this.isCompBet(compBetRaise);
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
     if (resolvedAction) {
       this.pot += resolvedAction
     }
@@ -346,7 +363,7 @@ export default class Board {
     if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
     } else if (handChipsEqual) {
-      if (this.allIn()) {   // remove as render handles logic
+      if (this.allIn() && this.handChipDiff() === 0) {   // remove as render handles logic
         this.showDown();
         this.determineWinner();
       } else if (this.currStreet === 'river' && multipleActions) {
