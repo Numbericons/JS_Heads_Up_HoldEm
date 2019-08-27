@@ -60,6 +60,11 @@ class Table {
     this.sampleWinLoss();
   }
 
+  setup(){
+    this.board.renderDealerPlayers();
+    this.board.button.bindPlayGame(this);
+  }
+
   newGame(){
     location.reload();
   }

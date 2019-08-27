@@ -62,13 +62,20 @@ export default class Board {
   }
 
   async playHand() {
-    // await this.sleep(10000).then(res => {
     this.shuffle.play();
-    // this.deck.shuffleSound();
-    // })
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
+    // window.onload = () => {
+    //   setTimeout(() => {
+    //   }, 0)
+    // }
+    // $(document).ready(() => { this.shuffle.play().catch((err) => {
+      //   console.log(err)
+      // }) });
+      // await this.sleep(10000).then(res => {
+        // this.deck.shuffleSound();
+        // })
   }
 
   determineWinner() {
@@ -92,7 +99,6 @@ export default class Board {
 
   tie(hand) {
     this.renderChat(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
-    // alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
     if (!this.pot % 2 === 0) {
@@ -188,7 +194,6 @@ export default class Board {
   textBoard() {
     let textBoard = this.boardCards.map(card => {
       return card.show();
-      // return `${card.rank}${card.suit}`
     })
     return textBoard;
   }
@@ -271,10 +276,14 @@ export default class Board {
     this.players[1].render();
   }
 
-  render() {
+  renderDealerPlayers(){
     this.showDealerBtn();
-    this.showPot();
     this.renderPlayers();
+  }
+
+  render() {
+    this.renderDealerPlayers();
+    this.showPot();
     if (this.allIn() && this.handChipDiff() === 0) {
       this.showDown();
       this.determineWinner();
@@ -284,7 +293,6 @@ export default class Board {
     this.button.setButtons();
     this.button.bindEvents();
     if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
-    // if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
   }
 

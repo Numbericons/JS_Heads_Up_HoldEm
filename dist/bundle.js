@@ -13047,7 +13047,7 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.playHand();
+  table.setup(); // table.playHand();
 }); // $(() => {
 //   const rootEl = $('.ttt');
 //   const game = new Game();
@@ -13484,13 +13484,19 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                // await this.sleep(10000).then(res => {
-                this.shuffle.play(); // this.deck.shuffleSound();
-                // })
-
+                this.shuffle.play();
                 this.dealInPlayers();
                 this.takeBlinds();
-                this.render();
+                this.render(); // window.onload = () => {
+                //   setTimeout(() => {
+                //   }, 0)
+                // }
+                // $(document).ready(() => { this.shuffle.play().catch((err) => {
+                //   console.log(err)
+                // }) });
+                // await this.sleep(10000).then(res => {
+                // this.deck.shuffleSound();
+                // })
 
               case 4:
               case "end":
@@ -13531,8 +13537,7 @@ function () {
   }, {
     key: "tie",
     value: function tie(hand) {
-      this.renderChat(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!")); // alert(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
-
+      this.renderChat(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!"));
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
@@ -13688,7 +13693,7 @@ function () {
     key: "textBoard",
     value: function textBoard() {
       var textBoard = this.boardCards.map(function (card) {
-        return card.show(); // return `${card.rank}${card.suit}`
+        return card.show();
       });
       return textBoard;
     }
@@ -13855,11 +13860,16 @@ function () {
       this.players[1].render();
     }
   }, {
+    key: "renderDealerPlayers",
+    value: function renderDealerPlayers() {
+      this.showDealerBtn();
+      this.renderPlayers();
+    }
+  }, {
     key: "render",
     value: function render() {
-      this.showDealerBtn();
+      this.renderDealerPlayers();
       this.showPot();
-      this.renderPlayers();
 
       if (this.allIn() && this.handChipDiff() === 0) {
         this.showDown();
@@ -13870,8 +13880,7 @@ function () {
       this.showBoard();
       this.button.setButtons();
       this.button.bindEvents();
-      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack); // if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.chkBlindAllIn(), this.currentPlayer.chipstack);
-
+      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
     }
   }, {
@@ -14166,6 +14175,21 @@ function () {
         var $button = $(event.currentTarget);
 
         _this.board.action($button);
+      });
+    }
+  }, {
+    key: "bindPlayGame",
+    value: function bindPlayGame(table) {
+      this.$el.unbind();
+      var $outDiv = $("<div>");
+      var $newGame = $("<button>");
+      $newGame.html('PLAY GAME');
+      $newGame.addClass("actions-cont-new-game");
+      $outDiv.addClass("actions-cont");
+      $outDiv.append($newGame);
+      this.$el.append($outDiv);
+      this.$el.on("click", "button", function (event) {
+        table.playHand();
       });
     }
   }, {
@@ -14515,6 +14539,12 @@ function () {
 
       return resultSound;
     }()
+  }, {
+    key: "setup",
+    value: function setup() {
+      this.board.renderDealerPlayers();
+      this.board.button.bindPlayGame(this);
+    }
   }, {
     key: "newGame",
     value: function newGame() {
