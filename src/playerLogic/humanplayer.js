@@ -11,9 +11,9 @@ export default class HumanPlayer {
     this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.chipsBet = new Audio('./audio/chipsTop.mp3');
-    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
-    this.check = new Audio('./audio/cardSlide1_check.wav');
+    this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
+    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   promptText(input){

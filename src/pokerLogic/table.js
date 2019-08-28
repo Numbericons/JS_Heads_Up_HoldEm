@@ -4,17 +4,17 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, initialChipstack = 300, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
+  constructor($el, initialChipstack = 200, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
     this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
 
-    this.win1 = new Audio('./audio/win1.wav');
-    this.win2 = new Audio('./audio/win2.wav');
-    this.win3 = new Audio('./audio/win2.wav');
-    this.loss1 = new Audio('./audio/loss1.wav');
-    this.loss2 = new Audio('./audio/loss2.wav');
-    this.loss3 = new Audio('./audio/loss3.wav');
+    this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
+    this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
+    this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
+    this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
+    this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
+    this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
   }
 
   resetPlayerVars() {
@@ -48,10 +48,19 @@ class Table {
   }
   sampleWinLoss(){
     let rng = Math.random();
-    if (this.board.currentPlayer().chipstack === 0 && this.board.currentPlayer().comp) {
-      this.winSound(rng);
-    } else {
-      this.lossSound(rng);
+    debugger
+    if (this.board.currentPlayer().chipstack === 0) {  //other wins
+      if (this.board.currentPlayer().comp){ //other is player
+        this.winSound(rng);
+      } else {
+        this.lossSound(rng); //other is comp
+      }
+    } else { //current wins
+      if (this.board.currentPlayer().comp) { //
+        this.lossSound(rng);
+      } else {
+        this.winSound(rng);
+      }
     }
   }
 

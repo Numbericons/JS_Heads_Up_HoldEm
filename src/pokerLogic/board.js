@@ -18,9 +18,10 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
-    this.shuffle = new Audio('./audio/shuffle2.mp3');
-    this.cardTurn = new Audio('./audio/cardTurnOver.mp3');
-    this.chips = new Audio('./audio/chipsTop.mp3')
+    this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
+    this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
+    this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
   }
 
   currentPlayer() {
@@ -40,6 +41,7 @@ export default class Board {
     this.currBet = this.sb;
     this.streetActions = [];
     this.currStreet = 'preflop';
+    this.lastShownCard = 0;
   }
 
   showDealerBtn() {
@@ -177,17 +179,18 @@ export default class Board {
     this.pot = sbTotal + bbTotal;
   }
 
-  async dealCard() {
+  async dealCard(sound) {
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
     await this.sleep(500);
-    this.cardTurn.play();
+    if (sound) this.cardTurn.play();
   }
 
   dealFlop() {
     this.currPlayerPos = 1;
+    this.flop.play();
     for (let i = 0; i < 3; i++) {
-      this.dealCard();
+      this.dealCard(false);
     }
   }
 
@@ -202,13 +205,13 @@ export default class Board {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  startCard(){
-    if (this.currStreet === 'flop') {
-      return 0;
-    } else {
-      return this.boardCards.length - 1;
-    }
-  }
+  // startCard(){
+  //   if (this.currStreet === 'flop') {
+  //     return 0;
+  //   } else {
+  //     return this.boardCards.length - 1;
+  //   }
+  // }
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
@@ -217,9 +220,11 @@ export default class Board {
 
   async showBoard() {
     if (this.boardCards.length === 0) return;
-    for (let i = this.startCard(); i < this.boardCards.length; i++) {
+    if (this.boardCards.length > 5) debugger;
+    for (let i = this.lastShownCard; i < this.boardCards.length; i++) {
       await this.sleep(500);
       this.showBoardCard(i);
+      this.lastShownCard+=1
     };
   }
 
@@ -303,10 +308,12 @@ export default class Board {
   calcBetInput() {
     let sb = this.isSb();
     let betInput = $('.actions-cont-bet-amt');
+    let current = this.currentPlayer();
+    let other = this.otherPlayer();
     if (betInput.length === 0) return 0;
     let totalBet = Number(betInput[0].value);
-    if (totalBet > this.currentPlayer().chipstack) totalBet = this.currentPlayer().chipstack - sb;
-    if (totalBet > this.otherPlayer().chipstack) totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
+    if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
+    if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.handChipDiff() - sb;
     return totalBet;
   }
 
@@ -342,6 +349,7 @@ export default class Board {
     let resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
     if (resolvedPlayerAction) {
       this.pot += resolvedPlayerAction;
+      return resolvedPlayerAction;
     }
   }
 
@@ -389,13 +397,13 @@ export default class Board {
   showDown() {
     this.revealCards();
     while (this.boardCards.length < 5) {
-      this.dealCard();
+      this.dealCard(true);
       this.showBoard();
     }
   }
 
   stepStreet(flopBool) {
-    (flopBool) ? this.dealFlop() : this.dealCard();
+    (flopBool) ? this.dealFlop() : this.dealCard(true);
     this.showBoard();
     if (!this.allIn()) this.render();
   }

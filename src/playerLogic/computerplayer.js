@@ -11,9 +11,9 @@ export default class ComputerPlayer {
     this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.chipsBet = new Audio('./audio/chipsTop.mp3');
-    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
-    this.check = new Audio('./audio/cardSlide1_check.wav');
+    this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
+    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   text(input) {
@@ -37,7 +37,7 @@ export default class ComputerPlayer {
     let randNum = Math.random() * 2 * pot;   //pot 1000  to_call 500  stack = 5000
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBetRaise(to_call * 2, stack);
+      return this.maxBetRaise(to_call * 2, stack, to_call);
       // return this.maxBetRaise(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;

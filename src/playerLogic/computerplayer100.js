@@ -12,7 +12,7 @@ export default class ComputerPlayer {
     this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.check = new Audio('./audio/cardSlide1_check.wav');
+    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   text(input) {
