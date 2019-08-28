@@ -4,8 +4,8 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, initialChipstack = 200, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
-    this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
+  constructor($el, initialChipstack = 500, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
+    this.players = [new HumanPlayer("sb", initialChipstack * 4, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
 
@@ -48,15 +48,14 @@ class Table {
   }
   sampleWinLoss(){
     let rng = Math.random();
-    debugger
-    if (this.board.currentPlayer().chipstack === 0) {  //other wins
-      if (this.board.currentPlayer().comp){ //other is player
+    if (this.board.currentPlayer().chipstack === 0) {
+      if (this.board.currentPlayer().comp){
         this.winSound(rng);
       } else {
-        this.lossSound(rng); //other is comp
+        this.lossSound(rng);
       }
-    } else { //current wins
-      if (this.board.currentPlayer().comp) { //
+    } else {
+      if (this.board.currentPlayer().comp) {
         this.lossSound(rng);
       } else {
         this.winSound(rng);

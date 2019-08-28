@@ -13489,16 +13489,7 @@ function () {
                 this.shuffle.play();
                 this.dealInPlayers();
                 this.takeBlinds();
-                this.render(); // window.onload = () => {
-                //   setTimeout(() => {
-                //   }, 0)
-                // }
-                // $(document).ready(() => { this.shuffle.play().catch((err) => {
-                //   console.log(err)
-                // }) });
-                // await this.sleep(10000).then(res => {
-                // this.deck.shuffleSound();
-                // })
+                this.render();
 
               case 4:
               case "end":
@@ -13722,61 +13713,16 @@ function () {
     }
   }, {
     key: "showBoard",
-    value: function () {
-      var _showBoard = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee4() {
-        var i;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                if (!(this.boardCards.length === 0)) {
-                  _context4.next = 2;
-                  break;
-                }
+    value: function showBoard() {
+      if (this.boardCards.length === 0) return; // if (this.boardCards.length > 3) debugger;
 
-                return _context4.abrupt("return");
-
-              case 2:
-                if (this.boardCards.length > 5) debugger;
-                i = this.lastShownCard;
-
-              case 4:
-                if (!(i < this.boardCards.length)) {
-                  _context4.next = 12;
-                  break;
-                }
-
-                _context4.next = 7;
-                return this.sleep(500);
-
-              case 7:
-                this.showBoardCard(i);
-                this.lastShownCard += 1;
-
-              case 9:
-                i++;
-                _context4.next = 4;
-                break;
-
-              case 12:
-                ;
-
-              case 13:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, this);
-      }));
-
-      function showBoard() {
-        return _showBoard.apply(this, arguments);
+      for (var i = this.lastShownCard; i < this.boardCards.length; i++) {
+        this.showBoardCard(i);
+        this.lastShownCard += 1;
       }
 
-      return showBoard;
-    }()
+      ;
+    }
   }, {
     key: "toggleCurrPlayer",
     value: function toggleCurrPlayer() {
@@ -13823,16 +13769,16 @@ function () {
     value: function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee5() {
+      regeneratorRuntime.mark(function _callee4() {
         var wait, response;
-        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
-            switch (_context5.prev = _context5.next) {
+            switch (_context4.prev = _context4.next) {
               case 0:
                 this.button.$el.empty();
                 this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 2500 : 1200;
-                _context5.next = 5;
+                _context4.next = 5;
                 return this.sleep(wait);
 
               case 5:
@@ -13844,10 +13790,10 @@ function () {
 
               case 7:
               case "end":
-                return _context5.stop();
+                return _context4.stop();
             }
           }
-        }, _callee5, this);
+        }, _callee4, this);
       }));
 
       function promptPlayer() {
@@ -14439,14 +14385,14 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 200;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack * 4, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
@@ -14496,20 +14442,15 @@ function () {
     key: "sampleWinLoss",
     value: function sampleWinLoss() {
       var rng = Math.random();
-      debugger;
 
       if (this.board.currentPlayer().chipstack === 0) {
-        //other wins
         if (this.board.currentPlayer().comp) {
-          //other is player
           this.winSound(rng);
         } else {
-          this.lossSound(rng); //other is comp
+          this.lossSound(rng);
         }
       } else {
-        //current wins
         if (this.board.currentPlayer().comp) {
-          //
           this.lossSound(rng);
         } else {
           this.winSound(rng);

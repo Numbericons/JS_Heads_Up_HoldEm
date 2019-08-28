@@ -68,16 +68,6 @@ export default class Board {
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
-    // window.onload = () => {
-    //   setTimeout(() => {
-    //   }, 0)
-    // }
-    // $(document).ready(() => { this.shuffle.play().catch((err) => {
-      //   console.log(err)
-      // }) });
-      // await this.sleep(10000).then(res => {
-        // this.deck.shuffleSound();
-        // })
   }
 
   determineWinner() {
@@ -218,11 +208,10 @@ export default class Board {
     this.boardCards[pos].render(card, "17.5%", "69%", true)
   }
 
-  async showBoard() {
+  showBoard() {
     if (this.boardCards.length === 0) return;
-    if (this.boardCards.length > 5) debugger;
+    // if (this.boardCards.length > 3) debugger;
     for (let i = this.lastShownCard; i < this.boardCards.length; i++) {
-      await this.sleep(500);
       this.showBoardCard(i);
       this.lastShownCard+=1
     };

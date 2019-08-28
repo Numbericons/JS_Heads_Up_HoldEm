@@ -189,7 +189,7 @@ body {
 .table-bottom-actions-prompt {
   height: 27px;
   font-size: 25px;
-  transform: translateY(-20px);
+  transform: translate(-20px, -270px);
   font-family: "Oldenburg", cursive;
   margin-top: -10px;
 }
