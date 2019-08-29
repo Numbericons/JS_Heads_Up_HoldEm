@@ -14348,7 +14348,7 @@ function () {
     value: function colorConverter(chipType) {
       switch (chipType) {
         case 1000:
-          return 'green';
+          return 'purple';
 
         case 100:
           return 'black';
