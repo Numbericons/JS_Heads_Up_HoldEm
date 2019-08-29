@@ -86,7 +86,7 @@ export default class Board {
   }
 
   renderChat(str){
-    let chat = $('.table-bottom-chat');
+    let chat = $('.table-bottom-text-chat');
     chat.val(str);
   }
 
@@ -237,11 +237,9 @@ export default class Board {
     let currPotText = document.querySelector(`.top-left-current-pot-text`);
     currPotText.innerText = `Current pot: $${this.pot}`;
 
-    let currPot = $(`.table-felt-pot`);
-    // let currPot = document.querySelector(`.table-felt-pot`);
-    let stack = new Chipstack(this.pot, currPot);
+    let $currPot = $(`.table-felt-pot`);
+    let stack = new Chipstack(this.pot, $currPot);
     stack.render();
-    // currPot.innerText = `$${this.pot}`;
   }
 
   resolvePlayerPrompt(response) {

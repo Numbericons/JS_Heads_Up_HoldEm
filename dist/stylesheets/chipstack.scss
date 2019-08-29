@@ -1,8 +1,17 @@
 .chips{
   display: flex;
-  flex-direction: column;
-  &-image{
-    width: 3vw;
-    margin-right: 2px;
+  align-items: flex-end;
+  &-stack{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5px;
+    &-image{
+      width: 2vw;
+      margin-right: 2px;
+    }
+  }
+  &-text{
+    font-family: 'Oldenburg', cursive;
+    font-size: 15px;
   }
 }

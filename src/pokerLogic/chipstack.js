@@ -1,71 +1,83 @@
 export default class Chipstack {
-  constructor(amount, $el){
+  constructor(amount, $tableEl){
     this.amount = amount;
-    this.$el = $el;
-    this.$div = $('<div>');
+    this.$tableEl = $tableEl;
+    this.$stackDiv = $('<div>');
+    this.$stackDiv.addClass("chips");
   }
 
   getChips(amount) {
-    let denominations = [1, 10, 25, 50, 100];
+    let denominations = [1, 10, 25, 100, 1000];
     let result = [];
     while (amount > 0) {
-      let coin = denominations.pop(); // Get next greatest coin
-      let count = Math.floor(amount / coin); // See how many times I need that coin
-      amount -= count * coin; // Reduce the amount with that number of coins
-      if (count) result.push([coin, count]); // Store count & coin
+      let coin = denominations.pop();
+      let count = Math.floor(amount / coin);
+      amount -= count * coin;
+      if (count) result.push([coin, count]);
     }
     return result;
   }
 
   colorConverter(chipType){
     switch (chipType) {
-      case 1:
-        return 'white';
+      case 1000:
+        return 'green';
       case 100:
         return 'black';
-      default:
+      case 25:
         return 'blue';
+      case 10:
+        return 'red'
+      case 1:
+        return 'white';
     }
   }
 
-  stackEmUp($div, count, color){
+  stackEmUp(stack,count, color){
     for(let i = 1;i < count;i++) {
-      let $midChip = $("<img>");
-      $midChip.attr("src", `./image/chips/${color}/middle.png`);
-      $midChip.addClass("chips-image")
-      $div.append($midChip);
+      this.addChipImg(stack, color, "middle");
     }
   }
-
-  singleChip(color){
+  
+  addChipImg(stack, color, imgType){
     let $chipImg = $("<img>");
-    $chipImg.addClass("chips-image")
-    $chipImg.attr("src", `./image/chips/${color}/single.png`)
-    this.$el.append($chipImg);
+    $chipImg.addClass("chips-stack-image")
+    $chipImg.attr("src", `./image/chips/${color}/${imgType}.png`)
+    stack.append($chipImg);
   }
   
   renderChipStack(chipArr){
-    let $div = $("<div>");
-    $div.addClass("chips")
+    let $stack = $("<div>");
+    $stack.addClass("chips-stack")
     let color = this.colorConverter(chipArr[0]);
-    let $topImg = $("<img>");
-    $topImg.attr("src", `./image/chips/${color}/top.png`)
-    $topImg.addClass("chips-image")
-    $div.append($topImg);
-    this.stackEmUp($div, chipArr[1] - 1, color);
-    let $bottomImg = $("<img>");
-    $bottomImg.addClass("chips-image")
-    $bottomImg.attr("src", `./image/chips/${color}/bottom.png`)
-    $div.append($bottomImg);
-    this.$el.append($div);
+    if (chipArr[1] === 1) {
+      this.addChipImg($stack, color, "single");
+    } else {
+      this.addChipImg($stack, color, "top");
+      this.stackEmUp($stack ,chipArr[1] - 1, color);
+      this.addChipImg($stack, color, "bottom");
+    }
+    this.appendTableEl($stack);
+  }
+
+  appendTableEl(stack){
+    this.$stackDiv.append(stack);
+    this.$tableEl.append(this.$stackDiv);
+  }
+
+  renderText(){
+    let $h5 = $("<h5>");
+    $h5.addClass("chips-text");
+    $h5.text(`$${this.amount}`)
+    this.$tableEl.append($h5);
   }
 
   render(){
-    this.$el.empty();
-    // $el.addClass("chips")
+    this.$tableEl.empty();
     let chips = this.getChips(this.amount);
     chips.forEach(chip => {
       this.renderChipStack(chip);
     })
+    this.renderText()
   }
 }

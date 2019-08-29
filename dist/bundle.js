@@ -13081,11 +13081,14 @@ $(function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
+/* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var ComputerPlayer =
 /*#__PURE__*/
@@ -13218,13 +13221,25 @@ function () {
       }
     }
   }, {
+    key: "renderChips",
+    value: function renderChips() {
+      var $stackDiv = $(".table-felt-board-bet-player-2");
+      var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
+      stack.render();
+    }
+  }, {
+    key: "unrenderChips",
+    value: function unrenderChips() {
+      var $stackDiv = $(".table-felt-board-bet-player-2");
+      $stackDiv.empty();
+    }
+  }, {
     key: "render",
     value: function render() {
       this.playerName();
       this.playerChips();
       this.playerCards();
-      var chipVal = this.streetChipsInPot > 0 ? '$' + this.streetChipsInPot : "";
-      $(".table-felt-board-bet-player-2").text(chipVal);
+      this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
     }
   }, {
     key: "resetVars",
@@ -13253,11 +13268,14 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HumanPlayer; });
+/* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+
 
 var HumanPlayer =
 /*#__PURE__*/
@@ -13345,13 +13363,25 @@ function () {
       }
     }
   }, {
+    key: "renderChips",
+    value: function renderChips() {
+      var $stackDiv = $(".table-felt-board-bet-player-1");
+      var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
+      stack.render();
+    }
+  }, {
+    key: "unrenderChips",
+    value: function unrenderChips() {
+      var $stackDiv = $(".table-felt-board-bet-player-1");
+      $stackDiv.empty();
+    }
+  }, {
     key: "render",
     value: function render() {
       this.playerName();
       this.playerChips();
       this.playerCards();
-      var chipVal = this.streetChipsInPot > 0 ? '$' + this.streetChipsInPot : "";
-      $(".table-felt-board-bet-player-1").text(chipVal);
+      this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
     }
   }, {
     key: "resetVars",
@@ -13526,7 +13556,7 @@ function () {
   }, {
     key: "renderChat",
     value: function renderChat(str) {
-      var chat = $('.table-bottom-chat');
+      var chat = $('.table-bottom-text-chat');
       chat.val(str);
     }
   }, {
@@ -13748,10 +13778,9 @@ function () {
     value: function showPot() {
       var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
-      var currPot = $(".table-felt-pot"); // let currPot = document.querySelector(`.table-felt-pot`);
-
-      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_3__["default"](this.pot, currPot);
-      stack.render(); // currPot.innerText = `$${this.pot}`;
+      var $currPot = $(".table-felt-pot");
+      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_3__["default"](this.pot, $currPot);
+      stack.render();
     }
   }, {
     key: "resolvePlayerPrompt",
@@ -14290,28 +14319,26 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Chipstack =
 /*#__PURE__*/
 function () {
-  function Chipstack(amount, $el) {
+  function Chipstack(amount, $tableEl) {
     _classCallCheck(this, Chipstack);
 
     this.amount = amount;
-    this.$el = $el;
-    this.$div = $('<div>');
+    this.$tableEl = $tableEl;
+    this.$stackDiv = $('<div>');
+    this.$stackDiv.addClass("chips");
   }
 
   _createClass(Chipstack, [{
     key: "getChips",
     value: function getChips(amount) {
-      var denominations = [1, 10, 25, 50, 100];
+      var denominations = [1, 10, 25, 100, 1000];
       var result = [];
 
       while (amount > 0) {
-        var coin = denominations.pop(); // Get next greatest coin
-
-        var count = Math.floor(amount / coin); // See how many times I need that coin
-
-        amount -= count * coin; // Reduce the amount with that number of coins
-
-        if (count) result.push([coin, count]); // Store count & coin
+        var coin = denominations.pop();
+        var count = Math.floor(amount / coin);
+        amount -= count * coin;
+        if (count) result.push([coin, count]);
       }
 
       return result;
@@ -14320,62 +14347,79 @@ function () {
     key: "colorConverter",
     value: function colorConverter(chipType) {
       switch (chipType) {
-        case 1:
-          return 'white';
+        case 1000:
+          return 'green';
 
         case 100:
           return 'black';
 
-        default:
+        case 25:
           return 'blue';
+
+        case 10:
+          return 'red';
+
+        case 1:
+          return 'white';
       }
     }
   }, {
     key: "stackEmUp",
-    value: function stackEmUp($div, count, color) {
+    value: function stackEmUp(stack, count, color) {
       for (var i = 1; i < count; i++) {
-        var $midChip = $("<img>");
-        $midChip.attr("src", "./image/chips/".concat(color, "/middle.png"));
-        $midChip.addClass("chips-image");
-        $div.append($midChip);
+        this.addChipImg(stack, color, "middle");
       }
     }
   }, {
-    key: "singleChip",
-    value: function singleChip(color) {
+    key: "addChipImg",
+    value: function addChipImg(stack, color, imgType) {
       var $chipImg = $("<img>");
-      $chipImg.addClass("chips-image");
-      $chipImg.attr("src", "./image/chips/".concat(color, "/single.png"));
-      this.$el.append($chipImg);
+      $chipImg.addClass("chips-stack-image");
+      $chipImg.attr("src", "./image/chips/".concat(color, "/").concat(imgType, ".png"));
+      stack.append($chipImg);
     }
   }, {
     key: "renderChipStack",
     value: function renderChipStack(chipArr) {
-      var $div = $("<div>");
-      $div.addClass("chips");
+      var $stack = $("<div>");
+      $stack.addClass("chips-stack");
       var color = this.colorConverter(chipArr[0]);
-      var $topImg = $("<img>");
-      $topImg.attr("src", "./image/chips/".concat(color, "/top.png"));
-      $topImg.addClass("chips-image");
-      $div.append($topImg);
-      this.stackEmUp($div, chipArr[1] - 1, color);
-      var $bottomImg = $("<img>");
-      $bottomImg.addClass("chips-image");
-      $bottomImg.attr("src", "./image/chips/".concat(color, "/bottom.png"));
-      $div.append($bottomImg);
-      this.$el.append($div);
+
+      if (chipArr[1] === 1) {
+        this.addChipImg($stack, color, "single");
+      } else {
+        this.addChipImg($stack, color, "top");
+        this.stackEmUp($stack, chipArr[1] - 1, color);
+        this.addChipImg($stack, color, "bottom");
+      }
+
+      this.appendTableEl($stack);
+    }
+  }, {
+    key: "appendTableEl",
+    value: function appendTableEl(stack) {
+      this.$stackDiv.append(stack);
+      this.$tableEl.append(this.$stackDiv);
+    }
+  }, {
+    key: "renderText",
+    value: function renderText() {
+      var $h5 = $("<h5>");
+      $h5.addClass("chips-text");
+      $h5.text("$".concat(this.amount));
+      this.$tableEl.append($h5);
     }
   }, {
     key: "render",
     value: function render() {
       var _this = this;
 
-      this.$el.empty(); // $el.addClass("chips")
-
+      this.$tableEl.empty();
       var chips = this.getChips(this.amount);
       chips.forEach(function (chip) {
         _this.renderChipStack(chip);
       });
+      this.renderText();
     }
   }]);
 
@@ -14504,7 +14548,7 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];

@@ -1,3 +1,4 @@
+import Chipstack from '../pokerLogic/chipstack';
 export default class ComputerPlayer {
   constructor(position, chipstack, cardDims) {
     this.position = position;
@@ -111,12 +112,22 @@ export default class ComputerPlayer {
     }
   }
 
+  renderChips(){
+    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
+    stack.render();
+  }
+
+  unrenderChips() {
+    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    $stackDiv.empty();
+  }
+
   render() {
     this.playerName();
     this.playerChips();
     this.playerCards();
-    let chipVal = (this.streetChipsInPot > 0) ? '$' + this.streetChipsInPot : "";
-    $(`.table-felt-board-bet-player-2`).text(chipVal);
+    (this.streetChipsInPot > 0) ? this.renderChips() : this.unrenderChips();
   }
 
   resetVars() {
