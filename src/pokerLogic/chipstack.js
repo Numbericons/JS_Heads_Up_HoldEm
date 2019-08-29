@@ -2,6 +2,7 @@ export default class Chipstack {
   constructor(amount, $el){
     this.amount = amount;
     this.$el = $el;
+    this.$div = $('<div>');
   }
 
   getChips(amount) {
