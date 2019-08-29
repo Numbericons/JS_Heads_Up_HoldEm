@@ -1,6 +1,7 @@
 import "babel-polyfill";
 import Deck from './deck'
 import Button from './button'
+import Chipstack from './chipstack';
 const Hand = require('pokersolver').Hand;
 
 export default class Board {
@@ -236,8 +237,11 @@ export default class Board {
     let currPotText = document.querySelector(`.top-left-current-pot-text`);
     currPotText.innerText = `Current pot: $${this.pot}`;
 
-    let currPotNum = document.querySelector(`.table-felt-pot`);
-    currPotNum.innerText = `$${this.pot}`;
+    let currPot = $(`.table-felt-pot`);
+    // let currPot = document.querySelector(`.table-felt-pot`);
+    let stack = new Chipstack(this.pot, currPot);
+    stack.render();
+    // currPot.innerText = `$${this.pot}`;
   }
 
   resolvePlayerPrompt(response) {

@@ -13384,6 +13384,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_polyfill__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _deck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./deck */ "./src/pokerLogic/deck.js");
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./button */ "./src/pokerLogic/button.js");
+/* harmony import */ var _chipstack__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chipstack */ "./src/pokerLogic/chipstack.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13393,6 +13394,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -13746,8 +13748,10 @@ function () {
     value: function showPot() {
       var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
-      var currPotNum = document.querySelector(".table-felt-pot");
-      currPotNum.innerText = "$".concat(this.pot);
+      var currPot = $(".table-felt-pot"); // let currPot = document.querySelector(`.table-felt-pot`);
+
+      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_3__["default"](this.pot, currPot);
+      stack.render(); // currPot.innerText = `$${this.pot}`;
     }
   }, {
     key: "resolvePlayerPrompt",
@@ -14267,6 +14271,120 @@ function () {
 
 /***/ }),
 
+/***/ "./src/pokerLogic/chipstack.js":
+/*!*************************************!*\
+  !*** ./src/pokerLogic/chipstack.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Chipstack; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Chipstack =
+/*#__PURE__*/
+function () {
+  function Chipstack(amount, $el) {
+    _classCallCheck(this, Chipstack);
+
+    this.amount = amount;
+    this.$el = $el;
+  }
+
+  _createClass(Chipstack, [{
+    key: "getChips",
+    value: function getChips(amount) {
+      var denominations = [1, 10, 25, 50, 100];
+      var result = [];
+
+      while (amount > 0) {
+        var coin = denominations.pop(); // Get next greatest coin
+
+        var count = Math.floor(amount / coin); // See how many times I need that coin
+
+        amount -= count * coin; // Reduce the amount with that number of coins
+
+        if (count) result.push([coin, count]); // Store count & coin
+      }
+
+      return result;
+    }
+  }, {
+    key: "colorConverter",
+    value: function colorConverter(chipType) {
+      switch (chipType) {
+        case 1:
+          return 'white';
+
+        case 100:
+          return 'black';
+
+        default:
+          return 'blue';
+      }
+    }
+  }, {
+    key: "stackEmUp",
+    value: function stackEmUp($div, count, color) {
+      for (var i = 1; i < count; i++) {
+        var $midChip = $("<img>");
+        $midChip.attr("src", "./image/chips/".concat(color, "/middle.png"));
+        $midChip.addClass("chips-image");
+        $div.append($midChip);
+      }
+    }
+  }, {
+    key: "singleChip",
+    value: function singleChip(color) {
+      var $chipImg = $("<img>");
+      $chipImg.addClass("chips-image");
+      $chipImg.attr("src", "./image/chips/".concat(color, "/single.png"));
+      this.$el.append($chipImg);
+    }
+  }, {
+    key: "renderChipStack",
+    value: function renderChipStack(chipArr) {
+      var $div = $("<div>");
+      $div.addClass("chips");
+      var color = this.colorConverter(chipArr[0]);
+      var $topImg = $("<img>");
+      $topImg.attr("src", "./image/chips/".concat(color, "/top.png"));
+      $topImg.addClass("chips-image");
+      $div.append($topImg);
+      this.stackEmUp($div, chipArr[1] - 1, color);
+      var $bottomImg = $("<img>");
+      $bottomImg.addClass("chips-image");
+      $bottomImg.attr("src", "./image/chips/".concat(color, "/bottom.png"));
+      $div.append($bottomImg);
+      this.$el.append($div);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      this.$el.empty(); // $el.addClass("chips")
+
+      var chips = this.getChips(this.amount);
+      chips.forEach(function (chip) {
+        _this.renderChipStack(chip);
+      });
+    }
+  }]);
+
+  return Chipstack;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/pokerLogic/deck.js":
 /*!********************************!*\
   !*** ./src/pokerLogic/deck.js ***!
@@ -14385,14 +14503,14 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 500;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 300;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack * 4, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');

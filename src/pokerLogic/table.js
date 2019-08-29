@@ -4,8 +4,8 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, initialChipstack = 500, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
-    this.players = [new HumanPlayer("sb", initialChipstack * 4, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
+  constructor($el, initialChipstack = 300, sb = 50, bb = 100, cardDims = ["54%", "94%"]){
+    this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
 

@@ -470,4 +470,13 @@ body {
   cursor: pointer;
 }
 
+.chips {
+  display: flex;
+  flex-direction: column;
+}
+.chips-image {
+  width: 3vw;
+  margin-right: 2px;
+}
+
 /*# sourceMappingURL=output.css.map */

@@ -1,0 +1,8 @@
+.chips{
+  display: flex;
+  flex-direction: column;
+  &-image{
+    width: 3vw;
+    margin-right: 2px;
+  }
+}
