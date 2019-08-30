@@ -13485,22 +13485,17 @@ function () {
       this.lastShownCard = 0;
     }
   }, {
+    key: "showDealerBtnHelp",
+    value: function showDealerBtnHelp(showDir, hideDir) {
+      $("#table-felt-dealer-btn-img-".concat(hideDir)).addClass("display-none");
+      var button = $("#table-felt-dealer-btn-img-".concat(showDir));
+      button.removeClass();
+      this.boardCards.length === 0 ? button.addClass("table-felt-dealer-btn-img-".concat(showDir)) : button.addClass("table-felt-dealer-btn-img-".concat(showDir, "-board"));
+    }
+  }, {
     key: "showDealerBtn",
     value: function showDealerBtn() {
-      if (this.table.handNum % 2 === 0) {
-        $('#dealer-right-img').addClass("display-none");
-        var button = $('#dealer-left-img');
-        button.removeClass();
-        this.boardCards.length === 0 ? button.addClass("table-felt-dealer-btn-left") : button.addClass("table-felt-dealer-btn-left-board");
-      } else {
-        $('#dealer-left-img').addClass("display-none");
-
-        var _button = $('#dealer-right-img');
-
-        _button.removeClass();
-
-        this.boardCards.length === 0 ? _button.addClass("table-felt-dealer-btn-right") : _button.addClass("table-felt-dealer-btn-right-board");
-      }
+      this.table.handNum % 2 === 0 ? this.showDealerBtnHelp('left', 'right') : this.showDealerBtnHelp('right', 'left');
     }
   }, {
     key: "resetPlayerVars",

@@ -139,30 +139,26 @@ body {
   transform: translateY(-110px);
   align-items: center;
 }
-.table-felt-dealer-btn-img {
-  width: 35px;
-  height: 35px;
-}
-.table-felt-dealer-btn-left {
-  width: 22%;
+.table-felt-dealer-btn-img-left {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
   margin-left: 45px;
 }
-.table-felt-dealer-btn-left-board {
-  width: 22%;
+.table-felt-dealer-btn-img-left-board {
+  width: 2vw;
   display: flex;
   margin-right: 15px;
 }
-.table-felt-dealer-btn-right {
-  width: 22%;
+.table-felt-dealer-btn-img-right {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
 }
-.table-felt-dealer-btn-right-board {
-  width: 22%;
+.table-felt-dealer-btn-img-right-board {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
 }

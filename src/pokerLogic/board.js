@@ -45,18 +45,15 @@ export default class Board {
     this.lastShownCard = 0;
   }
 
+  showDealerBtnHelp(showDir,hideDir){
+    $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
+    let button = $(`#table-felt-dealer-btn-img-${showDir}`);
+    button.removeClass();
+    (this.boardCards.length === 0) ? button.addClass(`table-felt-dealer-btn-img-${showDir}`) : button.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
+  }
+
   showDealerBtn() {
-    if (this.table.handNum % 2 === 0) {
-      $('#dealer-right-img').addClass("display-none");
-      let button = $('#dealer-left-img');
-      button.removeClass();
-      (this.boardCards.length === 0) ? button.addClass("table-felt-dealer-btn-left") : button.addClass("table-felt-dealer-btn-left-board");
-    } else {
-      $('#dealer-left-img').addClass("display-none");
-      let button = $('#dealer-right-img');
-      button.removeClass();
-      (this.boardCards.length === 0) ? button.addClass("table-felt-dealer-btn-right") : button.addClass("table-felt-dealer-btn-right-board");
-    }
+    (this.table.handNum % 2 === 0) ? this.showDealerBtnHelp('left', 'right') : this.showDealerBtnHelp('right', 'left');
   }
 
   resetPlayerVars() {
