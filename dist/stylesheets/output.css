@@ -198,8 +198,8 @@ body {
   margin-bottom: 5px;
 }
 .table-bottom-text-chat {
-  height: 100px;
-  width: 200px;
+  height: 16vh;
+  width: 16vw;
   outline: 1px solid black;
   font-family: "Oldenburg", cursive;
   font-size: 14px;
@@ -352,7 +352,7 @@ body {
 }
 
 .top {
-  height: 110px;
+  height: 17vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -411,9 +411,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  background-color: #222121;
   color: white;
-  border-color: black;
+  border-color: #222121;
   font-family: "Cabin", sans-serif;
   border-radius: 50px;
   font-size: 16px;
@@ -437,9 +437,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  background-color: #222121;
   color: white;
-  border-color: black;
+  border-color: #222121;
   font-family: "Cabin", sans-serif;
   border-radius: 50px;
   font-size: 16px;
@@ -459,8 +459,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
-  border-color: black;
+  background-color: #222121;
+  border-color: #222121;
   color: white;
   font-family: "Cabin", sans-serif;
   border-radius: 40px;
