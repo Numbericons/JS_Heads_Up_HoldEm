@@ -1,5 +1,6 @@
+import Chipstack from '../pokerLogic/chipstack';
 export default class ComputerPlayer {
-  constructor(position, chipstack) {
+  constructor(position, chipstack, cardDims) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -8,51 +9,51 @@ export default class ComputerPlayer {
     this.hand = [];
     this.comp = true;
     this.revealed = false;
+    this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.chipsBet = new Audio('./audio/chipsTop.mp3');
-    this.chipsCall = new Audio('./audio/chips_wooden_table.mp3');
-    this.check = new Audio('./audio/cardSlide1_check.wav');
+    this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
+    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-actions-text");
+    let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
+    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
     promptSelect.innerText = input;
   }
 
   promptAction() {
   }
 
-  maxBetRaise(num, stack) {
-    return (num > stack) ? ['betRaise', stack] : ['betRaise', num];
+  maxBetRaise(num, stack, to_call) {
+    return (num + to_call > stack) ? ['betRaise', stack] : ['betRaise', num];
   }
 
   genBetRaise(to_call, stack, pot){
     let randNum = Math.random() * 2 * pot;   //pot 1000  to_call 500  stack = 5000
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBetRaise(pot * .5, stack);
+      return this.maxBetRaise(to_call * 2, stack, to_call);
+      // return this.maxBetRaise(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;
-      return this.maxBetRaise(betRaise, stack);
+      return this.maxBetRaise(betRaise, stack, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
-      return this.maxBetRaise(betRaise, stack);
+      return this.maxBetRaise(betRaise, stack, to_call);
     }
   }
   
   promptResponse(to_call, stack, pot){
     let adjToCall;
-    // (to_call === 0) ? betFactor = 2 : betFactor = pot / to_call;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
     let potOdds = adjToCall / (adjToCall + pot); 
-    // if (randNum < .33333) {
     if (randNum < potOdds) {
       if (to_call > 0) {
         return ['fold'];
@@ -99,24 +100,34 @@ export default class ComputerPlayer {
 
   playerChips() {
     let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack} chips`
+    playerChips.innerText = `$${this.chipstack}`
   }
 
   playerCards() {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
-      this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
-      this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+      this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+      this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
     }
+  }
+
+  renderChips(){
+    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
+    stack.render();
+  }
+
+  unrenderChips() {
+    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    $stackDiv.empty();
   }
 
   render() {
     this.playerName();
     this.playerChips();
     this.playerCards();
-    let chipVal = (this.streetChipsInPot > 0) ? '$' + this.streetChipsInPot : "";
-    $(`.table-felt-board-bet-player-2`).text(chipVal);
+    (this.streetChipsInPot > 0) ? this.renderChips() : this.unrenderChips();
   }
 
   resetVars() {

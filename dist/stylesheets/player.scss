@@ -44,9 +44,11 @@
       &-name{
         font-size: 15px;
         height: 20px;
+        font-family: 'Oldenburg', cursive;
       }
       &-chips{
         font-size: 15px;
+        font-family: 'Oldenburg', cursive;
       }
     }
     &-img{
@@ -90,7 +92,7 @@
   &-chip{
     display: flex;
     justify-content: flex-end;
-    width: 70%;
+    width: 77%;
     padding: 0 25px;
     height: 50px;
     font-size: 16px;
@@ -106,10 +108,12 @@
       align-items: center;
       width: 240px;
       &-name{
+        font-family: 'Oldenburg', cursive;
         font-size: 15px;
         height: 20px;
       }
       &-chips{
+        font-family: 'Oldenburg', cursive;
         font-size: 15px;
       }
     }

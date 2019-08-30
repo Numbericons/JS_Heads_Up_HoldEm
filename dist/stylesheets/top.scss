@@ -1,0 +1,51 @@
+
+ .top{
+  height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &-left{
+    &-help{
+      margin: 0px 150px 0px 20px;
+      display: flex;
+      align-items: center;
+      font-family: 'Oldenburg', cursive;
+      &-image{
+        width: 50px;
+      }
+    }
+    &-current-pot{
+      margin-left:15px;
+      &-text{
+        font-family: 'Oldenburg', cursive;
+        font-weight: 700;
+        transform: translate(0px, 20px);
+        border-radius: 15px;
+      }
+    }
+  }
+  &-header{
+    font-weight: bolder;
+    font-size: 40px;
+    font-family: 'Rye', cursive;
+    color: darkred;
+  }
+  &-about{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-right: 40px;
+    &-author{
+      font-size:16px;
+      color: black;
+      // font-family: 'Rye', cursive;
+      font-family: 'Oldenburg', cursive;
+      margin: 20px;
+    }
+    &-links{
+      display: flex;
+      justify-content: space-around;
+      font-family: 'Oldenburg', cursive;
+    }
+  }
+}

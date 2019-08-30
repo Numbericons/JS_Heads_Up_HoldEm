@@ -54,35 +54,8 @@ table {
 
 .holdem-container {
   height: 1200px;
-  width: 100%;
-  background-color: #a6b1b5;
-}
-
-.top {
-  display: flex;
-  flex-direction: column;
-}
-.top-bar {
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: flex-end;
-  font-weight: bolder;
-}
-.top-bar-header {
-  font-size: 40px;
-  font-family: "Cabin", sans-serif;
-  color: darkred;
-}
-.top-bar-author-made {
-  font-size: 16px;
-  color: black;
-  font-family: "Cabin", sans-serif;
-}
-.top-bar-author-name {
-  font-size: 16px;
-  color: black;
-  font-family: "Cabin", sans-serif;
+  width: 1450px;
+  background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
 }
 
 .dealer {
@@ -96,31 +69,9 @@ table {
   width: 100px;
 }
 
-.actions-cont {
-  width: 50%;
-  display: flex;
-  justify-content: space-around;
-}
-.actions-cont-text {
-  height: 65px;
-  width: 110px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: black;
-  color: white;
-  font-family: "Cabin", sans-serif;
-  border-radius: 30px;
-}
-.actions-cont-bet-amt {
-  height: 65px;
-  width: 110px;
-  text-align: center;
-  background-color: black;
-  border: black;
-  color: white;
-  font-family: "Cabin", sans-serif;
-  border-radius: 30px;
+body {
+  position: fixed;
+  overflow-y: noscroll;
 }
 
 .table {
@@ -128,7 +79,6 @@ table {
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: #a6b1b5;
 }
 .table-row {
   height: 100%;
@@ -137,8 +87,8 @@ table {
   justify-content: space-around;
 }
 .table-trim {
-  height: 60%;
-  width: 60%;
+  height: 55%;
+  width: 55%;
   position: relative;
   display: flex;
   justify-content: center;
@@ -166,16 +116,20 @@ table {
   margin-top: 80px;
 }
 .table-felt-board-bet-player-1 {
-  font-family: "Cabin", sans-serif;
+  font-family: "Oldenburg", cursive;
+  font-weight: 900;
   align-self: center;
   margin-right: 20px;
   padding: 10px;
+  font-weight: 700;
 }
 .table-felt-board-bet-player-2 {
-  font-family: "Cabin", sans-serif;
+  font-family: "Oldenburg", cursive;
+  font-weight: 900;
   margin-right: 105px;
   align-self: center;
   padding: 15px;
+  font-weight: 700;
 }
 .table-felt-dealer-btn {
   display: flex;
@@ -185,48 +139,70 @@ table {
   transform: translateY(-110px);
   align-items: center;
 }
-.table-felt-dealer-btn-img {
-  width: 35px;
-  height: 35px;
-}
-.table-felt-dealer-btn-left {
-  width: 22%;
+.table-felt-dealer-btn-img-left {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
   margin-left: 45px;
 }
-.table-felt-dealer-btn-left-board {
-  width: 22%;
+.table-felt-dealer-btn-img-left-board {
+  width: 2vw;
   display: flex;
   margin-right: 15px;
 }
-.table-felt-dealer-btn-right {
-  width: 22%;
+.table-felt-dealer-btn-img-right {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
   align-items: baseline;
 }
-.table-felt-dealer-btn-right-board {
-  width: 22%;
+.table-felt-dealer-btn-img-right-board {
+  width: 2vw;
   display: flex;
   justify-content: flex-end;
 }
 .table-felt-pot {
-  font-size: 24px;
-  font-family: "Cabin", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
-.table-actions {
+.table-bottom {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  transform: translateY(-260px);
+}
+.table-bottom-actions {
   height: 120px;
   width: 80%;
   display: flex;
   justify-content: space-around;
-  transform: translateY(-260px);
+  flex-direction: column;
+  align-items: center;
+  margin-right: 200px;
 }
-.table-actions-prompt {
+.table-bottom-actions-prompt {
+  height: 27px;
   font-size: 25px;
-  transform: translateY(-280px);
-  font-family: "Cabin", sans-serif;
+  transform: translate(-20px, -270px);
+  font-family: "Oldenburg", cursive;
+  margin-top: -10px;
+}
+.table-bottom-text {
+  transform: translateX(-40px);
+}
+.table-bottom-text-header {
+  font-size: 20px;
+  font-family: "Oldenburg", cursive;
+  margin-bottom: 5px;
+}
+.table-bottom-text-chat {
+  height: 100px;
+  width: 200px;
+  outline: 1px solid black;
+  font-family: "Oldenburg", cursive;
+  font-size: 14px;
 }
 
 .display-none {
@@ -282,9 +258,11 @@ table {
 .player-info-left-chip-text-name {
   font-size: 15px;
   height: 20px;
+  font-family: "Oldenburg", cursive;
 }
 .player-info-left-chip-text-chips {
   font-size: 15px;
+  font-family: "Oldenburg", cursive;
 }
 .player-info-left-chip-img {
   float: left;
@@ -326,7 +304,7 @@ table {
 .player-info-right-chip {
   display: flex;
   justify-content: flex-end;
-  width: 70%;
+  width: 77%;
   padding: 0 25px;
   height: 50px;
   font-size: 16px;
@@ -344,10 +322,12 @@ table {
   width: 240px;
 }
 .player-info-right-chip-text-name {
+  font-family: "Oldenburg", cursive;
   font-size: 15px;
   height: 20px;
 }
 .player-info-right-chip-text-chips {
+  font-family: "Oldenburg", cursive;
   font-size: 15px;
 }
 .player-info-right-chip-img {
@@ -369,6 +349,142 @@ table {
   border-bottom: 1px solid white;
   width: 100%;
   transform: translateY(14px);
+}
+
+.top {
+  height: 110px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.top-left-help {
+  margin: 0px 150px 0px 20px;
+  display: flex;
+  align-items: center;
+  font-family: "Oldenburg", cursive;
+}
+.top-left-help-image {
+  width: 50px;
+}
+.top-left-current-pot {
+  margin-left: 15px;
+}
+.top-left-current-pot-text {
+  font-family: "Oldenburg", cursive;
+  font-weight: 700;
+  transform: translate(0px, 20px);
+  border-radius: 15px;
+}
+.top-header {
+  font-weight: bolder;
+  font-size: 40px;
+  font-family: "Rye", cursive;
+  color: darkred;
+}
+.top-about {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-right: 40px;
+}
+.top-about-author {
+  font-size: 16px;
+  color: black;
+  font-family: "Oldenburg", cursive;
+  margin: 20px;
+}
+.top-about-links {
+  display: flex;
+  justify-content: space-around;
+  font-family: "Oldenburg", cursive;
+}
+
+.actions-cont {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+.actions-cont-text {
+  height: 55px;
+  width: 105px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border-color: black;
+  font-family: "Cabin", sans-serif;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.actions-cont-bet-amt {
+  height: 46px;
+  width: 90px;
+  text-align: center;
+  background-color: white;
+  border: 2px solid black;
+  color: black;
+  font-family: "Cabin", sans-serif;
+  border-radius: 15px;
+  font-size: 20px;
+}
+.actions-cont-new-game {
+  height: 55px;
+  width: 160px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  border-color: black;
+  font-family: "Cabin", sans-serif;
+  border-radius: 50px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.betsize-cont {
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+  margin-top: 5px;
+}
+.betsize-cont-text {
+  height: 20px;
+  width: 85px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  border-color: black;
+  color: white;
+  font-family: "Cabin", sans-serif;
+  border-radius: 40px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.chips {
+  display: flex;
+  align-items: flex-end;
+}
+.chips-stack {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+.chips-stack-image {
+  width: 2vw;
+  margin-right: 2px;
+}
+.chips-text {
+  font-family: "Oldenburg", cursive;
+  font-size: 15px;
 }
 
 /*# sourceMappingURL=output.css.map */

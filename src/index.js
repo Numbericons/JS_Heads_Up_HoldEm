@@ -1,9 +1,10 @@
 import Table from './pokerLogic/table';
 
 $(() => {
-  const actionsCont = $('.table-actions');
+  const actionsCont = $('.table-bottom-actions');
   const table = new Table(actionsCont);
-  table.playHand();
+  table.setup();
+  // table.playHand();
 });
 
 // $(() => {

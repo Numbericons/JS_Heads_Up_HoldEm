@@ -3,8 +3,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  // align-items: center;
-  background-color: #a6b1b5;
+  // background-color: #a6b1b5;
   &-row{
     height: 100%;
     width: 100%;
@@ -12,8 +11,8 @@
     justify-content: space-around;
   }
   &-trim{
-    height: 60%;
-    width: 60%;
+    height: 55%;
+    width: 55%;
     position: relative;
     display: flex;
     justify-content: center;
@@ -41,72 +40,95 @@
       margin-top: 80px;
       // font-size: 50px;
       &-bet-player-1{
-        font-family: 'Cabin', sans-serif;
+        font-family: 'Oldenburg', cursive;
+        font-weight: 900;
         // margin-left: 60px;
         align-self: center;
         margin-right: 20px;
         padding: 10px;
+        font-weight: 700;
       }
       &-bet-player-2{
-        font-family: 'Cabin', sans-serif;
+        font-family: 'Oldenburg', cursive;
+        font-weight: 900;
         margin-right: 105px;
         align-self: center;
         padding: 15px;
+        font-weight: 700;
       }
     }
     &-dealer-btn{
       display: flex;
       justify-content: space-between;
       height: 20%;
-      // border: 1px solid black;
       width: 100%;
       transform: translateY(-110px);
       align-items: center;
-      &-img{
-        width: 35px;
-        height: 35px;
-      }
-      &-left{
-        width:22%;
-        // transform: translateY(-19px);
+      &-img-left{
+        width: 2vw;
         display: flex;
         justify-content: flex-end;
         align-items: baseline;
         margin-left: 45px;
+        &-board{
+          width: 2vw;
+          display: flex;
+          margin-right: 15px;
+        }
       }
-      &-left-board{
-        width:22%;
-        display: flex;
-        margin-right: 15px;
-      }
-      &-right{
-        width:22%;
+      &-img-right{
+        width: 2vw;
         display: flex;
         justify-content: flex-end;
         align-items: baseline;
-      }
-      &-right-board{
-        width:22%;
-        display: flex;
-        justify-content: flex-end;
-        // transform: translateY(-20px);
+        &-board{
+          width: 2vw;
+          display: flex;
+          justify-content: flex-end;
+        }
       }
     }
     &-pot{
-      font-size: 24px;
-      font-family: 'Cabin', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
-  &-actions{
-    height: 120px;
-    width: 80%;
+  &-bottom{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    width: 90%;
     transform: translateY(-260px);
-    &-prompt{
-      font-size: 25px;
-      transform: translateY(-280px);
-      font-family: 'Cabin', sans-serif;
+    &-actions{
+      height: 120px;
+      width: 80%;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 200px;
+      &-prompt{
+        height: 27px;
+        font-size: 25px;
+        transform: translate(-20px, -270px);
+        font-family: 'Oldenburg', cursive;
+        margin-top: -10px;
+      }
+    }
+    &-text{
+      transform: translateX(-40px);
+    }
+    &-text-header{
+      font-size: 20px;
+      font-family: 'Oldenburg', cursive;
+      margin-bottom: 5px;
+    }
+    &-text-chat{
+      height: 100px;
+      width:  200px;
+      outline: 1px solid black;
+      font-family: 'Oldenburg', cursive;
+      font-size: 14px;
     }
   }
 }

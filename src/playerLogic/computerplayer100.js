@@ -1,6 +1,6 @@
 //RandoLongBall
 export default class ComputerPlayer {
-  constructor(position, chipstack) {
+  constructor(position, chipstack, cardDims) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -9,17 +9,19 @@ export default class ComputerPlayer {
     this.hand = [];
     this.comp = true;
     this.revealed = false;
+    this.cardDims = cardDims;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-actions-text");
+    let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-actions-prompt");
+    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
     promptSelect.innerText = input;
   }
 
@@ -66,16 +68,19 @@ export default class ComputerPlayer {
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
+      this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;
       return null;
     } else if (textInput === 'call') {
+      this.chipsCall.play();
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
       this.streetChipsInPot += to_call;
       return to_call;
     } else {
+      this.chipsBet.play();
       this.chipstack -= betInput + sb;
       this.chipsInPot += betInput + sb;
       this.streetChipsInPot += betInput + sb;
@@ -90,15 +95,15 @@ export default class ComputerPlayer {
 
   playerChips() {
     let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack} chips`
+    playerChips.innerText = `$${this.chipstack}`
   }
 
   playerCards() {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
-      this.hand[0].render(playerCard1, "54%", "89%", this.revealed);
-      this.hand[1].render(playerCard2, "54%", "89%", this.revealed);
+      this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+      this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
     }
   }
 

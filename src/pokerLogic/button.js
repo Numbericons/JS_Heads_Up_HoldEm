@@ -60,18 +60,36 @@ export default class Button {
     $outDiv.append($betDiv)
   }
 
+  betSizeButton($betsizeDiv, size, allIn){
+    let $betDiv = $("<button>");
+    $betDiv.addClass("betsize-cont-text");
+    $betDiv.html(`${size}`);
+    $betsizeDiv.append($betDiv);
+  }
+
+  betSizeButtons($betsizeDiv){
+    this.betSizeButton($betsizeDiv, "1/2 Pot");
+    this.betSizeButton($betsizeDiv, "3/4 Pot");
+    this.betSizeButton($betsizeDiv, "Pot");
+    this.betSizeButton($betsizeDiv, "All In");
+  }
+
   setButtons() {
+    this.$el.empty();
     const $outDiv = $("<div>");
     $outDiv.addClass("actions-cont")
+    const $betsizeDiv = $("<div>");
+    $betsizeDiv.addClass("betsize-cont")
 
     this.fold($outDiv);
     this.callOrCheck($outDiv);
     if (!this.board.allIn() && this.board.currentPlayer().chipstack > this.board.currBet) {
       this.betOrRaise($outDiv);
       this.betAmount($outDiv);
+      this.betSizeButtons($betsizeDiv);
     }
-    this.$el.empty();
     this.$el.append($outDiv);
+    this.$el.append($betsizeDiv);
   }
 
   bindEvents() {
@@ -79,6 +97,36 @@ export default class Button {
     this.$el.on("click", "button", (event => {
       const $button = $(event.currentTarget);
       this.board.action($button);
+    }));
+  }
+
+  bindPlayGame(table){
+    this.$el.unbind();
+    const $outDiv = $("<div>");
+    let $newGame = $("<button>");
+
+    $newGame.html('PLAY GAME');
+    $newGame.addClass("actions-cont-new-game")
+    $outDiv.addClass("actions-cont")
+    $outDiv.append($newGame);
+    this.$el.append($outDiv);
+    this.$el.on("click", "button", (event => {
+      table.playHand();
+    }));
+  }
+
+  bindNewGame(table){
+    this.$el.unbind();
+    const $outDiv = $("<div>");
+    let $newGame = $("<button>");
+
+    $newGame.html('NEW GAME');
+    $newGame.addClass("actions-cont-new-game")
+    $outDiv.addClass("actions-cont")
+    $outDiv.append($newGame);
+    this.$el.append($outDiv);
+    this.$el.on("click", "button", (event => {
+      table.newGame();
     }));
   }
 }
