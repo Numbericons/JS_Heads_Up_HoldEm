@@ -13736,7 +13736,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "69%", true);
+      this.boardCards[pos].render(card, "17.5%", "48%", true);
     }
   }, {
     key: "showBoard",

@@ -75,25 +75,25 @@ body {
 }
 
 .table {
-  height: 70%;
+  height: 87vh;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 .table-row {
-  height: 100%;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-around;
 }
 .table-trim {
-  height: 55%;
-  width: 55%;
+  height: 62vh;
+  width: 84vh;
   position: relative;
   display: flex;
   justify-content: center;
   background-color: #5f4f35;
-  border-radius: 150px;
+  border-radius: 26vh;
   z-index: 1;
 }
 .table-felt {
@@ -102,7 +102,7 @@ body {
   position: relative;
   align-self: center;
   background-color: green;
-  border-radius: 150px;
+  border-radius: 240px;
   z-index: 3;
   display: flex;
   justify-content: space-between;
@@ -117,19 +117,13 @@ body {
 }
 .table-felt-board-bet-player-1 {
   font-family: "Oldenburg", cursive;
-  font-weight: 900;
   align-self: center;
-  margin-right: 20px;
   padding: 10px;
-  font-weight: 700;
 }
 .table-felt-board-bet-player-2 {
   font-family: "Oldenburg", cursive;
-  font-weight: 900;
-  margin-right: 105px;
   align-self: center;
   padding: 15px;
-  font-weight: 700;
 }
 .table-felt-dealer-btn {
   display: flex;
@@ -142,9 +136,7 @@ body {
 .table-felt-dealer-btn-img-left {
   width: 2vw;
   display: flex;
-  justify-content: flex-end;
   align-items: baseline;
-  margin-left: 45px;
 }
 .table-felt-dealer-btn-img-left-board {
   width: 2vw;
@@ -170,8 +162,8 @@ body {
 .table-bottom {
   display: flex;
   justify-content: space-between;
-  width: 90%;
-  transform: translateY(-260px);
+  align-items: center;
+  width: 100%;
 }
 .table-bottom-actions {
   height: 120px;
@@ -190,7 +182,7 @@ body {
   margin-top: -10px;
 }
 .table-bottom-text {
-  transform: translateX(-40px);
+  transform: translate(3vw, -5vh);
 }
 .table-bottom-text-header {
   font-size: 20px;
@@ -212,7 +204,7 @@ body {
 .player-info-left {
   display: flex;
   flex-direction: column;
-  transform: translateY(90px);
+  transform: translateY(-8vh);
   height: 26.5%;
   width: 17%;
   margin: -40px -10px 0px -20px;
@@ -277,7 +269,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  transform: translateY(90px);
+  transform: translateY(-8vh);
   height: 26.5%;
   width: 17%;
   margin: -40px 0px 0px -20px;

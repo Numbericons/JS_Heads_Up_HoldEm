@@ -1,24 +1,29 @@
 .table{
-  height: 70%;
+  height: 87vh;
+  // height: 70%;
   display: flex;
   align-items: center;
   flex-direction: column;
   // background-color: #a6b1b5;
   &-row{
-    height: 100%;
+    // height: 100%;
     width: 100%;
     display: flex;
+    align-items: center;
     justify-content: space-around;
   }
   &-trim{
-    height: 55%;
-    width: 55%;
+    height: 62vh;
+    width: 84vh;
+    // height: 55%;
+    // width: 55%;
     position: relative;
     display: flex;
     justify-content: center;
     // background-color: rsgb(177, 118, 15);
     background-color: #5f4f35;
-    border-radius: 150px;
+    border-radius: 26vh;
+    // border-radius: 150px;
     z-index:1;
   }
   &-felt{
@@ -27,7 +32,7 @@
     position: relative;
     align-self: center;
     background-color: green;
-    border-radius: 150px;
+    border-radius: 240px;
     z-index: 3;
     display: flex;
     justify-content: space-between;
@@ -41,20 +46,13 @@
       // font-size: 50px;
       &-bet-player-1{
         font-family: 'Oldenburg', cursive;
-        font-weight: 900;
-        // margin-left: 60px;
         align-self: center;
-        margin-right: 20px;
         padding: 10px;
-        font-weight: 700;
       }
       &-bet-player-2{
         font-family: 'Oldenburg', cursive;
-        font-weight: 900;
-        margin-right: 105px;
         align-self: center;
         padding: 15px;
-        font-weight: 700;
       }
     }
     &-dealer-btn{
@@ -67,9 +65,7 @@
       &-img-left{
         width: 2vw;
         display: flex;
-        justify-content: flex-end;
         align-items: baseline;
-        margin-left: 45px;
         &-board{
           width: 2vw;
           display: flex;
@@ -97,8 +93,8 @@
   &-bottom{
     display: flex;
     justify-content: space-between;
-    width: 90%;
-    transform: translateY(-260px);
+    align-items: center;
+    width: 100%;
     &-actions{
       height: 120px;
       width: 80%;
@@ -116,7 +112,7 @@
       }
     }
     &-text{
-      transform: translateX(-40px);
+      transform: translate(3vw, -5vh);
     }
     &-text-header{
       font-size: 20px;
