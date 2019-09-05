@@ -88,7 +88,7 @@ body {
 }
 .table-trim {
   height: 62vh;
-  width: 84vh;
+  width: 55vw;
   position: relative;
   display: flex;
   justify-content: center;
@@ -103,9 +103,7 @@ body {
   align-self: center;
   background-color: green;
   border-radius: 240px;
-  z-index: 3;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: column;
 }
@@ -205,7 +203,7 @@ body {
   display: flex;
   flex-direction: column;
   transform: translateY(-8vh);
-  height: 26.5%;
+  height: 40.5%;
   width: 17%;
   margin: -40px -10px 0px -20px;
 }
@@ -270,7 +268,7 @@ body {
   flex-direction: column;
   justify-content: end;
   transform: translateY(-8vh);
-  height: 26.5%;
+  height: 40.5%;
   width: 17%;
   margin: -40px 0px 0px -20px;
 }
@@ -371,7 +369,7 @@ body {
   font-weight: bolder;
   font-size: 40px;
   font-family: "Rye", cursive;
-  color: darkred;
+  color: #5e1717;
 }
 .top-about {
   display: flex;

@@ -14,7 +14,7 @@
   }
   &-trim{
     height: 62vh;
-    width: 84vh;
+    width: 55vw;
     // height: 55%;
     // width: 55%;
     position: relative;
@@ -33,9 +33,7 @@
     align-self: center;
     background-color: green;
     border-radius: 240px;
-    z-index: 3;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     flex-direction: column;
     &-board{

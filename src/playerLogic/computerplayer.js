@@ -30,26 +30,28 @@ export default class ComputerPlayer {
   promptAction() {
   }
 
-  maxBetRaise(num, stack, to_call) {
+  maxBet(num, stack, to_call) {
     return (num + to_call > stack) ? ['betRaise', stack] : ['betRaise', num];
   }
 
   genBetRaise(to_call, stack, pot){
-    let randNum = Math.random() * 2 * pot;   //pot 1000  to_call 500  stack = 5000
+    if (to_call === stack) debugger;
+    let randNum = Math.random() * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBetRaise(to_call * 2, stack, to_call);
-      // return this.maxBetRaise(pot * .5, stack);
+      return this.maxBet(to_call * 2, stack, to_call);
+      // return this.maxBet(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;
-      return this.maxBetRaise(betRaise, stack, to_call);
+      return this.maxBet(betRaise, stack, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
-      return this.maxBetRaise(betRaise, stack, to_call);
+      // account for preflop
+      return this.maxBet(betRaise, stack, to_call);
     }
   }
   
-  promptResponse(to_call, stack, pot){
+  promptResponse(to_call, pot){
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
@@ -60,6 +62,8 @@ export default class ComputerPlayer {
       } else {
           return ['check'];
       }
+    } else if (this.chipstack === to_call) {
+      return ['call'];
     } else if (randNum < potOdds * 1.5) {
       if (to_call > 0) {
         return ['call'];
@@ -67,8 +71,26 @@ export default class ComputerPlayer {
         return ['check'];
       }
     } else {
-        return this.genBetRaise(to_call, stack, pot);
+        return this.genBetRaise(to_call, pot);
     }
+  }
+
+  resolveCall(to_call){
+    let callAmt = (to_call > this.chipstack) ? this.chipstack : to_call;
+    this.chipsCall.play();
+    this.chipstack -= callAmt;
+    this.chipsInPot += callAmt;
+    this.streetChipsInPot += callAmt;
+    return callAmt;
+  }
+
+  resolveBetRaise(betInput, sb){
+    let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
+    this.chipstack -= betAmt + sb;
+    this.chipsInPot += betAmt + sb;
+    this.streetChipsInPot += betAmt + sb;
+    this.chipsBet.play();
+    return betAmt + sb;
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
@@ -79,17 +101,9 @@ export default class ComputerPlayer {
       this.folded = true;
       return null;
     } else if (textInput === 'call') {
-      this.chipsCall.play();
-      this.chipstack -= to_call;
-      this.chipsInPot += to_call;
-      this.streetChipsInPot += to_call;
-      return to_call;
+      return this.resolveCall(to_call);
     } else {
-      this.chipsBet.play();
-      this.chipstack -= betInput + sb;
-      this.chipsInPot += betInput + sb;
-      this.streetChipsInPot += betInput + sb;
-      return betInput + sb;
+      return this.resolveBetRaise(betInput, sb);
     }
   }
 

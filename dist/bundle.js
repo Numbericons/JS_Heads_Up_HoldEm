@@ -13047,27 +13047,8 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.setup(); // table.playHand();
-}); // $(() => {
-//   const rootEl = $('.ttt');
-//   const game = new Game();
-//   new View(game, rootEl);
-// });
-// import React from "react";
-// import ReactDom from "react-dom";
-// import App from "../dist/App"
-// const Root = () => {
-//   return (
-//     // <App />
-//   )
-// }
-// ReactDOM.render(element, document.getElementById('root'));
-// ReactDOM.render(<h1>Hello Poker world!</h1>, document.getElementById("root"));
-// document.addEventListener("DOMContentLoaded", () => {
-//   const game = new HoldEm;
-//   game.newGame();
-//   console.log("Game Over!");
-// })
+  table.setup();
+});
 
 /***/ }),
 
@@ -13128,30 +13109,31 @@ function () {
     key: "promptAction",
     value: function promptAction() {}
   }, {
-    key: "maxBetRaise",
-    value: function maxBetRaise(num, stack, to_call) {
+    key: "maxBet",
+    value: function maxBet(num, stack, to_call) {
       return num + to_call > stack ? ['betRaise', stack] : ['betRaise', num];
     }
   }, {
     key: "genBetRaise",
     value: function genBetRaise(to_call, stack, pot) {
-      var randNum = Math.random() * 2 * pot; //pot 1000  to_call 500  stack = 5000
-
+      if (to_call === stack) debugger;
+      var randNum = Math.random() * 2 * pot;
       var betRaise;
 
       if (randNum < to_call * 2) {
-        return this.maxBetRaise(to_call * 2, stack, to_call); // return this.maxBetRaise(pot * .5, stack);
+        return this.maxBet(to_call * 2, stack, to_call); // return this.maxBet(pot * .5, stack);
       } else if (randNum > 1.6 * pot) {
         betRaise = pot * Math.random() + pot;
-        return this.maxBetRaise(betRaise, stack, to_call);
+        return this.maxBet(betRaise, stack, to_call);
       } else {
-        betRaise = randNum > pot ? pot : randNum;
-        return this.maxBetRaise(betRaise, stack, to_call);
+        betRaise = randNum > pot ? pot : randNum; // account for preflop
+
+        return this.maxBet(betRaise, stack, to_call);
       }
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, stack, pot) {
+    value: function promptResponse(to_call, pot) {
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13163,6 +13145,8 @@ function () {
         } else {
           return ['check'];
         }
+      } else if (this.chipstack === to_call) {
+        return ['call'];
       } else if (randNum < potOdds * 1.5) {
         if (to_call > 0) {
           return ['call'];
@@ -13170,8 +13154,28 @@ function () {
           return ['check'];
         }
       } else {
-        return this.genBetRaise(to_call, stack, pot);
+        return this.genBetRaise(to_call, pot);
       }
+    }
+  }, {
+    key: "resolveCall",
+    value: function resolveCall(to_call) {
+      var callAmt = to_call > this.chipstack ? this.chipstack : to_call;
+      this.chipsCall.play();
+      this.chipstack -= callAmt;
+      this.chipsInPot += callAmt;
+      this.streetChipsInPot += callAmt;
+      return callAmt;
+    }
+  }, {
+    key: "resolveBetRaise",
+    value: function resolveBetRaise(betInput, sb) {
+      var betAmt = betInput > this.chipstack ? this.chipstack : betInput;
+      this.chipstack -= betAmt + sb;
+      this.chipsInPot += betAmt + sb;
+      this.streetChipsInPot += betAmt + sb;
+      this.chipsBet.play();
+      return betAmt + sb;
     }
   }, {
     key: "resolve_action",
@@ -13185,17 +13189,9 @@ function () {
         this.folded = true;
         return null;
       } else if (textInput === 'call') {
-        this.chipsCall.play();
-        this.chipstack -= to_call;
-        this.chipsInPot += to_call;
-        this.streetChipsInPot += to_call;
-        return to_call;
+        return this.resolveCall(to_call);
       } else {
-        this.chipsBet.play();
-        this.chipstack -= betInput + sb;
-        this.chipsInPot += betInput + sb;
-        this.streetChipsInPot += betInput + sb;
-        return betInput + sb;
+        return this.resolveBetRaise(betInput, sb);
       }
     }
   }, {
@@ -13736,7 +13732,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "48%", true);
+      this.boardCards[pos].render(card, "17.5%", "61%", true);
     }
   }, {
     key: "showBoard",
@@ -13810,7 +13806,7 @@ function () {
                 return this.sleep(wait);
 
               case 5:
-                response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
+                response = this.currentPlayer().promptResponse(this.currBet, this.pot);
 
                 if (response) {
                   this.resolvePlayerPrompt(response);
@@ -13880,9 +13876,10 @@ function () {
     }
   }, {
     key: "calcCompBetRaise",
-    value: function calcCompBetRaise(compBetRaise, isSb) {
+    value: function calcCompBetRaise(compBetRaise) {
       var sb = this.isSb();
       var totalBet;
+      debugger;
 
       if (compBetRaise > this.currentPlayer().chipstack) {
         totalBet = this.currentPlayer().chipstack - sb;
@@ -13902,6 +13899,7 @@ function () {
   }, {
     key: "isCompBet",
     value: function isCompBet(compBetRaise) {
+      // < ( I ) > \\
       var betRaise;
 
       if (compBetRaise) {
@@ -13916,11 +13914,11 @@ function () {
   }, {
     key: "resolveAction",
     value: function resolveAction(betRaise, playerAction) {
-      var resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
 
-      if (resolvedPlayerAction) {
-        this.pot += resolvedPlayerAction;
-        return resolvedPlayerAction;
+      if (resolvedAction) {
+        this.pot += resolvedAction;
+        return resolvedAction;
       }
     }
   }, {
@@ -14546,10 +14544,11 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "96%"];
 
     _classCallCheck(this, Table);
 
+    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims), new HumanPlayer("bb", initialChipstack, cardDims)];
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;

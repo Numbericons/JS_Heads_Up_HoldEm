@@ -31,7 +31,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",
     "start": "webpack-dev-server",
-    "webpack": "webpack --watch --mode=development",
+    "webpack": "'node_modules/.bin/webpack' --watch --mode=development",
     "sass": "sass --watch dist/stylesheets/input.scss:dist/stylesheets/output.css",
     "dev": "concurrently \"npm run sass\" \"npm run webpack\""
   },

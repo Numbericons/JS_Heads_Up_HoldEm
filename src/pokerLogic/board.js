@@ -203,7 +203,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "48%", true)
+    this.boardCards[pos].render(card, "17.5%", "61%", true)
   }
 
   showBoard() {
@@ -258,7 +258,7 @@ export default class Board {
     this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
     await this.sleep(wait);
-    let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
+    let response = this.currentPlayer().promptResponse(this.currBet, this.pot);
     if (response) {
       this.resolvePlayerPrompt(response);
     }
@@ -305,9 +305,10 @@ export default class Board {
     return totalBet;
   }
 
-  calcCompBetRaise(compBetRaise, isSb) {
+  calcCompBetRaise(compBetRaise) {
     let sb = this.isSb();
     let totalBet;
+    debugger
     if (compBetRaise > this.currentPlayer().chipstack) {
       totalBet = this.currentPlayer().chipstack - sb;
     } else if (compBetRaise > this.otherPlayer().chipstack) {
@@ -323,6 +324,7 @@ export default class Board {
   }
 
   isCompBet(compBetRaise){
+    // < ( I ) > \\
     let betRaise;
     if (compBetRaise) {
       if (compBetRaise < this.bb) compBetRaise = this.bb;
@@ -334,10 +336,10 @@ export default class Board {
   }
 
   resolveAction(betRaise, playerAction){
-    let resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
-    if (resolvedPlayerAction) {
-      this.pot += resolvedPlayerAction;
-      return resolvedPlayerAction;
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+    if (resolvedAction) {
+      this.pot += resolvedAction;
+      return resolvedAction;
     }
   }
 
