@@ -30,24 +30,24 @@ export default class ComputerPlayer {
   promptAction() {
   }
 
-  maxBet(num, stack, to_call) {
-    return (num + to_call > stack) ? ['betRaise', stack] : ['betRaise', num];
+  maxBet(num, to_call) {
+    return (num + to_call > this.chipstack) ? ['betRaise', this.chipstack] : ['betRaise', num];
   }
 
-  genBetRaise(to_call, stack, pot){
-    if (to_call === stack) debugger;
+  genBetRaise(to_call, pot){
+    if (to_call >= this.chipstack) debugger;
     let randNum = Math.random() * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBet(to_call * 2, stack, to_call);
+      return this.maxBet(to_call * 2, to_call);
       // return this.maxBet(pot * .5, stack);
     } else if (randNum > 1.6 * pot) {
       betRaise = pot * Math.random() + pot;
-      return this.maxBet(betRaise, stack, to_call);
+      return this.maxBet(betRaise, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
       // account for preflop
-      return this.maxBet(betRaise, stack, to_call);
+      return this.maxBet(betRaise, to_call);
     }
   }
   

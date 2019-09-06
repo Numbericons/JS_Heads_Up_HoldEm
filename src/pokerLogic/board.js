@@ -19,6 +19,7 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.handFinish = false;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -43,6 +44,7 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.handFinish = false;
   }
 
   showDealerBtnHelp(showDir,hideDir){
@@ -69,6 +71,7 @@ export default class Board {
   }
 
   determineWinner() {
+    this.handFinish = true;
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
     this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard()}, ` : `Preflop, `
@@ -259,9 +262,7 @@ export default class Board {
     let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
     await this.sleep(wait);
     let response = this.currentPlayer().promptResponse(this.currBet, this.pot);
-    if (response) {
-      this.resolvePlayerPrompt(response);
-    }
+    if (response) this.resolvePlayerPrompt(response);
   }
 
   renderPlayers(){
@@ -308,7 +309,6 @@ export default class Board {
   calcCompBetRaise(compBetRaise) {
     let sb = this.isSb();
     let totalBet;
-    debugger
     if (compBetRaise > this.currentPlayer().chipstack) {
       totalBet = this.currentPlayer().chipstack - sb;
     } else if (compBetRaise > this.otherPlayer().chipstack) {
@@ -359,13 +359,15 @@ export default class Board {
     this.currBet = this.handChipDiff();
     this.toggleCurrPlayer();
     this.render();
-    if (!this.allIn() && this.handChipDiff() === 0)  this.nextAction();
+    if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
   }
 
   nextAction() {
     let handChipsEqual = this.handChipDiff() === 0;
     let multipleActions = this.streetActions.length > 1;
-    if (this.streetActions[this.streetActions - 1] === 'fold') {
+    debugger
+    if (this.players[0].folded || this.players[1].folded) {
+    // if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
     } else if (handChipsEqual) {
       if (this.allIn() && this.handChipDiff() === 0) {   // remove as render handles logic
