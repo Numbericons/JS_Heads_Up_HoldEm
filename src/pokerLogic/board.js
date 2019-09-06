@@ -365,7 +365,6 @@ export default class Board {
   nextAction() {
     let handChipsEqual = this.handChipDiff() === 0;
     let multipleActions = this.streetActions.length > 1;
-    debugger
     if (this.players[0].folded || this.players[1].folded) {
     // if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();

@@ -13166,16 +13166,24 @@ function () {
       this.chipsInPot += callAmt;
       this.streetChipsInPot += callAmt;
       return callAmt;
-    }
+    } // resolveBetRaise(betInput, sb){
+    //   let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
+    //   this.chipstack -= betAmt + sb;
+    //   this.chipsInPot += betAmt + sb;
+    //   this.streetChipsInPot += betAmt + sb;
+    //   this.chipsBet.play();
+    //   return betAmt + sb;
+    // }
+
   }, {
     key: "resolveBetRaise",
     value: function resolveBetRaise(betInput, sb) {
       var betAmt = betInput > this.chipstack ? this.chipstack : betInput;
-      this.chipstack -= betAmt + sb;
-      this.chipsInPot += betAmt + sb;
-      this.streetChipsInPot += betAmt + sb;
+      this.chipstack -= betAmt;
+      this.chipsInPot += betAmt;
+      this.streetChipsInPot += betAmt;
       this.chipsBet.play();
-      return betAmt + sb;
+      return betAmt;
     }
   }, {
     key: "resolve_action",
@@ -13948,7 +13956,6 @@ function () {
     value: function nextAction() {
       var handChipsEqual = this.handChipDiff() === 0;
       var multipleActions = this.streetActions.length > 1;
-      debugger;
 
       if (this.players[0].folded || this.players[1].folded) {
         // if (this.streetActions[this.streetActions - 1] === 'fold') {
@@ -14545,12 +14552,12 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "96%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "100%"];
 
     _classCallCheck(this, Table);
 
     // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims), new HumanPlayer("bb", initialChipstack, cardDims)];
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", 200, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');

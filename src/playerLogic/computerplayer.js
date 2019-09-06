@@ -84,13 +84,21 @@ export default class ComputerPlayer {
     return callAmt;
   }
 
+  // resolveBetRaise(betInput, sb){
+  //   let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
+  //   this.chipstack -= betAmt + sb;
+  //   this.chipsInPot += betAmt + sb;
+  //   this.streetChipsInPot += betAmt + sb;
+  //   this.chipsBet.play();
+  //   return betAmt + sb;
+  // }
   resolveBetRaise(betInput, sb){
     let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
-    this.chipstack -= betAmt + sb;
-    this.chipsInPot += betAmt + sb;
-    this.streetChipsInPot += betAmt + sb;
+    this.chipstack -= betAmt;
+    this.chipsInPot += betAmt;
+    this.streetChipsInPot += betAmt;
     this.chipsBet.play();
-    return betAmt + sb;
+    return betAmt;
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
