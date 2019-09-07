@@ -32,7 +32,8 @@
     width:90%;
     position: relative;
     align-self: center;
-    background-color: green;
+    background-color: #2b7a35;
+    // background-color: green;
     border-radius: 240px;
     display: flex;
     align-items: center;
@@ -100,7 +101,6 @@
       justify-content: space-around;
       flex-direction: column;
       align-items: center;
-      margin-right: 200px;
       &-prompt{
         height: 27px;
         font-size: 25px;
@@ -124,6 +124,24 @@
       outline: 1px solid black;
       font-family: 'Lora';
       font-size: 14px;
+    }
+    &-about{
+      width: 18vw;
+      margin-right: 1.5vw;
+      align-self: flex-end;
+      transform: translateY(-3vh);
+      &-links{
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        font-family: 'Lora';
+        &-icons{
+          width: 2vw;
+        }
+        &-name{
+          transform: translateY(-.5vh);
+        }
+      }
     }
   }
 }

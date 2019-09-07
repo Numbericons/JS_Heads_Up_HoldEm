@@ -5,18 +5,27 @@ export default class Deck {
     this.cards = this.newDeck();
   }
 
-  shuffle(array){
-    let counter = array.length;
+  // shuffle(array){
+  //   let counter = array.length;
 
-    while (counter > 0) {
-      let index = Math.floor(Math.random() * counter);
-      counter--;
-      let temp = array[counter];
-      array[counter] = array[index];
-      array[index] = temp;
+  //   while (counter > 0) {
+  //     let index = Math.floor(Math.random() * counter);
+  //     counter--;
+  //     let temp = array[counter];
+  //     array[counter] = array[index];
+  //     array[index] = temp;
+  //   }
+  //   return array;
+  // }
+
+  shuffle(arr) {
+    for(let i = arr.length - 1; i > 0; i--) {
+      let k = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[k]] = [arr[k], arr[i]];
     }
-    return array;
+    return arr;
   }
+
 
   newDeck(){
     let suits = ["s", "h", "d", "c"];

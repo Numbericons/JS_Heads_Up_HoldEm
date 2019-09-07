@@ -342,23 +342,22 @@ export default class Board {
   }
 
   potRelativeBet(playerAction){
-    debugger
     switch(playerAction) {
       case "1/2 Pot":
-        return this.pot / 2;
+        return Math.floor(this.pot / 2);
       case "2/3 Pot":
-        return this.pot * 2 / 3;
+        return Math.floor(this.pot * 2 / 3);
       case "Pot":
-        return this.pot;
+        return Math.floor(this.pot);
       case "All In":
-        return this.currentPlayer().chipstack
+        return Math.floor(this.currentPlayer().chipstack);
     }
   }
 
   resolveAction(betRaise, playerAction){
-    debugger
-    if (playerAction.includes("Pot") || playerAction === "All In") playerAction = this.potRelativeBet(playerAction);
-    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+    let sb = this.isSb();
+    if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.potRelativeBet(playerAction) + sb;
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
     if (resolvedAction) {
       this.pot += resolvedAction;
       return resolvedAction;

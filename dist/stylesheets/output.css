@@ -100,7 +100,7 @@ body {
   width: 90%;
   position: relative;
   align-self: center;
-  background-color: green;
+  background-color: #2b7a35;
   border-radius: 240px;
   display: flex;
   align-items: center;
@@ -169,7 +169,6 @@ body {
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
-  margin-right: 200px;
 }
 .table-bottom-actions-prompt {
   height: 27px;
@@ -192,6 +191,24 @@ body {
   outline: 1px solid black;
   font-family: "Lora";
   font-size: 14px;
+}
+.table-bottom-about {
+  width: 18vw;
+  margin-right: 1.5vw;
+  align-self: flex-end;
+  transform: translateY(-3vh);
+}
+.table-bottom-about-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-family: "Lora";
+}
+.table-bottom-about-links-icons {
+  width: 2vw;
+}
+.table-bottom-about-links-name {
+  transform: translateY(-0.5vh);
 }
 
 .display-none {
@@ -217,13 +234,13 @@ body {
   background-position-x: -6px;
   background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 .player-info-left-cards-2 {
   background-position-x: -6px;
   background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
 }
 .player-info-left-chip {
   display: flex;
@@ -283,13 +300,15 @@ body {
   background-position-x: -6px;
   background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 .player-info-right-cards-2 {
   background-position-x: -6px;
   background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 .player-info-right-chip {
   display: flex;
@@ -369,7 +388,7 @@ body {
   font-weight: bolder;
   font-size: 40px;
   font-family: "Rye", cursive;
-  color: #5e1717;
+  color: #88330f;
   transform: translateX(3.5vw);
 }
 .top-about {

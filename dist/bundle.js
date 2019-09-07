@@ -13931,28 +13931,26 @@ function () {
   }, {
     key: "potRelativeBet",
     value: function potRelativeBet(playerAction) {
-      debugger;
-
       switch (playerAction) {
         case "1/2 Pot":
-          return this.pot / 2;
+          return Math.floor(this.pot / 2);
 
         case "2/3 Pot":
-          return this.pot * 2 / 3;
+          return Math.floor(this.pot * 2 / 3);
 
         case "Pot":
-          return this.pot;
+          return Math.floor(this.pot);
 
         case "All In":
-          return this.currentPlayer().chipstack;
+          return Math.floor(this.currentPlayer().chipstack);
       }
     }
   }, {
     key: "resolveAction",
     value: function resolveAction(betRaise, playerAction) {
-      debugger;
-      if (playerAction.includes("Pot") || playerAction === "All In") playerAction = this.potRelativeBet(playerAction);
-      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+      var sb = this.isSb();
+      if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.potRelativeBet(playerAction) + sb;
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
 
       if (resolvedAction) {
         this.pot += resolvedAction;
@@ -14490,22 +14488,30 @@ function () {
 
     this.cards_drawn = 0;
     this.cards = this.newDeck();
-  }
+  } // shuffle(array){
+  //   let counter = array.length;
+  //   while (counter > 0) {
+  //     let index = Math.floor(Math.random() * counter);
+  //     counter--;
+  //     let temp = array[counter];
+  //     array[counter] = array[index];
+  //     array[index] = temp;
+  //   }
+  //   return array;
+  // }
+
 
   _createClass(Deck, [{
     key: "shuffle",
-    value: function shuffle(array) {
-      var counter = array.length;
-
-      while (counter > 0) {
-        var index = Math.floor(Math.random() * counter);
-        counter--;
-        var temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
+    value: function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var k = Math.floor(Math.random() * (i + 1));
+        var _ref = [arr[k], arr[i]];
+        arr[i] = _ref[0];
+        arr[k] = _ref[1];
       }
 
-      return array;
+      return arr;
     }
   }, {
     key: "newDeck",
