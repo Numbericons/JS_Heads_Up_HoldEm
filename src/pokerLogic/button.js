@@ -60,7 +60,7 @@ export default class Button {
     $outDiv.append($betDiv)
   }
 
-  betSizeButton($betsizeDiv, size, allIn){
+  betSizeButton($betsizeDiv, size){
     let $betDiv = $("<button>");
     $betDiv.addClass("betsize-cont-text");
     $betDiv.html(`${size}`);

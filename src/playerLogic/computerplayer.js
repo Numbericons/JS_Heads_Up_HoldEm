@@ -34,24 +34,25 @@ export default class ComputerPlayer {
     return (num + to_call > this.chipstack) ? ['betRaise', this.chipstack] : ['betRaise', num];
   }
 
-  genBetRaise(to_call, pot){
+  genBetRaise(to_call, pot, sb){
     if (to_call >= this.chipstack) debugger;
     let randNum = Math.random() * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
-      return this.maxBet(to_call * 2, to_call);
-      // return this.maxBet(pot * .5, stack);
+      betRaise = to_call * 2;
+      if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
+      return this.maxBet(betRaise, to_call);
     } else if (randNum > 1.6 * pot) {
-      betRaise = pot * Math.random() + pot;
+      if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
       return this.maxBet(betRaise, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
-      // account for preflop
+      if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
       return this.maxBet(betRaise, to_call);
     }
   }
   
-  promptResponse(to_call, pot){
+  promptResponse(to_call, pot, sb){
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
@@ -71,7 +72,7 @@ export default class ComputerPlayer {
         return ['check'];
       }
     } else {
-        return this.genBetRaise(to_call, pot);
+        return this.genBetRaise(to_call, pot, sb);
     }
   }
 

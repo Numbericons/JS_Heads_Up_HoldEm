@@ -13115,25 +13115,27 @@ function () {
     }
   }, {
     key: "genBetRaise",
-    value: function genBetRaise(to_call, pot) {
+    value: function genBetRaise(to_call, pot, sb) {
       if (to_call >= this.chipstack) debugger;
       var randNum = Math.random() * 2 * pot;
       var betRaise;
 
       if (randNum < to_call * 2) {
-        return this.maxBet(to_call * 2, to_call); // return this.maxBet(pot * .5, stack);
+        betRaise = to_call * 2;
+        if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
+        return this.maxBet(betRaise, to_call);
       } else if (randNum > 1.6 * pot) {
-        betRaise = pot * Math.random() + pot;
+        if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
         return this.maxBet(betRaise, to_call);
       } else {
-        betRaise = randNum > pot ? pot : randNum; // account for preflop
-
+        betRaise = randNum > pot ? pot : randNum;
+        if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
         return this.maxBet(betRaise, to_call);
       }
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot) {
+    value: function promptResponse(to_call, pot, sb) {
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13154,7 +13156,7 @@ function () {
           return ['check'];
         }
       } else {
-        return this.genBetRaise(to_call, pot);
+        return this.genBetRaise(to_call, pot, sb);
       }
     }
   }, {
@@ -13743,7 +13745,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "61%", true);
+      this.boardCards[pos].render(card, "17.5%", "53%", true);
     }
   }, {
     key: "showBoard",
@@ -13800,27 +13802,36 @@ function () {
       }
     }
   }, {
+    key: "checkFirstPreflop",
+    value: function checkFirstPreflop() {
+      if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+        return this.sb;
+      }
+    }
+  }, {
     key: "promptPlayer",
     value: function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4() {
-        var wait, response;
+        var wait, firstPreflop, response;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 this.button.$el.empty();
                 this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 2500 : 1200;
+                wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 3000 : 2000;
                 _context4.next = 5;
                 return this.sleep(wait);
 
               case 5:
-                response = this.currentPlayer().promptResponse(this.currBet, this.pot);
+                firstPreflop = this.checkFirstPreflop();
+                if (firstPreflop) debugger;
+                response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 7:
+              case 9:
               case "end":
                 return _context4.stop();
             }
@@ -14117,7 +14128,7 @@ function () {
     }
   }, {
     key: "betSizeButton",
-    value: function betSizeButton($betsizeDiv, size, allIn) {
+    value: function betSizeButton($betsizeDiv, size) {
       var $betDiv = $("<button>");
       $betDiv.addClass("betsize-cont-text");
       $betDiv.html("".concat(size));

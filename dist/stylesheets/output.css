@@ -53,8 +53,7 @@ table {
 }
 
 .holdem-container {
-  height: 1200px;
-  width: 1450px;
+  width: 100vw;
   background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
 }
 
@@ -111,7 +110,7 @@ body {
   width: 400px;
   height: 222px;
   display: flex;
-  margin-top: 80px;
+  margin-top: 5vh;
 }
 .table-felt-board-bet-player-1 {
   font-family: "Oldenburg", cursive;
@@ -175,7 +174,7 @@ body {
 .table-bottom-actions-prompt {
   height: 27px;
   font-size: 25px;
-  transform: translate(-20px, -270px);
+  transform: translateY(3vh);
   font-family: "Oldenburg", cursive;
   margin-top: -10px;
 }
@@ -362,20 +361,18 @@ body {
 .top-left-current-pot-text {
   font-family: "Oldenburg", cursive;
   font-weight: 700;
-  transform: translate(0px, 20px);
-  border-radius: 15px;
+  transform: translate(0px, 2vh);
 }
 .top-header {
   font-weight: bolder;
   font-size: 40px;
   font-family: "Rye", cursive;
   color: #5e1717;
+  transform: translateX(3.5vw);
 }
 .top-about {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 40px;
+  width: 18vw;
+  margin-right: 1.5vw;
 }
 .top-about-author {
   font-size: 16px;
@@ -385,8 +382,15 @@ body {
 }
 .top-about-links {
   display: flex;
+  align-items: center;
   justify-content: space-around;
   font-family: "Oldenburg", cursive;
+}
+.top-about-links-icons {
+  width: 2vw;
+}
+.top-about-links-name {
+  transform: translateY(-0.5vh);
 }
 
 .actions-cont {

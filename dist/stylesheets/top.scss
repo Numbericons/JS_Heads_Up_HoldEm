@@ -19,8 +19,7 @@
       &-text{
         font-family: 'Oldenburg', cursive;
         font-weight: 700;
-        transform: translate(0px, 20px);
-        border-radius: 15px;
+        transform: translate(0px, 2vh);
       }
     }
   }
@@ -28,14 +27,12 @@
     font-weight: bolder;
     font-size: 40px;
     font-family: 'Rye', cursive;
-    // color: darkred;
     color: #5e1717;
+    transform: translateX(3.5vw);
   }
   &-about{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-right: 40px;
+    width: 18vw;
+    margin-right: 1.5vw;
     &-author{
       font-size:16px;
       color: black;
@@ -45,8 +42,15 @@
     }
     &-links{
       display: flex;
+      align-items: center;
       justify-content: space-around;
       font-family: 'Oldenburg', cursive;
+      &-icons{
+        width: 2vw;
+      }
+      &-name{
+        transform: translateY(-.5vh);
+      }
     }
   }
 }

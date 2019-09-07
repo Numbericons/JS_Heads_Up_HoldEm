@@ -206,7 +206,7 @@ export default class Board {
 
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "61%", true)
+    this.boardCards[pos].render(card, "17.5%", "53%", true)
   }
 
   showBoard() {
@@ -256,12 +256,19 @@ export default class Board {
     }
   }
 
+  checkFirstPreflop(){
+    if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+      return this.sb;
+    }
+  }
   async promptPlayer() {
     this.button.$el.empty();
     this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
+    let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 3000 : 2000;
     await this.sleep(wait);
-    let response = this.currentPlayer().promptResponse(this.currBet, this.pot);
+    let firstPreflop = this.checkFirstPreflop();
+    if (firstPreflop) debugger;
+    let response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
     if (response) this.resolvePlayerPrompt(response);
   }
 
