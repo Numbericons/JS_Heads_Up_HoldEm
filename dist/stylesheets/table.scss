@@ -21,7 +21,8 @@
     display: flex;
     justify-content: center;
     // background-color: rsgb(177, 118, 15);
-    background-color: #5f4f35;
+    // background-color: #5f4f35;
+    background-color: #54462f;
     border-radius: 26vh;
     // border-radius: 150px;
     z-index:1;
@@ -42,12 +43,12 @@
       display: flex;
       margin-top: 5vh;
       &-bet-player-1{
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora', cursive;
         align-self: center;
         padding: 10px;
       }
       &-bet-player-2{
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora', cursive;
         align-self: center;
         padding: 15px;
       }
@@ -105,7 +106,7 @@
         font-size: 25px;
         // transform: translate(-20px, -270px);
         transform: translateY(3vh);
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora';
         margin-top: -10px;
       }
     }
@@ -114,14 +115,14 @@
     }
     &-text-header{
       font-size: 20px;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       margin-bottom: 5px;
     }
     &-text-chat{
       height: 16vh;
       width:  16vw;
       outline: 1px solid black;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       font-size: 14px;
     }
   }

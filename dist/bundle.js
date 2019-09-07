@@ -13827,11 +13827,10 @@ function () {
 
               case 5:
                 firstPreflop = this.checkFirstPreflop();
-                if (firstPreflop) debugger;
                 response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 9:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -13930,8 +13929,29 @@ function () {
       return betRaise;
     }
   }, {
+    key: "potRelativeBet",
+    value: function potRelativeBet(playerAction) {
+      debugger;
+
+      switch (playerAction) {
+        case "1/2 Pot":
+          return this.pot / 2;
+
+        case "2/3 Pot":
+          return this.pot * 2 / 3;
+
+        case "Pot":
+          return this.pot;
+
+        case "All In":
+          return this.currentPlayer().chipstack;
+      }
+    }
+  }, {
     key: "resolveAction",
     value: function resolveAction(betRaise, playerAction) {
+      debugger;
+      if (playerAction.includes("Pot") || playerAction === "All In") playerAction = this.potRelativeBet(playerAction);
       var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
 
       if (resolvedAction) {
@@ -14130,6 +14150,7 @@ function () {
     key: "betSizeButton",
     value: function betSizeButton($betsizeDiv, size) {
       var $betDiv = $("<button>");
+      $betDiv.data("action", size);
       $betDiv.addClass("betsize-cont-text");
       $betDiv.html("".concat(size));
       $betsizeDiv.append($betDiv);
@@ -14138,7 +14159,7 @@ function () {
     key: "betSizeButtons",
     value: function betSizeButtons($betsizeDiv) {
       this.betSizeButton($betsizeDiv, "1/2 Pot");
-      this.betSizeButton($betsizeDiv, "3/4 Pot");
+      this.betSizeButton($betsizeDiv, "2/3 Pot");
       this.betSizeButton($betsizeDiv, "Pot");
       this.betSizeButton($betsizeDiv, "All In");
     }

@@ -91,7 +91,7 @@ body {
   position: relative;
   display: flex;
   justify-content: center;
-  background-color: #5f4f35;
+  background-color: #54462f;
   border-radius: 26vh;
   z-index: 1;
 }
@@ -113,12 +113,12 @@ body {
   margin-top: 5vh;
 }
 .table-felt-board-bet-player-1 {
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora", cursive;
   align-self: center;
   padding: 10px;
 }
 .table-felt-board-bet-player-2 {
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora", cursive;
   align-self: center;
   padding: 15px;
 }
@@ -175,7 +175,7 @@ body {
   height: 27px;
   font-size: 25px;
   transform: translateY(3vh);
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   margin-top: -10px;
 }
 .table-bottom-text {
@@ -183,14 +183,14 @@ body {
 }
 .table-bottom-text-header {
   font-size: 20px;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   margin-bottom: 5px;
 }
 .table-bottom-text-chat {
   height: 16vh;
   width: 16vw;
   outline: 1px solid black;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   font-size: 14px;
 }
 
@@ -245,13 +245,14 @@ body {
   margin-right: 30px;
 }
 .player-info-left-chip-text-name {
-  font-size: 15px;
+  font-size: 18px;
   height: 20px;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
+  font-size: 17px;
 }
 .player-info-left-chip-text-chips {
-  font-size: 15px;
-  font-family: "Oldenburg", cursive;
+  font-size: 16px;
+  font-family: "Lora";
 }
 .player-info-left-chip-img {
   float: left;
@@ -311,13 +312,13 @@ body {
   width: 240px;
 }
 .player-info-right-chip-text-name {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 17px;
   height: 20px;
 }
 .player-info-right-chip-text-chips {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 16px;
 }
 .player-info-right-chip-img {
   float: left;
@@ -350,7 +351,7 @@ body {
   margin: 0px 150px 0px 20px;
   display: flex;
   align-items: center;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
 }
 .top-left-help-image {
   width: 50px;
@@ -359,9 +360,10 @@ body {
   margin-left: 15px;
 }
 .top-left-current-pot-text {
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   font-weight: 700;
   transform: translate(0px, 2vh);
+  font-size: 18px;
 }
 .top-header {
   font-weight: bolder;
@@ -377,14 +379,14 @@ body {
 .top-about-author {
   font-size: 16px;
   color: black;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   margin: 20px;
 }
 .top-about-links {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
 }
 .top-about-links-icons {
   width: 2vw;
@@ -477,8 +479,8 @@ body {
   margin-right: 2px;
 }
 .chips-text {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 18px;
 }
 
 /*# sourceMappingURL=output.css.map */

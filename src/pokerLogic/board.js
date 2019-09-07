@@ -267,7 +267,6 @@ export default class Board {
     let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 3000 : 2000;
     await this.sleep(wait);
     let firstPreflop = this.checkFirstPreflop();
-    if (firstPreflop) debugger;
     let response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
     if (response) this.resolvePlayerPrompt(response);
   }
@@ -342,7 +341,23 @@ export default class Board {
     return betRaise;
   }
 
+  potRelativeBet(playerAction){
+    debugger
+    switch(playerAction) {
+      case "1/2 Pot":
+        return this.pot / 2;
+      case "2/3 Pot":
+        return this.pot * 2 / 3;
+      case "Pot":
+        return this.pot;
+      case "All In":
+        return this.currentPlayer().chipstack
+    }
+  }
+
   resolveAction(betRaise, playerAction){
+    debugger
+    if (playerAction.includes("Pot") || playerAction === "All In") playerAction = this.potRelativeBet(playerAction);
     let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
     if (resolvedAction) {
       this.pot += resolvedAction;

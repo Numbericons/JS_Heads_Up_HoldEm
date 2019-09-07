@@ -42,13 +42,14 @@
       align-items: center;
       margin-right: 30px;
       &-name{
-        font-size: 15px;
+        font-size: 18px;
         height: 20px;
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora';
+        font-size: 17px;
       }
       &-chips{
-        font-size: 15px;
-        font-family: 'Oldenburg', cursive;
+        font-size: 16px;
+        font-family: 'Lora';
       }
     }
     &-img{
@@ -108,13 +109,13 @@
       align-items: center;
       width: 240px;
       &-name{
-        font-family: 'Oldenburg', cursive;
-        font-size: 15px;
+        font-family: 'Lora';
+        font-size: 17px;
         height: 20px;
       }
       &-chips{
-        font-family: 'Oldenburg', cursive;
-        font-size: 15px;
+        font-family: 'Lora';
+        font-size: 16px;
       }
     }
     &-img{

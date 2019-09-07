@@ -9,7 +9,7 @@
       margin: 0px 150px 0px 20px;
       display: flex;
       align-items: center;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       &-image{
         width: 50px;
       }
@@ -17,9 +17,10 @@
     &-current-pot{
       margin-left:15px;
       &-text{
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora';
         font-weight: 700;
         transform: translate(0px, 2vh);
+        font-size: 18px;
       }
     }
   }
@@ -37,14 +38,14 @@
       font-size:16px;
       color: black;
       // font-family: 'Rye', cursive;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       margin: 20px;
     }
     &-links{
       display: flex;
       align-items: center;
       justify-content: space-around;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       &-icons{
         width: 2vw;
       }
