@@ -13222,8 +13222,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
       }
     }
   }, {
@@ -13364,8 +13364,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
       }
     }
   }, {
@@ -14263,32 +14263,32 @@ function () {
 
   _createClass(Card, [{
     key: "display",
-    value: function display(element, width, height) {
+    value: function display(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
       element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
       element.style.width = width; //40%    .1143  .57 * 140 px   80%
 
       element.style.height = height; //80%  .16
 
-      element.style.borderRadius = "7px";
+      if (!player) element.style.borderRadius = "7px";
       element.style.marginLeft = "10px";
       element.style.backgroundSize = "";
     }
   }, {
     key: "hide",
-    value: function hide(element, width, height) {
+    value: function hide(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/cardback_red_acorn2.jpg")';
       element.style.backgroundPosition = ' -2px -4px';
       element.style.width = width;
       element.style.height = height;
-      element.style.borderRadius = "7px";
+      if (!player) element.style.borderRadius = "7px";
       element.style.marginLeft = "10px";
       element.style.backgroundSize = "75px 112px";
     }
   }, {
     key: "render",
-    value: function render(element, width, height, revealed) {
-      revealed ? this.display(element, width, height) : this.hide(element, width, height);
+    value: function render(element, width, height, revealed, player) {
+      revealed ? this.display(element, width, height, player) : this.hide(element, width, height, player);
     }
   }, {
     key: "unrender",

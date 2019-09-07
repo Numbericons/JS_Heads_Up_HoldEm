@@ -231,16 +231,14 @@ body {
   margin: 7.5vh 0px 0px 1vw;
 }
 .player-info-left-cards-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
 }
 .player-info-left-cards-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
 }
 .player-info-left-chip {
   display: flex;
@@ -297,15 +295,11 @@ body {
   margin: 7.5vh 0px 0px 5vw;
 }
 .player-info-right-cards-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;
 }
 .player-info-right-cards-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
   border-top-left-radius: 7px;
   border-top-right-radius: 7px;

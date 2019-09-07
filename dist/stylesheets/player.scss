@@ -12,16 +12,16 @@
     height: 100%;
     margin: 7.5vh 0px 0px 1vw;
     &-1{
-      background-position-x: -6px;
-      background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-top-left-radius: 7px;
       border-top-right-radius: 7px;
     }
     &-2{
-      background-position-x: -6px; //-84 - -6 = -78
-      background-position-y: -8px; //-122 - -8 = -114
+      // background-position-x: -6px;
+      // background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
     }
   }
   &-chip{
@@ -78,15 +78,11 @@
     height: 100%;
     margin: 7.5vh 0px 0px 5vw;
     &-1{
-      background-position-x: -6px;
-      background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-top-left-radius: 7px;
       border-top-right-radius: 7px;
     }
     &-2{
-      background-position-x: -6px;
-      background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-top-left-radius: 7px;
       border-top-right-radius: 7px;
