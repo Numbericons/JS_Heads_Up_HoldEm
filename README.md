@@ -10,9 +10,9 @@
  4. JavaScript
  5. Poker Solver
 
-JS_Heads_Up_Holdem is a JavaScript project designed and built by me alone in one week. The site provides the user with the experience of battling wits against an artifical intelligence embodiment of the legendary Teddy KGB as Mike McDermott from the movie Rounders.
+JS_Heads_Up_Holdem (JavaScript Hold'em Poker) is a JavaScript project designed and built by me in one week. The site provides the user with the experience of battling wits against an AI embodiment of the legendary Teddy KGB as Mike McDermott from the movie Rounders.
 
-The deck was built from a sprite sheet. When the deck is populated with cards, the relative position on intended card is specified by coordinates.
+The deck of cards was built from a sprite sheet. When the deck is populated, the relative position on intended card is specified by coordinates.
 
 ``` javsacript
   newDeck(){
@@ -30,11 +30,11 @@ The deck was built from a sprite sheet. When the deck is populated with cards, t
   }
 ```
 
-This project utilized the poker solver library to determine relative hand strength and for the computer to determine their actions.
+The shuffle method referenced above utilizes the Fisher-Yates array shuffling method to ensure an even distribution. The poker solver library is incorporated to determine relative hand strength and for the computer to determine their actions.
 
-JS Heads Up HoldEm was created primarily in simple HTMl SCSS and the JavaScript jQuery library for an added challenge and to drill the fundamentals. jQuery is utilized to select and add style and other attributes to elements.
+JS Heads Up HoldEm was created primarily in simple HTMl SCSS and the JavaScript jQuery library for an added challenge and to drill the fundamentals of these technologies. jQuery is utilized to select and add style and other attributes to elements.
 
-The computer player uses pot odds (the amount wagered compared to the entire amount of the pot) combined with JavaScripts Math.random function to the appropriate actions.
+The computer player uses pot odds (the amount wagered compared to the entire amount of the pot) combined with JavaScripts Math.random function to the simulate player actions.
 
 ``` javascript
   promptResponse(to_call, stack, pot){
