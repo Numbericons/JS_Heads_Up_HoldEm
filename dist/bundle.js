@@ -13745,7 +13745,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "5vw", "14.5vh", true); // this.boardCards[pos].render(card, "17.5%", "53%", true)
+      this.boardCards[pos].render(card, "72px", "106px", true);
     }
   }, {
     key: "showBoard",
@@ -14590,7 +14590,7 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "100%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "106px"];
 
     _classCallCheck(this, Table);
 

@@ -4,11 +4,12 @@
   transform: translateY(-8vh);
   height: 40.5%;
   width: 17%;
-  margin: -40px -10px 0px -20px;
+  // margin: -40px -10px 0px -20px;
+  margin: -5vh -2vw 0vh 0vw;
   &-cards{
     display: flex;
     justify-content: space-around;
-    width: 11vw;
+    width: 197px;
     height: 100%;
     margin: 7.5vh 0px 0px 1vw;
     &-1{
@@ -17,8 +18,6 @@
       border-top-right-radius: 7px;
     }
     &-2{
-      // background-position-x: -6px;
-      // background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
       border-top-left-radius: 7px;
       border-top-right-radius: 7px;
@@ -31,7 +30,7 @@
     padding: 0 25px;
     height: 50px;
     font-size: 16px;
-    line-height: 50px;
+    line-height: 7vh;
     border-radius: 25px;
     background-color: #494747;
     color: white;
@@ -70,11 +69,12 @@
   transform: translateY(-8vh);
   height: 40.5%;
   width: 17%;
-  margin: -40px 0px 0px -20px;
+  // margin: -40px 0px 0px -20px;
+  margin: -5vh 0vw 0vh -3vw;
   &-cards{
     display: flex;
     justify-content: space-around;
-    width: 11vw;
+    width: 197px;
     height: 100%;
     margin: 7.5vh 0px 0px 5vw;
     &-1{
@@ -95,11 +95,12 @@
     padding: 0 25px;
     height: 50px;
     font-size: 16px;
-    line-height: 50px;
+    line-height: 7vh;
     border-radius: 25px;
     background-color: #494747;
     color: white;
-    margin-left: 20px;
+    margin-left: 1.9vw;
+    // margin-left: 20px;
     &-text {
       display: flex;
       flex-direction: column;

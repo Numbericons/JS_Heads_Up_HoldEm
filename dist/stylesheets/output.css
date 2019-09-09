@@ -221,12 +221,12 @@ body {
   transform: translateY(-8vh);
   height: 40.5%;
   width: 17%;
-  margin: -40px -10px 0px -20px;
+  margin: -5vh -2vw 0vh 0vw;
 }
 .player-info-left-cards {
   display: flex;
   justify-content: space-around;
-  width: 11vw;
+  width: 197px;
   height: 100%;
   margin: 7.5vh 0px 0px 1vw;
 }
@@ -247,7 +247,7 @@ body {
   padding: 0 25px;
   height: 50px;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 7vh;
   border-radius: 25px;
   background-color: #494747;
   color: white;
@@ -285,12 +285,12 @@ body {
   transform: translateY(-8vh);
   height: 40.5%;
   width: 17%;
-  margin: -40px 0px 0px -20px;
+  margin: -5vh 0vw 0vh -3vw;
 }
 .player-info-right-cards {
   display: flex;
   justify-content: space-around;
-  width: 11vw;
+  width: 197px;
   height: 100%;
   margin: 7.5vh 0px 0px 5vw;
 }
@@ -311,11 +311,11 @@ body {
   padding: 0 25px;
   height: 50px;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 7vh;
   border-radius: 25px;
   background-color: #494747;
   color: white;
-  margin-left: 20px;
+  margin-left: 1.9vw;
 }
 .player-info-right-chip-text {
   display: flex;
