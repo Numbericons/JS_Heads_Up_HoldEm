@@ -1,7 +1,7 @@
 ### Heads Up No Limit Hold'em! Play 1v1 hands against the computer until one player has all the monies!
 
 [Live Link](https://acesandeights.firebaseapp.com//)
-![Screen Shot 2019-08-26 at 12 02 05 PM](https://user-images.githubusercontent.com/16912968/63716023-e4bebb80-c7f9-11e9-8be3-afd72c9e597a.png)
+![Screen Shot 2019-09-09 at 11 10 06 AM](https://user-images.githubusercontent.com/16912968/64555608-8c57e580-d2f2-11e9-9d78-79751099d82c.png)
 
 ### Technologies and Libraries:
  1. jQuery
