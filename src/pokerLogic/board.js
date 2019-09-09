@@ -196,14 +196,6 @@ export default class Board {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // startCard(){
-  //   if (this.currStreet === 'flop') {
-  //     return 0;
-  //   } else {
-  //     return this.boardCards.length - 1;
-  //   }
-  // }
-
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
     this.boardCards[pos].render(card, "72px", "106px", true)
@@ -341,16 +333,23 @@ export default class Board {
     return betRaise;
   }
 
+  maxBet(bet){
+    let stack = this.currentPlayer().chipstack;
+    
+    return (bet > stack - this.handChipDiff()) ? stack : bet;
+  }
+
   potRelativeBet(playerAction){
     switch(playerAction) {
       case "1/2 Pot":
+        return this.maxBet(Math.floor(this.pot / 2))
         return Math.floor(this.pot / 2);
       case "2/3 Pot":
-        return Math.floor(this.pot * 2 / 3);
+        return this.maxBet(Math.floor(this.pot * 2 / 3));
       case "Pot":
-        return Math.floor(this.pot);
+        return this.maxBet(Math.floor(this.pot));
       case "All In":
-        return Math.floor(this.currentPlayer().chipstack);
+        return this.maxBet(Math.floor(this.currentPlayer().chipstack));
     }
   }
 
