@@ -35,7 +35,6 @@ export default class ComputerPlayer {
   }
 
   genBetRaise(to_call, pot, sb){
-    if (to_call >= this.chipstack) debugger;
     let randNum = Math.random() * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {

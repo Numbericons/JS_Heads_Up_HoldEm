@@ -13,7 +13,7 @@ export default class Card {
     element.style.width = width; //40%    .1143  .57 * 140 px   80%
     element.style.height = height; //80%  .16
     if (!player) element.style.borderRadius = "7px";
-    element.style.marginLeft = "10px";
+    element.style.marginLeft = "5px";
     element.style.backgroundSize = "";
   }
   
@@ -23,7 +23,7 @@ export default class Card {
     element.style.width = width; 
     element.style.height = height;
     if (!player) element.style.borderRadius = "7px";
-    element.style.marginLeft = "10px";
+    element.style.marginLeft = "5px";
     element.style.backgroundSize = "75px 112px";
   }
 

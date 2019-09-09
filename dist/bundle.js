@@ -13116,7 +13116,6 @@ function () {
   }, {
     key: "genBetRaise",
     value: function genBetRaise(to_call, pot, sb) {
-      if (to_call >= this.chipstack) debugger;
       var randNum = Math.random() * 2 * pot;
       var betRaise;
 
@@ -13743,7 +13742,7 @@ function () {
   }, {
     key: "showBoard",
     value: function showBoard() {
-      if (this.boardCards.length === 0) return; // if (this.boardCards.length > 3) debugger;
+      if (this.boardCards.length === 0) return;
 
       for (var i = this.lastShownCard; i < this.boardCards.length; i++) {
         this.showBoardCard(i);
@@ -14271,7 +14270,7 @@ function () {
       element.style.height = height; //80%  .16
 
       if (!player) element.style.borderRadius = "7px";
-      element.style.marginLeft = "10px";
+      element.style.marginLeft = "5px";
       element.style.backgroundSize = "";
     }
   }, {
@@ -14282,7 +14281,7 @@ function () {
       element.style.width = width;
       element.style.height = height;
       if (!player) element.style.borderRadius = "7px";
-      element.style.marginLeft = "10px";
+      element.style.marginLeft = "5px";
       element.style.backgroundSize = "75px 112px";
     }
   }, {
@@ -14595,7 +14594,7 @@ function () {
     _classCallCheck(this, Table);
 
     // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims), new HumanPlayer("bb", initialChipstack, cardDims)];
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack * 2, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');

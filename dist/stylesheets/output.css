@@ -127,7 +127,7 @@ body {
   justify-content: space-between;
   height: 20%;
   width: 100%;
-  transform: translateY(-17vh);
+  transform: translateY(-13vh);
   align-items: center;
 }
 .table-felt-dealer-btn-img-left {
@@ -225,9 +225,10 @@ body {
 }
 .player-info-left-cards {
   display: flex;
+  align-items: flex-end;
   width: 197px;
   height: 100%;
-  margin: 7.5vh 0px 0px 0.65vw;
+  margin: 7.5vh 0px 0px 1.5vw;
 }
 .player-info-left-cards-1 {
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
@@ -252,6 +253,7 @@ body {
   border-radius: 25px;
   background-color: #494747;
   color: white;
+  z-index: 2;
 }
 .player-info-left-chip-text {
   display: flex;
@@ -293,6 +295,7 @@ body {
   width: 197px;
   height: 100%;
   margin: 7.5vh 0px 0px 5.25vw;
+  align-items: flex-end;
 }
 .player-info-right-cards-1 {
   border-top-left-radius: 7px;
@@ -316,6 +319,7 @@ body {
   background-color: #494747;
   color: white;
   margin-left: 1.9vw;
+  z-index: 2;
 }
 .player-info-right-chip-text {
   display: flex;
@@ -345,13 +349,13 @@ body {
 #player-info-left-chip-line {
   border-bottom: 1px solid white;
   width: 170%;
-  transform: translateY(14px);
+  transform: translateY(2.2vh);
 }
 
 #player-info-right-chip-line {
   border-bottom: 1px solid white;
   width: 100%;
-  transform: translateY(14px);
+  transform: translateY(2.2vh);
 }
 
 .top {

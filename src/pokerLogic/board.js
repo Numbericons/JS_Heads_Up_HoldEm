@@ -203,7 +203,6 @@ export default class Board {
 
   showBoard() {
     if (this.boardCards.length === 0) return;
-    // if (this.boardCards.length > 3) debugger;
     for (let i = this.lastShownCard; i < this.boardCards.length; i++) {
       this.showBoardCard(i);
       this.lastShownCard+=1
@@ -335,7 +334,7 @@ export default class Board {
 
   maxBet(bet){
     let stack = this.currentPlayer().chipstack;
-    
+
     return (bet > stack - this.handChipDiff()) ? stack : bet;
   }
 
