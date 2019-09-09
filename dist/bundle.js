@@ -13745,7 +13745,7 @@ function () {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "53%", true);
+      this.boardCards[pos].render(card, "5vw", "14.5vh", true); // this.boardCards[pos].render(card, "17.5%", "53%", true)
     }
   }, {
     key: "showBoard",
