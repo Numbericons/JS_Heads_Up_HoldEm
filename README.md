@@ -67,6 +67,8 @@ The computer player uses pot odds (the amount wagered compared to the entire amo
 * Dynamic playing cards
 * Card and chip sounds
 
-### Features to be Implemented:
- 1. Chipstack visual representations
- 2. Further AI improvements
+### Attributions:
+ 1. https://github.com/goldfire/pokersolver
+    * Calculates hand strength
+ 2. https://github.com/unRARed/stack-builder
+    * Used stack builders chip images to build my chip stacking logic and display
