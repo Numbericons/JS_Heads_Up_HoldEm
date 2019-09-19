@@ -1,4 +1,3 @@
-// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 export default class Card {
   constructor(rank, suit, img_pos_x, img_pos_y, revealed) {
     this.suit = suit;
@@ -10,8 +9,8 @@ export default class Card {
   display(element, width, height, player){
     element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
     element.style.backgroundPosition = `${this.img_pos_x}px ${this.img_pos_y}px`;
-    element.style.width = width; //40%    .1143  .57 * 140 px   80%
-    element.style.height = height; //80%  .16
+    element.style.width = width;
+    element.style.height = height;
     if (!player) element.style.borderRadius = "7px";
     element.style.marginLeft = "5px";
     element.style.backgroundSize = "";
@@ -54,6 +53,5 @@ export default class Card {
   }
   show() {
     return `${this.rank}${this.showSuit()}`
-    // return `${this.rank}${this.suit}`
   }
 }

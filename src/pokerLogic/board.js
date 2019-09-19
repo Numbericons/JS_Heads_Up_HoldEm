@@ -321,7 +321,6 @@ export default class Board {
   }
 
   isCompBet(compBetRaise){
-    // < ( I ) > \\
     let betRaise;
     if (compBetRaise) {
       if (compBetRaise < this.bb) compBetRaise = this.bb;
@@ -385,10 +384,9 @@ export default class Board {
     let handChipsEqual = this.handChipDiff() === 0;
     let multipleActions = this.streetActions.length > 1;
     if (this.players[0].folded || this.players[1].folded) {
-    // if (this.streetActions[this.streetActions - 1] === 'fold') {
       this.determineWinner();
     } else if (handChipsEqual) {
-      if (this.allIn() && this.handChipDiff() === 0) {   // remove as render handles logic
+      if (this.allIn() && this.handChipDiff() === 0) {
         this.showDown();
         this.determineWinner();
       } else if (this.currStreet === 'river' && multipleActions) {
