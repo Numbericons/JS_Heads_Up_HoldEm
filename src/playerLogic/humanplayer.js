@@ -24,7 +24,6 @@ export default class HumanPlayer {
 
   promptAction(to_call){
     if (to_call === 0) {
-      // this.promptText(`Enter 'check', 'fold', or 'bet'`)
       this.promptText("")
     } else {
       this.promptText(`$${to_call} to call`)
