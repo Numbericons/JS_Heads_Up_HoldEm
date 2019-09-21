@@ -24,7 +24,6 @@ export default class HumanPlayer {
 
   promptAction(to_call){
     if (to_call === 0) {
-      // this.promptText(`Enter 'check', 'fold', or 'bet'`)
       this.promptText("")
     } else {
       this.promptText(`$${to_call} to call`)
@@ -67,8 +66,8 @@ export default class HumanPlayer {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
-      this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
-      this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+      this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+      this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
     }
   }
 

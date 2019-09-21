@@ -53,8 +53,7 @@ table {
 }
 
 .holdem-container {
-  height: 1200px;
-  width: 1450px;
+  width: 100vw;
   background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
 }
 
@@ -75,25 +74,25 @@ body {
 }
 
 .table {
-  height: 70%;
+  height: 87vh;
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 .table-row {
-  height: 100%;
   width: 100%;
   display: flex;
+  align-items: center;
   justify-content: space-around;
 }
 .table-trim {
-  height: 55%;
-  width: 55%;
+  height: 62vh;
+  width: 55vw;
   position: relative;
   display: flex;
   justify-content: center;
-  background-color: #5f4f35;
-  border-radius: 150px;
+  background-color: #54462f;
+  border-radius: 26vh;
   z-index: 1;
 }
 .table-felt {
@@ -101,11 +100,9 @@ body {
   width: 90%;
   position: relative;
   align-self: center;
-  background-color: green;
-  border-radius: 150px;
-  z-index: 3;
+  background-color: #2b7a35;
+  border-radius: 240px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
   flex-direction: column;
 }
@@ -113,38 +110,30 @@ body {
   width: 400px;
   height: 222px;
   display: flex;
-  margin-top: 80px;
+  margin-top: 5vh;
 }
 .table-felt-board-bet-player-1 {
-  font-family: "Oldenburg", cursive;
-  font-weight: 900;
+  font-family: "Lora", cursive;
   align-self: center;
-  margin-right: 20px;
   padding: 10px;
-  font-weight: 700;
 }
 .table-felt-board-bet-player-2 {
-  font-family: "Oldenburg", cursive;
-  font-weight: 900;
-  margin-right: 105px;
+  font-family: "Lora", cursive;
   align-self: center;
   padding: 15px;
-  font-weight: 700;
 }
 .table-felt-dealer-btn {
   display: flex;
   justify-content: space-between;
   height: 20%;
   width: 100%;
-  transform: translateY(-110px);
+  transform: translateY(-13vh);
   align-items: center;
 }
 .table-felt-dealer-btn-img-left {
   width: 2vw;
   display: flex;
-  justify-content: flex-end;
   align-items: baseline;
-  margin-left: 45px;
 }
 .table-felt-dealer-btn-img-left-board {
   width: 2vw;
@@ -170,8 +159,8 @@ body {
 .table-bottom {
   display: flex;
   justify-content: space-between;
-  width: 90%;
-  transform: translateY(-260px);
+  align-items: center;
+  width: 100%;
 }
 .table-bottom-actions {
   height: 120px;
@@ -180,29 +169,46 @@ body {
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
-  margin-right: 200px;
 }
 .table-bottom-actions-prompt {
   height: 27px;
   font-size: 25px;
-  transform: translate(-20px, -270px);
-  font-family: "Oldenburg", cursive;
+  transform: translateY(3vh);
+  font-family: "Lora";
   margin-top: -10px;
 }
 .table-bottom-text {
-  transform: translateX(-40px);
+  transform: translate(3vw, -5vh);
 }
 .table-bottom-text-header {
   font-size: 20px;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   margin-bottom: 5px;
 }
 .table-bottom-text-chat {
-  height: 100px;
-  width: 200px;
+  height: 16vh;
+  width: 16vw;
   outline: 1px solid black;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   font-size: 14px;
+}
+.table-bottom-about {
+  width: 18vw;
+  margin-right: 1.5vw;
+  align-self: flex-end;
+  transform: translateY(-3vh);
+}
+.table-bottom-about-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  font-family: "Lora";
+}
+.table-bottom-about-links-icons {
+  width: 2vw;
+}
+.table-bottom-about-links-name {
+  transform: translateY(-0.5vh);
 }
 
 .display-none {
@@ -212,29 +218,29 @@ body {
 .player-info-left {
   display: flex;
   flex-direction: column;
-  transform: translateY(90px);
-  height: 26.5%;
+  transform: translateY(-8vh);
+  height: 40.5%;
   width: 17%;
-  margin: -40px -10px 0px -20px;
+  margin: -5vh -2vw 0vh 0vw;
 }
 .player-info-left-cards {
   display: flex;
-  justify-content: space-around;
-  width: 160px;
+  align-items: flex-end;
+  width: 197px;
   height: 100%;
-  margin: 20px 0px 0px 10px;
+  margin: 7.5vh 0px 0px 1.5vw;
 }
 .player-info-left-cards-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  transform: translateY(7px);
 }
 .player-info-left-cards-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
   background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  transform: translateY(7px);
 }
 .player-info-left-chip {
   display: flex;
@@ -243,10 +249,11 @@ body {
   padding: 0 25px;
   height: 50px;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 7vh;
   border-radius: 25px;
   background-color: #494747;
   color: white;
+  z-index: 2;
 }
 .player-info-left-chip-text {
   display: flex;
@@ -256,13 +263,14 @@ body {
   margin-right: 30px;
 }
 .player-info-left-chip-text-name {
-  font-size: 15px;
+  font-size: 18px;
   height: 20px;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
+  font-size: 17px;
 }
 .player-info-left-chip-text-chips {
-  font-size: 15px;
-  font-family: "Oldenburg", cursive;
+  font-size: 16px;
+  font-family: "Lora";
 }
 .player-info-left-chip-img {
   float: left;
@@ -277,29 +285,27 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: end;
-  transform: translateY(90px);
-  height: 26.5%;
+  transform: translateY(-8vh);
+  height: 40.5%;
   width: 17%;
-  margin: -40px 0px 0px -20px;
+  margin: -5vh 0vw 0vh -3vw;
 }
 .player-info-right-cards {
   display: flex;
-  justify-content: space-around;
-  width: 160px;
+  width: 197px;
   height: 100%;
-  margin: 20px 0px 0px 65px;
+  margin: 7.5vh 0px 0px 5.25vw;
+  align-items: flex-end;
 }
 .player-info-right-cards-1 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  transform: translateY(7px);
 }
 .player-info-right-cards-2 {
-  background-position-x: -6px;
-  background-position-y: -8px;
-  background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-  border-radius: 7px;
+  border-top-left-radius: 7px;
+  border-top-right-radius: 7px;
+  transform: translateY(7px);
 }
 .player-info-right-chip {
   display: flex;
@@ -308,11 +314,12 @@ body {
   padding: 0 25px;
   height: 50px;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 7vh;
   border-radius: 25px;
   background-color: #494747;
   color: white;
-  margin-left: 20px;
+  margin-left: 1.9vw;
+  z-index: 2;
 }
 .player-info-right-chip-text {
   display: flex;
@@ -322,13 +329,13 @@ body {
   width: 240px;
 }
 .player-info-right-chip-text-name {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 17px;
   height: 20px;
 }
 .player-info-right-chip-text-chips {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 16px;
 }
 .player-info-right-chip-img {
   float: left;
@@ -342,17 +349,17 @@ body {
 #player-info-left-chip-line {
   border-bottom: 1px solid white;
   width: 170%;
-  transform: translateY(14px);
+  transform: translateY(2.2vh);
 }
 
 #player-info-right-chip-line {
   border-bottom: 1px solid white;
   width: 100%;
-  transform: translateY(14px);
+  transform: translateY(2.2vh);
 }
 
 .top {
-  height: 110px;
+  height: 17vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -361,7 +368,7 @@ body {
   margin: 0px 150px 0px 20px;
   display: flex;
   align-items: center;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
 }
 .top-left-help-image {
   width: 50px;
@@ -370,33 +377,39 @@ body {
   margin-left: 15px;
 }
 .top-left-current-pot-text {
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   font-weight: 700;
-  transform: translate(0px, 20px);
-  border-radius: 15px;
+  transform: translate(0px, 2vh);
+  font-size: 18px;
 }
 .top-header {
   font-weight: bolder;
   font-size: 40px;
   font-family: "Rye", cursive;
-  color: darkred;
+  color: #5e1717;
+  transform: translateX(3.5vw);
 }
 .top-about {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-right: 40px;
+  width: 18vw;
+  margin-right: 1.5vw;
 }
 .top-about-author {
   font-size: 16px;
   color: black;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
   margin: 20px;
 }
 .top-about-links {
   display: flex;
+  align-items: center;
   justify-content: space-around;
-  font-family: "Oldenburg", cursive;
+  font-family: "Lora";
+}
+.top-about-links-icons {
+  width: 2vw;
+}
+.top-about-links-name {
+  transform: translateY(-0.5vh);
 }
 
 .actions-cont {
@@ -411,9 +424,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  background-color: #222121;
   color: white;
-  border-color: black;
+  border-color: #222121;
   font-family: "Cabin", sans-serif;
   border-radius: 50px;
   font-size: 16px;
@@ -437,9 +450,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
+  background-color: #222121;
   color: white;
-  border-color: black;
+  border-color: #222121;
   font-family: "Cabin", sans-serif;
   border-radius: 50px;
   font-size: 16px;
@@ -459,8 +472,8 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: black;
-  border-color: black;
+  background-color: #222121;
+  border-color: #222121;
   color: white;
   font-family: "Cabin", sans-serif;
   border-radius: 40px;
@@ -483,8 +496,8 @@ body {
   margin-right: 2px;
 }
 .chips-text {
-  font-family: "Oldenburg", cursive;
-  font-size: 15px;
+  font-family: "Lora";
+  font-size: 18px;
 }
 
 /*# sourceMappingURL=output.css.map */

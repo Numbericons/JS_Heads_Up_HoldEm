@@ -1,27 +1,27 @@
 .player-info-left{
   display: flex;
   flex-direction: column;
-  transform: translateY(90px);
-  height: 26.5%;
+  transform: translateY(-8vh);
+  height: 40.5%;
   width: 17%;
-  margin: -40px -10px 0px -20px;
+  margin: -5vh -2vw 0vh 0vw;
   &-cards{
     display: flex;
-    justify-content: space-around;
-    width: 160px;
+    align-items: flex-end;
+    width: 197px;
     height: 100%;
-    margin: 20px 0px 0px 10px;
+    margin: 7.5vh 0px 0px 1.5vw;
     &-1{
-      background-position-x: -6px;
-      background-position-y: -8px;
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-radius: 7px;
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+      transform: translateY(7px);
     }
     &-2{
-      background-position-x: -6px; //-84 - -6 = -78
-      background-position-y: -8px; //-122 - -8 = -114
       background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-radius: 7px;
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+      transform: translateY(7px);
     }
   }
   &-chip{
@@ -31,10 +31,11 @@
     padding: 0 25px;
     height: 50px;
     font-size: 16px;
-    line-height: 50px;
+    line-height: 7vh;
     border-radius: 25px;
     background-color: #494747;
     color: white;
+    z-index: 2;
     &-text {
       display: flex;
       flex-direction: column;
@@ -42,13 +43,14 @@
       align-items: center;
       margin-right: 30px;
       &-name{
-        font-size: 15px;
+        font-size: 18px;
         height: 20px;
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora';
+        font-size: 17px;
       }
       &-chips{
-        font-size: 15px;
-        font-family: 'Oldenburg', cursive;
+        font-size: 16px;
+        font-family: 'Lora';
       }
     }
     &-img{
@@ -66,27 +68,25 @@
   display: flex;
   flex-direction: column;
   justify-content: end;
-  transform: translateY(90px);
-  height: 26.5%;
+  transform: translateY(-8vh);
+  height: 40.5%;
   width: 17%;
-  margin: -40px 0px 0px -20px;
+  margin: -5vh 0vw 0vh -3vw;
   &-cards{
     display: flex;
-    justify-content: space-around;
-    width: 160px;
+    width: 197px;
     height: 100%;
-    margin: 20px 0px 0px 65px;
+    margin: 7.5vh 0px 0px 5.25vw;
+    align-items: flex-end;
     &-1{
-      background-position-x: -6px;
-      background-position-y: -8px;
-      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-radius: 7px;
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+      transform: translateY(7px);
     }
     &-2{
-      background-position-x: -6px; //-84 - -6 = -78
-      background-position-y: -8px; //-122 - -8 = -114
-      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-radius: 7px;
+      border-top-left-radius: 7px;
+      border-top-right-radius: 7px;
+      transform: translateY(7px);
     }
   }
   &-chip{
@@ -96,11 +96,12 @@
     padding: 0 25px;
     height: 50px;
     font-size: 16px;
-    line-height: 50px;
+    line-height: 7vh;
     border-radius: 25px;
     background-color: #494747;
     color: white;
-    margin-left: 20px;
+    margin-left: 1.9vw;
+    z-index: 2;
     &-text {
       display: flex;
       flex-direction: column;
@@ -108,13 +109,13 @@
       align-items: center;
       width: 240px;
       &-name{
-        font-family: 'Oldenburg', cursive;
-        font-size: 15px;
+        font-family: 'Lora';
+        font-size: 17px;
         height: 20px;
       }
       &-chips{
-        font-family: 'Oldenburg', cursive;
-        font-size: 15px;
+        font-family: 'Lora';
+        font-size: 16px;
       }
     }
     &-img{
@@ -130,10 +131,10 @@
 #player-info-left-chip-line{
    border-bottom: 1px solid white;
     width: 170%;
-    transform: translateY(14px);
+    transform: translateY(2.2vh);
 }
 #player-info-right-chip-line{
    border-bottom: 1px solid white;
     width: 100%;
-    transform: translateY(14px);
+    transform: translateY(2.2vh);
 }

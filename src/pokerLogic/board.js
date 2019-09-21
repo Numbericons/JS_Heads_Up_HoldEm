@@ -19,6 +19,7 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.handFinish = false;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -43,6 +44,7 @@ export default class Board {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.handFinish = false;
   }
 
   showDealerBtnHelp(showDir,hideDir){
@@ -69,6 +71,7 @@ export default class Board {
   }
 
   determineWinner() {
+    this.handFinish = true;
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
     this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard()}, ` : `Preflop, `
@@ -193,22 +196,13 @@ export default class Board {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  // startCard(){
-  //   if (this.currStreet === 'flop') {
-  //     return 0;
-  //   } else {
-  //     return this.boardCards.length - 1;
-  //   }
-  // }
-
   showBoardCard(pos){
     let card = document.querySelector(`.table-felt-board-card-${pos+1}`);
-    this.boardCards[pos].render(card, "17.5%", "69%", true)
+    this.boardCards[pos].render(card, "72px", "106px", true)
   }
 
   showBoard() {
     if (this.boardCards.length === 0) return;
-    // if (this.boardCards.length > 3) debugger;
     for (let i = this.lastShownCard; i < this.boardCards.length; i++) {
       this.showBoardCard(i);
       this.lastShownCard+=1
@@ -253,15 +247,19 @@ export default class Board {
     }
   }
 
+  checkFirstPreflop(){
+    if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+      return this.sb;
+    }
+  }
   async promptPlayer() {
     this.button.$el.empty();
     this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 2500 : 1200;
+    let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 3000 : 2000;
     await this.sleep(wait);
-    let response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
-    if (response) {
-      this.resolvePlayerPrompt(response);
-    }
+    let firstPreflop = this.checkFirstPreflop();
+    let response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
+    if (response) this.resolvePlayerPrompt(response);
   }
 
   renderPlayers(){
@@ -305,7 +303,7 @@ export default class Board {
     return totalBet;
   }
 
-  calcCompBetRaise(compBetRaise, isSb) {
+  calcCompBetRaise(compBetRaise) {
     let sb = this.isSb();
     let totalBet;
     if (compBetRaise > this.currentPlayer().chipstack) {
@@ -333,11 +331,33 @@ export default class Board {
     return betRaise;
   }
 
+  maxBet(bet){
+    let stack = this.currentPlayer().chipstack;
+
+    return (bet > stack - this.handChipDiff()) ? stack : bet;
+  }
+
+  potRelativeBet(playerAction){
+    switch(playerAction) {
+      case "1/2 Pot":
+        return this.maxBet(Math.floor(this.pot / 2))
+        return Math.floor(this.pot / 2);
+      case "2/3 Pot":
+        return this.maxBet(Math.floor(this.pot * 2 / 3));
+      case "Pot":
+        return this.maxBet(Math.floor(this.pot));
+      case "All In":
+        return this.maxBet(Math.floor(this.currentPlayer().chipstack));
+    }
+  }
+
   resolveAction(betRaise, playerAction){
-    let resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
-    if (resolvedPlayerAction) {
-      this.pot += resolvedPlayerAction;
-      return resolvedPlayerAction;
+    let sb = this.isSb();
+    if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.potRelativeBet(playerAction) + sb;
+    let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
+    if (resolvedAction) {
+      this.pot += resolvedAction;
+      return resolvedAction;
     }
   }
 
@@ -357,16 +377,16 @@ export default class Board {
     this.currBet = this.handChipDiff();
     this.toggleCurrPlayer();
     this.render();
-    if (!this.allIn() && this.handChipDiff() === 0)  this.nextAction();
+    if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
   }
 
   nextAction() {
     let handChipsEqual = this.handChipDiff() === 0;
     let multipleActions = this.streetActions.length > 1;
-    if (this.streetActions[this.streetActions - 1] === 'fold') {
+    if (this.players[0].folded || this.players[1].folded) {
       this.determineWinner();
     } else if (handChipsEqual) {
-      if (this.allIn() && this.handChipDiff() === 0) {   // remove as render handles logic
+      if (this.allIn() && this.handChipDiff() === 0) {
         this.showDown();
         this.determineWinner();
       } else if (this.currStreet === 'river' && multipleActions) {

@@ -1,6 +1,6 @@
 
  .top{
-  height: 110px;
+  height: 17vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -9,7 +9,7 @@
       margin: 0px 150px 0px 20px;
       display: flex;
       align-items: center;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       &-image{
         width: 50px;
       }
@@ -17,10 +17,10 @@
     &-current-pot{
       margin-left:15px;
       &-text{
-        font-family: 'Oldenburg', cursive;
+        font-family: 'Lora';
         font-weight: 700;
-        transform: translate(0px, 20px);
-        border-radius: 15px;
+        transform: translate(0px, 2vh);
+        font-size: 18px;
       }
     }
   }
@@ -28,24 +28,32 @@
     font-weight: bolder;
     font-size: 40px;
     font-family: 'Rye', cursive;
-    color: darkred;
+    // color: #88330f;
+    // color: #543d2f;
+    color: #5e1717;
+    transform: translateX(3.5vw);
   }
   &-about{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    margin-right: 40px;
+    width: 18vw;
+    margin-right: 1.5vw;
     &-author{
       font-size:16px;
       color: black;
       // font-family: 'Rye', cursive;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
       margin: 20px;
     }
     &-links{
       display: flex;
+      align-items: center;
       justify-content: space-around;
-      font-family: 'Oldenburg', cursive;
+      font-family: 'Lora';
+      &-icons{
+        width: 2vw;
+      }
+      &-name{
+        transform: translateY(-.5vh);
+      }
     }
   }
 }

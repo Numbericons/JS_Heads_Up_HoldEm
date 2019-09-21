@@ -13047,27 +13047,8 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.setup(); // table.playHand();
-}); // $(() => {
-//   const rootEl = $('.ttt');
-//   const game = new Game();
-//   new View(game, rootEl);
-// });
-// import React from "react";
-// import ReactDom from "react-dom";
-// import App from "../dist/App"
-// const Root = () => {
-//   return (
-//     // <App />
-//   )
-// }
-// ReactDOM.render(element, document.getElementById('root'));
-// ReactDOM.render(<h1>Hello Poker world!</h1>, document.getElementById("root"));
-// document.addEventListener("DOMContentLoaded", () => {
-//   const game = new HoldEm;
-//   game.newGame();
-//   console.log("Game Over!");
-// })
+  table.setup();
+});
 
 /***/ }),
 
@@ -13128,30 +13109,32 @@ function () {
     key: "promptAction",
     value: function promptAction() {}
   }, {
-    key: "maxBetRaise",
-    value: function maxBetRaise(num, stack, to_call) {
-      return num + to_call > stack ? ['betRaise', stack] : ['betRaise', num];
+    key: "maxBet",
+    value: function maxBet(num, to_call) {
+      return num + to_call > this.chipstack ? ['betRaise', this.chipstack] : ['betRaise', num];
     }
   }, {
     key: "genBetRaise",
-    value: function genBetRaise(to_call, stack, pot) {
-      var randNum = Math.random() * 2 * pot; //pot 1000  to_call 500  stack = 5000
-
+    value: function genBetRaise(to_call, pot, sb) {
+      var randNum = Math.random() * 2 * pot;
       var betRaise;
 
       if (randNum < to_call * 2) {
-        return this.maxBetRaise(to_call * 2, stack, to_call); // return this.maxBetRaise(pot * .5, stack);
+        betRaise = to_call * 2;
+        if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
+        return this.maxBet(betRaise, to_call);
       } else if (randNum > 1.6 * pot) {
-        betRaise = pot * Math.random() + pot;
-        return this.maxBetRaise(betRaise, stack, to_call);
+        if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
+        return this.maxBet(betRaise, to_call);
       } else {
         betRaise = randNum > pot ? pot : randNum;
-        return this.maxBetRaise(betRaise, stack, to_call);
+        if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
+        return this.maxBet(betRaise, to_call);
       }
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, stack, pot) {
+    value: function promptResponse(to_call, pot, sb) {
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13163,6 +13146,8 @@ function () {
         } else {
           return ['check'];
         }
+      } else if (this.chipstack === to_call) {
+        return ['call'];
       } else if (randNum < potOdds * 1.5) {
         if (to_call > 0) {
           return ['call'];
@@ -13170,8 +13155,36 @@ function () {
           return ['check'];
         }
       } else {
-        return this.genBetRaise(to_call, stack, pot);
+        return this.genBetRaise(to_call, pot, sb);
       }
+    }
+  }, {
+    key: "resolveCall",
+    value: function resolveCall(to_call) {
+      var callAmt = to_call > this.chipstack ? this.chipstack : to_call;
+      this.chipsCall.play();
+      this.chipstack -= callAmt;
+      this.chipsInPot += callAmt;
+      this.streetChipsInPot += callAmt;
+      return callAmt;
+    } // resolveBetRaise(betInput, sb){
+    //   let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
+    //   this.chipstack -= betAmt + sb;
+    //   this.chipsInPot += betAmt + sb;
+    //   this.streetChipsInPot += betAmt + sb;
+    //   this.chipsBet.play();
+    //   return betAmt + sb;
+    // }
+
+  }, {
+    key: "resolveBetRaise",
+    value: function resolveBetRaise(betInput, sb) {
+      var betAmt = betInput > this.chipstack ? this.chipstack : betInput;
+      this.chipstack -= betAmt;
+      this.chipsInPot += betAmt;
+      this.streetChipsInPot += betAmt;
+      this.chipsBet.play();
+      return betAmt;
     }
   }, {
     key: "resolve_action",
@@ -13185,17 +13198,9 @@ function () {
         this.folded = true;
         return null;
       } else if (textInput === 'call') {
-        this.chipsCall.play();
-        this.chipstack -= to_call;
-        this.chipsInPot += to_call;
-        this.streetChipsInPot += to_call;
-        return to_call;
+        return this.resolveCall(to_call);
       } else {
-        this.chipsBet.play();
-        this.chipstack -= betInput + sb;
-        this.chipsInPot += betInput + sb;
-        this.streetChipsInPot += betInput + sb;
-        return betInput + sb;
+        return this.resolveBetRaise(betInput, sb);
       }
     }
   }, {
@@ -13216,8 +13221,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
       }
     }
   }, {
@@ -13358,8 +13363,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
       }
     }
   }, {
@@ -13455,6 +13460,7 @@ function () {
     this.streetActions = [];
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
+    this.handFinish = false;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -13483,6 +13489,7 @@ function () {
       this.streetActions = [];
       this.currStreet = 'preflop';
       this.lastShownCard = 0;
+      this.handFinish = false;
     }
   }, {
     key: "showDealerBtnHelp",
@@ -13535,6 +13542,7 @@ function () {
   }, {
     key: "determineWinner",
     value: function determineWinner() {
+      this.handFinish = true;
       var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
       var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
       this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.textBoard(), ", ") : "Preflop, ";
@@ -13724,24 +13732,17 @@ function () {
       return new Promise(function (resolve) {
         return setTimeout(resolve, ms);
       });
-    } // startCard(){
-    //   if (this.currStreet === 'flop') {
-    //     return 0;
-    //   } else {
-    //     return this.boardCards.length - 1;
-    //   }
-    // }
-
+    }
   }, {
     key: "showBoardCard",
     value: function showBoardCard(pos) {
       var card = document.querySelector(".table-felt-board-card-".concat(pos + 1));
-      this.boardCards[pos].render(card, "17.5%", "69%", true);
+      this.boardCards[pos].render(card, "72px", "106px", true);
     }
   }, {
     key: "showBoard",
     value: function showBoard() {
-      if (this.boardCards.length === 0) return; // if (this.boardCards.length > 3) debugger;
+      if (this.boardCards.length === 0) return;
 
       for (var i = this.lastShownCard; i < this.boardCards.length; i++) {
         this.showBoardCard(i);
@@ -13793,30 +13794,35 @@ function () {
       }
     }
   }, {
+    key: "checkFirstPreflop",
+    value: function checkFirstPreflop() {
+      if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+        return this.sb;
+      }
+    }
+  }, {
     key: "promptPlayer",
     value: function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee4() {
-        var wait, response;
+        var wait, firstPreflop, response;
         return regeneratorRuntime.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
                 this.button.$el.empty();
                 this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 2500 : 1200;
+                wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 3000 : 2000;
                 _context4.next = 5;
                 return this.sleep(wait);
 
               case 5:
-                response = this.currentPlayer().promptResponse(this.currBet, this.currentPlayer().chipstack, this.pot);
+                firstPreflop = this.checkFirstPreflop();
+                response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
+                if (response) this.resolvePlayerPrompt(response);
 
-                if (response) {
-                  this.resolvePlayerPrompt(response);
-                }
-
-              case 7:
+              case 8:
               case "end":
                 return _context4.stop();
             }
@@ -13880,7 +13886,7 @@ function () {
     }
   }, {
     key: "calcCompBetRaise",
-    value: function calcCompBetRaise(compBetRaise, isSb) {
+    value: function calcCompBetRaise(compBetRaise) {
       var sb = this.isSb();
       var totalBet;
 
@@ -13902,6 +13908,7 @@ function () {
   }, {
     key: "isCompBet",
     value: function isCompBet(compBetRaise) {
+      // < ( I ) > \\
       var betRaise;
 
       if (compBetRaise) {
@@ -13914,13 +13921,39 @@ function () {
       return betRaise;
     }
   }, {
+    key: "maxBet",
+    value: function maxBet(bet) {
+      var stack = this.currentPlayer().chipstack;
+      return bet > stack - this.handChipDiff() ? stack : bet;
+    }
+  }, {
+    key: "potRelativeBet",
+    value: function potRelativeBet(playerAction) {
+      switch (playerAction) {
+        case "1/2 Pot":
+          return this.maxBet(Math.floor(this.pot / 2));
+          return Math.floor(this.pot / 2);
+
+        case "2/3 Pot":
+          return this.maxBet(Math.floor(this.pot * 2 / 3));
+
+        case "Pot":
+          return this.maxBet(Math.floor(this.pot));
+
+        case "All In":
+          return this.maxBet(Math.floor(this.currentPlayer().chipstack));
+      }
+    }
+  }, {
     key: "resolveAction",
     value: function resolveAction(betRaise, playerAction) {
-      var resolvedPlayerAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, this.isSb());
+      var sb = this.isSb();
+      if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.potRelativeBet(playerAction) + sb;
+      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
 
-      if (resolvedPlayerAction) {
-        this.pot += resolvedPlayerAction;
-        return resolvedPlayerAction;
+      if (resolvedAction) {
+        this.pot += resolvedAction;
+        return resolvedAction;
       }
     }
   }, {
@@ -13944,7 +13977,7 @@ function () {
       this.currBet = this.handChipDiff();
       this.toggleCurrPlayer();
       this.render();
-      if (!this.allIn() && this.handChipDiff() === 0) this.nextAction();
+      if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
     }
   }, {
     key: "nextAction",
@@ -13952,7 +13985,8 @@ function () {
       var handChipsEqual = this.handChipDiff() === 0;
       var multipleActions = this.streetActions.length > 1;
 
-      if (this.streetActions[this.streetActions - 1] === 'fold') {
+      if (this.players[0].folded || this.players[1].folded) {
+        // if (this.streetActions[this.streetActions - 1] === 'fold') {
         this.determineWinner();
       } else if (handChipsEqual) {
         if (this.allIn() && this.handChipDiff() === 0) {
@@ -14111,8 +14145,9 @@ function () {
     }
   }, {
     key: "betSizeButton",
-    value: function betSizeButton($betsizeDiv, size, allIn) {
+    value: function betSizeButton($betsizeDiv, size) {
       var $betDiv = $("<button>");
+      $betDiv.data("action", size);
       $betDiv.addClass("betsize-cont-text");
       $betDiv.html("".concat(size));
       $betsizeDiv.append($betDiv);
@@ -14121,7 +14156,7 @@ function () {
     key: "betSizeButtons",
     value: function betSizeButtons($betsizeDiv) {
       this.betSizeButton($betsizeDiv, "1/2 Pot");
-      this.betSizeButton($betsizeDiv, "3/4 Pot");
+      this.betSizeButton($betsizeDiv, "2/3 Pot");
       this.betSizeButton($betsizeDiv, "Pot");
       this.betSizeButton($betsizeDiv, "All In");
     }
@@ -14227,32 +14262,32 @@ function () {
 
   _createClass(Card, [{
     key: "display",
-    value: function display(element, width, height) {
+    value: function display(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
       element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
       element.style.width = width; //40%    .1143  .57 * 140 px   80%
 
       element.style.height = height; //80%  .16
 
-      element.style.borderRadius = "7px";
-      element.style.marginLeft = "10px";
+      if (!player) element.style.borderRadius = "7px";
+      element.style.marginLeft = "5px";
       element.style.backgroundSize = "";
     }
   }, {
     key: "hide",
-    value: function hide(element, width, height) {
+    value: function hide(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/cardback_red_acorn2.jpg")';
       element.style.backgroundPosition = ' -2px -4px';
       element.style.width = width;
       element.style.height = height;
-      element.style.borderRadius = "7px";
-      element.style.marginLeft = "10px";
+      if (!player) element.style.borderRadius = "7px";
+      element.style.marginLeft = "5px";
       element.style.backgroundSize = "75px 112px";
     }
   }, {
     key: "render",
-    value: function render(element, width, height, revealed) {
-      revealed ? this.display(element, width, height) : this.hide(element, width, height);
+    value: function render(element, width, height, revealed, player) {
+      revealed ? this.display(element, width, height, player) : this.hide(element, width, height, player);
     }
   }, {
     key: "unrender",
@@ -14452,22 +14487,30 @@ function () {
 
     this.cards_drawn = 0;
     this.cards = this.newDeck();
-  }
+  } // shuffle(array){
+  //   let counter = array.length;
+  //   while (counter > 0) {
+  //     let index = Math.floor(Math.random() * counter);
+  //     counter--;
+  //     let temp = array[counter];
+  //     array[counter] = array[index];
+  //     array[index] = temp;
+  //   }
+  //   return array;
+  // }
+
 
   _createClass(Deck, [{
     key: "shuffle",
-    value: function shuffle(array) {
-      var counter = array.length;
-
-      while (counter > 0) {
-        var index = Math.floor(Math.random() * counter);
-        counter--;
-        var temp = array[counter];
-        array[counter] = array[index];
-        array[index] = temp;
+    value: function shuffle(arr) {
+      for (var i = arr.length - 1; i > 0; i--) {
+        var k = Math.floor(Math.random() * (i + 1));
+        var _ref = [arr[k], arr[i]];
+        arr[i] = _ref[0];
+        arr[k] = _ref[1];
       }
 
-      return array;
+      return arr;
     }
   }, {
     key: "newDeck",
@@ -14546,10 +14589,11 @@ function () {
     var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
-    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["54%", "94%"];
+    var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
 
+    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims), new HumanPlayer("bb", initialChipstack, cardDims)];
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
