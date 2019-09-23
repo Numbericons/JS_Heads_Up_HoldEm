@@ -13314,7 +13314,6 @@ function () {
     key: "promptAction",
     value: function promptAction(to_call) {
       if (to_call === 0) {
-        // this.promptText(`Enter 'check', 'fold', or 'bet'`)
         this.promptText("");
       } else {
         this.promptText("$".concat(to_call, " to call"));
@@ -13908,7 +13907,6 @@ function () {
   }, {
     key: "isCompBet",
     value: function isCompBet(compBetRaise) {
-      // < ( I ) > \\
       var betRaise;
 
       if (compBetRaise) {
@@ -13986,11 +13984,9 @@ function () {
       var multipleActions = this.streetActions.length > 1;
 
       if (this.players[0].folded || this.players[1].folded) {
-        // if (this.streetActions[this.streetActions - 1] === 'fold') {
         this.determineWinner();
       } else if (handChipsEqual) {
         if (this.allIn() && this.handChipDiff() === 0) {
-          // remove as render handles logic
           this.showDown();
           this.determineWinner();
         } else if (this.currStreet === 'river' && multipleActions) {
@@ -14247,7 +14243,6 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-// DISP_SUITS = ["\u2660", "\u2661", "\u2662", "\u2663"]
 var Card =
 /*#__PURE__*/
 function () {
@@ -14265,10 +14260,8 @@ function () {
     value: function display(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
       element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
-      element.style.width = width; //40%    .1143  .57 * 140 px   80%
-
-      element.style.height = height; //80%  .16
-
+      element.style.width = width;
+      element.style.height = height;
       if (!player) element.style.borderRadius = "7px";
       element.style.marginLeft = "5px";
       element.style.backgroundSize = "";
@@ -14319,7 +14312,7 @@ function () {
   }, {
     key: "show",
     value: function show() {
-      return "".concat(this.rank).concat(this.showSuit()); // return `${this.rank}${this.suit}`
+      return "".concat(this.rank).concat(this.showSuit());
     }
   }]);
 
@@ -14487,18 +14480,7 @@ function () {
 
     this.cards_drawn = 0;
     this.cards = this.newDeck();
-  } // shuffle(array){
-  //   let counter = array.length;
-  //   while (counter > 0) {
-  //     let index = Math.floor(Math.random() * counter);
-  //     counter--;
-  //     let temp = array[counter];
-  //     array[counter] = array[index];
-  //     array[index] = temp;
-  //   }
-  //   return array;
-  // }
-
+  }
 
   _createClass(Deck, [{
     key: "shuffle",
