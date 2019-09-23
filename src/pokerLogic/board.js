@@ -336,7 +336,6 @@ export default class Board {
   }
 
   minBet(bet){
-    debugger
     let lastBet = this.streetActions[this.streetActions.length - 1]
     if (!lastBet) lastBet = 0;
     let sb = this.isSb();

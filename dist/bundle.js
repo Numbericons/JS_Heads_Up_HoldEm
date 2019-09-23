@@ -13926,7 +13926,6 @@ function () {
   }, {
     key: "minBet",
     value: function minBet(bet) {
-      debugger;
       var lastBet = this.streetActions[this.streetActions.length - 1];
       if (!lastBet) lastBet = 0;
       var sb = this.isSb();
