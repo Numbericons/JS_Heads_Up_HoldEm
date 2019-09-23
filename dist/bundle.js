@@ -13587,8 +13587,7 @@ function () {
       if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
       this.players[winPos].chipstack += this.pot;
       this.renderPlayers();
-      this.renderChat(this.outputString); // alert(this.outputString);
-
+      this.renderChat(this.outputString);
       this.table.handOver();
     }
   }, {
@@ -13925,22 +13924,48 @@ function () {
       return bet > stack - this.handChipDiff() ? stack : bet;
     }
   }, {
+    key: "minBet",
+    value: function minBet(bet) {
+      debugger;
+      var lastBet = this.streetActions[this.streetActions.length - 1];
+      if (!lastBet) lastBet = 0;
+      var sb = this.isSb();
+      var min;
+
+      if (this.streetActions.length === 1) {
+        lastBet === this.sb || lastBet === 0 ? min = this.bb : min = lastBet * 2;
+      } else if (this.streetActions.length > 1) {
+        min = lastBet - this.streetActions[this.streetActions.length - 2];
+      } else {
+        min = this.bb + sb;
+      }
+
+      return bet < min ? min : bet;
+    }
+  }, {
     key: "potRelativeBet",
     value: function potRelativeBet(playerAction) {
+      var bet;
+
       switch (playerAction) {
         case "1/2 Pot":
-          return this.maxBet(Math.floor(this.pot / 2));
-          return Math.floor(this.pot / 2);
+          bet = this.maxBet(Math.floor(this.pot / 2));
+          break;
 
         case "2/3 Pot":
-          return this.maxBet(Math.floor(this.pot * 2 / 3));
+          bet = this.maxBet(Math.floor(this.pot * 2 / 3));
+          break;
 
         case "Pot":
-          return this.maxBet(Math.floor(this.pot));
+          bet = this.maxBet(Math.floor(this.pot));
+          break;
 
         case "All In":
-          return this.maxBet(Math.floor(this.currentPlayer().chipstack));
+          bet = this.maxBet(Math.floor(this.currentPlayer().chipstack));
+          break;
       }
+
+      return this.minBet(bet);
     }
   }, {
     key: "resolveAction",
