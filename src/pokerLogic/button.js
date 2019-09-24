@@ -5,6 +5,13 @@ export default class Button {
     this.bindEvents = this.bindEvents.bind(this);
   }
 
+  showDealerBtnHelp(showDir, hideDir) {
+    $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
+    let dealerBtn = $(`#table-felt-dealer-btn-img-${showDir}`);
+    dealerBtn.removeClass();
+    (this.board.boardCards.length === 0) ? dealerBtn.addClass(`table-felt-dealer-btn-img-${showDir}`) : dealerBtn.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
+  }
+
   fold($outDiv) {
     let $foldDiv = $("<button>");
     $foldDiv.addClass("actions-cont-text");

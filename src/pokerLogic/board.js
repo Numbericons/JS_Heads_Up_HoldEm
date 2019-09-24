@@ -1,6 +1,7 @@
 import "babel-polyfill";
 import Deck from './deck'
 import Button from './button'
+import Bet from './bet'
 import Chipstack from './chipstack';
 const Hand = require('pokersolver').Hand;
 
@@ -47,15 +48,15 @@ export default class Board {
     this.handFinish = false;
   }
 
-  showDealerBtnHelp(showDir,hideDir){
-    $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
-    let button = $(`#table-felt-dealer-btn-img-${showDir}`);
-    button.removeClass();
-    (this.boardCards.length === 0) ? button.addClass(`table-felt-dealer-btn-img-${showDir}`) : button.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
-  }
+  // showDealerBtnHelp(showDir,hideDir){
+  //   $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
+  //   let button = $(`#table-felt-dealer-btn-img-${showDir}`);
+  //   button.removeClass();
+  //   (this.boardCards.length === 0) ? button.addClass(`table-felt-dealer-btn-img-${showDir}`) : button.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
+  // }
 
   showDealerBtn() {
-    (this.table.handNum % 2 === 0) ? this.showDealerBtnHelp('left', 'right') : this.showDealerBtnHelp('right', 'left');
+    (this.table.handNum % 2 === 0) ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
   }
 
   resetPlayerVars() {

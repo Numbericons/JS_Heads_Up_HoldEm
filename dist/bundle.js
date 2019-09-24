@@ -13404,6 +13404,26 @@ function () {
 
 /***/ }),
 
+/***/ "./src/pokerLogic/bet.js":
+/*!*******************************!*\
+  !*** ./src/pokerLogic/bet.js ***!
+  \*******************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Bet; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Bet = function Bet() {
+  _classCallCheck(this, Bet);
+};
+
+
+
+/***/ }),
+
 /***/ "./src/pokerLogic/board.js":
 /*!*********************************!*\
   !*** ./src/pokerLogic/board.js ***!
@@ -13418,7 +13438,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var babel_polyfill__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(babel_polyfill__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _deck__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./deck */ "./src/pokerLogic/deck.js");
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./button */ "./src/pokerLogic/button.js");
-/* harmony import */ var _chipstack__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./chipstack */ "./src/pokerLogic/chipstack.js");
+/* harmony import */ var _bet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bet */ "./src/pokerLogic/bet.js");
+/* harmony import */ var _chipstack__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chipstack */ "./src/pokerLogic/chipstack.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13428,6 +13449,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -13489,19 +13511,17 @@ function () {
       this.currStreet = 'preflop';
       this.lastShownCard = 0;
       this.handFinish = false;
-    }
-  }, {
-    key: "showDealerBtnHelp",
-    value: function showDealerBtnHelp(showDir, hideDir) {
-      $("#table-felt-dealer-btn-img-".concat(hideDir)).addClass("display-none");
-      var button = $("#table-felt-dealer-btn-img-".concat(showDir));
-      button.removeClass();
-      this.boardCards.length === 0 ? button.addClass("table-felt-dealer-btn-img-".concat(showDir)) : button.addClass("table-felt-dealer-btn-img-".concat(showDir, "-board"));
-    }
+    } // showDealerBtnHelp(showDir,hideDir){
+    //   $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
+    //   let button = $(`#table-felt-dealer-btn-img-${showDir}`);
+    //   button.removeClass();
+    //   (this.boardCards.length === 0) ? button.addClass(`table-felt-dealer-btn-img-${showDir}`) : button.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
+    // }
+
   }, {
     key: "showDealerBtn",
     value: function showDealerBtn() {
-      this.table.handNum % 2 === 0 ? this.showDealerBtnHelp('left', 'right') : this.showDealerBtnHelp('right', 'left');
+      this.table.handNum % 2 === 0 ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
     }
   }, {
     key: "resetPlayerVars",
@@ -13773,7 +13793,7 @@ function () {
       var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
       var $currPot = $(".table-felt-pot");
-      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_3__["default"](this.pot, $currPot);
+      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot);
       stack.render();
     }
   }, {
@@ -14102,6 +14122,14 @@ function () {
   }
 
   _createClass(Button, [{
+    key: "showDealerBtnHelp",
+    value: function showDealerBtnHelp(showDir, hideDir) {
+      $("#table-felt-dealer-btn-img-".concat(hideDir)).addClass("display-none");
+      var dealerBtn = $("#table-felt-dealer-btn-img-".concat(showDir));
+      dealerBtn.removeClass();
+      this.board.boardCards.length === 0 ? dealerBtn.addClass("table-felt-dealer-btn-img-".concat(showDir)) : dealerBtn.addClass("table-felt-dealer-btn-img-".concat(showDir, "-board"));
+    }
+  }, {
     key: "fold",
     value: function fold($outDiv) {
       var $foldDiv = $("<button>");
