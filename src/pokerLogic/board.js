@@ -147,8 +147,10 @@ export default class Board {
   async dealCard(sound) {
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
-    await this.sleep(500);
-    if (sound) this.cardTurn.play();
+    if (sound) {
+      await this.sleep(500);
+      this.cardTurn.play();
+    }
   }
 
   dealFlop() {

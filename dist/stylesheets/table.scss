@@ -139,7 +139,11 @@
           width: 2vw;
         }
         &-name{
-          transform: translateY(-.5vh);
+          transform: translateY(-0.5vh);
+          color: black;
+          font-weight: bold;
+          font-family: Open sans-serif;
+          font-size: 18px;
         }
       }
     }

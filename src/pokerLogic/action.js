@@ -21,10 +21,10 @@ export default class Action {
 
   async promptPlayer() {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1500;
-    await this.sleep(wait);
+    let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
     let firstPreflop = this.board.checkFirstPreflop();
     let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop');
+    // await this.sleep(wait);
     if (response) this.resolvePlayerPrompt(response);
   }
 

@@ -13463,16 +13463,13 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 2500 : 1500;
-                _context.next = 4;
-                return this.sleep(wait);
-
-              case 4:
+                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 2500 : 1200;
                 firstPreflop = this.board.checkFirstPreflop();
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop');
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop'); // await this.sleep(wait);
+
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 7:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -13966,13 +13963,19 @@ function () {
               case 0:
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
-                _context3.next = 4;
+
+                if (!sound) {
+                  _context3.next = 6;
+                  break;
+                }
+
+                _context3.next = 5;
                 return this.sleep(500);
 
-              case 4:
-                if (sound) this.cardTurn.play();
-
               case 5:
+                this.cardTurn.play();
+
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -14686,14 +14689,14 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 800;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack * 2, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');

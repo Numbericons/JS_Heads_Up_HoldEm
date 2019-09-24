@@ -209,6 +209,10 @@ body {
 }
 .table-bottom-about-links-name {
   transform: translateY(-0.5vh);
+  color: black;
+  font-weight: bold;
+  font-family: Open sans-serif;
+  font-size: 18px;
 }
 
 .display-none {
