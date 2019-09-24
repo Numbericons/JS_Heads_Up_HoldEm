@@ -13416,9 +13416,76 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Bet; });
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Bet = function Bet() {
-  _classCallCheck(this, Bet);
-};
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Bet =
+/*#__PURE__*/
+function () {
+  function Bet(board) {
+    _classCallCheck(this, Bet);
+
+    this.board = board;
+  }
+
+  _createClass(Bet, [{
+    key: "blindPlayer",
+    value: function blindPlayer(player, blind) {
+      var villain = this.board.players[0] === player ? this.board.players[1] : this.board.players[0];
+
+      if (blind >= villain.chipsInPot + villain.chipstack) {
+        player.chipsInPot = villain.chipsInPot + villain.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
+        player.chipstack -= player.chipsInPot;
+        return player.chipsInPot;
+      }
+
+      if (player.chipstack > blind) {
+        player.chipstack -= blind;
+        player.chipsInPot = blind;
+        player.streetChipsInPot = blind;
+        return blind;
+      } else {
+        player.chipsInPot += player.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
+        player.chipstack = 0;
+        return player.chipsInPot;
+      }
+    }
+  }, {
+    key: "calcBetInput",
+    value: function calcBetInput() {
+      var sb = this.board.isSb();
+      var betInput = $('.actions-cont-bet-amt');
+      var current = this.board.currentPlayer();
+      var other = this.board.otherPlayer();
+      if (betInput.length === 0) return 0;
+      var totalBet = Number(betInput[0].value);
+      if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
+      if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.handChipDiff() - sb;
+      return totalBet;
+    }
+  }, {
+    key: "calcCompBetRaise",
+    value: function calcCompBetRaise(compBetRaise) {
+      var sb = this.board.isSb();
+      var totalBet;
+
+      if (compBetRaise > this.board.currentPlayer().chipstack) {
+        totalBet = this.board.currentPlayer().chipstack - sb;
+      } else if (compBetRaise > this.board.otherPlayer().chipstack) {
+        totalBet = this.board.otherPlayer().chipstack + this.board.handChipDiff() - sb;
+      } else {
+        totalBet = compBetRaise;
+      }
+
+      return totalBet;
+    }
+  }]);
+
+  return Bet;
+}();
 
 
 
@@ -13471,6 +13538,7 @@ function () {
     this.boardCards = [];
     this.deck = new _deck__WEBPACK_IMPORTED_MODULE_1__["default"]();
     this.button = new _button__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this);
+    this.bet = new _bet__WEBPACK_IMPORTED_MODULE_3__["default"](this);
     this.players = players;
     this.sb = sb;
     this.bb = bb;
@@ -13511,13 +13579,7 @@ function () {
       this.currStreet = 'preflop';
       this.lastShownCard = 0;
       this.handFinish = false;
-    } // showDealerBtnHelp(showDir,hideDir){
-    //   $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
-    //   let button = $(`#table-felt-dealer-btn-img-${showDir}`);
-    //   button.removeClass();
-    //   (this.boardCards.length === 0) ? button.addClass(`table-felt-dealer-btn-img-${showDir}`) : button.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
-    // }
-
+    }
   }, {
     key: "showDealerBtn",
     value: function showDealerBtn() {
@@ -13664,34 +13726,10 @@ function () {
       this.dealPlayerCard(0, !this.players[0].comp);
     }
   }, {
-    key: "blindPlayer",
-    value: function blindPlayer(player, blind) {
-      var villain = this.players[0] === player ? this.players[1] : this.players[0];
-
-      if (blind >= villain.chipsInPot + villain.chipstack) {
-        player.chipsInPot = villain.chipsInPot + villain.chipstack;
-        player.streetChipsInPot = player.chipsInPot;
-        player.chipstack -= player.chipsInPot;
-        return player.chipsInPot;
-      }
-
-      if (player.chipstack > blind) {
-        player.chipstack -= blind;
-        player.chipsInPot = blind;
-        player.streetChipsInPot = blind;
-        return blind;
-      } else {
-        player.chipsInPot += player.chipstack;
-        player.streetChipsInPot = player.chipsInPot;
-        player.chipstack = 0;
-        return player.chipsInPot;
-      }
-    }
-  }, {
     key: "takeBlinds",
     value: function takeBlinds() {
-      var sbTotal = this.blindPlayer(this.players[0], this.sb);
-      var bbTotal = this.blindPlayer(this.players[1], this.bb);
+      var sbTotal = this.bet.blindPlayer(this.players[0], this.sb);
+      var bbTotal = this.bet.blindPlayer(this.players[1], this.bb);
       this.pot = sbTotal + bbTotal;
     }
   }, {
@@ -13888,36 +13926,30 @@ function () {
     key: "handChipDiff",
     value: function handChipDiff() {
       return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
-    }
-  }, {
-    key: "calcBetInput",
-    value: function calcBetInput() {
-      var sb = this.isSb();
-      var betInput = $('.actions-cont-bet-amt');
-      var current = this.currentPlayer();
-      var other = this.otherPlayer();
-      if (betInput.length === 0) return 0;
-      var totalBet = Number(betInput[0].value);
-      if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
-      if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.handChipDiff() - sb;
-      return totalBet;
-    }
-  }, {
-    key: "calcCompBetRaise",
-    value: function calcCompBetRaise(compBetRaise) {
-      var sb = this.isSb();
-      var totalBet;
+    } // calcBetInput() {
+    //   let sb = this.isSb();
+    //   let betInput = $('.actions-cont-bet-amt');
+    //   let current = this.currentPlayer();
+    //   let other = this.otherPlayer();
+    //   if (betInput.length === 0) return 0;
+    //   let totalBet = Number(betInput[0].value);
+    //   if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
+    //   if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.handChipDiff() - sb;
+    //   return totalBet;
+    // }
+    // calcCompBetRaise(compBetRaise) {
+    //   let sb = this.isSb();
+    //   let totalBet;
+    //   if (compBetRaise > this.currentPlayer().chipstack) {
+    //     totalBet = this.currentPlayer().chipstack - sb;
+    //   } else if (compBetRaise > this.otherPlayer().chipstack) {
+    //     totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
+    //   } else {
+    //     totalBet = compBetRaise;
+    //   }
+    //   return totalBet;
+    // }
 
-      if (compBetRaise > this.currentPlayer().chipstack) {
-        totalBet = this.currentPlayer().chipstack - sb;
-      } else if (compBetRaise > this.otherPlayer().chipstack) {
-        totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
-      } else {
-        totalBet = compBetRaise;
-      }
-
-      return totalBet;
-    }
   }, {
     key: "isSb",
     value: function isSb() {
@@ -13930,9 +13962,9 @@ function () {
 
       if (compBetRaise) {
         if (compBetRaise < this.bb) compBetRaise = this.bb;
-        betRaise = this.calcCompBetRaise(compBetRaise);
+        betRaise = this.bet.calcCompBetRaise(compBetRaise);
       } else {
-        betRaise = this.calcBetInput();
+        betRaise = this.bet.calcBetInput();
       }
 
       return betRaise;
