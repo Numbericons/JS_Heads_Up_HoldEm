@@ -268,49 +268,49 @@ export default class Board {
     return (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
   }
 
-  maxBet(bet){
-    let stack = this.currentPlayer().chipstack;
-    if (stack > this.otherPlayer().chipstack - this.isSb()) stack = this.otherPlayer().chipstack + this.isSb();
-    return (bet > stack - this.handChipDiff()) ? stack : bet;
-  }
+  // maxBet(bet){
+  //   let stack = this.currentPlayer().chipstack;
+  //   if (stack > this.otherPlayer().chipstack - this.isSb()) stack = this.otherPlayer().chipstack + this.isSb();
+  //   return (bet > stack - this.handChipDiff()) ? stack : bet;
+  // }
 
-  minBet(bet){
-    let lastBet = this.streetActions[this.streetActions.length - 1]
-    if (!lastBet) lastBet = 0;
-    let sb = this.isSb();
-    let min;
-    if (this.streetActions.length === 1) {
-      (lastBet === this.sb || lastBet === 0) ? min = this.bb : min = lastBet * 2;
-    } else if (this.streetActions.length > 1){
-      min = lastBet - this.streetActions[this.streetActions.length - 2]
-    } else {
-      min = this.bb + sb
-    }
-    return (bet < min) ? min : bet;
-  }
+  // minBet(bet){
+  //   let lastBet = this.streetActions[this.streetActions.length - 1]
+  //   if (!lastBet) lastBet = 0;
+  //   let sb = this.isSb();
+  //   let min;
+  //   if (this.streetActions.length === 1) {
+  //     (lastBet === this.sb || lastBet === 0) ? min = this.bb : min = lastBet * 2;
+  //   } else if (this.streetActions.length > 1){
+  //     min = lastBet - this.streetActions[this.streetActions.length - 2]
+  //   } else {
+  //     min = this.bb + sb
+  //   }
+  //   return (bet < min) ? min : bet;
+  // }
 
-  potRelativeBet(playerAction){
-    let bet;
-    switch(playerAction) {
-      case "1/2 Pot":
-        bet = this.maxBet(Math.floor(this.pot / 2));
-        break;
-      case "2/3 Pot":
-        bet = this.maxBet(Math.floor(this.pot * 2 / 3));
-        break;
-      case "Pot":
-        bet = this.maxBet(Math.floor(this.pot));
-        break;
-      case "All In":
-        bet = this.maxBet(Math.floor(this.currentPlayer().chipstack));
-        break;
-    }
-    return this.minBet(bet);
-  }
+  // potRelativeBet(playerAction){
+  //   let bet;
+  //   switch(playerAction) {
+  //     case "1/2 Pot":
+  //       bet = this.maxBet(Math.floor(this.pot / 2));
+  //       break;
+  //     case "2/3 Pot":
+  //       bet = this.maxBet(Math.floor(this.pot * 2 / 3));
+  //       break;
+  //     case "Pot":
+  //       bet = this.maxBet(Math.floor(this.pot));
+  //       break;
+  //     case "All In":
+  //       bet = this.maxBet(Math.floor(this.currentPlayer().chipstack));
+  //       break;
+  //   }
+  //   return this.minBet(bet);
+  // }
 
   resolveAction(betRaise, playerAction){
     let sb = this.isSb();
-    if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.potRelativeBet(playerAction) + sb;
+    if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.bet.potRelativeBet(playerAction) + sb;
     let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
     if (resolvedAction) {
       this.pot += resolvedAction;
