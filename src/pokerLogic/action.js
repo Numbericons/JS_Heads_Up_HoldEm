@@ -1,7 +1,7 @@
 export default class Action {
   constructor(board) {
     this.board = board;
-    this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    // this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
   }
 
   sleep(ms) {
@@ -12,18 +12,17 @@ export default class Action {
     if (response[0] === 'fold') {
       this.startAction(null, 'fold');
     } else if (response[0] === 'call') {
-      this.chips.play();
+      // this.chips.play();
       this.startAction(null, 'call');
     } else if (response[0] === 'check') {
       this.startAction(null, 'check');
     } else {
-      this.chips.play();
+      // this.chips.play();
       this.startAction(null, 'bet', Math.ceil(response[1]));
     }
   }
 
   async promptPlayer() {
-    // this.button.$el.empty();
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1500;
     await this.sleep(wait);

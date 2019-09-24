@@ -13190,6 +13190,7 @@ function () {
     key: "resolve_action",
     value: function resolve_action(to_call, betInput, textInput) {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
+      debugger;
 
       if (textInput === 'check') {
         this.check.play();
@@ -13430,8 +13431,7 @@ function () {
   function Action(board) {
     _classCallCheck(this, Action);
 
-    this.board = board;
-    this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.board = board; // this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
   }
 
   _createClass(Action, [{
@@ -13447,12 +13447,12 @@ function () {
       if (response[0] === 'fold') {
         this.startAction(null, 'fold');
       } else if (response[0] === 'call') {
-        this.chips.play();
+        // this.chips.play();
         this.startAction(null, 'call');
       } else if (response[0] === 'check') {
         this.startAction(null, 'check');
       } else {
-        this.chips.play();
+        // this.chips.play();
         this.startAction(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -13467,7 +13467,6 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                // this.button.$el.empty();
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 2500 : 1500;
                 _context.next = 4;

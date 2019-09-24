@@ -102,6 +102,7 @@ export default class ComputerPlayer {
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
+    debugger
     if (textInput === 'check') {
       this.check.play();
       return 0;
