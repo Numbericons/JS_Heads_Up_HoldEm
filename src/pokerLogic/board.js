@@ -332,6 +332,7 @@ export default class Board {
 
   maxBet(bet){
     let stack = this.currentPlayer().chipstack;
+    if (stack > this.otherPlayer().chipstack - this.isSb()) stack = this.otherPlayer().chipstack + this.isSb();
     return (bet > stack - this.handChipDiff()) ? stack : bet;
   }
 

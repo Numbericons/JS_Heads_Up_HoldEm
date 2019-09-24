@@ -13921,6 +13921,7 @@ function () {
     key: "maxBet",
     value: function maxBet(bet) {
       var stack = this.currentPlayer().chipstack;
+      if (stack > this.otherPlayer().chipstack - this.isSb()) stack = this.otherPlayer().chipstack + this.isSb();
       return bet > stack - this.handChipDiff() ? stack : bet;
     }
   }, {
@@ -14599,7 +14600,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", 2 * initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
