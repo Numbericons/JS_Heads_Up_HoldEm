@@ -104,7 +104,7 @@ export default class Button {
     this.$el.unbind();
     this.$el.on("click", "button", (event => {
       const $button = $(event.currentTarget);
-      this.board.action($button);
+      this.board.action.startAction($button);
     }));
   }
 

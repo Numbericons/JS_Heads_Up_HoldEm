@@ -13404,6 +13404,158 @@ function () {
 
 /***/ }),
 
+/***/ "./src/pokerLogic/action.js":
+/*!**********************************!*\
+  !*** ./src/pokerLogic/action.js ***!
+  \**********************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Action; });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Action =
+/*#__PURE__*/
+function () {
+  function Action(board) {
+    _classCallCheck(this, Action);
+
+    this.board = board;
+    this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+  }
+
+  _createClass(Action, [{
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    }
+  }, {
+    key: "resolvePlayerPrompt",
+    value: function resolvePlayerPrompt(response) {
+      if (response[0] === 'fold') {
+        this.startAction(null, 'fold');
+      } else if (response[0] === 'call') {
+        this.chips.play();
+        this.startAction(null, 'call');
+      } else if (response[0] === 'check') {
+        this.startAction(null, 'check');
+      } else {
+        this.chips.play();
+        this.startAction(null, 'bet', Math.ceil(response[1]));
+      }
+    }
+  }, {
+    key: "promptPlayer",
+    value: function () {
+      var _promptPlayer = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var wait, firstPreflop, response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                // this.button.$el.empty();
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
+                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 2500 : 1500;
+                _context.next = 4;
+                return this.sleep(wait);
+
+              case 4:
+                firstPreflop = this.board.checkFirstPreflop();
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop);
+                if (response) this.resolvePlayerPrompt(response);
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function promptPlayer() {
+        return _promptPlayer.apply(this, arguments);
+      }
+
+      return promptPlayer;
+    }()
+  }, {
+    key: "resolveAction",
+    value: function resolveAction(betRaise, playerAction) {
+      var sb = this.board.isSb();
+      if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
+      var resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
+
+      if (resolvedAction) {
+        this.board.pot += resolvedAction;
+        return resolvedAction;
+      }
+    }
+  }, {
+    key: "startAction",
+    value: function startAction($button, compAction, compBetRaise) {
+      var playerAction = $button ? $button.data().action : compAction;
+
+      if (playerAction === 'fold') {
+        this.board.currentPlayer().folded = true;
+        return this.board.determineWinner();
+      }
+
+      var betRaise = this.board.bet.isCompBet(compBetRaise);
+      var resolved = this.resolveAction(betRaise, playerAction);
+      this.board.streetActions = this.board.streetActions.concat(resolved);
+      this.continueAction();
+    }
+  }, {
+    key: "continueAction",
+    value: function continueAction() {
+      this.board.currBet = this.board.handChipDiff();
+      this.board.toggleCurrPlayer();
+      this.board.render();
+      if (!this.board.allIn() && this.board.handChipDiff() === 0 && !this.board.handFinish) this.nextAction();
+    }
+  }, {
+    key: "nextAction",
+    value: function nextAction() {
+      var handChipsEqual = this.board.handChipDiff() === 0;
+      var multipleActions = this.board.streetActions.length > 1;
+
+      if (this.board.players[0].folded || this.board.players[1].folded) {
+        this.board.determineWinner();
+      } else if (handChipsEqual) {
+        if (this.board.allIn() && this.board.handChipDiff() === 0) {
+          this.board.showDown();
+          this.board.determineWinner();
+        } else if (this.board.currStreet === 'river' && multipleActions) {
+          this.board.revealCards();
+          this.board.determineWinner();
+        } else if (multipleActions) {
+          this.board.nextStreet();
+        }
+      }
+    }
+  }]);
+
+  return Action;
+}();
+
+
+
+/***/ }),
+
 /***/ "./src/pokerLogic/bet.js":
 /*!*******************************!*\
   !*** ./src/pokerLogic/bet.js ***!
@@ -13571,6 +13723,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _button__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./button */ "./src/pokerLogic/button.js");
 /* harmony import */ var _bet__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./bet */ "./src/pokerLogic/bet.js");
 /* harmony import */ var _chipstack__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./chipstack */ "./src/pokerLogic/chipstack.js");
+/* harmony import */ var _action__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./action */ "./src/pokerLogic/action.js");
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -13580,6 +13733,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -13603,6 +13757,7 @@ function () {
     this.deck = new _deck__WEBPACK_IMPORTED_MODULE_1__["default"]();
     this.button = new _button__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this);
     this.bet = new _bet__WEBPACK_IMPORTED_MODULE_3__["default"](this);
+    this.action = new _action__WEBPACK_IMPORTED_MODULE_5__["default"](this);
     this.players = players;
     this.sb = sb;
     this.bb = bb;
@@ -13616,7 +13771,6 @@ function () {
     this.handFinish = false;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
-    this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
   }
 
@@ -13897,65 +14051,36 @@ function () {
       var $currPot = $(".table-felt-pot");
       var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot);
       stack.render();
-    }
-  }, {
-    key: "resolvePlayerPrompt",
-    value: function resolvePlayerPrompt(response) {
-      if (response[0] === 'fold') {
-        this.action(null, 'fold');
-      } else if (response[0] === 'call') {
-        this.chips.play();
-        this.action(null, 'call');
-      } else if (response[0] === 'check') {
-        this.action(null, 'check');
-      } else {
-        this.chips.play();
-        this.action(null, 'bet', Math.ceil(response[1]));
-      }
-    }
+    } // resolvePlayerPrompt(response) {
+    //   if (response[0] === 'fold') {
+    //     this.action(null, 'fold');
+    //   } else if (response[0] === 'call') {
+    //     this.chips.play();
+    //     this.action(null, 'call');
+    //   } else if (response[0] === 'check') {
+    //     this.action(null, 'check');
+    //   } else {
+    //     this.chips.play();
+    //     this.action(null, 'bet', Math.ceil(response[1]));
+    //   }
+    // }
+
   }, {
     key: "checkFirstPreflop",
     value: function checkFirstPreflop() {
       if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
         return this.sb;
       }
-    }
-  }, {
-    key: "promptPlayer",
-    value: function () {
-      var _promptPlayer = _asyncToGenerator(
-      /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee4() {
-        var wait, firstPreflop, response;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
-          while (1) {
-            switch (_context4.prev = _context4.next) {
-              case 0:
-                this.button.$el.empty();
-                this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.currStreet === 'flop' && this.streetActions.length === 0 ? 3000 : 2000;
-                _context4.next = 5;
-                return this.sleep(wait);
+    } // async promptPlayer() {
+    //   this.button.$el.empty();
+    //   this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
+    //   let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 3000 : 2000;
+    //   await this.sleep(wait);
+    //   let firstPreflop = this.checkFirstPreflop();
+    //   let response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
+    //   if (response) this.resolvePlayerPrompt(response);
+    // }
 
-              case 5:
-                firstPreflop = this.checkFirstPreflop();
-                response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
-                if (response) this.resolvePlayerPrompt(response);
-
-              case 8:
-              case "end":
-                return _context4.stop();
-            }
-          }
-        }, _callee4, this);
-      }));
-
-      function promptPlayer() {
-        return _promptPlayer.apply(this, arguments);
-      }
-
-      return promptPlayer;
-    }()
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {
@@ -13984,7 +14109,11 @@ function () {
       this.button.setButtons();
       this.button.bindEvents();
       if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
-      if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) this.promptPlayer();
+
+      if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
+        this.button.$el.empty();
+        this.action.promptPlayer();
+      }
     }
   }, {
     key: "handChipDiff",
@@ -13995,62 +14124,50 @@ function () {
     key: "isSb",
     value: function isSb() {
       return this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
-    }
-  }, {
-    key: "resolveAction",
-    value: function resolveAction(betRaise, playerAction) {
-      var sb = this.isSb();
-      if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.bet.potRelativeBet(playerAction) + sb;
-      var resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
+    } // resolveAction(betRaise, playerAction){
+    //   let sb = this.isSb();
+    //   if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.bet.potRelativeBet(playerAction) + sb;
+    //   let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
+    //   if (resolvedAction) {
+    //     this.pot += resolvedAction;
+    //     return resolvedAction;
+    //   }
+    // }
+    // action($button, compAction, compBetRaise) {
+    //   let playerAction = ($button) ? $button.data().action : compAction;
+    //   if (playerAction === 'fold') {
+    //     this.currentPlayer().folded = true;
+    //     return this.determineWinner();
+    //   }
+    //   let betRaise = this.bet.isCompBet(compBetRaise);
+    //   let resolved = this.resolveAction(betRaise, playerAction);
+    //   this.streetActions = this.streetActions.concat(resolved);
+    //   this.continueAction();
+    // }
+    // continueAction() {
+    //   this.currBet = this.handChipDiff();
+    //   this.toggleCurrPlayer();
+    //   this.render();
+    //   if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
+    // }
+    // nextAction() {
+    //   let handChipsEqual = this.handChipDiff() === 0;
+    //   let multipleActions = this.streetActions.length > 1;
+    //   if (this.players[0].folded || this.players[1].folded) {
+    //     this.determineWinner();
+    //   } else if (handChipsEqual) {
+    //     if (this.allIn() && this.handChipDiff() === 0) {
+    //       this.showDown();
+    //       this.determineWinner();
+    //     } else if (this.currStreet === 'river' && multipleActions) {
+    //       this.revealCards();
+    //       this.determineWinner();
+    //     } else if (multipleActions) {
+    //       this.nextStreet();
+    //     }
+    //   }
+    // }
 
-      if (resolvedAction) {
-        this.pot += resolvedAction;
-        return resolvedAction;
-      }
-    }
-  }, {
-    key: "action",
-    value: function action($button, compAction, compBetRaise) {
-      var playerAction = $button ? $button.data().action : compAction;
-
-      if (playerAction === 'fold') {
-        this.currentPlayer().folded = true;
-        return this.determineWinner();
-      }
-
-      var betRaise = this.bet.isCompBet(compBetRaise);
-      var resolved = this.resolveAction(betRaise, playerAction);
-      this.streetActions = this.streetActions.concat(resolved);
-      this.continueAction();
-    }
-  }, {
-    key: "continueAction",
-    value: function continueAction() {
-      this.currBet = this.handChipDiff();
-      this.toggleCurrPlayer();
-      this.render();
-      if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
-    }
-  }, {
-    key: "nextAction",
-    value: function nextAction() {
-      var handChipsEqual = this.handChipDiff() === 0;
-      var multipleActions = this.streetActions.length > 1;
-
-      if (this.players[0].folded || this.players[1].folded) {
-        this.determineWinner();
-      } else if (handChipsEqual) {
-        if (this.allIn() && this.handChipDiff() === 0) {
-          this.showDown();
-          this.determineWinner();
-        } else if (this.currStreet === 'river' && multipleActions) {
-          this.revealCards();
-          this.determineWinner();
-        } else if (multipleActions) {
-          this.nextStreet();
-        }
-      }
-    }
   }, {
     key: "revealCards",
     value: function revealCards() {
@@ -14247,7 +14364,7 @@ function () {
       this.$el.on("click", "button", function (event) {
         var $button = $(event.currentTarget);
 
-        _this.board.action($button);
+        _this.board.action.startAction($button);
       });
     }
   }, {
