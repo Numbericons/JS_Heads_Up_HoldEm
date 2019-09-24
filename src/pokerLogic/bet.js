@@ -48,4 +48,15 @@ export default class Bet {
     }
     return totalBet;
   }
+
+  isCompBet(compBetRaise) {
+    let betRaise;
+    if (compBetRaise) {
+      if (compBetRaise < this.board.bb) compBetRaise = this.board.bb;
+      betRaise = this.calcCompBetRaise(compBetRaise);
+    } else {
+      betRaise = this.calcBetInput();
+    }
+    return betRaise;
+  }
 }

@@ -264,44 +264,8 @@ export default class Board {
     return Math.abs(this.players[0].chipsInPot - this.players[1].chipsInPot);
   }
 
-  // calcBetInput() {
-  //   let sb = this.isSb();
-  //   let betInput = $('.actions-cont-bet-amt');
-  //   let current = this.currentPlayer();
-  //   let other = this.otherPlayer();
-  //   if (betInput.length === 0) return 0;
-  //   let totalBet = Number(betInput[0].value);
-  //   if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
-  //   if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.handChipDiff() - sb;
-  //   return totalBet;
-  // }
-
-  // calcCompBetRaise(compBetRaise) {
-  //   let sb = this.isSb();
-  //   let totalBet;
-  //   if (compBetRaise > this.currentPlayer().chipstack) {
-  //     totalBet = this.currentPlayer().chipstack - sb;
-  //   } else if (compBetRaise > this.otherPlayer().chipstack) {
-  //     totalBet = this.otherPlayer().chipstack + this.handChipDiff() - sb;
-  //   } else {
-  //     totalBet = compBetRaise;
-  //   }
-  //   return totalBet;
-  // }
-
   isSb(){
     return (this.currStreet === 'preflop' && this.streetActions.length === 0) ? this.sb : 0;
-  }
-
-  isCompBet(compBetRaise){
-    let betRaise;
-    if (compBetRaise) {
-      if (compBetRaise < this.bb) compBetRaise = this.bb;
-      betRaise = this.bet.calcCompBetRaise(compBetRaise);
-    } else {
-      betRaise = this.bet.calcBetInput();
-    }
-    return betRaise;
   }
 
   maxBet(bet){
@@ -360,7 +324,7 @@ export default class Board {
       this.currentPlayer().folded = true;
       return this.determineWinner();
     }
-    let betRaise = this.isCompBet(compBetRaise);
+    let betRaise = this.bet.isCompBet(compBetRaise);
     let resolved = this.resolveAction(betRaise, playerAction);
     this.streetActions = this.streetActions.concat(resolved);
     this.continueAction();
