@@ -13128,18 +13128,15 @@ function () {
       if (randNum < to_call * 2) {
         betRaise = to_call * 2;
         if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
-        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-        return this.maxBet(betRaise, to_call);
       } else if (randNum > 1.6 * pot) {
         if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
-        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-        return this.maxBet(betRaise, to_call);
       } else {
         betRaise = randNum > pot ? pot : randNum;
         if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
-        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-        return this.maxBet(betRaise, to_call);
       }
+
+      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
+      return this.maxBet(betRaise, to_call);
     }
   }, {
     key: "promptResponse",
@@ -13494,6 +13491,8 @@ function () {
     value: function resolveAction(betRaise, playerAction) {
       var sb = this.board.isSb();
       if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
+      var oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
+      if (betRaise > oppChipsRem) betRaise = oppChipsRem;
       var resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
 
       if (resolvedAction) {
@@ -13649,12 +13648,16 @@ function () {
     key: "maxBet",
     value: function maxBet(bet) {
       var stack = this.board.currentPlayer().chipstack;
-      if (stack > this.board.otherPlayer().chipstack - this.board.isSb()) stack = this.board.otherPlayer().chipstack + this.board.isSb();
+      var oppStack = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb(); //change to add isSb + handchipdiff
+
+      if (stack > oppStack) stack = oppStack;
       return bet > stack - this.board.handChipDiff() ? stack : bet;
     }
   }, {
     key: "minBet",
     value: function minBet(bet) {
+      if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
+
       var lastBet = this.board.streetActions[this.board.streetActions.length - 1];
       if (!lastBet) lastBet = 0;
       var sb = this.board.isSb();
@@ -13666,7 +13669,11 @@ function () {
         min = lastBet - this.board.streetActions[this.board.streetActions.length - 2];
       } else {
         min = this.board.bb + sb;
-      }
+      } // if (bet < min) bet = min;
+      // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
+      // if (bet > oppTotalStack) bet = oppTotalStack;
+      // return bet;
+
 
       return bet < min ? min : bet;
     }
@@ -14679,14 +14686,14 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 800;
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", 2 * initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack * 2, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');

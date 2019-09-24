@@ -62,11 +62,13 @@ export default class Bet {
 
   maxBet(bet) {
     let stack = this.board.currentPlayer().chipstack;
-    if (stack > this.board.otherPlayer().chipstack - this.board.isSb()) stack = this.board.otherPlayer().chipstack + this.board.isSb();
+    let oppStack = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb(); //change to add isSb + handchipdiff
+    if (stack > oppStack) stack = oppStack;
     return (bet > stack - this.board.handChipDiff()) ? stack : bet;
   }
 
   minBet(bet) {
+    if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
     let lastBet = this.board.streetActions[this.board.streetActions.length - 1]
     if (!lastBet) lastBet = 0;
     let sb = this.board.isSb();
@@ -78,6 +80,10 @@ export default class Bet {
     } else {
       min = this.board.bb + sb
     }
+    // if (bet < min) bet = min;
+    // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
+    // if (bet > oppTotalStack) bet = oppTotalStack;
+    // return bet;
     return (bet < min) ? min : bet;
   }
 

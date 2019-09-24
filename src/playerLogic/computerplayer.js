@@ -45,18 +45,14 @@ export default class ComputerPlayer {
     if (randNum < to_call * 2) {
       betRaise = to_call * 2;
       if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
-      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-      return this.maxBet(betRaise, to_call);
     } else if (randNum > 1.6 * pot) {
       if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
-      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-      return this.maxBet(betRaise, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
       if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
-      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-      return this.maxBet(betRaise, to_call);
     }
+    if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
+    return this.maxBet(betRaise, to_call);
   }
   
   promptResponse(to_call, pot, sb, isPreflop){
