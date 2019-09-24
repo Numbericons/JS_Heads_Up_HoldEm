@@ -1,7 +1,6 @@
 export default class Action {
   constructor(board) {
     this.board = board;
-    // this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
   }
 
   sleep(ms) {
@@ -12,12 +11,10 @@ export default class Action {
     if (response[0] === 'fold') {
       this.startAction(null, 'fold');
     } else if (response[0] === 'call') {
-      // this.chips.play();
       this.startAction(null, 'call');
     } else if (response[0] === 'check') {
       this.startAction(null, 'check');
     } else {
-      // this.chips.play();
       this.startAction(null, 'bet', Math.ceil(response[1]));
     }
   }
@@ -27,7 +24,7 @@ export default class Action {
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1500;
     await this.sleep(wait);
     let firstPreflop = this.board.checkFirstPreflop();
-    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop);
+    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop');
     if (response) this.resolvePlayerPrompt(response);
   }
 

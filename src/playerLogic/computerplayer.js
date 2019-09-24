@@ -34,24 +34,32 @@ export default class ComputerPlayer {
     return (num + to_call > this.chipstack) ? ['betRaise', this.chipstack] : ['betRaise', num];
   }
 
-  genBetRaise(to_call, pot, sb){
+  genPreflopBetRaise(betRaise){
+    let multiplier = Math.random() * 1.75 + 1
+    return betRaise * multiplier;
+  }
+
+  genBetRaise(to_call, pot, sb, isPreflop){
     let randNum = Math.random() * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
       betRaise = to_call * 2;
       if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
+      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
       return this.maxBet(betRaise, to_call);
     } else if (randNum > 1.6 * pot) {
       if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
+      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
       return this.maxBet(betRaise, to_call);
     } else {
       betRaise = (randNum > pot) ? pot : randNum;
       if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
+      if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
       return this.maxBet(betRaise, to_call);
     }
   }
   
-  promptResponse(to_call, pot, sb){
+  promptResponse(to_call, pot, sb, isPreflop){
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
@@ -71,7 +79,7 @@ export default class ComputerPlayer {
         return ['check'];
       }
     } else {
-        return this.genBetRaise(to_call, pot, sb);
+        return this.genBetRaise(to_call, pot, sb, isPreflop);
     }
   }
 
@@ -84,14 +92,6 @@ export default class ComputerPlayer {
     return callAmt;
   }
 
-  // resolveBetRaise(betInput, sb){
-  //   let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
-  //   this.chipstack -= betAmt + sb;
-  //   this.chipsInPot += betAmt + sb;
-  //   this.streetChipsInPot += betAmt + sb;
-  //   this.chipsBet.play();
-  //   return betAmt + sb;
-  // }
   resolveBetRaise(betInput, sb){
     let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
     this.chipstack -= betAmt;
@@ -102,7 +102,6 @@ export default class ComputerPlayer {
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
-    debugger
     if (textInput === 'check') {
       this.check.play();
       return 0;

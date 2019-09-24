@@ -13114,27 +13114,36 @@ function () {
       return num + to_call > this.chipstack ? ['betRaise', this.chipstack] : ['betRaise', num];
     }
   }, {
+    key: "genPreflopBetRaise",
+    value: function genPreflopBetRaise(betRaise) {
+      var multiplier = Math.random() * 1.75 + 1;
+      return betRaise * multiplier;
+    }
+  }, {
     key: "genBetRaise",
-    value: function genBetRaise(to_call, pot, sb) {
+    value: function genBetRaise(to_call, pot, sb, isPreflop) {
       var randNum = Math.random() * 2 * pot;
       var betRaise;
 
       if (randNum < to_call * 2) {
         betRaise = to_call * 2;
         if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
+        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
         return this.maxBet(betRaise, to_call);
       } else if (randNum > 1.6 * pot) {
         if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
+        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
         return this.maxBet(betRaise, to_call);
       } else {
         betRaise = randNum > pot ? pot : randNum;
         if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
+        if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
         return this.maxBet(betRaise, to_call);
       }
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot, sb) {
+    value: function promptResponse(to_call, pot, sb, isPreflop) {
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13155,7 +13164,7 @@ function () {
           return ['check'];
         }
       } else {
-        return this.genBetRaise(to_call, pot, sb);
+        return this.genBetRaise(to_call, pot, sb, isPreflop);
       }
     }
   }, {
@@ -13167,15 +13176,7 @@ function () {
       this.chipsInPot += callAmt;
       this.streetChipsInPot += callAmt;
       return callAmt;
-    } // resolveBetRaise(betInput, sb){
-    //   let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
-    //   this.chipstack -= betAmt + sb;
-    //   this.chipsInPot += betAmt + sb;
-    //   this.streetChipsInPot += betAmt + sb;
-    //   this.chipsBet.play();
-    //   return betAmt + sb;
-    // }
-
+    }
   }, {
     key: "resolveBetRaise",
     value: function resolveBetRaise(betInput, sb) {
@@ -13190,7 +13191,6 @@ function () {
     key: "resolve_action",
     value: function resolve_action(to_call, betInput, textInput) {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
-      debugger;
 
       if (textInput === 'check') {
         this.check.play();
@@ -13431,7 +13431,7 @@ function () {
   function Action(board) {
     _classCallCheck(this, Action);
 
-    this.board = board; // this.chips = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+    this.board = board;
   }
 
   _createClass(Action, [{
@@ -13447,12 +13447,10 @@ function () {
       if (response[0] === 'fold') {
         this.startAction(null, 'fold');
       } else if (response[0] === 'call') {
-        // this.chips.play();
         this.startAction(null, 'call');
       } else if (response[0] === 'check') {
         this.startAction(null, 'check');
       } else {
-        // this.chips.play();
         this.startAction(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -13474,7 +13472,7 @@ function () {
 
               case 4:
                 firstPreflop = this.board.checkFirstPreflop();
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop);
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop');
                 if (response) this.resolvePlayerPrompt(response);
 
               case 7:
@@ -14050,36 +14048,14 @@ function () {
       var $currPot = $(".table-felt-pot");
       var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot);
       stack.render();
-    } // resolvePlayerPrompt(response) {
-    //   if (response[0] === 'fold') {
-    //     this.action(null, 'fold');
-    //   } else if (response[0] === 'call') {
-    //     this.chips.play();
-    //     this.action(null, 'call');
-    //   } else if (response[0] === 'check') {
-    //     this.action(null, 'check');
-    //   } else {
-    //     this.chips.play();
-    //     this.action(null, 'bet', Math.ceil(response[1]));
-    //   }
-    // }
-
+    }
   }, {
     key: "checkFirstPreflop",
     value: function checkFirstPreflop() {
       if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
         return this.sb;
       }
-    } // async promptPlayer() {
-    //   this.button.$el.empty();
-    //   this.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    //   let wait = (this.currStreet === 'flop' && this.streetActions.length === 0) ? 3000 : 2000;
-    //   await this.sleep(wait);
-    //   let firstPreflop = this.checkFirstPreflop();
-    //   let response = this.currentPlayer().promptResponse(this.currBet, this.pot, firstPreflop);
-    //   if (response) this.resolvePlayerPrompt(response);
-    // }
-
+    }
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {
@@ -14123,50 +14099,7 @@ function () {
     key: "isSb",
     value: function isSb() {
       return this.currStreet === 'preflop' && this.streetActions.length === 0 ? this.sb : 0;
-    } // resolveAction(betRaise, playerAction){
-    //   let sb = this.isSb();
-    //   if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.bet.potRelativeBet(playerAction) + sb;
-    //   let resolvedAction = this.currentPlayer().resolve_action(this.handChipDiff(), betRaise, playerAction, sb);
-    //   if (resolvedAction) {
-    //     this.pot += resolvedAction;
-    //     return resolvedAction;
-    //   }
-    // }
-    // action($button, compAction, compBetRaise) {
-    //   let playerAction = ($button) ? $button.data().action : compAction;
-    //   if (playerAction === 'fold') {
-    //     this.currentPlayer().folded = true;
-    //     return this.determineWinner();
-    //   }
-    //   let betRaise = this.bet.isCompBet(compBetRaise);
-    //   let resolved = this.resolveAction(betRaise, playerAction);
-    //   this.streetActions = this.streetActions.concat(resolved);
-    //   this.continueAction();
-    // }
-    // continueAction() {
-    //   this.currBet = this.handChipDiff();
-    //   this.toggleCurrPlayer();
-    //   this.render();
-    //   if (!this.allIn() && this.handChipDiff() === 0 && !this.handFinish) this.nextAction();
-    // }
-    // nextAction() {
-    //   let handChipsEqual = this.handChipDiff() === 0;
-    //   let multipleActions = this.streetActions.length > 1;
-    //   if (this.players[0].folded || this.players[1].folded) {
-    //     this.determineWinner();
-    //   } else if (handChipsEqual) {
-    //     if (this.allIn() && this.handChipDiff() === 0) {
-    //       this.showDown();
-    //       this.determineWinner();
-    //     } else if (this.currStreet === 'river' && multipleActions) {
-    //       this.revealCards();
-    //       this.determineWinner();
-    //     } else if (multipleActions) {
-    //       this.nextStreet();
-    //     }
-    //   }
-    // }
-
+    }
   }, {
     key: "revealCards",
     value: function revealCards() {
