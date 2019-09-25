@@ -52,8 +52,9 @@ export default class HumanPlayer {
     }
   }
 
-  playerName() {
-    let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
+  playerName(current) {
+    let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
+    (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
     playerName.innerText = `${this.name}`;
   }
 

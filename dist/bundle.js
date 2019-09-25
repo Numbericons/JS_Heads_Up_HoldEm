@@ -13344,8 +13344,9 @@ function () {
     }
   }, {
     key: "playerName",
-    value: function playerName() {
-      var playerName = document.querySelector(".player-info-".concat(this.side, "-chip-text-name"));
+    value: function playerName(current) {
+      var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
+      current ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
       playerName.innerText = "".concat(this.name);
     }
   }, {
