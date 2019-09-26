@@ -15,16 +15,18 @@ export default class Action {
     } else if (response[0] === 'check') {
       this.startAction(null, 'check');
     } else {
+      debugger
       this.startAction(null, 'bet', Math.ceil(response[1]));
     }
   }
 
   async promptPlayer() {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
-    let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
+    // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
     let firstPreflop = this.board.checkFirstPreflop();
     let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop');
     // await this.sleep(wait);
+    debugger
     if (response) this.resolvePlayerPrompt(response);
   }
 
@@ -40,12 +42,13 @@ export default class Action {
     }
   }
 
-  startAction($button, compAction, compBetRaise) {
+  startAction($button, compAction, compBetRaise) {  //compBetRaise undefined leads to error
     let playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.board.currentPlayer().folded = true;
       return this.board.determineWinner();
     }
+    debugger
     let betRaise = this.board.bet.isCompBet(compBetRaise);
     let resolved = this.resolveAction(betRaise, playerAction);
     this.board.streetActions = this.board.streetActions.concat(resolved);

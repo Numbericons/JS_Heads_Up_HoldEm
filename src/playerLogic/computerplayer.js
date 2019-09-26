@@ -89,6 +89,7 @@ export default class ComputerPlayer {
   }
 
   resolveBetRaise(betInput, sb){
+    debugger
     let betAmt = (betInput > this.chipstack) ? this.chipstack : betInput;
     this.chipstack -= betAmt;
     this.chipsInPot += betAmt;

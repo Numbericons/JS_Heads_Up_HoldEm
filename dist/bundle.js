@@ -13177,6 +13177,7 @@ function () {
   }, {
     key: "resolveBetRaise",
     value: function resolveBetRaise(betInput, sb) {
+      debugger;
       var betAmt = betInput > this.chipstack ? this.chipstack : betInput;
       this.chipstack -= betAmt;
       this.chipsInPot += betAmt;
@@ -13449,6 +13450,7 @@ function () {
       } else if (response[0] === 'check') {
         this.startAction(null, 'check');
       } else {
+        debugger;
         this.startAction(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -13458,16 +13460,17 @@ function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var wait, firstPreflop, response;
+        var firstPreflop, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 2500 : 1200;
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
+
                 firstPreflop = this.board.checkFirstPreflop();
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop'); // await this.sleep(wait);
 
+                debugger;
                 if (response) this.resolvePlayerPrompt(response);
 
               case 5:
@@ -13501,6 +13504,7 @@ function () {
   }, {
     key: "startAction",
     value: function startAction($button, compAction, compBetRaise) {
+      //compBetRaise undefined leads to error
       var playerAction = $button ? $button.data().action : compAction;
 
       if (playerAction === 'fold') {
@@ -13508,6 +13512,7 @@ function () {
         return this.board.determineWinner();
       }
 
+      debugger;
       var betRaise = this.board.bet.isCompBet(compBetRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
@@ -14094,11 +14099,12 @@ function () {
       this.showBoard();
       this.button.setButtons();
       this.button.bindEvents();
-      if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
 
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
         this.button.$el.empty();
         this.action.promptPlayer();
+      } else if (this.currentPlayer().hand[0]) {
+        this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
       }
     }
   }, {

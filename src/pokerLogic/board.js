@@ -235,10 +235,12 @@ export default class Board {
     this.showBoard();
     this.button.setButtons();
     this.button.bindEvents();
-    if (this.currentPlayer().hand[0]) this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
+  
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
       this.button.$el.empty();
       this.action.promptPlayer();
+    } else if (this.currentPlayer().hand[0]) {
+      this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
     }
   }
 
