@@ -13458,19 +13458,22 @@ function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var firstPreflop, response;
+        var wait, firstPreflop, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
-
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
+                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 1800 : 1250;
                 firstPreflop = this.board.checkFirstPreflop();
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', firstPreflop); // await this.sleep(wait);
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', firstPreflop);
+                _context.next = 6;
+                return this.sleep(wait);
 
+              case 6:
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 4:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -13507,8 +13510,7 @@ function () {
       if (playerAction === 'fold') {
         this.board.currentPlayer().folded = true;
         return this.board.determineWinner();
-      } // debugger
-
+      }
 
       var betRaise = this.board.bet.isCompBet(compBetRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
