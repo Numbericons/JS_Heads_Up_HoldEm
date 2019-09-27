@@ -75,14 +75,25 @@ export default class Button {
     $betsizeDiv.append($betDiv);
   }
 
-  betSizeButtons($betsizeDiv){
+  regularBetSizes($betsizeDiv){
     this.betSizeButton($betsizeDiv, "1/2 Pot");
     this.betSizeButton($betsizeDiv, "2/3 Pot");
     this.betSizeButton($betsizeDiv, "Pot");
     this.betSizeButton($betsizeDiv, "All In");
   }
 
-  setButtons() {
+  preflopBetSizes($betsizeDiv){
+    this.betSizeButton($betsizeDiv, "2X");
+    this.betSizeButton($betsizeDiv, "3X");
+    this.betSizeButton($betsizeDiv, "4X");
+    this.betSizeButton($betsizeDiv, "All In");
+  }
+
+  betSizeButtons($betsizeDiv, pfSize){
+    (pfSize) ? this.preflopBetSizes($betsizeDiv) : this.regularBetSizes($betsizeDiv);
+  }
+
+  setButtons(pfSize) {
     this.$el.empty();
     const $outDiv = $("<div>");
     $outDiv.addClass("actions-cont")
@@ -94,7 +105,7 @@ export default class Button {
     if (!this.board.allIn() && this.board.currentPlayer().chipstack > this.board.currBet) {
       this.betOrRaise($outDiv);
       this.betAmount($outDiv);
-      this.betSizeButtons($betsizeDiv);
+      this.betSizeButtons($betsizeDiv, pfSize);
     }
     this.$el.append($outDiv);
     this.$el.append($betsizeDiv);

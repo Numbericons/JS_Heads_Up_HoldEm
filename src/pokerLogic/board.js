@@ -224,6 +224,11 @@ export default class Board {
     this.renderPlayers();
   }
 
+  pfBetSize(){
+    return this.currStreet === 'preflop' && 
+      (!this.streetActions.length || (this.streetActions.length === 1 && this.streetActions[0] === this.sb)); //preflop first to act or 2nd to act after call  
+  }
+
   render() {
     this.renderDealerPlayers();
     this.showPot();
@@ -233,7 +238,7 @@ export default class Board {
       return;
     }
     this.showBoard();
-    this.button.setButtons();
+    this.button.setButtons(this.pfBetSize());
     this.button.bindEvents();
   
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {

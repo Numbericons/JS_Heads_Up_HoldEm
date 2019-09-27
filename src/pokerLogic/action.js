@@ -31,6 +31,7 @@ export default class Action {
   resolveAction(betRaise, playerAction) {
     let sb = this.board.isSb();
     if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
+    if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb);
     let oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
     if (betRaise > oppChipsRem) betRaise = oppChipsRem;
     let resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);

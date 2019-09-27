@@ -87,6 +87,10 @@ export default class Bet {
     return (bet < min) ? min : bet;
   }
 
+  pfBet(playerAction, bb) {
+    return parseInt(playerAction[0]) * bb;
+  }
+
   potRelativeBet(playerAction) {
     let bet;
     switch (playerAction) {

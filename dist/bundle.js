@@ -13492,6 +13492,7 @@ function () {
     value: function resolveAction(betRaise, playerAction) {
       var sb = this.board.isSb();
       if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
+      if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb);
       var oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
       if (betRaise > oppChipsRem) betRaise = oppChipsRem;
       var resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
@@ -13678,6 +13679,11 @@ function () {
 
 
       return bet < min ? min : bet;
+    }
+  }, {
+    key: "pfBet",
+    value: function pfBet(playerAction, bb) {
+      return parseInt(playerAction[0]) * bb;
     }
   }, {
     key: "potRelativeBet",
@@ -14082,6 +14088,11 @@ function () {
       this.renderPlayers();
     }
   }, {
+    key: "pfBetSize",
+    value: function pfBetSize() {
+      return this.currStreet === 'preflop' && (!this.streetActions.length || this.streetActions.length === 1 && this.streetActions[0] === this.sb); //preflop first to act or 2nd to act after call  
+    }
+  }, {
     key: "render",
     value: function render() {
       this.renderDealerPlayers();
@@ -14094,7 +14105,7 @@ function () {
       }
 
       this.showBoard();
-      this.button.setButtons();
+      this.button.setButtons(this.pfBetSize());
       this.button.bindEvents();
 
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
@@ -14274,16 +14285,29 @@ function () {
       $betsizeDiv.append($betDiv);
     }
   }, {
-    key: "betSizeButtons",
-    value: function betSizeButtons($betsizeDiv) {
+    key: "regularBetSizes",
+    value: function regularBetSizes($betsizeDiv) {
       this.betSizeButton($betsizeDiv, "1/2 Pot");
       this.betSizeButton($betsizeDiv, "2/3 Pot");
       this.betSizeButton($betsizeDiv, "Pot");
       this.betSizeButton($betsizeDiv, "All In");
     }
   }, {
+    key: "preflopBetSizes",
+    value: function preflopBetSizes($betsizeDiv) {
+      this.betSizeButton($betsizeDiv, "2X");
+      this.betSizeButton($betsizeDiv, "3X");
+      this.betSizeButton($betsizeDiv, "4X");
+      this.betSizeButton($betsizeDiv, "All In");
+    }
+  }, {
+    key: "betSizeButtons",
+    value: function betSizeButtons($betsizeDiv, pfSize) {
+      pfSize ? this.preflopBetSizes($betsizeDiv) : this.regularBetSizes($betsizeDiv);
+    }
+  }, {
     key: "setButtons",
-    value: function setButtons() {
+    value: function setButtons(pfSize) {
       this.$el.empty();
       var $outDiv = $("<div>");
       $outDiv.addClass("actions-cont");
@@ -14295,7 +14319,7 @@ function () {
       if (!this.board.allIn() && this.board.currentPlayer().chipstack > this.board.currBet) {
         this.betOrRaise($outDiv);
         this.betAmount($outDiv);
-        this.betSizeButtons($betsizeDiv);
+        this.betSizeButtons($betsizeDiv, pfSize);
       }
 
       this.$el.append($outDiv);
