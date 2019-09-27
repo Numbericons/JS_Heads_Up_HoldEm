@@ -13491,8 +13491,9 @@ function () {
     key: "resolveAction",
     value: function resolveAction(betRaise, playerAction) {
       var sb = this.board.isSb();
+      var secondPf = sb ? 0 : this.board.bb;
       if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
-      if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb);
+      if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb, secondPf);
       var oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
       if (betRaise > oppChipsRem) betRaise = oppChipsRem;
       var resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
@@ -13683,7 +13684,8 @@ function () {
   }, {
     key: "pfBet",
     value: function pfBet(playerAction, bb) {
-      return parseInt(playerAction[0]) * bb;
+      var second = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      return parseInt(playerAction[0]) * bb - second;
     }
   }, {
     key: "potRelativeBet",

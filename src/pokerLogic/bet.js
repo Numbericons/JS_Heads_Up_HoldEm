@@ -87,8 +87,8 @@ export default class Bet {
     return (bet < min) ? min : bet;
   }
 
-  pfBet(playerAction, bb) {
-    return parseInt(playerAction[0]) * bb;
+  pfBet(playerAction, bb, second = 0) {
+    return parseInt(playerAction[0]) * bb - second;
   }
 
   potRelativeBet(playerAction) {
