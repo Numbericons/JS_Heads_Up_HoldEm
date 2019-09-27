@@ -68,9 +68,10 @@ export default class Board {
 
   determineWinner() {
     this.handFinish = true;
+    debugger
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
-    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.textBoard()}, ` : `Preflop, `
+    this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.symbolBoard()}, ` : `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
     if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
       return this.tie(hand1);
@@ -161,9 +162,16 @@ export default class Board {
     }
   }
 
-  textBoard() {
+  symbolBoard() {
     let textBoard = this.boardCards.map(card => {
       return card.show();
+    })
+    return textBoard;
+  }
+
+  textBoard() {
+    let textBoard = this.boardCards.map(card => {
+      return `${card.rank}${card.suit}`;
     })
     return textBoard;
   }

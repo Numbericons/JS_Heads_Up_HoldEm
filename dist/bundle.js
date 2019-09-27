@@ -13856,9 +13856,10 @@ function () {
     key: "determineWinner",
     value: function determineWinner() {
       this.handFinish = true;
+      debugger;
       var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
       var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
-      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.textBoard(), ", ") : "Preflop, ";
+      this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.symbolBoard(), ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
       if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
@@ -14013,10 +14014,18 @@ function () {
       }
     }
   }, {
+    key: "symbolBoard",
+    value: function symbolBoard() {
+      var textBoard = this.boardCards.map(function (card) {
+        return card.show();
+      });
+      return textBoard;
+    }
+  }, {
     key: "textBoard",
     value: function textBoard() {
       var textBoard = this.boardCards.map(function (card) {
-        return card.show();
+        return "".concat(card.rank).concat(card.suit);
       });
       return textBoard;
     }
