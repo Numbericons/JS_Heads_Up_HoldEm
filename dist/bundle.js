@@ -13177,7 +13177,6 @@ function () {
   }, {
     key: "resolveBetRaise",
     value: function resolveBetRaise(betInput, sb) {
-      debugger;
       var betAmt = betInput > this.chipstack ? this.chipstack : betInput;
       this.chipstack -= betAmt;
       this.chipsInPot += betAmt;
@@ -13450,7 +13449,6 @@ function () {
       } else if (response[0] === 'check') {
         this.startAction(null, 'check');
       } else {
-        debugger;
         this.startAction(null, 'bet', Math.ceil(response[1]));
       }
     }
@@ -13468,12 +13466,11 @@ function () {
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 2500 : 1200;
 
                 firstPreflop = this.board.checkFirstPreflop();
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, firstPreflop, this.board.currStreet === 'preflop'); // await this.sleep(wait);
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', firstPreflop); // await this.sleep(wait);
 
-                debugger;
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 5:
+              case 4:
               case "end":
                 return _context.stop();
             }
@@ -13510,9 +13507,9 @@ function () {
       if (playerAction === 'fold') {
         this.board.currentPlayer().folded = true;
         return this.board.determineWinner();
-      }
+      } // debugger
 
-      debugger;
+
       var betRaise = this.board.bet.isCompBet(compBetRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
