@@ -13458,22 +13458,22 @@ function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
       regeneratorRuntime.mark(function _callee() {
-        var wait, firstPreflop, response;
+        var wait, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 1800 : 1250;
-                firstPreflop = this.board.checkFirstPreflop();
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', firstPreflop);
-                _context.next = 6;
+                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 1800 : 1250; // let firstPreflop = this.board.checkFirstPreflop();
+
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+                _context.next = 5;
                 return this.sleep(wait);
 
-              case 6:
+              case 5:
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 7:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -14063,14 +14063,12 @@ function () {
       var $currPot = $(".table-felt-pot");
       var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot);
       stack.render();
-    }
-  }, {
-    key: "checkFirstPreflop",
-    value: function checkFirstPreflop() {
-      if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
-        return this.sb;
-      }
-    }
+    } // checkFirstPreflop(){
+    //   if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+    //     return this.sb;
+    //   }
+    // }
+
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {

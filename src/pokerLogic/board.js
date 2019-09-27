@@ -208,11 +208,11 @@ export default class Board {
     stack.render();
   }
 
-  checkFirstPreflop(){
-    if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
-      return this.sb;
-    }
-  }
+  // checkFirstPreflop(){
+  //   if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
+  //     return this.sb;
+  //   }
+  // }
 
   renderPlayers(){
     this.players[0].render();
