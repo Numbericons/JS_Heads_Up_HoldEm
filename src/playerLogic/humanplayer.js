@@ -54,7 +54,8 @@ export default class HumanPlayer {
 
   playerName(current) {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
-    (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
+    if (current) playerName.className = 'glow';
+    // (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
     playerName.innerText = `${this.name}`;
   }
 
@@ -83,8 +84,8 @@ export default class HumanPlayer {
     $stackDiv.empty();
   }
 
-  render(){
-    this.playerName();
+  render(current){
+    this.playerName(current);
     this.playerChips();
     this.playerCards();
     (this.streetChipsInPot > 0) ? this.renderChips() : this.unrenderChips();

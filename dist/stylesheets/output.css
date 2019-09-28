@@ -362,8 +362,20 @@ body {
   transform: translateY(2.2vh);
 }
 
+#player-info-right-chip-text-name {
+  font-family: "Lora";
+  font-size: 17px;
+  height: 20px;
+}
+
+#player-info-left-chip-text-name {
+  font-size: 18px;
+  height: 20px;
+  font-family: "Lora";
+  font-size: 17px;
+}
+
 .glow {
-  font-size: 80px;
   color: #fff;
   text-align: center;
   -webkit-animation: glow 1s ease-in-out infinite alternate;

@@ -13203,8 +13203,10 @@ function () {
     }
   }, {
     key: "playerName",
-    value: function playerName() {
-      var playerName = document.querySelector(".player-info-".concat(this.side, "-chip-text-name"));
+    value: function playerName(current) {
+      // let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
+      var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
+      if (current) playerName.className = 'glow';
       playerName.innerText = "".concat(this.name);
     }
   }, {
@@ -13239,7 +13241,7 @@ function () {
   }, {
     key: "render",
     value: function render() {
-      this.playerName();
+      this.playerName(current);
       this.playerChips();
       this.playerCards();
       this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
@@ -13346,7 +13348,8 @@ function () {
     key: "playerName",
     value: function playerName(current) {
       var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
-      current ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
+      if (current) playerName.className = 'glow'; // (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
+
       playerName.innerText = "".concat(this.name);
     }
   }, {
@@ -13380,8 +13383,8 @@ function () {
     }
   }, {
     key: "render",
-    value: function render() {
-      this.playerName();
+    value: function render(current) {
+      this.playerName(current);
       this.playerChips();
       this.playerCards();
       this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
@@ -14089,8 +14092,9 @@ function () {
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {
-      this.players[0].render();
-      this.players[1].render();
+      var current = this.currPlayerPos === 0;
+      this.players[0].render(current);
+      this.players[1].render(current);
     }
   }, {
     key: "renderDealerPlayers",

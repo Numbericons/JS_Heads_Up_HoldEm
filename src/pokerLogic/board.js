@@ -223,8 +223,9 @@ export default class Board {
   // }
 
   renderPlayers(){
-    this.players[0].render();
-    this.players[1].render();
+    let current = this.currPlayerPos === 0;
+    this.players[0].render(current);
+    this.players[1].render(current);
   }
 
   renderDealerPlayers(){

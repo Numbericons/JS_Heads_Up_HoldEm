@@ -111,8 +111,10 @@ export default class ComputerPlayer {
     }
   }
 
-  playerName() {
-    let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
+  playerName(current) {
+    // let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
+    let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
+    if (current) playerName.className = 'glow';
     playerName.innerText = `${this.name}`;
   }
 
@@ -142,7 +144,7 @@ export default class ComputerPlayer {
   }
 
   render() {
-    this.playerName();
+    this.playerName(current);
     this.playerChips();
     this.playerCards();
     (this.streetChipsInPot > 0) ? this.renderChips() : this.unrenderChips();
