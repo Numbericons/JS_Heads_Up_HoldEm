@@ -13871,7 +13871,6 @@ function () {
     key: "determineWinner",
     value: function determineWinner() {
       this.handFinish = true;
-      debugger;
       var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
       var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
       this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.symbolBoard(), ", ") : "Preflop, ";
@@ -13892,13 +13891,19 @@ function () {
       chat.val(str);
     }
   }, {
+    key: "chipMissing",
+    value: function chipMissing() {
+      return this.players[0].chipstack + this.players[1].chipstack < this.table.initialChipstack * 2;
+    }
+  }, {
     key: "tie",
     value: function tie(hand) {
       this.renderChat(this.outputString + "the hand resulted in a tie. Splitting the pot of $".concat(this.pot, " with ").concat(hand.descr, "!"));
       this.players[0].chipstack += Math.floor(this.pot / 2);
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
-      if (!this.pot % 2 === 0) {
+      if (this.chipMissing()) {
+        // if (!this.pot % 2 === 0 && this.chipMissing()) {
         if (Math.random() < .5) {
           this.players[0].chipstack += 1;
         } else {
@@ -13911,13 +13916,15 @@ function () {
     }
   }, {
     key: "winner",
-    value: function winner(winHand, loseHand, winPos, losePos) {
-      this.outputString += "".concat(this.players[winPos].name, " wins the pot of $").concat(this.pot);
-      if (!this.players[losePos].folded) this.outputString += " with hand: ".concat(winHand.descr);
-      if (!this.players[losePos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
-      this.players[winPos].chipstack += this.pot;
+    value: function winner(winHand, loseHand, wonPos, lostPos) {
+      this.outputString += "".concat(this.players[wonPos].name, " wins the pot of $").concat(this.pot);
+      if (!this.players[lostPos].folded) this.outputString += " with hand: ".concat(winHand.descr);
+      if (!this.players[lostPos].chipstack === 0) this.outputString += "".concat(this.players[losePos].name, " lost with with hand: ").concat(loseHand.descr);
+      this.players[wonPos].chipstack += this.pot;
       this.renderPlayers();
       this.renderChat(this.outputString);
+      this.$currPot.removeClass();
+      this.$currPot.addClass("won-".concat(this.players[wonPos].side));
       this.table.handOver();
     }
   }, {
@@ -14092,9 +14099,9 @@ function () {
     value: function showPot() {
       var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
-      var $currPot = $(".table-felt-pot");
-      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot, true);
-      stack.render();
+      this.$currPot = $("#table-felt-pot");
+      var potStack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, this.$currPot);
+      potStack.render();
     } // checkFirstPreflop(){
     //   if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
     //     return this.sb;
@@ -14519,14 +14526,13 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Chipstack =
 /*#__PURE__*/
 function () {
-  function Chipstack(amount, $tableEl, isPot) {
+  function Chipstack(amount, $tableEl) {
     _classCallCheck(this, Chipstack);
 
     this.amount = amount;
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
-    this.$stackDiv.addClass("chips");
-    if (isPot) this.$stackDiv.addClass("move");
+    this.$stackDiv.addClass("chips"); // if (isPot) this.$stackDiv.addClass("move");
   }
 
   _createClass(Chipstack, [{
@@ -14756,6 +14762,7 @@ function () {
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
+    this.initialChipstack = initialChipstack;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
     this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
     this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');

@@ -382,24 +382,6 @@ body {
     text-shadow: 0 0 20px #fff, 0 0 30px #f53737, 0 0 40px #f53737, 0 0 50px #f53737, 0 0 60px #f53737, 0 0 70px #f53737, 0 0 80px #f53737;
   }
 }
-.head-glow {
-  color: #fff;
-  text-align: center;
-  -webkit-animation: headGlow 1s ease-in-out infinite alternate;
-  -moz-animation: headGlow 1s ease-in-out infinite alternate;
-  animation: headGlow 1s ease-in-out infinite alternate;
-}
-
-@-webkit-keyframes headGlow {
-  from {
-    font-size: 40px;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
-  }
-  to {
-    font-size: 41px;
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
-  }
-}
 .top {
   height: 17vh;
   display: flex;
@@ -469,72 +451,32 @@ body {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
   }
 }
-.move {
-  -webkit-animation: move 1s alternate;
-  -moz-animation: move 1s alternate;
-  animation: move 1s steps(45);
+.won-left {
+  -webkit-animation: winLeft 1s alternate;
+  -moz-animation: winLeft 1s alternate;
+  animation: winLeft 2s steps(45);
 }
 
-@-webkit-keyframes move {
+@-webkit-keyframes winLeft {
   from {
     transform: translate(0px, 0px);
   }
   to {
-    transform: translate(21vw, -16vh);
+    transform: translate(-19vw, -17vh);
   }
 }
-.move2 {
-  animation: play 10s steps(10) infinite alternate;
+.won-right {
+  -webkit-animation: winRight 1s alternate;
+  -moz-animation: winRight 1s alternate;
+  animation: winRight 2s steps(45);
 }
 
-@-webkit-keyframes play {
+@-webkit-keyframes winRight {
   from {
-    top: 0;
-    left: 0;
+    transform: translate(0px, 0px);
   }
   to {
-    top: 100px;
-    left: 100px;
-  }
-}
-@-moz-keyframes play {
-  from {
-    top: 0;
-    left: 0;
-  }
-  to {
-    top: 100px;
-    left: 100px;
-  }
-}
-@-ms-keyframes play {
-  from {
-    top: 0;
-    left: 0;
-  }
-  to {
-    top: 100px;
-    left: 100px;
-  }
-}
-@-o-keyframes play {
-  from {
-    top: 0;
-    left: 0;
-  }
-  to {
-    top: 100px;
-    left: 100px;
-  }
-}
-@keyframes play {
-  from {
-    top: 0;
-    left: 0;
-  }
-  to {
-    top: 100px;
-    left: 100px;
+    transform: translate(19vw, -17vh);
   }
 }
 .actions-cont {

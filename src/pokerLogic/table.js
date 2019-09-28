@@ -8,6 +8,7 @@ class Table {
     this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
+    this.initialChipstack = initialChipstack;
 
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
     this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');

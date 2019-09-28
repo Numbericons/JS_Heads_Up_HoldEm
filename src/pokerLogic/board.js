@@ -68,7 +68,6 @@ export default class Board {
 
   determineWinner() {
     this.handFinish = true;
-    debugger
     var hand1 = Hand.solve(this.handToStrArr(this.players[0]).concat(this.textBoard()));
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
     this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.symbolBoard()}, ` : `Preflop, `
@@ -87,11 +86,16 @@ export default class Board {
     chat.val(str);
   }
 
+  chipMissing(){
+    return this.players[0].chipstack + this.players[1].chipstack < this.table.initialChipstack * 2;
+  }
+
   tie(hand) {
     this.renderChat(this.outputString + `the hand resulted in a tie. Splitting the pot of $${this.pot} with ${hand.descr}!`)
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
-    if (!this.pot % 2 === 0) {
+    if (this.chipMissing()) {
+    // if (!this.pot % 2 === 0 && this.chipMissing()) {
       if (Math.random() < .5) {
         this.players[0].chipstack += 1;
       } else {
@@ -102,13 +106,15 @@ export default class Board {
     this.table.handOver();
   }
 
-  winner(winHand, loseHand, winPos, losePos) {
-    this.outputString += `${this.players[winPos].name} wins the pot of $${this.pot}`;
-    if (!this.players[losePos].folded) this.outputString += ` with hand: ${winHand.descr}`;
-    if (!this.players[losePos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
-    this.players[winPos].chipstack += this.pot;
+  winner(winHand, loseHand, wonPos, lostPos) {
+    this.outputString += `${this.players[wonPos].name} wins the pot of $${this.pot}`;
+    if (!this.players[lostPos].folded) this.outputString += ` with hand: ${winHand.descr}`;
+    if (!this.players[lostPos].chipstack === 0) this.outputString += `${this.players[losePos].name} lost with with hand: ${loseHand.descr}`;
+    this.players[wonPos].chipstack += this.pot;
     this.renderPlayers();
     this.renderChat(this.outputString);
+    this.$currPot.removeClass();
+    this.$currPot.addClass(`won-${this.players[wonPos].side}`);
     this.table.handOver();
   }
 
@@ -211,9 +217,9 @@ export default class Board {
   showPot() {
     let currPotText = document.querySelector(`.top-left-current-pot-text`);
     currPotText.innerText = `Current pot: $${this.pot}`;
-    let $currPot = $(`.table-felt-pot`);
-    let stack = new Chipstack(this.pot, $currPot, true);
-    stack.render();
+    this.$currPot = $(`#table-felt-pot`);
+    let potStack = new Chipstack(this.pot, this.$currPot);
+    potStack.render();
   }
 
   // checkFirstPreflop(){

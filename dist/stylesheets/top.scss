@@ -80,51 +80,32 @@
   }
 }
 
-.move {
-  -webkit-animation: move 1s alternate;
-  -moz-animation: move 1s alternate;
-  animation: move 1s steps(45);
+.won-left {
+  -webkit-animation: winLeft 1s alternate;
+  -moz-animation: winLeft 1s alternate;
+  animation: winLeft 2s steps(45);
 }
 
-@-webkit-keyframes move {
+@-webkit-keyframes winLeft {
   from {
     transform: translate(0px,0px);
   }
   to {
-    transform: translate(21vw,-16vh);
+    transform: translate(-19vw,-17vh);
   }
 }
 
-.move2 {
-  animation: play 10s steps(10) infinite alternate;
-    // -webkit-animation: play .8s steps(10) infinite;
-    //    -moz-animation: play .8s steps(10) infinite;
-    //     -ms-animation: play .8s steps(10) infinite;
-    //      -o-animation: play .8s steps(10) infinite;
-    //         animation: play .8s steps(10) infinite;
+.won-right {
+  -webkit-animation: winRight 1s alternate;
+  -moz-animation: winRight 1s alternate;
+  animation: winRight 2s steps(45);
 }
 
-@-webkit-keyframes play {
-  from { top: 0; left: 0; }
-  to   { top: 100px; left: 100px; }
-}
-
-@-moz-keyframes play {
-  from { top: 0; left: 0; }
-  to   { top: 100px; left: 100px; }
-}
-
-@-ms-keyframes play {
-  from { top: 0; left: 0; }
-  to   { top: 100px; left: 100px; }
-}
-
-@-o-keyframes play {
-  from { top: 0; left: 0; }
-  to   { top: 100px; left: 100px; }
-}
-
-@keyframes play {
-  from { top: 0; left: 0; }
-  to   { top: 100px; left: 100px; }
+@-webkit-keyframes winRight {
+  from {
+    transform: translate(0px,0px);
+  }
+  to {
+    transform: translate(19vw,-17vh);
+  }
 }
