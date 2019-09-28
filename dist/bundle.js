@@ -14093,7 +14093,7 @@ function () {
       var currPotText = document.querySelector(".top-left-current-pot-text");
       currPotText.innerText = "Current pot: $".concat(this.pot);
       var $currPot = $(".table-felt-pot");
-      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot);
+      var stack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, $currPot, true);
       stack.render();
     } // checkFirstPreflop(){
     //   if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
@@ -14246,7 +14246,7 @@ function () {
       var $foldDiv = $("<button>");
       $foldDiv.addClass("actions-cont-text");
       $foldDiv.data("action", "fold");
-      $foldDiv.html('FOLD');
+      $foldDiv.html('Fold');
       $outDiv.append($foldDiv);
     }
   }, {
@@ -14257,10 +14257,10 @@ function () {
 
       if (this.board.currBet === 0) {
         $callDiv.data("action", "check");
-        $callDiv.html('CHECK');
+        $callDiv.html('Check');
       } else {
         $callDiv.data("action", "call");
-        $callDiv.html('CALL');
+        $callDiv.html('Call');
       }
 
       $outDiv.append($callDiv);
@@ -14295,10 +14295,10 @@ function () {
 
       if (this.board.currBet === 0) {
         $betDiv.data("action", "bet");
-        $betDiv.html('BET');
+        $betDiv.html('Bet');
       } else {
         $betDiv.data("action", "raise");
-        $betDiv.html('RAISE');
+        $betDiv.html('Raise');
       }
 
       $outDiv.append($betDiv);
@@ -14519,13 +14519,14 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Chipstack =
 /*#__PURE__*/
 function () {
-  function Chipstack(amount, $tableEl) {
+  function Chipstack(amount, $tableEl, isPot) {
     _classCallCheck(this, Chipstack);
 
     this.amount = amount;
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
     this.$stackDiv.addClass("chips");
+    if (isPot) this.$stackDiv.addClass("move");
   }
 
   _createClass(Chipstack, [{

@@ -1,9 +1,10 @@
 export default class Chipstack {
-  constructor(amount, $tableEl){
+  constructor(amount, $tableEl, isPot){
     this.amount = amount;
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
     this.$stackDiv.addClass("chips");
+    if (isPot) this.$stackDiv.addClass("move");
   }
 
   getChips(amount) {

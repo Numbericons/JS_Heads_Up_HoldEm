@@ -376,10 +376,28 @@ body {
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c, 0 0 60px #ff003c, 0 0 70px #ff003c;
   }
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    text-shadow: 0 0 20px #fff, 0 0 30px #f53737, 0 0 40px #f53737, 0 0 50px #f53737, 0 0 60px #f53737, 0 0 70px #f53737, 0 0 80px #f53737;
+  }
+}
+.head-glow {
+  color: #fff;
+  text-align: center;
+  -webkit-animation: headGlow 1s ease-in-out infinite alternate;
+  -moz-animation: headGlow 1s ease-in-out infinite alternate;
+  animation: headGlow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes headGlow {
+  from {
+    font-size: 40px;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
+  }
+  to {
+    font-size: 41px;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
   }
 }
 .top {
@@ -436,6 +454,89 @@ body {
   transform: translateY(-0.5vh);
 }
 
+.top-header-glow {
+  text-align: center;
+  -webkit-animation: topHeaderGlow 1s ease-in-out infinite alternate;
+  -moz-animation: topHeaderGlow 1s ease-in-out infinite alternate;
+  animation: topHeaderGlow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes topHeaderGlow {
+  from {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
+  }
+  to {
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
+  }
+}
+.move {
+  -webkit-animation: move 1s alternate;
+  -moz-animation: move 1s alternate;
+  animation: move 1s steps(45);
+}
+
+@-webkit-keyframes move {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(21vw, -16vh);
+  }
+}
+.move2 {
+  animation: play 10s steps(10) infinite alternate;
+}
+
+@-webkit-keyframes play {
+  from {
+    top: 0;
+    left: 0;
+  }
+  to {
+    top: 100px;
+    left: 100px;
+  }
+}
+@-moz-keyframes play {
+  from {
+    top: 0;
+    left: 0;
+  }
+  to {
+    top: 100px;
+    left: 100px;
+  }
+}
+@-ms-keyframes play {
+  from {
+    top: 0;
+    left: 0;
+  }
+  to {
+    top: 100px;
+    left: 100px;
+  }
+}
+@-o-keyframes play {
+  from {
+    top: 0;
+    left: 0;
+  }
+  to {
+    top: 100px;
+    left: 100px;
+  }
+}
+@keyframes play {
+  from {
+    top: 0;
+    left: 0;
+  }
+  to {
+    top: 100px;
+    left: 100px;
+  }
+}
 .actions-cont {
   width: 50%;
   display: flex;

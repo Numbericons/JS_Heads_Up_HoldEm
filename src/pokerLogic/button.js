@@ -16,7 +16,7 @@ export default class Button {
     let $foldDiv = $("<button>");
     $foldDiv.addClass("actions-cont-text");
     $foldDiv.data("action", "fold");
-    $foldDiv.html('FOLD');
+    $foldDiv.html('Fold');
     $outDiv.append($foldDiv)
   }
 
@@ -25,10 +25,10 @@ export default class Button {
     $callDiv.addClass("actions-cont-text")
     if (this.board.currBet === 0) {
       $callDiv.data("action", "check");
-      $callDiv.html('CHECK');
+      $callDiv.html('Check');
     } else {
       $callDiv.data("action", "call");
-      $callDiv.html('CALL');
+      $callDiv.html('Call');
     }
 
     $outDiv.append($callDiv)
@@ -59,10 +59,10 @@ export default class Button {
 
     if (this.board.currBet === 0) {
       $betDiv.data("action", "bet");
-      $betDiv.html('BET');
+      $betDiv.html('Bet');
     } else {
       $betDiv.data("action", "raise");
-      $betDiv.html('RAISE');
+      $betDiv.html('Raise');
     }
     $outDiv.append($betDiv)
   }

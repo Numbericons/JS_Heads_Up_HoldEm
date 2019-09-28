@@ -212,7 +212,7 @@ export default class Board {
     let currPotText = document.querySelector(`.top-left-current-pot-text`);
     currPotText.innerText = `Current pot: $${this.pot}`;
     let $currPot = $(`.table-felt-pot`);
-    let stack = new Chipstack(this.pot, $currPot);
+    let stack = new Chipstack(this.pot, $currPot, true);
     stack.render();
   }
 

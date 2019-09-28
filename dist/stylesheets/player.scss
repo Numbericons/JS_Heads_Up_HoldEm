@@ -153,11 +153,36 @@
 
 @-webkit-keyframes glow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c, 0 0 60px #ff003c, 0 0 70px #ff003c;
+    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60036, 0 0 40px #e60036, 0 0 50px #e60036, 0 0 60px #e60036, 0 0 70px #e60036;
+    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
   }
   to {
-    text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
+    text-shadow: 0 0 20px #fff, 0 0 30px #f53737, 0 0 40px #f53737, 0 0 50px #f53737, 0 0 60px #f53737, 0 0 70px #f53737, 0 0 80px #f53737;
+    // text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
   }
 }
-//     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
+
+.head-glow {
+  color: #fff;
+  text-align: center;
+  -webkit-animation: headGlow 1s ease-in-out infinite alternate;
+  -moz-animation: headGlow 1s ease-in-out infinite alternate;
+  animation: headGlow 1s ease-in-out infinite alternate;
+}
+
+@-webkit-keyframes headGlow {
+  from {
+    font-size: 40px;
+    // transform: rotate(-5deg);
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
+  }
+  to {
+    font-size: 41px;
+    // transform: rotate(5deg);
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
+    // text-shadow: 0 0 20px #fff, 0 0 30px #397dd0, 0 0 40px #397dd0, 0 0 50px #397dd0, 0 0 60px #397dd0, 0 0 70px #397dd0, 0 0 80px #397dd0;
+  }
+}
+    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
 //     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
