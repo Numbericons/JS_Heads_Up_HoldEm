@@ -42,16 +42,6 @@
       justify-content: center;
       align-items: center;
       margin-right: 30px;
-      &-name{
-        font-size: 18px;
-        height: 20px;
-        font-family: 'Lora';
-        font-size: 17px;
-      }
-      &-chips{
-        font-size: 16px;
-        font-family: 'Lora';
-      }
     }
     &-img{
       float: left;
@@ -108,15 +98,6 @@
       justify-content: center;
       align-items: center;
       width: 240px;
-      &-name{
-        font-family: 'Lora';
-        font-size: 17px;
-        height: 20px;
-      }
-      &-chips{
-        font-family: 'Lora';
-        font-size: 16px;
-      }
     }
     &-img{
       float: left;
@@ -150,6 +131,16 @@
   height: 20px;
   font-family: 'Lora';
   font-size: 17px;
+}
+
+#player-info-right-chip-text-chips{
+  font-family: 'Lora';
+  font-size: 16px;
+}
+
+#player-info-left-chip-text-chips{
+  font-family: 'Lora';
+  font-size: 16px;
 }
 
 .glow {

@@ -83,9 +83,9 @@ export default class Button {
   }
 
   preflopBetSizes($betsizeDiv){
-    this.betSizeButton($betsizeDiv, "2X");
     this.betSizeButton($betsizeDiv, "3X");
     this.betSizeButton($betsizeDiv, "4X");
+    this.betSizeButton($betsizeDiv, "5X");
     this.betSizeButton($betsizeDiv, "All In");
   }
 

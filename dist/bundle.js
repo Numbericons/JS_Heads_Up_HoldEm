@@ -13202,22 +13202,28 @@ function () {
       }
     }
   }, {
-    key: "playerName",
-    value: function playerName(current) {
-      // let playerName = document.querySelector(`.player-info-${this.side}-chip-text-name`);
+    key: "renderName",
+    value: function renderName(gameStarted, current) {
       var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
-      if (current) playerName.className = 'glow';
       playerName.innerText = "".concat(this.name);
+
+      if (gameStarted) {
+        current ? playerName.className = 'glow' : playerName.className = '';
+      }
     }
   }, {
-    key: "playerChips",
-    value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
+    key: "renderTextChips",
+    value: function renderTextChips(gameStarted, current) {
+      var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
+
+      if (gameStarted) {
+        current ? playerChips.className = 'glow' : playerChips.className = '';
+      }
     }
   }, {
-    key: "playerCards",
-    value: function playerCards() {
+    key: "renderCards",
+    value: function renderCards() {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
@@ -13240,10 +13246,10 @@ function () {
     }
   }, {
     key: "render",
-    value: function render() {
-      this.playerName(current);
-      this.playerChips();
-      this.playerCards();
+    value: function render(gameStarted, current) {
+      this.renderName(gameStarted, current);
+      this.renderTextChips(gameStarted, current);
+      this.renderCards();
       this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
     }
   }, {
@@ -13345,22 +13351,28 @@ function () {
       }
     }
   }, {
-    key: "playerName",
-    value: function playerName(current) {
+    key: "renderName",
+    value: function renderName(gameStarted, current) {
       var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
-      if (current) playerName.className = 'glow'; // (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
-
       playerName.innerText = "".concat(this.name);
+
+      if (gameStarted) {
+        current ? playerName.className = 'glow' : playerName.className = '';
+      }
     }
   }, {
-    key: "playerChips",
-    value: function playerChips() {
-      var playerChips = document.querySelector(".player-info-".concat(this.side, "-chip-text-chips"));
+    key: "renderTextChips",
+    value: function renderTextChips(gameStarted, current) {
+      var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
+
+      if (gameStarted) {
+        current ? playerChips.className = "glow" : playerChips.className = "";
+      }
     }
   }, {
-    key: "playerCards",
-    value: function playerCards() {
+    key: "renderCards",
+    value: function renderCards() {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
@@ -13383,10 +13395,10 @@ function () {
     }
   }, {
     key: "render",
-    value: function render(current) {
-      this.playerName(current);
-      this.playerChips();
-      this.playerCards();
+    value: function render(gameStarted, current) {
+      this.renderName(gameStarted, current);
+      this.renderTextChips(gameStarted, current);
+      this.renderCards();
       this.streetChipsInPot > 0 ? this.renderChips() : this.unrenderChips();
     }
   }, {
@@ -14092,9 +14104,10 @@ function () {
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {
-      var current = this.currPlayerPos === 0;
-      this.players[0].render(current);
-      this.players[1].render(current);
+      var gameStarted = !!this.pot;
+      var currZero = this.currPlayerPos === 0;
+      this.players[0].render(gameStarted, currZero);
+      this.players[1].render(gameStarted, !currZero);
     }
   }, {
     key: "renderDealerPlayers",
@@ -14310,9 +14323,9 @@ function () {
   }, {
     key: "preflopBetSizes",
     value: function preflopBetSizes($betsizeDiv) {
-      this.betSizeButton($betsizeDiv, "2X");
       this.betSizeButton($betsizeDiv, "3X");
       this.betSizeButton($betsizeDiv, "4X");
+      this.betSizeButton($betsizeDiv, "5X");
       this.betSizeButton($betsizeDiv, "All In");
     }
   }, {

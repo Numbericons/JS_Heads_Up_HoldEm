@@ -52,19 +52,23 @@ export default class HumanPlayer {
     }
   }
 
-  playerName(current) {
+  renderName(gameStarted, current) {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
-    if (current) playerName.className = 'glow';
-    // (current) ? playerName.className = 'glow' : playerName.className = 'player-info-right-chip-text-name';
     playerName.innerText = `${this.name}`;
+    if (gameStarted) {
+      (current) ? playerName.className = 'glow' : playerName.className = '';
+    }
   }
 
-  playerChips() {
-    let playerChips = document.querySelector(`.player-info-${this.side}-chip-text-chips`);
+  renderTextChips(gameStarted, current) {
+    let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
     playerChips.innerText = `$${this.chipstack}`
+    if (gameStarted) {
+      (current) ? playerChips.className = "glow" : playerChips.className = "";
+    }
   }
 
-  playerCards() {
+  renderCards() {
     if (this.hand[0]) {
       let playerCard1 = document.querySelector(`.player-info-${this.side}-cards-1`);
       let playerCard2 = document.querySelector(`.player-info-${this.side}-cards-2`);
@@ -84,10 +88,10 @@ export default class HumanPlayer {
     $stackDiv.empty();
   }
 
-  render(current){
-    this.playerName(current);
-    this.playerChips();
-    this.playerCards();
+  render(gameStarted, current){
+    this.renderName(gameStarted, current);
+    this.renderTextChips(gameStarted, current);
+    this.renderCards();
     (this.streetChipsInPot > 0) ? this.renderChips() : this.unrenderChips();
   }
 

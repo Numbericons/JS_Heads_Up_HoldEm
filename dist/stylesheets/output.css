@@ -266,16 +266,6 @@ body {
   align-items: center;
   margin-right: 30px;
 }
-.player-info-left-chip-text-name {
-  font-size: 18px;
-  height: 20px;
-  font-family: "Lora";
-  font-size: 17px;
-}
-.player-info-left-chip-text-chips {
-  font-size: 16px;
-  font-family: "Lora";
-}
 .player-info-left-chip-img {
   float: left;
   margin: 0 10px 0 -25px;
@@ -332,15 +322,6 @@ body {
   align-items: center;
   width: 240px;
 }
-.player-info-right-chip-text-name {
-  font-family: "Lora";
-  font-size: 17px;
-  height: 20px;
-}
-.player-info-right-chip-text-chips {
-  font-family: "Lora";
-  font-size: 16px;
-}
 .player-info-right-chip-img {
   float: left;
   margin: 0 10px 0 -40px;
@@ -373,6 +354,16 @@ body {
   height: 20px;
   font-family: "Lora";
   font-size: 17px;
+}
+
+#player-info-right-chip-text-chips {
+  font-family: "Lora";
+  font-size: 16px;
+}
+
+#player-info-left-chip-text-chips {
+  font-family: "Lora";
+  font-size: 16px;
 }
 
 .glow {

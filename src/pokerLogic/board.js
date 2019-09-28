@@ -223,9 +223,11 @@ export default class Board {
   // }
 
   renderPlayers(){
-    let current = this.currPlayerPos === 0;
-    this.players[0].render(current);
-    this.players[1].render(current);
+    let gameStarted = !!this.pot;
+    let currZero = this.currPlayerPos === 0;
+    this.players[0].render(gameStarted, currZero);
+    this.players[1].render(gameStarted, !currZero);
+
   }
 
   renderDealerPlayers(){
