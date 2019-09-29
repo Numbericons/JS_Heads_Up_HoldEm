@@ -24,6 +24,8 @@ export default class Board {
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
     this.handFinish = false;
+    this.humanChips = $('#table-felt-board-bet-player-1')
+    this.compChips = $('#table-felt-board-bet-player-2')
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -39,6 +41,7 @@ export default class Board {
   }
 
   resetVars() {
+    this.$currPot.removeClass();
     this.deck = new Deck;
     this.boardCards = [];
     this.pot = 0;
@@ -48,6 +51,8 @@ export default class Board {
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
     this.handFinish = false;
+    this.humanChips.removeClass();
+    this.compChips.removeClass();
   }
 
   showDealerBtn() {
@@ -113,11 +118,10 @@ export default class Board {
     this.players[wonPos].chipstack += this.pot;
     this.renderPlayers();
     this.renderChat(this.outputString);
-    this.$currPot.removeClass();
     this.$currPot.addClass(`won-${this.players[wonPos].side}`);
     this.table.handOver();
   }
-
+  
   clearBoard() {
     for (let i = 0; i < this.boardCards.length; i++) {
       let card = document.querySelector(`.table-felt-board-card-${i + 1}`);
@@ -286,7 +290,13 @@ export default class Board {
     }
   }
 
+  // combineChips(){
+  //   this.humanChips.addClass('')
+  //   this.compChips.addClass('')
+  // }
+
   stepStreet(flopBool) {
+    this.combineChips();
     (flopBool) ? this.dealFlop() : this.dealCard(true);
     this.showBoard();
     if (!this.allIn()) this.render();

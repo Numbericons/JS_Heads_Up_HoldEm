@@ -112,16 +112,6 @@ body {
   display: flex;
   margin-top: 5vh;
 }
-.table-felt-board-bet-player-1 {
-  font-family: "Lora", cursive;
-  align-self: center;
-  padding: 10px;
-}
-.table-felt-board-bet-player-2 {
-  font-family: "Lora", cursive;
-  align-self: center;
-  padding: 15px;
-}
 .table-felt-dealer-btn {
   display: flex;
   justify-content: space-between;
@@ -213,6 +203,18 @@ body {
   font-weight: bold;
   font-family: Open sans-serif;
   font-size: 18px;
+}
+
+#table-felt-board-bet-player-1 {
+  font-family: "Lora", cursive;
+  align-self: center;
+  padding: 10px;
+}
+
+#table-felt-board-bet-player-2 {
+  font-family: "Lora", cursive;
+  align-self: center;
+  padding: 15px;
 }
 
 .display-none {

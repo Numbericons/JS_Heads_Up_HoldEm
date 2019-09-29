@@ -43,16 +43,6 @@
       height: 222px;
       display: flex;
       margin-top: 5vh;
-      &-bet-player-1{
-        font-family: 'Lora', cursive;
-        align-self: center;
-        padding: 10px;
-      }
-      &-bet-player-2{
-        font-family: 'Lora', cursive;
-        align-self: center;
-        padding: 15px;
-      }
     }
     &-dealer-btn{
       display: flex;
@@ -148,6 +138,25 @@
       }
     }
   }
+}
+
+#table-felt-board-bet-player-1{
+  font-family: 'Lora', cursive;
+  align-self: center;
+  padding: 10px;
+}
+
+#table-felt-board-bet-player-2{
+  font-family: 'Lora', cursive;
+  align-self: center;
+  padding: 15px;
+}
+
+.chip-combine-left{
+
+}
+.chip-combine-right{
+  
 }
 
 .display-none{

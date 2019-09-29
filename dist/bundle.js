@@ -13798,6 +13798,8 @@ function () {
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
     this.handFinish = false;
+    this.humanChips = $('#table-felt-board-bet-player-1');
+    this.compChips = $('#table-felt-board-bet-player-2');
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -13817,6 +13819,7 @@ function () {
   }, {
     key: "resetVars",
     value: function resetVars() {
+      this.$currPot.removeClass();
       this.deck = new _deck__WEBPACK_IMPORTED_MODULE_1__["default"]();
       this.boardCards = [];
       this.pot = 0;
@@ -13826,6 +13829,8 @@ function () {
       this.currStreet = 'preflop';
       this.lastShownCard = 0;
       this.handFinish = false;
+      this.humanChips.removeClass();
+      this.compChips.removeClass();
     }
   }, {
     key: "showDealerBtn",
@@ -13923,7 +13928,6 @@ function () {
       this.players[wonPos].chipstack += this.pot;
       this.renderPlayers();
       this.renderChat(this.outputString);
-      this.$currPot.removeClass();
       this.$currPot.addClass("won-".concat(this.players[wonPos].side));
       this.table.handOver();
     }
@@ -14176,10 +14180,15 @@ function () {
         this.dealCard(true);
         this.showBoard();
       }
-    }
+    } // combineChips(){
+    //   this.humanChips.addClass('')
+    //   this.compChips.addClass('')
+    // }
+
   }, {
     key: "stepStreet",
     value: function stepStreet(flopBool) {
+      this.combineChips();
       flopBool ? this.dealFlop() : this.dealCard(true);
       this.showBoard();
       if (!this.allIn()) this.render();
