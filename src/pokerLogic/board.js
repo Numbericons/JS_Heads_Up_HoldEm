@@ -54,7 +54,11 @@ export default class Board {
   }
 
   showDealerBtn() {
-    (this.table.handNum % 2 === 0) ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
+    if (!!this.pot){
+      (this.table.handNum % 2 === 0) ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
+    } else {
+      this.button.hideDealerBtn();
+    }
   }
 
   resetPlayerVars() {

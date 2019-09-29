@@ -13833,7 +13833,11 @@ function () {
   }, {
     key: "showDealerBtn",
     value: function showDealerBtn() {
-      this.table.handNum % 2 === 0 ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
+      if (!!this.pot) {
+        this.table.handNum % 2 === 0 ? this.button.showDealerBtnHelp('left', 'right') : this.button.showDealerBtnHelp('right', 'left');
+      } else {
+        this.button.hideDealerBtn();
+      }
     }
   }, {
     key: "resetPlayerVars",
@@ -14271,9 +14275,17 @@ function () {
   }
 
   _createClass(Button, [{
+    key: "hideDealerBtn",
+    value: function hideDealerBtn() {
+      $("#table-felt-dealer-btn-img-left").addClass("display-none");
+      $("#table-felt-dealer-btn-img-right").addClass("display-none");
+    }
+  }, {
     key: "showDealerBtnHelp",
     value: function showDealerBtnHelp(showDir, hideDir) {
-      $("#table-felt-dealer-btn-img-".concat(hideDir)).addClass("display-none");
+      var notDealer = $("#table-felt-dealer-btn-img-".concat(hideDir));
+      notDealer.removeClass();
+      notDealer.addClass("display-none");
       var dealerBtn = $("#table-felt-dealer-btn-img-".concat(showDir));
       dealerBtn.removeClass();
       this.board.boardCards.length === 0 ? dealerBtn.addClass("table-felt-dealer-btn-img-".concat(showDir)) : dealerBtn.addClass("table-felt-dealer-btn-img-".concat(showDir, "-board"));

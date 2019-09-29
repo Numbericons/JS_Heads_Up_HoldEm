@@ -5,8 +5,15 @@ export default class Button {
     this.bindEvents = this.bindEvents.bind(this);
   }
 
+  hideDealerBtn(){
+    $(`#table-felt-dealer-btn-img-left`).addClass("display-none");
+    $(`#table-felt-dealer-btn-img-right`).addClass("display-none");
+  }
+
   showDealerBtnHelp(showDir, hideDir) {
-    $(`#table-felt-dealer-btn-img-${hideDir}`).addClass("display-none");
+    let notDealer = $(`#table-felt-dealer-btn-img-${hideDir}`);
+    notDealer.removeClass();
+    notDealer.addClass("display-none");
     let dealerBtn = $(`#table-felt-dealer-btn-img-${showDir}`);
     dealerBtn.removeClass();
     (this.board.boardCards.length === 0) ? dealerBtn.addClass(`table-felt-dealer-btn-img-${showDir}`) : dealerBtn.addClass(`table-felt-dealer-btn-img-${showDir}-board`);
