@@ -73,6 +73,10 @@ body {
   overflow-y: noscroll;
 }
 
+.display-none {
+  display: none;
+}
+
 .table {
   height: 87vh;
   display: flex;
@@ -217,10 +221,34 @@ body {
   padding: 15px;
 }
 
-.display-none {
-  display: none;
+.chip-combine-left {
+  -webkit-animation: combineLeft 1s alternate;
+  -moz-animation: combineLeft 1s alternate;
+  animation: combineLeft 1s steps(45);
 }
 
+@-webkit-keyframes combineLeft {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(19vw, 17vh);
+  }
+}
+.chip-combine-right {
+  -webkit-animation: combineRight 1s alternate;
+  -moz-animation: combineRight 1s alternate;
+  animation: combineRight 1s steps(45);
+}
+
+@-webkit-keyframes combineRight {
+  from {
+    transform: translate(0px, 0px);
+  }
+  to {
+    transform: translate(-19vw, 17vh);
+  }
+}
 .player-info-left {
   display: flex;
   flex-direction: column;

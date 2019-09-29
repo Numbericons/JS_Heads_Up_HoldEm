@@ -137,13 +137,13 @@ export default class ComputerPlayer {
   }
 
   renderChips(){
-    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-2`);
     let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
     stack.render();
   }
 
   unrenderChips() {
-    let $stackDiv = $(`.table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-2`);
     $stackDiv.empty();
   }
 

@@ -13234,14 +13234,14 @@ function () {
   }, {
     key: "renderChips",
     value: function renderChips() {
-      var $stackDiv = $(".table-felt-board-bet-player-2");
+      var $stackDiv = $("#table-felt-board-bet-player-2");
       var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
       stack.render();
     }
   }, {
     key: "unrenderChips",
     value: function unrenderChips() {
-      var $stackDiv = $(".table-felt-board-bet-player-2");
+      var $stackDiv = $("#table-felt-board-bet-player-2");
       $stackDiv.empty();
     }
   }, {
@@ -13383,14 +13383,14 @@ function () {
   }, {
     key: "renderChips",
     value: function renderChips() {
-      var $stackDiv = $(".table-felt-board-bet-player-1");
+      var $stackDiv = $("#table-felt-board-bet-player-1");
       var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
       stack.render();
     }
   }, {
     key: "unrenderChips",
     value: function unrenderChips() {
-      var $stackDiv = $(".table-felt-board-bet-player-1");
+      var $stackDiv = $("#table-felt-board-bet-player-1");
       $stackDiv.empty();
     }
   }, {
@@ -13479,7 +13479,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 1800 : 1250; // let firstPreflop = this.board.checkFirstPreflop();
+                wait = 1450; // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 1800 : 1250;
 
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
                 _context.next = 5;
@@ -13829,8 +13829,6 @@ function () {
       this.currStreet = 'preflop';
       this.lastShownCard = 0;
       this.handFinish = false;
-      this.humanChips.removeClass();
-      this.compChips.removeClass();
     }
   }, {
     key: "showDealerBtn",
@@ -14106,12 +14104,7 @@ function () {
       this.$currPot = $("#table-felt-pot");
       var potStack = new _chipstack__WEBPACK_IMPORTED_MODULE_4__["default"](this.pot, this.$currPot);
       potStack.render();
-    } // checkFirstPreflop(){
-    //   if (this.currStreet === 'preflop' && this.streetActions.length === 0) {
-    //     return this.sb;
-    //   }
-    // }
-
+    }
   }, {
     key: "renderPlayers",
     value: function renderPlayers() {
@@ -14180,19 +14173,48 @@ function () {
         this.dealCard(true);
         this.showBoard();
       }
-    } // combineChips(){
-    //   this.humanChips.addClass('')
-    //   this.compChips.addClass('')
-    // }
-
+    }
+  }, {
+    key: "combineChips",
+    value: function combineChips() {
+      this.compChips.addClass('chip-combine-left');
+      this.humanChips.addClass('chip-combine-right');
+    }
   }, {
     key: "stepStreet",
-    value: function stepStreet(flopBool) {
-      this.combineChips();
-      flopBool ? this.dealFlop() : this.dealCard(true);
-      this.showBoard();
-      if (!this.allIn()) this.render();
-    }
+    value: function () {
+      var _stepStreet = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4(flopBool) {
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.combineChips();
+                _context4.next = 3;
+                return this.sleep(1000);
+
+              case 3:
+                this.humanChips.removeClass();
+                this.compChips.removeClass();
+                flopBool ? this.dealFlop() : this.dealCard(true);
+                this.showBoard();
+                if (!this.allIn()) this.render();
+
+              case 8:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function stepStreet(_x4) {
+        return _stepStreet.apply(this, arguments);
+      }
+
+      return stepStreet;
+    }()
   }, {
     key: "nextStreet",
     value: function nextStreet() {

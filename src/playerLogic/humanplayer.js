@@ -78,13 +78,13 @@ export default class HumanPlayer {
   }
 
   renderChips() {
-    let $stackDiv = $(`.table-felt-board-bet-player-1`);
+    let $stackDiv = $(`#table-felt-board-bet-player-1`);
     let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
     stack.render();
   }
 
   unrenderChips(){
-    let $stackDiv = $(`.table-felt-board-bet-player-1`);
+    let $stackDiv = $(`#table-felt-board-bet-player-1`);
     $stackDiv.empty();
   }
 
