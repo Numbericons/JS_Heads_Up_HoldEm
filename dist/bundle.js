@@ -13931,6 +13931,8 @@ function () {
       this.renderPlayers();
       this.renderChat(this.outputString);
       this.$currPot.addClass("won-".concat(this.players[wonPos].side));
+      this.players[0].unrenderChips();
+      this.players[1].unrenderChips();
       this.table.handOver();
     }
   }, {
