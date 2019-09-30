@@ -1,4 +1,6 @@
 import Chipstack from '../pokerLogic/chipstack';
+const Hand = require('pokersolver').Hand;
+
 export default class ComputerPlayer {
   constructor(position, chipstack, cardDims) {
     this.position = position;
@@ -56,6 +58,7 @@ export default class ComputerPlayer {
   }
   
   promptResponse(to_call, pot, sb, isPreflop){
+    this.rankPfHand();
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
@@ -160,4 +163,16 @@ export default class ComputerPlayer {
     this.hand = [];
     this.revealed = false;
   }
+
+  pfTierOne(){
+    debugger;
+    if (Hand.winners(hand, Hand.solve("10s 10h"))) return true;
+  }
+
+  rankPfHand(){
+    if (this.pfTierOne()) return 'Teir1';
+    // if (this.pfTwo()) return 'Teir2';
+    // if (this.pfThree()) return 'Teir3';
+  }
 }
+

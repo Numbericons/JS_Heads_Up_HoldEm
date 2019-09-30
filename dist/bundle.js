@@ -13071,6 +13071,8 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+
 var ComputerPlayer =
 /*#__PURE__*/
 function () {
@@ -13142,6 +13144,7 @@ function () {
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
+      this.rankPfHand();
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13260,6 +13263,18 @@ function () {
       this.chipsInPot = 0;
       this.hand = [];
       this.revealed = false;
+    }
+  }, {
+    key: "pfTierOne",
+    value: function pfTierOne() {
+      debugger;
+      if (Hand.winners(hand, Hand.solve("10s 10h"))) return true;
+    }
+  }, {
+    key: "rankPfHand",
+    value: function rankPfHand() {
+      if (this.pfTierOne()) return 'Teir1'; // if (this.pfTwo()) return 'Teir2';
+      // if (this.pfThree()) return 'Teir3';
     }
   }]);
 
@@ -13424,9 +13439,151 @@ function () {
   !*** ./src/pokerLogic/action.js ***!
   \**********************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/src/pokerLogic/action.js'");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Action; });
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Action =
+/*#__PURE__*/
+function () {
+  function Action(board) {
+    _classCallCheck(this, Action);
+
+    this.board = board;
+  }
+
+  _createClass(Action, [{
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    }
+  }, {
+    key: "resolvePlayerPrompt",
+    value: function resolvePlayerPrompt(response) {
+      if (response[0] === 'fold') {
+        this.startAction(null, 'fold');
+      } else if (response[0] === 'call') {
+        this.startAction(null, 'call');
+      } else if (response[0] === 'check') {
+        this.startAction(null, 'check');
+      } else {
+        this.startAction(null, 'bet', Math.ceil(response[1]));
+      }
+    }
+  }, {
+    key: "promptPlayer",
+    value: function () {
+      var _promptPlayer = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee() {
+        var wait, response;
+        return regeneratorRuntime.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
+                wait = 1450; // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 1800 : 1250;
+
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+                _context.next = 5;
+                return this.sleep(wait);
+
+              case 5:
+                if (response) this.resolvePlayerPrompt(response);
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function promptPlayer() {
+        return _promptPlayer.apply(this, arguments);
+      }
+
+      return promptPlayer;
+    }()
+  }, {
+    key: "resolveAction",
+    value: function resolveAction(betRaise, playerAction) {
+      var sb = this.board.isSb();
+      var secondPf = sb ? 0 : this.board.bb;
+      if (playerAction.includes("Pot") || playerAction === "All In") betRaise = this.board.bet.potRelativeBet(playerAction) + sb;
+      if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb, secondPf);
+      var oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
+      if (betRaise > oppChipsRem) betRaise = oppChipsRem;
+      var resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
+
+      if (resolvedAction) {
+        this.board.pot += resolvedAction;
+        return resolvedAction;
+      }
+    }
+  }, {
+    key: "startAction",
+    value: function startAction($button, compAction, compBetRaise) {
+      //compBetRaise undefined leads to error
+      var playerAction = $button ? $button.data().action : compAction;
+
+      if (playerAction === 'fold') {
+        this.board.currentPlayer().folded = true;
+        return this.board.determineWinner();
+      }
+
+      var betRaise = this.board.bet.isCompBet(compBetRaise);
+      var resolved = this.resolveAction(betRaise, playerAction);
+      this.board.streetActions = this.board.streetActions.concat(resolved);
+      this.continueAction();
+    }
+  }, {
+    key: "continueAction",
+    value: function continueAction() {
+      this.board.currBet = this.board.handChipDiff();
+      this.board.toggleCurrPlayer();
+      this.board.render();
+      if (!this.board.allIn() && this.board.handChipDiff() === 0 && !this.board.handFinish) this.nextAction();
+    }
+  }, {
+    key: "nextAction",
+    value: function nextAction() {
+      var handChipsEqual = this.board.handChipDiff() === 0;
+      var multipleActions = this.board.streetActions.length > 1;
+
+      if (this.board.players[0].folded || this.board.players[1].folded) {
+        this.board.determineWinner();
+      } else if (handChipsEqual) {
+        if (this.board.allIn() && this.board.handChipDiff() === 0) {
+          this.board.showDown();
+          this.board.determineWinner();
+        } else if (this.board.currStreet === 'river' && multipleActions) {
+          this.board.revealCards();
+          this.board.determineWinner();
+        } else if (multipleActions) {
+          this.board.nextStreet();
+        }
+      }
+    }
+  }]);
+
+  return Action;
+}();
+
+
 
 /***/ }),
 
@@ -13435,9 +13592,163 @@ throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index
   !*** ./src/pokerLogic/bet.js ***!
   \*******************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/src/pokerLogic/bet.js'");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Bet; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Bet =
+/*#__PURE__*/
+function () {
+  function Bet(board) {
+    _classCallCheck(this, Bet);
+
+    this.board = board;
+  }
+
+  _createClass(Bet, [{
+    key: "blindPlayer",
+    value: function blindPlayer(player, blind) {
+      var villain = this.board.players[0] === player ? this.board.players[1] : this.board.players[0];
+
+      if (blind >= villain.chipsInPot + villain.chipstack) {
+        player.chipsInPot = villain.chipsInPot + villain.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
+        player.chipstack -= player.chipsInPot;
+        return player.chipsInPot;
+      }
+
+      if (player.chipstack > blind) {
+        player.chipstack -= blind;
+        player.chipsInPot = blind;
+        player.streetChipsInPot = blind;
+        return blind;
+      } else {
+        player.chipsInPot += player.chipstack;
+        player.streetChipsInPot = player.chipsInPot;
+        player.chipstack = 0;
+        return player.chipsInPot;
+      }
+    }
+  }, {
+    key: "calcBetInput",
+    value: function calcBetInput() {
+      var sb = this.board.isSb();
+      var betInput = $('.actions-cont-bet-amt');
+      var current = this.board.currentPlayer();
+      var other = this.board.otherPlayer();
+      if (betInput.length === 0) return 0;
+      var totalBet = Number(betInput[0].value);
+      if (totalBet > current.chipstack + current.streetChipsInPot) totalBet = current.chipstack - sb;
+      if (totalBet > other.chipstack + other.streetChipsInPot) totalBet = other.chipstack + this.board.handChipDiff() - sb;
+      return totalBet;
+    }
+  }, {
+    key: "calcCompBetRaise",
+    value: function calcCompBetRaise(compBetRaise) {
+      var sb = this.board.isSb();
+      var totalBet;
+
+      if (compBetRaise > this.board.currentPlayer().chipstack) {
+        totalBet = this.board.currentPlayer().chipstack - sb;
+      } else if (compBetRaise > this.board.otherPlayer().chipstack) {
+        totalBet = this.board.otherPlayer().chipstack + this.board.handChipDiff() - sb;
+      } else {
+        totalBet = compBetRaise;
+      }
+
+      return totalBet;
+    }
+  }, {
+    key: "isCompBet",
+    value: function isCompBet(compBetRaise) {
+      var betRaise;
+
+      if (compBetRaise) {
+        if (compBetRaise < this.board.bb) compBetRaise = this.board.bb;
+        betRaise = this.calcCompBetRaise(compBetRaise);
+      } else {
+        betRaise = this.calcBetInput();
+      }
+
+      return betRaise;
+    }
+  }, {
+    key: "maxBet",
+    value: function maxBet(bet) {
+      var stack = this.board.currentPlayer().chipstack;
+      var oppStack = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb(); //change to add isSb + handchipdiff
+
+      if (stack > oppStack) stack = oppStack;
+      return bet > stack - this.board.handChipDiff() ? stack : bet;
+    }
+  }, {
+    key: "minBet",
+    value: function minBet(bet) {
+      if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
+
+      var lastBet = this.board.streetActions[this.board.streetActions.length - 1];
+      if (!lastBet) lastBet = 0;
+      var sb = this.board.isSb();
+      var min;
+
+      if (this.board.streetActions.length === 1) {
+        lastBet === this.board.sb || lastBet === 0 ? min = this.board.bb : min = lastBet * 2;
+      } else if (this.board.streetActions.length > 1) {
+        min = lastBet - this.board.streetActions[this.board.streetActions.length - 2];
+      } else {
+        min = this.board.bb + sb;
+      } // if (bet < min) bet = min;
+      // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
+      // if (bet > oppTotalStack) bet = oppTotalStack;
+      // return bet;
+
+
+      return bet < min ? min : bet;
+    }
+  }, {
+    key: "pfBet",
+    value: function pfBet(playerAction, bb) {
+      var second = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+      return parseInt(playerAction[0]) * bb - second;
+    }
+  }, {
+    key: "potRelativeBet",
+    value: function potRelativeBet(playerAction) {
+      var bet;
+
+      switch (playerAction) {
+        case "1/2 Pot":
+          bet = this.maxBet(Math.floor(this.board.pot / 2));
+          break;
+
+        case "2/3 Pot":
+          bet = this.maxBet(Math.floor(this.board.pot * 2 / 3));
+          break;
+
+        case "Pot":
+          bet = this.maxBet(Math.floor(this.board.pot));
+          break;
+
+        case "All In":
+          bet = this.maxBet(Math.floor(this.board.currentPlayer().chipstack));
+          break;
+      }
+
+      return this.minBet(bet);
+    }
+  }]);
+
+  return Bet;
+}();
+
+
 
 /***/ }),
 
@@ -14262,9 +14573,128 @@ function () {
   !*** ./src/pokerLogic/chipstack.js ***!
   \*************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nError: ENOENT: no such file or directory, open '/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/src/pokerLogic/chipstack.js'");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return Chipstack; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Chipstack =
+/*#__PURE__*/
+function () {
+  function Chipstack(amount, $tableEl) {
+    _classCallCheck(this, Chipstack);
+
+    this.amount = amount;
+    this.$tableEl = $tableEl;
+    this.$stackDiv = $('<div>');
+    this.$stackDiv.addClass("chips"); // if (isPot) this.$stackDiv.addClass("move");
+  }
+
+  _createClass(Chipstack, [{
+    key: "getChips",
+    value: function getChips(amount) {
+      var denominations = [1, 10, 25, 100, 1000];
+      var result = [];
+
+      while (amount > 0) {
+        var coin = denominations.pop();
+        var count = Math.floor(amount / coin);
+        amount -= count * coin;
+        if (count) result.push([coin, count]);
+      }
+
+      return result;
+    }
+  }, {
+    key: "colorConverter",
+    value: function colorConverter(chipType) {
+      switch (chipType) {
+        case 1000:
+          return 'purple';
+
+        case 100:
+          return 'black';
+
+        case 25:
+          return 'blue';
+
+        case 10:
+          return 'red';
+
+        case 1:
+          return 'white';
+      }
+    }
+  }, {
+    key: "stackEmUp",
+    value: function stackEmUp(stack, count, color) {
+      for (var i = 1; i < count; i++) {
+        this.addChipImg(stack, color, "middle");
+      }
+    }
+  }, {
+    key: "addChipImg",
+    value: function addChipImg(stack, color, imgType) {
+      var $chipImg = $("<img>");
+      $chipImg.addClass("chips-stack-image");
+      $chipImg.attr("src", "./image/chips/".concat(color, "/").concat(imgType, ".png"));
+      stack.append($chipImg);
+    }
+  }, {
+    key: "renderChipStack",
+    value: function renderChipStack(chipArr) {
+      var $stack = $("<div>");
+      $stack.addClass("chips-stack");
+      var color = this.colorConverter(chipArr[0]);
+
+      if (chipArr[1] === 1) {
+        this.addChipImg($stack, color, "single");
+      } else {
+        this.addChipImg($stack, color, "top");
+        this.stackEmUp($stack, chipArr[1] - 1, color);
+        this.addChipImg($stack, color, "bottom");
+      }
+
+      this.appendTableEl($stack);
+    }
+  }, {
+    key: "appendTableEl",
+    value: function appendTableEl(stack) {
+      this.$stackDiv.append(stack);
+      this.$tableEl.append(this.$stackDiv);
+    }
+  }, {
+    key: "renderText",
+    value: function renderText() {
+      var $h5 = $("<h5>");
+      $h5.addClass("chips-text");
+      $h5.text("$".concat(this.amount));
+      this.$tableEl.append($h5);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this = this;
+
+      this.$tableEl.empty();
+      var chips = this.getChips(this.amount);
+      chips.forEach(function (chip) {
+        _this.renderChipStack(chip);
+      });
+      this.renderText();
+    }
+  }]);
+
+  return Chipstack;
+}();
+
+
 
 /***/ }),
 
