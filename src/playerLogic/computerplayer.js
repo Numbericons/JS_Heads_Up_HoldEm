@@ -57,8 +57,8 @@ export default class ComputerPlayer {
     return this.maxBet(betRaise, to_call);
   }
   
-  promptResponse(to_call, pot, sb, isPreflop){
-    this.rankPfHand();
+  promptResponse(to_call, pot, sb, isPreflop, handArr){
+    this.rankPfHand(handArr);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
@@ -164,15 +164,21 @@ export default class ComputerPlayer {
     this.revealed = false;
   }
 
-  pfTierOne(){
-    debugger;
-    if (Hand.winners(hand, Hand.solve("10s 10h"))) return true;
+  compHands(hand1, hand2){
+    hand1 = Hand.solve(hand1);
+    hand2 = Hand.solve(hand2);
+    return (Hand.winners([hand1, hand2])[0] === hand1) ? hand1 : hand2;
   }
 
-  rankPfHand(){
-    if (this.pfTierOne()) return 'Teir1';
-    // if (this.pfTwo()) return 'Teir2';
-    // if (this.pfThree()) return 'Teir3';
+  pfTierOne(hand){
+    debugger;
+    if (this.compHands(hand,["9s", "9h"]) === hand) return true;
+  }
+
+  rankPfHand(handArr){
+    if (this.pfTierOne(handArr)) return 'Teir1';
+    // if (this.pfTwo(handArr)) return 'Teir2';
+    // if (this.pfThree(handArr)) return 'Teir3';
   }
 }
 

@@ -13143,8 +13143,8 @@ function () {
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot, sb, isPreflop) {
-      this.rankPfHand();
+    value: function promptResponse(to_call, pot, sb, isPreflop, handArr) {
+      this.rankPfHand(handArr);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13265,16 +13265,23 @@ function () {
       this.revealed = false;
     }
   }, {
+    key: "compHands",
+    value: function compHands(hand1, hand2) {
+      hand1 = Hand.solve(hand1);
+      hand2 = Hand.solve(hand2);
+      return Hand.winners([hand1, hand2])[0] === hand1 ? hand1 : hand2;
+    }
+  }, {
     key: "pfTierOne",
-    value: function pfTierOne() {
+    value: function pfTierOne(hand) {
       debugger;
-      if (Hand.winners(hand, Hand.solve("10s 10h"))) return true;
+      if (this.compHands(hand, ["9s", "9h"]) === hand) return true;
     }
   }, {
     key: "rankPfHand",
-    value: function rankPfHand() {
-      if (this.pfTierOne()) return 'Teir1'; // if (this.pfTwo()) return 'Teir2';
-      // if (this.pfThree()) return 'Teir3';
+    value: function rankPfHand(handArr) {
+      if (this.pfTierOne(handArr)) return 'Teir1'; // if (this.pfTwo(handArr)) return 'Teir2';
+      // if (this.pfThree(handArr)) return 'Teir3';
     }
   }]);
 
@@ -13488,7 +13495,7 @@ function () {
     value: function () {
       var _promptPlayer = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee() {
+      regeneratorRuntime.mark(function _callee(handArr) {
         var wait, response;
         return regeneratorRuntime.wrap(function _callee$(_context) {
           while (1) {
@@ -13497,7 +13504,7 @@ function () {
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = 1450; // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 1800 : 1250;
 
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', handArr);
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -13512,7 +13519,7 @@ function () {
         }, _callee, this);
       }));
 
-      function promptPlayer() {
+      function promptPlayer(_x) {
         return _promptPlayer.apply(this, arguments);
       }
 
@@ -13962,10 +13969,9 @@ function () {
   }, {
     key: "handToStrArr",
     value: function handToStrArr(player) {
-      var playerHand = player.hand.map(function (card) {
+      return player.hand.map(function (card) {
         return "".concat(card.rank).concat(card.suit);
       });
-      return playerHand;
     }
   }, {
     key: "dealPlayerCard",
@@ -14164,7 +14170,7 @@ function () {
 
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
         this.button.$el.empty();
-        this.action.promptPlayer();
+        this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));
       } else if (this.currentPlayer().hand[0]) {
         this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
       }

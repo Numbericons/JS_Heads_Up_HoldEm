@@ -134,10 +134,9 @@ export default class Board {
   }
 
   handToStrArr(player) {
-    let playerHand = player.hand.map(card => {
+    return player.hand.map(card => {
       return `${card.rank}${card.suit}`;
     })
-    return playerHand;
   }
 
   async dealPlayerCard(pos, revealed) {
@@ -262,7 +261,7 @@ export default class Board {
   
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
       this.button.$el.empty();
-      this.action.promptPlayer();
+      this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));
     } else if (this.currentPlayer().hand[0]) {
       this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
     }
