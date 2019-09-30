@@ -13116,7 +13116,8 @@ function () {
   }, {
     key: "genPreflopBetRaise",
     value: function genPreflopBetRaise(betRaise) {
-      var multiplier = Math.random() * 1.75 + 1;
+      var multiplier = Math.random() * 1.6 + 1; //from 1.75
+
       return betRaise * multiplier;
     }
   }, {
