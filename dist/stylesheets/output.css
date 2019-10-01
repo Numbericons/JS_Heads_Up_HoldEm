@@ -437,9 +437,9 @@ body {
   font-size: 18px;
 }
 .top-header {
-  font-weight: bolder;
-  font-size: 40px;
-  font-family: "Rye", cursive;
+  font-weight: 900;
+  font-size: 45px;
+  font-family: "Merriweather Sans", cursive;
   color: #5e1717;
   transform: translateX(3.5vw);
 }

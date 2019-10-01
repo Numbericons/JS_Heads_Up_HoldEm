@@ -13063,6 +13063,7 @@ $(function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
 /* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
+/* harmony import */ var _handrank__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./handrank */ "./src/playerLogic/handrank.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13071,7 +13072,6 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 
 
 
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
 
 var ComputerPlayer =
 /*#__PURE__*/
@@ -13142,13 +13142,33 @@ function () {
       return this.maxBet(betRaise, to_call);
     }
   }, {
+    key: "adjByTeir",
+    value: function adjByTeir(handTeir, randNum) {
+      var teir = parseInt(handTeir.slice(4));
+
+      switch (teir) {
+        case 1:
+          return Infinity;
+
+        case 2:
+          return randNum;
+
+        case 3:
+          return randNum * 2 / 3;
+      }
+    }
+  }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot, sb, isPreflop, handArr) {
-      this.rankPfHand(handArr);
+    value: function promptResponse(to_call, pot, sb, isPreflop, boardCards) {
+      var handRank = new _handrank__WEBPACK_IMPORTED_MODULE_1__["default"](this.hand);
+      var handTeir = handRank.rankPfHand();
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
       var potOdds = adjToCall / (adjToCall + pot);
+      debugger;
+      randNum = this.adjByTeir(handTeir, randNum);
+      debugger;
 
       if (randNum < potOdds) {
         if (to_call > 0) {
@@ -13264,28 +13284,143 @@ function () {
       this.hand = [];
       this.revealed = false;
     }
-  }, {
-    key: "compHands",
-    value: function compHands(hand1, hand2) {
-      hand1 = Hand.solve(hand1);
-      hand2 = Hand.solve(hand2);
-      return Hand.winners([hand1, hand2])[0] === hand1 ? hand1 : hand2;
-    }
-  }, {
-    key: "pfTierOne",
-    value: function pfTierOne(hand) {
-      debugger;
-      if (this.compHands(hand, ["9s", "9h"]) === hand) return true;
-    }
-  }, {
-    key: "rankPfHand",
-    value: function rankPfHand(handArr) {
-      if (this.pfTierOne(handArr)) return 'Teir1'; // if (this.pfTwo(handArr)) return 'Teir2';
-      // if (this.pfThree(handArr)) return 'Teir3';
-    }
   }]);
 
   return ComputerPlayer;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/playerLogic/handrank.js":
+/*!*************************************!*\
+  !*** ./src/playerLogic/handrank.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HandRank; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+
+var HandRank =
+/*#__PURE__*/
+function () {
+  function HandRank(hand) {
+    _classCallCheck(this, HandRank);
+
+    this.hand = hand;
+    this.handV2 = Hand.solve(["".concat(hand[0].rank).concat(hand[0].suit), "".concat(hand[1].rank).concat(hand[1].suit)]);
+  }
+
+  _createClass(HandRank, [{
+    key: "compHands",
+    value: function compHands(oppHand) {
+      oppHand = Hand.solve(oppHand);
+      return Hand.winners([this.handV2, oppHand])[0] === this.handV2 ? this.handV2 : oppHand;
+    }
+  }, {
+    key: "convertVal",
+    value: function convertVal(rank) {
+      if (parseInt(rank)) return parseInt(rank);
+
+      switch (rank) {
+        case "T":
+          return 10;
+
+        case "J":
+          return 11;
+
+        case "Q":
+          return 12;
+
+        case "K":
+          return 13;
+
+        case "A":
+          return 14;
+      }
+    }
+  }, {
+    key: "sideCard",
+    value: function sideCard(cardRank, min, max) {
+      return this.convertVal(cardRank) >= min && this.convertVal(cardRank) <= max;
+    }
+  }, {
+    key: "suited",
+    value: function suited() {
+      return this.hand[0][1] === this.hand[1][1];
+    }
+  }, {
+    key: "pfTierOne",
+    value: function pfTierOne() {
+      if (this.compHands(["8s", "8h"]) === this.handV2) return true;
+      if (this.compHands(["As", "Jh"]) === this.handV2) return true; // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
+      //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
+      //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
+      // }
+
+      return false;
+    }
+  }, {
+    key: "pfTierTwo",
+    value: function pfTierTwo() {
+      if (this.compHands(["1s", "1h"]) === this.handV2) return true;
+      if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') return true;
+      if (this.hand[0][0] === 'K') return this.sideCard(this.hand[1][0], "T", "Q");
+      if (this.hand[1][0] === 'K') return this.sideCard(this.hand[0][0], "T", "Q");
+      if (this.hand[0][0] === 'K') return this.sideCard(this.hand[1][0], "T", "Q");
+      if (this.hand[1][0] === 'K') return this.sideCard(this.hand[0][0], "T", "Q");
+      if (this.hand[0][0] === 'Q') return this.sideCard(this.hand[1][0], "9", "J");
+      if (this.hand[1][0] === 'Q') return this.sideCard(this.hand[0][0], "9", "J");
+      if (this.hand[0][0] === 'J') return this.sideCard(this.hand[1][0], "T", "T");
+      if (this.hand[1][0] === 'J') return this.sideCard(this.hand[0][0], "T", "T");
+      if (this.hand[0][0] === 'T') return this.sideCard(this.hand[1][0], "9", "9");
+      if (this.hand[1][0] === 'T') return this.sideCard(this.hand[0][0], "9", "9");
+      if (this.hand[0][0] === '9') return this.sideCard(this.hand[1][0], "8", "8");
+      if (this.hand[1][0] === '9') return this.sideCard(this.hand[0][0], "8", "8");
+      return false;
+    }
+  }, {
+    key: "pfTierThree",
+    value: function pfTierThree() {
+      if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
+      if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
+      if (this.hand[0][0] === 'J') return this.sideCard(this.hand[1][0], "7", "9");
+      if (this.hand[1][0] === 'J') return this.sideCard(this.hand[0][0], "7", "9");
+      if (this.hand[0][0] === 'T') return this.sideCard(this.hand[1][0], "6", "8");
+      if (this.hand[1][0] === 'T') return this.sideCard(this.hand[0][0], "6", "8");
+      if (this.hand[0][0] === '9') return this.sideCard(this.hand[1][0], "5", "7");
+      if (this.hand[1][0] === '9') return this.sideCard(this.hand[0][0], "5", "7");
+      if (this.hand[0][0] === '8') return this.sideCard(this.hand[1][0], "5", "6");
+      if (this.hand[1][0] === '8') return this.sideCard(this.hand[0][0], "5", "6");
+      if (this.hand[0][0] === '7') return this.sideCard(this.hand[1][0], "5", "6");
+      if (this.hand[1][0] === '7') return this.sideCard(this.hand[0][0], "5", "6");
+      if (this.hand[0][0] === '6') return this.sideCard(this.hand[1][0], "5", "5");
+      if (this.hand[1][0] === '6') return this.sideCard(this.hand[0][0], "5", "5");
+      if (this.hand[0][0] === '5') return this.sideCard(this.hand[1][0], "4", "4");
+      if (this.hand[1][0] === '5') return this.sideCard(this.hand[0][0], "4", "4");
+      return false;
+    }
+  }, {
+    key: "rankPfHand",
+    value: function rankPfHand() {
+      if (this.pfTierOne()) return 'Teir1';
+      if (this.pfTierTwo()) return 'Teir2';
+      if (this.pfTierThree()) return 'Teir3';
+      return 'Teir4';
+    }
+  }]);
+
+  return HandRank;
 }();
 
 
@@ -13504,7 +13639,7 @@ function () {
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = 1450; // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 1800 : 1250;
 
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', handArr);
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', this.board.boardCards);
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -13906,7 +14041,8 @@ function () {
       this.outputString = this.boardCards.length > 0 ? "On a board of ".concat(this.symbolBoard(), ", ") : "Preflop, ";
       var winners = Hand.winners([hand1, hand2]);
 
-      if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
+      if (winners.length === 2) {
+        // if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
         return this.tie(hand1);
       } else if (this.players[1].folded || !this.players[0].folded && winners[0] === hand1) {
         this.winner(hand1, hand2, 0, 1);

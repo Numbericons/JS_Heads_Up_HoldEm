@@ -79,7 +79,8 @@ export default class Board {
     var hand2 = Hand.solve(this.handToStrArr(this.players[1]).concat(this.textBoard()));
     this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.symbolBoard()}, ` : `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
-    if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
+    if (winners.length === 2) {
+    // if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
       return this.tie(hand1);
     } else if (this.players[1].folded || (!this.players[0].folded && winners[0] === hand1)) {
       this.winner(hand1, hand2, 0, 1);

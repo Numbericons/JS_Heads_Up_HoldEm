@@ -1,5 +1,5 @@
 import Chipstack from '../pokerLogic/chipstack';
-const Hand = require('pokersolver').Hand;
+import HandRank from './handrank';
 
 export default class ComputerPlayer {
   constructor(position, chipstack, cardDims) {
@@ -57,12 +57,28 @@ export default class ComputerPlayer {
     return this.maxBet(betRaise, to_call);
   }
   
-  promptResponse(to_call, pot, sb, isPreflop, handArr){
-    this.rankPfHand(handArr);
+  adjByTeir(handTeir, randNum){
+    let teir = parseInt(handTeir.slice(4));
+    switch (teir) {
+      case 1:
+        return Infinity;
+      case 2:
+        return randNum;
+      case 3:
+        return randNum * 2 / 3;
+    }
+  }
+
+  promptResponse(to_call, pot, sb, isPreflop, boardCards){
+    const handRank = new HandRank(this.hand);
+    let handTeir = handRank.rankPfHand();
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();
     let potOdds = adjToCall / (adjToCall + pot); 
+    debugger
+    randNum = this.adjByTeir(handTeir, randNum);
+    debugger
     if (randNum < potOdds) {
       if (to_call > 0) {
         return ['fold'];
@@ -162,23 +178,6 @@ export default class ComputerPlayer {
     this.chipsInPot = 0;
     this.hand = [];
     this.revealed = false;
-  }
-
-  compHands(hand1, hand2){
-    hand1 = Hand.solve(hand1);
-    hand2 = Hand.solve(hand2);
-    return (Hand.winners([hand1, hand2])[0] === hand1) ? hand1 : hand2;
-  }
-
-  pfTierOne(hand){
-    debugger;
-    if (this.compHands(hand,["9s", "9h"]) === hand) return true;
-  }
-
-  rankPfHand(handArr){
-    if (this.pfTierOne(handArr)) return 'Teir1';
-    // if (this.pfTwo(handArr)) return 'Teir2';
-    // if (this.pfThree(handArr)) return 'Teir3';
   }
 }
 
