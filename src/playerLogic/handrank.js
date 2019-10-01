@@ -48,8 +48,8 @@ export default class HandRank {
   pfTierTwo(){
     if (this.compHands(["1s", "1h"]) === this.handV2) return true;
     if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') return true;
-    if (this.hand[0][0] === 'K') return this.sideCard(this.hand[1][0], "T", "Q");
-    if (this.hand[1][0] === 'K') return this.sideCard(this.hand[0][0], "T", "Q");
+    if ((this.hand[0][0] === 'K' || this.hand[1][0] === 'K') && this.suited()) return true;
+    
     if (this.hand[0][0] === 'K') return this.sideCard(this.hand[1][0], "T", "Q");
     if (this.hand[1][0] === 'K') return this.sideCard(this.hand[0][0], "T", "Q");
     if (this.hand[0][0] === 'Q') return this.sideCard(this.hand[1][0], "9", "J");
@@ -60,13 +60,14 @@ export default class HandRank {
     if (this.hand[1][0] === 'T') return this.sideCard(this.hand[0][0], "9", "9");
     if (this.hand[0][0] === '9') return this.sideCard(this.hand[1][0], "8", "8");
     if (this.hand[1][0] === '9') return this.sideCard(this.hand[0][0], "8", "8");
-
+    
     return false;
   }
-
+  
   pfTierThree(){
     if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
     if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
+    if ((this.hand[0][0] === 'K' || this.hand[1][0] === 'K') && this.suited()) return true;
     if (this.hand[0][0] === 'J') return this.sideCard(this.hand[1][0], "7", "9");
     if (this.hand[1][0] === 'J') return this.sideCard(this.hand[0][0], "7", "9");
     if (this.hand[0][0] === 'T') return this.sideCard(this.hand[1][0], "6", "8");
