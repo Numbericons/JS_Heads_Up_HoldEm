@@ -13151,24 +13151,28 @@ function () {
           return Infinity;
 
         case 2:
-          return randNum;
+          return randNum * 3;
 
         case 3:
-          return randNum * 2 / 3;
+          return randNum;
+
+        case 4:
+          return randNum / 2;
+
+        case 5:
+          return randNum / 4;
       }
     }
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop, boardCards) {
       var handRank = new _handrank__WEBPACK_IMPORTED_MODULE_1__["default"](this.hand);
-      var handTeir = handRank.rankPfHand();
+      var handTeir = handRank.getTeir(boardCards);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
       var potOdds = adjToCall / (adjToCall + pot);
-      debugger;
       randNum = this.adjByTeir(handTeir, randNum);
-      debugger;
 
       if (randNum < potOdds) {
         if (to_call > 0) {
@@ -13374,49 +13378,89 @@ function () {
     key: "pfTierTwo",
     value: function pfTierTwo() {
       if (this.compHands(["1s", "1h"]) === this.handV2) return true;
-      if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') return true;
-      if ((this.hand[0][0] === 'K' || this.hand[1][0] === 'K') && this.suited()) return true;
-      if (this.hand[0][0] === 'K') return this.sideCard(this.hand[1][0], "T", "Q");
-      if (this.hand[1][0] === 'K') return this.sideCard(this.hand[0][0], "T", "Q");
-      if (this.hand[0][0] === 'Q') return this.sideCard(this.hand[1][0], "9", "J");
-      if (this.hand[1][0] === 'Q') return this.sideCard(this.hand[0][0], "9", "J");
-      if (this.hand[0][0] === 'J') return this.sideCard(this.hand[1][0], "T", "T");
-      if (this.hand[1][0] === 'J') return this.sideCard(this.hand[0][0], "T", "T");
-      if (this.hand[0][0] === 'T') return this.sideCard(this.hand[1][0], "9", "9");
-      if (this.hand[1][0] === 'T') return this.sideCard(this.hand[0][0], "9", "9");
-      if (this.hand[0][0] === '9') return this.sideCard(this.hand[1][0], "8", "8");
-      if (this.hand[1][0] === '9') return this.sideCard(this.hand[0][0], "8", "8");
+      if (this.hand[0].rank === 'A' || this.hand[1].rank === 'A') return true;
+      if ((this.hand[0].rank === 'K' || this.hand[1].rank === 'K') && this.suited()) return true;
+      if (this.hand[0].rank === 'K') return this.sideCard(this.hand[1].rank, "T", "Q");
+      if (this.hand[1].rank === 'K') return this.sideCard(this.hand[0].rank, "T", "Q");
+      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "9", "J");
+      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "9", "J");
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "T", "T");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "T", "T");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "9", "9");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "9", "9");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "8", "8");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "8", "8");
       return false;
     }
   }, {
     key: "pfTierThree",
     value: function pfTierThree() {
-      if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
-      if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
-      if ((this.hand[0][0] === 'K' || this.hand[1][0] === 'K') && this.suited()) return true;
-      if (this.hand[0][0] === 'J') return this.sideCard(this.hand[1][0], "7", "9");
-      if (this.hand[1][0] === 'J') return this.sideCard(this.hand[0][0], "7", "9");
-      if (this.hand[0][0] === 'T') return this.sideCard(this.hand[1][0], "6", "8");
-      if (this.hand[1][0] === 'T') return this.sideCard(this.hand[0][0], "6", "8");
-      if (this.hand[0][0] === '9') return this.sideCard(this.hand[1][0], "5", "7");
-      if (this.hand[1][0] === '9') return this.sideCard(this.hand[0][0], "5", "7");
-      if (this.hand[0][0] === '8') return this.sideCard(this.hand[1][0], "5", "6");
-      if (this.hand[1][0] === '8') return this.sideCard(this.hand[0][0], "5", "6");
-      if (this.hand[0][0] === '7') return this.sideCard(this.hand[1][0], "5", "6");
-      if (this.hand[1][0] === '7') return this.sideCard(this.hand[0][0], "5", "6");
-      if (this.hand[0][0] === '6') return this.sideCard(this.hand[1][0], "5", "5");
-      if (this.hand[1][0] === '6') return this.sideCard(this.hand[0][0], "5", "5");
-      if (this.hand[0][0] === '5') return this.sideCard(this.hand[1][0], "4", "4");
-      if (this.hand[1][0] === '5') return this.sideCard(this.hand[0][0], "4", "4");
+      if (this.hand[0].rank === 'K' || this.hand[1].rank === 'K') return true;
+      if ((this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') && this.suited()) return true;
+      if ((this.hand[0].rank === 'J' || this.hand[1].rank === 'J') && this.suited()) return true;
+      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "8", "8");
+      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "8", "8");
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "7", "9");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "7", "9");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "8");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "8");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "7");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "7");
+      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "6");
+      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "6");
+      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "5", "6");
+      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "5", "6");
+      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "5", "5");
+      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "5", "5");
+      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "4", "4");
       return false;
     }
   }, {
-    key: "rankPfHand",
-    value: function rankPfHand() {
+    key: "pfTierFour",
+    value: function pfTierFour() {
+      if (this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') return true;
+      if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
+      if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "6", "6");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "6", "6");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "5");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "5");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "4");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "4");
+      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "4");
+      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "4");
+      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
+      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "4", "4");
+      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "3", "3");
+      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "3", "3");
+      if (this.hand[0].rank === '4') return this.sideCard(this.hand[1].rank, "3", "3");
+      if (this.hand[1].rank === '4') return this.sideCard(this.hand[0].rank, "3", "3");
+      if (this.hand[0].rank === '3') return this.sideCard(this.hand[1].rank, "2", "2");
+      if (this.hand[1].rank === '3') return this.sideCard(this.hand[0].rank, "2", "2");
+      return false;
+    }
+  }, {
+    key: "preFlop",
+    value: function preFlop() {
       if (this.pfTierOne()) return 'Teir1';
       if (this.pfTierTwo()) return 'Teir2';
       if (this.pfTierThree()) return 'Teir3';
-      return 'Teir4';
+      if (this.pfTierFour()) return 'Teir4';
+      return 'Teir5';
+    }
+  }, {
+    key: "postFlop",
+    value: function postFlop(boardCards) {
+      return 'Teir3';
+    }
+  }, {
+    key: "getTeir",
+    value: function getTeir(boardCards) {
+      var teir = boardCards.length > 0 ? this.postFlop() : this.preFlop();
+      return teir;
     }
   }]);
 
