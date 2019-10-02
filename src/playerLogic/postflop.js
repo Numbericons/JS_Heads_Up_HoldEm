@@ -12,10 +12,16 @@ export default class PostFlop {
     return 'Teir3';
   }
 
+  beatBoard(hand, board){};
+  numCardsUsed(){};
+  kicker(){};
 
-  topPair(hand){}
-
-  numCardsUsed(){}
+  topPair(hand, board){};
+  midPair(hand, board){};
+  secondPair(hand, board){};
+  thirdPair(hand, board){};
+  forthPair(hand, board){};
+  bottomPair();
 
   loLoHigh(){};
   paired(){};
@@ -25,7 +31,8 @@ export default class PostFlop {
   threeStraight(){};
   fourStraight(){};
   fiveStraight(){};
-  gapTwoStraight(){}
+  gapThreeStraight(){}
+  gapFourStraight(){}
 
   trips(){}
 
@@ -36,5 +43,4 @@ export default class PostFlop {
   fiveFlush() { };
 
   quadsPlus(){}
-
 }

@@ -13455,93 +13455,9 @@ function () {
   !*** ./src/playerLogic/postflop.js ***!
   \*************************************/
 /*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/***/ (function(module, exports) {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PostFlop; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
-
-var PostFlop =
-/*#__PURE__*/
-function () {
-  function PostFlop(boardCards) {
-    _classCallCheck(this, PostFlop);
-
-    this.cards = boardCards;
-    debugger;
-    this.cardsV2 = Hand.solve(this.cards);
-  }
-
-  _createClass(PostFlop, [{
-    key: "getTeir",
-    value: function getTeir(cards) {
-      this.cards = cards;
-      return 'Teir3';
-    }
-  }, {
-    key: "topPair",
-    value: function topPair(hand) {}
-  }, {
-    key: "numCardsUsed",
-    value: function numCardsUsed() {}
-  }, {
-    key: "loLoHigh",
-    value: function loLoHigh() {}
-  }, {
-    key: "paired",
-    value: function paired() {}
-  }, {
-    key: "twoPair",
-    value: function twoPair() {}
-  }, {
-    key: "twoStraight",
-    value: function twoStraight() {}
-  }, {
-    key: "threeStraight",
-    value: function threeStraight() {}
-  }, {
-    key: "fourStraight",
-    value: function fourStraight() {}
-  }, {
-    key: "fiveStraight",
-    value: function fiveStraight() {}
-  }, {
-    key: "gapTwoStraight",
-    value: function gapTwoStraight() {}
-  }, {
-    key: "trips",
-    value: function trips() {}
-  }, {
-    key: "rainbow",
-    value: function rainbow() {}
-  }, {
-    key: "twoFlush",
-    value: function twoFlush() {}
-  }, {
-    key: "threeFlush",
-    value: function threeFlush() {}
-  }, {
-    key: "fourFlush",
-    value: function fourFlush() {}
-  }, {
-    key: "fiveFlush",
-    value: function fiveFlush() {}
-  }, {
-    key: "quadsPlus",
-    value: function quadsPlus() {}
-  }]);
-
-  return PostFlop;
-}();
-
-
+throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/src/playerLogic/postflop.js: Unexpected token, expected \"{\" (24:14)\n\n\u001b[0m \u001b[90m 22 | \u001b[39m  thirdPair(hand\u001b[33m,\u001b[39m board){}\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 23 | \u001b[39m  forthPair(hand\u001b[33m,\u001b[39m board){}\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 24 | \u001b[39m  bottomPair()\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m              \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 25 | \u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 26 | \u001b[39m  loLoHigh(){}\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 27 | \u001b[39m  paired(){}\u001b[33m;\u001b[39m\u001b[0m\n    at Parser.raise (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:6325:17)\n    at Parser.unexpected (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:7642:16)\n    at Parser.expect (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:7628:28)\n    at Parser.parseBlock (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10370:10)\n    at Parser.parseFunctionBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9424:24)\n    at Parser.parseFunctionBodyAndFinish (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9394:10)\n    at Parser.parseMethod (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9348:10)\n    at Parser.pushClassMethod (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10804:30)\n    at Parser.parseClassMemberWithIsStatic (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10729:12)\n    at Parser.parseClassMember (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10668:10)\n    at /Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10623:14\n    at Parser.withTopicForbiddingContext (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9702:14)\n    at Parser.parseClassBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10600:10)\n    at Parser.parseClass (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10574:22)\n    at Parser.parseExportDefaultExpression (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10999:19)\n    at Parser.parseExport (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10905:31)\n    at Parser.parseStatementContent (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9933:27)\n    at Parser.parseStatement (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9829:17)\n    at Parser.parseBlockOrModuleBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10405:25)\n    at Parser.parseBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10392:10)\n    at Parser.parseTopLevel (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9758:10)\n    at Parser.parse (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:11270:17)\n    at parse (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:11306:38)\n    at parser (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/core/lib/transformation/normalize-file.js:170:34)\n    at normalizeFile (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/core/lib/transformation/normalize-file.js:138:11)\n    at runSync (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/core/lib/transformation/index.js:44:43)\n    at runAsync (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/core/lib/transformation/index.js:35:14)\n    at /Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/core/lib/transform.js:34:34\n    at processTicksAndRejections (internal/process/task_queues.js:75:11)");
 
 /***/ }),
 
