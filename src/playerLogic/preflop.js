@@ -1,9 +1,11 @@
 const Hand = require('pokersolver').Hand;
 
-export default class HandRank {
-  constructor(hand) {
-    this.hand = hand;
-    this.handV2 = Hand.solve([`${hand[0].rank}${hand[0].suit}`, `${hand[1].rank}${hand[1].suit}`]);
+export default class PreFlop {
+  constructor() {
+  }
+  
+  handVal(hand){
+    return Hand.solve([`${hand[0].rank}${hand[0].suit}`, `${hand[1].rank}${hand[1].suit}`]);
   }
 
   compHands(oppHand){
@@ -35,7 +37,7 @@ export default class HandRank {
     return this.hand[0][1] === this.hand[1][1];
   }
 
-  pfTierOne(){
+  pfTierOne(hand){
     if (this.compHands(["8s", "8h"]) === this.handV2) return true;
     if (this.compHands(["As", "Jh"]) === this.handV2) return true;
     // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
@@ -115,7 +117,8 @@ export default class HandRank {
     return false;
   }
 
-  preFlop(){
+  getTeir(hand){
+    this.hand = hand;
     if (this.pfTierOne()) return 'Teir1';
     if (this.pfTierTwo()) return 'Teir2';
     if (this.pfTierThree()) return 'Teir3';
@@ -123,12 +126,7 @@ export default class HandRank {
     return 'Teir5';
   }
 
-  postFlop(boardCards){
-    return 'Teir3'
-  }
-
   getTeir(boardCards){
-    let teir = (boardCards.length > 0) ? this.postFlop() : this.preFlop();
     return teir;
   }
 }

@@ -1,5 +1,7 @@
 import Chipstack from '../pokerLogic/chipstack';
-import HandRank from './handrank';
+import PreFlop from './preflop';
+import PostFlop from './postflop';
+
 
 export default class ComputerPlayer {
   constructor(position, chipstack, cardDims) {
@@ -8,6 +10,8 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
+    this.preFlop = new PreFlop();
+    this.postFlop = new PostFlop();
     this.hand = [];
     this.comp = true;
     this.revealed = false;
@@ -73,9 +77,8 @@ export default class ComputerPlayer {
     }
   }
 
-  promptResponse(to_call, pot, sb, isPreflop, boardCards){
-    const handRank = new HandRank(this.hand);
-    let handTeir = handRank.getTeir(boardCards);
+  promptResponse(to_call, pot, sb, isPreflop, boardCard = []){
+    let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();

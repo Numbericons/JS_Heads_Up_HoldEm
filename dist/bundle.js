@@ -13063,12 +13063,14 @@ $(function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return ComputerPlayer; });
 /* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
-/* harmony import */ var _handrank__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./handrank */ "./src/playerLogic/handrank.js");
+/* harmony import */ var _preflop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./preflop */ "./src/playerLogic/preflop.js");
+/* harmony import */ var _postflop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./postflop */ "./src/playerLogic/postflop.js");
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -13084,6 +13086,8 @@ function () {
     this.folded = false;
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
+    this.preFlop = new _preflop__WEBPACK_IMPORTED_MODULE_1__["default"]();
+    this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
     this.revealed = false;
@@ -13165,9 +13169,9 @@ function () {
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot, sb, isPreflop, boardCards) {
-      var handRank = new _handrank__WEBPACK_IMPORTED_MODULE_1__["default"](this.hand);
-      var handTeir = handRank.getTeir(boardCards);
+    value: function promptResponse(to_call, pot, sb, isPreflop) {
+      var boardCard = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+      var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13291,180 +13295,6 @@ function () {
   }]);
 
   return ComputerPlayer;
-}();
-
-
-
-/***/ }),
-
-/***/ "./src/playerLogic/handrank.js":
-/*!*************************************!*\
-  !*** ./src/playerLogic/handrank.js ***!
-  \*************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return HandRank; });
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
-
-var HandRank =
-/*#__PURE__*/
-function () {
-  function HandRank(hand) {
-    _classCallCheck(this, HandRank);
-
-    this.hand = hand;
-    this.handV2 = Hand.solve(["".concat(hand[0].rank).concat(hand[0].suit), "".concat(hand[1].rank).concat(hand[1].suit)]);
-  }
-
-  _createClass(HandRank, [{
-    key: "compHands",
-    value: function compHands(oppHand) {
-      oppHand = Hand.solve(oppHand);
-      return Hand.winners([this.handV2, oppHand])[0] === this.handV2 ? this.handV2 : oppHand;
-    }
-  }, {
-    key: "convertVal",
-    value: function convertVal(rank) {
-      if (parseInt(rank)) return parseInt(rank);
-
-      switch (rank) {
-        case "T":
-          return 10;
-
-        case "J":
-          return 11;
-
-        case "Q":
-          return 12;
-
-        case "K":
-          return 13;
-
-        case "A":
-          return 14;
-      }
-    }
-  }, {
-    key: "sideCard",
-    value: function sideCard(cardRank, min, max) {
-      return this.convertVal(cardRank) >= min && this.convertVal(cardRank) <= max;
-    }
-  }, {
-    key: "suited",
-    value: function suited() {
-      return this.hand[0][1] === this.hand[1][1];
-    }
-  }, {
-    key: "pfTierOne",
-    value: function pfTierOne() {
-      if (this.compHands(["8s", "8h"]) === this.handV2) return true;
-      if (this.compHands(["As", "Jh"]) === this.handV2) return true; // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
-      //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
-      //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
-      // }
-
-      return false;
-    }
-  }, {
-    key: "pfTierTwo",
-    value: function pfTierTwo() {
-      if (this.compHands(["1s", "1h"]) === this.handV2) return true;
-      if (this.hand[0].rank === 'A' || this.hand[1].rank === 'A') return true;
-      if ((this.hand[0].rank === 'K' || this.hand[1].rank === 'K') && this.suited()) return true;
-      if (this.hand[0].rank === 'K') return this.sideCard(this.hand[1].rank, "T", "Q");
-      if (this.hand[1].rank === 'K') return this.sideCard(this.hand[0].rank, "T", "Q");
-      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "9", "J");
-      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "9", "J");
-      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "T", "T");
-      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "T", "T");
-      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "9", "9");
-      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "9", "9");
-      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "8", "8");
-      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "8", "8");
-      return false;
-    }
-  }, {
-    key: "pfTierThree",
-    value: function pfTierThree() {
-      if (this.hand[0].rank === 'K' || this.hand[1].rank === 'K') return true;
-      if ((this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') && this.suited()) return true;
-      if ((this.hand[0].rank === 'J' || this.hand[1].rank === 'J') && this.suited()) return true;
-      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "8", "8");
-      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "8", "8");
-      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "7", "9");
-      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "7", "9");
-      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "8");
-      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "8");
-      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "7");
-      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "7");
-      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "6");
-      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "6");
-      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "5", "6");
-      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "5", "6");
-      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "5", "5");
-      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "5", "5");
-      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "4", "4");
-      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "4", "4");
-      return false;
-    }
-  }, {
-    key: "pfTierFour",
-    value: function pfTierFour() {
-      if (this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') return true;
-      if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
-      if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
-      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "6", "6");
-      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "6", "6");
-      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "5");
-      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "5");
-      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "4");
-      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "4");
-      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "4");
-      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "4");
-      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
-      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
-      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");
-      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "4", "4");
-      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "3", "3");
-      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "3", "3");
-      if (this.hand[0].rank === '4') return this.sideCard(this.hand[1].rank, "3", "3");
-      if (this.hand[1].rank === '4') return this.sideCard(this.hand[0].rank, "3", "3");
-      if (this.hand[0].rank === '3') return this.sideCard(this.hand[1].rank, "2", "2");
-      if (this.hand[1].rank === '3') return this.sideCard(this.hand[0].rank, "2", "2");
-      return false;
-    }
-  }, {
-    key: "preFlop",
-    value: function preFlop() {
-      if (this.pfTierOne()) return 'Teir1';
-      if (this.pfTierTwo()) return 'Teir2';
-      if (this.pfTierThree()) return 'Teir3';
-      if (this.pfTierFour()) return 'Teir4';
-      return 'Teir5';
-    }
-  }, {
-    key: "postFlop",
-    value: function postFlop(boardCards) {
-      return 'Teir3';
-    }
-  }, {
-    key: "getTeir",
-    value: function getTeir(boardCards) {
-      var teir = boardCards.length > 0 ? this.postFlop() : this.preFlop();
-      return teir;
-    }
-  }]);
-
-  return HandRank;
 }();
 
 
@@ -13614,6 +13444,272 @@ function () {
   }]);
 
   return HumanPlayer;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/playerLogic/postflop.js":
+/*!*************************************!*\
+  !*** ./src/playerLogic/postflop.js ***!
+  \*************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PostFlop; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+
+var PostFlop =
+/*#__PURE__*/
+function () {
+  function PostFlop(boardCards) {
+    _classCallCheck(this, PostFlop);
+
+    this.cards = boardCards;
+    debugger;
+    this.cardsV2 = Hand.solve(this.cards);
+  }
+
+  _createClass(PostFlop, [{
+    key: "getTeir",
+    value: function getTeir(cards) {
+      this.cards = cards;
+      return 'Teir3';
+    }
+  }, {
+    key: "topPair",
+    value: function topPair(hand) {}
+  }, {
+    key: "numCardsUsed",
+    value: function numCardsUsed() {}
+  }, {
+    key: "loLoHigh",
+    value: function loLoHigh() {}
+  }, {
+    key: "paired",
+    value: function paired() {}
+  }, {
+    key: "twoPair",
+    value: function twoPair() {}
+  }, {
+    key: "twoStraight",
+    value: function twoStraight() {}
+  }, {
+    key: "threeStraight",
+    value: function threeStraight() {}
+  }, {
+    key: "fourStraight",
+    value: function fourStraight() {}
+  }, {
+    key: "fiveStraight",
+    value: function fiveStraight() {}
+  }, {
+    key: "gapTwoStraight",
+    value: function gapTwoStraight() {}
+  }, {
+    key: "trips",
+    value: function trips() {}
+  }, {
+    key: "rainbow",
+    value: function rainbow() {}
+  }, {
+    key: "twoFlush",
+    value: function twoFlush() {}
+  }, {
+    key: "threeFlush",
+    value: function threeFlush() {}
+  }, {
+    key: "fourFlush",
+    value: function fourFlush() {}
+  }, {
+    key: "fiveFlush",
+    value: function fiveFlush() {}
+  }, {
+    key: "quadsPlus",
+    value: function quadsPlus() {}
+  }]);
+
+  return PostFlop;
+}();
+
+
+
+/***/ }),
+
+/***/ "./src/playerLogic/preflop.js":
+/*!************************************!*\
+  !*** ./src/playerLogic/preflop.js ***!
+  \************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PreFlop; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+
+var PreFlop =
+/*#__PURE__*/
+function () {
+  function PreFlop() {
+    _classCallCheck(this, PreFlop);
+  }
+
+  _createClass(PreFlop, [{
+    key: "handVal",
+    value: function handVal(hand) {
+      return Hand.solve(["".concat(hand[0].rank).concat(hand[0].suit), "".concat(hand[1].rank).concat(hand[1].suit)]);
+    }
+  }, {
+    key: "compHands",
+    value: function compHands(oppHand) {
+      oppHand = Hand.solve(oppHand);
+      return Hand.winners([this.handV2, oppHand])[0] === this.handV2 ? this.handV2 : oppHand;
+    }
+  }, {
+    key: "convertVal",
+    value: function convertVal(rank) {
+      if (parseInt(rank)) return parseInt(rank);
+
+      switch (rank) {
+        case "T":
+          return 10;
+
+        case "J":
+          return 11;
+
+        case "Q":
+          return 12;
+
+        case "K":
+          return 13;
+
+        case "A":
+          return 14;
+      }
+    }
+  }, {
+    key: "sideCard",
+    value: function sideCard(cardRank, min, max) {
+      return this.convertVal(cardRank) >= min && this.convertVal(cardRank) <= max;
+    }
+  }, {
+    key: "suited",
+    value: function suited() {
+      return this.hand[0][1] === this.hand[1][1];
+    }
+  }, {
+    key: "pfTierOne",
+    value: function pfTierOne(hand) {
+      if (this.compHands(["8s", "8h"]) === this.handV2) return true;
+      if (this.compHands(["As", "Jh"]) === this.handV2) return true; // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
+      //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
+      //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
+      // }
+
+      return false;
+    }
+  }, {
+    key: "pfTierTwo",
+    value: function pfTierTwo() {
+      if (this.compHands(["1s", "1h"]) === this.handV2) return true;
+      if (this.hand[0].rank === 'A' || this.hand[1].rank === 'A') return true;
+      if ((this.hand[0].rank === 'K' || this.hand[1].rank === 'K') && this.suited()) return true;
+      if (this.hand[0].rank === 'K') return this.sideCard(this.hand[1].rank, "T", "Q");
+      if (this.hand[1].rank === 'K') return this.sideCard(this.hand[0].rank, "T", "Q");
+      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "9", "J");
+      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "9", "J");
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "T", "T");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "T", "T");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "9", "9");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "9", "9");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "8", "8");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "8", "8");
+      return false;
+    }
+  }, {
+    key: "pfTierThree",
+    value: function pfTierThree() {
+      if (this.hand[0].rank === 'K' || this.hand[1].rank === 'K') return true;
+      if ((this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') && this.suited()) return true;
+      if ((this.hand[0].rank === 'J' || this.hand[1].rank === 'J') && this.suited()) return true;
+      if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "8", "8");
+      if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "8", "8");
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "7", "9");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "7", "9");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "8");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "8");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "7");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "7");
+      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "6");
+      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "6");
+      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "5", "6");
+      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "5", "6");
+      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "5", "5");
+      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "5", "5");
+      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "4", "4");
+      return false;
+    }
+  }, {
+    key: "pfTierFour",
+    value: function pfTierFour() {
+      if (this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') return true;
+      if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
+      if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
+      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "6", "6");
+      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "6", "6");
+      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "5");
+      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "5");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "4");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "4");
+      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "4");
+      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "4");
+      if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
+      if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");
+      if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "4", "4");
+      if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "3", "3");
+      if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "3", "3");
+      if (this.hand[0].rank === '4') return this.sideCard(this.hand[1].rank, "3", "3");
+      if (this.hand[1].rank === '4') return this.sideCard(this.hand[0].rank, "3", "3");
+      if (this.hand[0].rank === '3') return this.sideCard(this.hand[1].rank, "2", "2");
+      if (this.hand[1].rank === '3') return this.sideCard(this.hand[0].rank, "2", "2");
+      return false;
+    }
+  }, {
+    key: "getTeir",
+    value: function getTeir(hand) {
+      this.hand = hand;
+      if (this.pfTierOne()) return 'Teir1';
+      if (this.pfTierTwo()) return 'Teir2';
+      if (this.pfTierThree()) return 'Teir3';
+      if (this.pfTierFour()) return 'Teir4';
+      return 'Teir5';
+    }
+  }, {
+    key: "getTeir",
+    value: function getTeir(boardCards) {
+      return teir;
+    }
+  }]);
+
+  return PreFlop;
 }();
 
 
