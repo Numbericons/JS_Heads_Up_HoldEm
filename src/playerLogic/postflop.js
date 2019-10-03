@@ -1,10 +1,10 @@
 const Hand = require('pokersolver').Hand;
 
 export default class PostFlop {
-  constructor(boardCards) {
-    this.cards = boardCards;
-    debugger;
-    this.cardsV2 = Hand.solve(this.cards);
+  constructor() {
+    // this.cards = boardCards;
+    // debugger;
+    // this.cardsV2 = Hand.solve(this.cards);
   }
 
   getTeir(cards) {
@@ -21,7 +21,7 @@ export default class PostFlop {
   secondPair(hand, board){};
   thirdPair(hand, board){};
   forthPair(hand, board){};
-  bottomPair();
+  bottomPair(){};
 
   loLoHigh(){};
   paired(){};
