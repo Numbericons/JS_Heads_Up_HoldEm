@@ -375,15 +375,14 @@ body {
 
 #player-info-right-chip-text-name {
   font-family: "Lora";
-  font-size: 17px;
+  font-size: 1.1vw;
   height: 20px;
 }
 
 #player-info-left-chip-text-name {
-  font-size: 18px;
-  height: 20px;
   font-family: "Lora";
-  font-size: 17px;
+  font-size: 1.1vw;
+  height: 20px;
 }
 
 #player-info-right-chip-text-chips {
@@ -516,8 +515,8 @@ body {
   margin-top: 5px;
 }
 .actions-cont-text {
-  height: 55px;
-  width: 105px;
+  height: 9vh;
+  width: 7vw;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -531,8 +530,8 @@ body {
   cursor: pointer;
 }
 .actions-cont-bet-amt {
-  height: 46px;
-  width: 90px;
+  height: 8vh;
+  width: 8vw;
   text-align: center;
   background-color: white;
   border: 2px solid black;
@@ -558,14 +557,14 @@ body {
 }
 
 .betsize-cont {
-  width: 50%;
+  width: 52%;
   display: flex;
   justify-content: space-around;
-  margin-top: 5px;
+  margin: 5px 0px 5px 0px;
 }
 .betsize-cont-text {
-  height: 20px;
-  width: 85px;
+  height: 3vh;
+  width: 6vw;
   display: flex;
   justify-content: center;
   align-items: center;

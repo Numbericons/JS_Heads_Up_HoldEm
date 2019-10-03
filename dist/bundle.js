@@ -13170,8 +13170,8 @@ function () {
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
-      var boardCard = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
-      var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand) : this.preFlop.getTeir(this.hand);
+      var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+      var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
       var randNum = Math.random();
@@ -13466,7 +13466,8 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand; //Account for length of board cards
+
 
 var PostFlop =
 /*#__PURE__*/
@@ -13480,7 +13481,7 @@ function () {
 
   _createClass(PostFlop, [{
     key: "getTeir",
-    value: function getTeir(cards) {
+    value: function getTeir(cards, boardCards) {
       this.cards = cards;
       return 'Teir3';
     }
@@ -13601,8 +13602,10 @@ function () {
   }, {
     key: "compHands",
     value: function compHands(oppHand) {
+      ["8s", "8c"];
+      var hand = Hand.solve(["".concat(this.hand[0].rank).concat(this.hand[0].suit), "".concat(this.hand[1].rank).concat(this.hand[1].suit)]);
       oppHand = Hand.solve(oppHand);
-      return Hand.winners([this.handV2, oppHand])[0] === this.handV2 ? this.handV2 : oppHand;
+      return Hand.winners([this.handSolved, oppHand])[0] === this.handSolved ? this.handSolved : oppHand;
     }
   }, {
     key: "convertVal",
@@ -13716,19 +13719,20 @@ function () {
       return false;
     }
   }, {
+    key: "defineHand",
+    value: function defineHand(hand) {
+      this.hand = hand;
+      this.handSolved = this.handVal(hand);
+    }
+  }, {
     key: "getTeir",
     value: function getTeir(hand) {
-      this.hand = hand;
+      this.defineHand(hand);
       if (this.pfTierOne()) return 'Teir1';
       if (this.pfTierTwo()) return 'Teir2';
       if (this.pfTierThree()) return 'Teir3';
       if (this.pfTierFour()) return 'Teir4';
       return 'Teir5';
-    }
-  }, {
-    key: "getTeir",
-    value: function getTeir(boardCards) {
-      return teir;
     }
   }]);
 
@@ -13842,7 +13846,6 @@ function () {
   }, {
     key: "startAction",
     value: function startAction($button, compAction, compBetRaise) {
-      //compBetRaise undefined leads to error
       var playerAction = $button ? $button.data().action : compAction;
 
       if (playerAction === 'fold') {
@@ -13851,6 +13854,7 @@ function () {
       }
 
       var betRaise = this.board.bet.isCompBet(compBetRaise);
+      betRaise = this.board.bet.minBet(betRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
       this.continueAction();
@@ -13998,17 +14002,16 @@ function () {
     value: function minBet(bet) {
       if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
 
-      var lastBet = this.board.streetActions[this.board.streetActions.length - 1];
-      if (!lastBet) lastBet = 0;
+      var lastBet = this.board.streetActions[this.board.streetActions.length - 1] || 0;
       var sb = this.board.isSb();
       var min;
 
       if (this.board.streetActions.length === 1) {
         lastBet === this.board.sb || lastBet === 0 ? min = this.board.bb : min = lastBet * 2;
       } else if (this.board.streetActions.length > 1) {
-        min = lastBet - this.board.streetActions[this.board.streetActions.length - 2];
+        min = 2 * (lastBet - this.board.streetActions[this.board.streetActions.length - 2]); //flag
       } else {
-        min = this.board.bb + sb;
+        min = this.board.bb + 2 * sb; //flag
       } // if (bet < min) bet = min;
       // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
       // if (bet > oppTotalStack) bet = oppTotalStack;

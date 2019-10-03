@@ -42,13 +42,14 @@ export default class Action {
     }
   }
 
-  startAction($button, compAction, compBetRaise) {  //compBetRaise undefined leads to error
+  startAction($button, compAction, compBetRaise) {
     let playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.board.currentPlayer().folded = true;
       return this.board.determineWinner();
     }
     let betRaise = this.board.bet.isCompBet(compBetRaise);
+    betRaise = this.board.bet.minBet(betRaise);
     let resolved = this.resolveAction(betRaise, playerAction);
     this.board.streetActions = this.board.streetActions.concat(resolved);
     this.continueAction();

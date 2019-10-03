@@ -1,5 +1,5 @@
 const Hand = require('pokersolver').Hand;
-
+//Account for length of board cards
 export default class PostFlop {
   constructor() {
     // this.cards = boardCards;
@@ -7,7 +7,7 @@ export default class PostFlop {
     // this.cardsV2 = Hand.solve(this.cards);
   }
 
-  getTeir(cards) {
+  getTeir(cards, boardCards) {
     this.cards = cards;
     return 'Teir3';
   }

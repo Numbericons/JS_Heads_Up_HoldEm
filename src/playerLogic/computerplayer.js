@@ -77,8 +77,8 @@ export default class ComputerPlayer {
     }
   }
 
-  promptResponse(to_call, pot, sb, isPreflop, boardCard = []){
-    let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand) : this.preFlop.getTeir(this.hand);
+  promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
+    let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
     let randNum = Math.random();

@@ -8,9 +8,10 @@ export default class PreFlop {
     return Hand.solve([`${hand[0].rank}${hand[0].suit}`, `${hand[1].rank}${hand[1].suit}`]);
   }
 
-  compHands(oppHand){
-    oppHand = Hand.solve(oppHand);
-    return (Hand.winners([this.handV2, oppHand])[0] === this.handV2) ? this.handV2 : oppHand;
+  compHands(oppHand){ ["8s", "8c"]
+    let hand = Hand.solve([`${this.hand[0].rank}${this.hand[0].suit}`, `${this.hand[1].rank}${this.hand[1].suit}`]);
+    oppHand = Hand.solve(oppHand)
+    return (Hand.winners([this.handSolved, oppHand])[0] === this.handSolved) ? this.handSolved : oppHand;
   }
 
   convertVal(rank){
@@ -117,16 +118,17 @@ export default class PreFlop {
     return false;
   }
 
-  getTeir(hand){
+  defineHand(hand){
     this.hand = hand;
+    this.handSolved = this.handVal(hand);
+  }
+
+  getTeir(hand){
+    this.defineHand(hand);
     if (this.pfTierOne()) return 'Teir1';
     if (this.pfTierTwo()) return 'Teir2';
     if (this.pfTierThree()) return 'Teir3';
     if (this.pfTierFour()) return 'Teir4';
     return 'Teir5';
-  }
-
-  getTeir(boardCards){
-    return teir;
   }
 }
