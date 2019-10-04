@@ -41,7 +41,7 @@ export default class ComputerPlayer {
   }
 
   genPreflopBetRaise(betRaise){
-    let multiplier = Math.random() * 1.6 + 1 //from 1.75
+    let multiplier = Math.random() * 1.3 + 1 //from 1.75
     return betRaise * multiplier;
   }
 
