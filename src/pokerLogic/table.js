@@ -5,7 +5,7 @@ import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
   constructor($el, initialChipstack = 5000, sb = 50, bb = 100, cardDims = ["72px", "68px"]){
-    this.players = [new HumanPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
+    this.players = [new ComputerPlayer("sb", initialChipstack, cardDims), new ComputerPlayer("bb", initialChipstack, cardDims)];
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
     this.initialChipstack = initialChipstack;

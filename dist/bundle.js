@@ -13047,7 +13047,10 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.setup();
+  table.setup(); // let wL = {};
+  // for(let i = 0; i < 500; i++) {
+  // }
+  // console.log(wL);
 });
 
 /***/ }),
@@ -15128,7 +15131,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
