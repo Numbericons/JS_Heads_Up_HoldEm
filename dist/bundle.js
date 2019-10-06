@@ -13483,14 +13483,59 @@ function () {
   }
 
   _createClass(PostFlop, [{
-    key: "getTeir",
-    value: function getTeir(cards, boardCards) {
-      this.cards = cards;
-      return 'Teir3';
+    key: "handVal",
+    value: function handVal() {
+      var handArr = ["".concat(this.hand[0].rank).concat(this.hand[0].suit), "".concat(this.hand[1].rank).concat(this.hand[1].suit)];
+
+      for (var i = 0, len = this.boardCards.length; i < len; i++) {
+        handArr.push("".concat(this.boardCards[i].rank).concat(this.boardCards[i].suit));
+      }
+
+      return Hand.solve(handArr);
     }
   }, {
-    key: "beatBoard",
-    value: function beatBoard(hand, board) {}
+    key: "convertVal",
+    value: function convertVal(rank) {
+      if (parseInt(rank)) return parseInt(rank);
+
+      switch (rank) {
+        case "T":
+          return 10;
+
+        case "J":
+          return 11;
+
+        case "Q":
+          return 12;
+
+        case "K":
+          return 13;
+
+        case "A":
+          return 14;
+      }
+    }
+  }, {
+    key: "defineHand",
+    value: function defineHand(hand, boardCards) {
+      this.hand = hand;
+      this.boardCards = boardCards;
+      this.boardSolved = Hand.solve(boardCards);
+      this.handSolved = this.handVal();
+    }
+  }, {
+    key: "getTeir",
+    value: function getTeir(hand, boardCards) {
+      this.defineHand(hand, boardCards);
+      if (this.topPair()) return 'Teir2';
+      return this.beatsBoard() ? 'Teir3' : 'Teir4';
+    }
+  }, {
+    key: "beatsBoard",
+    value: function beatsBoard() {
+      var wonArr = Hand.winners([this.handSolved, this.boardSolved]);
+      return wonArr.length === 1 && wonArr[0] === this.handSolved;
+    }
   }, {
     key: "numCardsUsed",
     value: function numCardsUsed() {}
@@ -13498,20 +13543,35 @@ function () {
     key: "kicker",
     value: function kicker() {}
   }, {
+    key: "topCard",
+    value: function topCard() {
+      var top = 0;
+
+      for (var i = 0, len = this.boardCards.length; i < len; i++) {
+        var val = this.convertVal(this.boardCards[i].rank);
+        if (val > top) top = val;
+      }
+
+      return top;
+    }
+  }, {
     key: "topPair",
-    value: function topPair(hand, board) {}
+    value: function topPair() {
+      var top = this.topCard();
+      return this.convertVal(this.hand[0].rank) === top || this.convertVal(this.hand[1].rank) === top ? true : false;
+    }
   }, {
     key: "midPair",
-    value: function midPair(hand, board) {}
+    value: function midPair() {}
   }, {
     key: "secondPair",
-    value: function secondPair(hand, board) {}
+    value: function secondPair() {}
   }, {
     key: "thirdPair",
-    value: function thirdPair(hand, board) {}
+    value: function thirdPair() {}
   }, {
     key: "forthPair",
-    value: function forthPair(hand, board) {}
+    value: function forthPair() {}
   }, {
     key: "bottomPair",
     value: function bottomPair() {}
@@ -15131,7 +15191,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
