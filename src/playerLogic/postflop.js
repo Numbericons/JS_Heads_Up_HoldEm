@@ -3,7 +3,6 @@ const Hand = require('pokersolver').Hand;
 export default class PostFlop {
   constructor() {
     // this.cards = boardCards;
-    // debugger;
     // this.cardsV2 = Hand.solve(this.cards);
   }
 
@@ -63,7 +62,6 @@ export default class PostFlop {
     let top = this.topCard();
     return (this.convertVal(this.hand[0].rank) === top || this.convertVal(this.hand[1].rank) === top) ? true : false;
   };
-  midPair(){};
   secondPair(){};
   thirdPair(){};
   forthPair(){};

@@ -13476,7 +13476,6 @@ var PostFlop =
 /*#__PURE__*/
 function () {
   function PostFlop() {// this.cards = boardCards;
-    // debugger;
     // this.cardsV2 = Hand.solve(this.cards);
 
     _classCallCheck(this, PostFlop);
@@ -13560,9 +13559,6 @@ function () {
       var top = this.topCard();
       return this.convertVal(this.hand[0].rank) === top || this.convertVal(this.hand[1].rank) === top ? true : false;
     }
-  }, {
-    key: "midPair",
-    value: function midPair() {}
   }, {
     key: "secondPair",
     value: function secondPair() {}
