@@ -37,9 +37,25 @@ export default class PostFlop {
     this.handSolved = this.handVal();
   }
 
+  pairTeir(){
+    if (nPair(1)) {
+      return 1;
+    } else if (nPair(2)) {
+      return 2;
+    } else if (nPair(3)) {
+      return 3;
+    } else if (nPair(4) || nPair(5)) {
+      return 4;
+    } else {
+      return 5;
+    }
+  }
+
   getTeir(hand, boardCards) {
     this.defineHand(hand,boardCards);
-    if(this.topPair()) return 'Teir2';
+    let pairVal = this.pairTeir();
+    debugger
+    if (pairVal > 5) return 'Teir' + pairVal;
     return (this.beatsBoard()) ? 'Teir3' : 'Teir4';
   }
 
@@ -48,20 +64,22 @@ export default class PostFlop {
     return (wonArr.length === 1 && wonArr[0] === this.handSolved);
   };
   numCardsUsed(){};
-  kicker(){};
+  kicker(){}
 
-  topCard(){
-    let top = 0;
+  nCard(num){
+    let top = num - 1;
     for(let i = 0, len = this.boardCards.length; i < len; i++) {
       let val = this.convertVal(this.boardCards[i].rank);
       if(val > top) top = val;
     }
     return top;
   }
-  topPair(){
-    let top = this.topCard();
-    return (this.convertVal(this.hand[0].rank) === top || this.convertVal(this.hand[1].rank) === top) ? true : false;
+
+  nPair(num){
+    let nTop = this.nCard(num);
+    return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
   };
+
   secondPair(){};
   thirdPair(){};
   forthPair(){};
