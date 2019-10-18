@@ -70,6 +70,7 @@ class Table {
   }
 
   setup(){
+    this.modal();
     this.board.renderDealerPlayers();
     this.board.button.bindPlayGame(this);
   }
@@ -116,6 +117,33 @@ class Table {
     this.board.resetVars();
     this.handNum += 1;
     this.playHand();
+  }
+
+  modal(){
+    const modalTriggers = document.querySelectorAll('.popup-trigger')
+    const modalCloseTrigger = document.querySelector('.popup-modal__close')
+    const bodyBlackout = document.querySelector('.body-blackout')
+
+    modalTriggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const { popupTrigger } = trigger.dataset
+        const popupModal = document.querySelector(`[data-popup-modal="${popupTrigger}"]`)
+
+        popupModal.classList.add('is--visible')
+        bodyBlackout.classList.add('is-blacked-out')
+
+        popupModal.querySelector('.popup-modal__close').addEventListener('click', () => {
+          popupModal.classList.remove('is--visible')
+          bodyBlackout.classList.remove('is-blacked-out')
+        })
+
+        bodyBlackout.addEventListener('click', () => {
+          // TODO: Turn into a function to close modal
+          popupModal.classList.remove('is--visible')
+          bodyBlackout.classList.remove('is-blacked-out')
+        })
+      })
+    })
   }
 }
 

@@ -14997,6 +14997,7 @@ function () {
   }, {
     key: "setup",
     value: function setup() {
+      this.modal();
       this.board.renderDealerPlayers();
       this.board.button.bindPlayGame(this);
     }
@@ -15082,6 +15083,30 @@ function () {
 
       return nextHand;
     }()
+  }, {
+    key: "modal",
+    value: function modal() {
+      var modalTriggers = document.querySelectorAll('.popup-trigger');
+      var modalCloseTrigger = document.querySelector('.popup-modal__close');
+      var bodyBlackout = document.querySelector('.body-blackout');
+      modalTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          var popupTrigger = trigger.dataset.popupTrigger;
+          var popupModal = document.querySelector("[data-popup-modal=\"".concat(popupTrigger, "\"]"));
+          popupModal.classList.add('is--visible');
+          bodyBlackout.classList.add('is-blacked-out');
+          popupModal.querySelector('.popup-modal__close').addEventListener('click', function () {
+            popupModal.classList.remove('is--visible');
+            bodyBlackout.classList.remove('is-blacked-out');
+          });
+          bodyBlackout.addEventListener('click', function () {
+            // TODO: Turn into a function to close modal
+            popupModal.classList.remove('is--visible');
+            bodyBlackout.classList.remove('is-blacked-out');
+          });
+        });
+      });
+    }
   }]);
 
   return Table;

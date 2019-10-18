@@ -95,6 +95,7 @@
       justify-content: space-around;
       flex-direction: column;
       align-items: center;
+      margin-left: 6vw;
       &-prompt{
         height: 27px;
         font-size: 25px;
@@ -120,8 +121,8 @@
       font-size: 14px;
     }
     &-about{
-      width: 18vw;
-      margin-right: 1.5vw;
+      width: 30vw;
+      margin-right: 1.0vw;
       align-self: flex-end;
       transform: translateY(-3vh);
       &-links{
