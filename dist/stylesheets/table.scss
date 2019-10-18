@@ -162,7 +162,8 @@
   animation: combineLeft 1.15s steps(45);
 }
 
-@-webkit-keyframes combineLeft {
+@keyframes combineLeft {
+// @-webkit-keyframes combineLeft {
   from {
     transform: translate(0px,0px);
   }
@@ -177,7 +178,8 @@
   animation: combineRight 1.15s steps(45);
 }
 
-@-webkit-keyframes combineRight {
+@keyframes combineRight {
+// @-webkit-keyframes combineRight {
   from {
     transform: translate(0px,0px);
   }

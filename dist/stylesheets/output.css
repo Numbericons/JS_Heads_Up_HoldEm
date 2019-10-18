@@ -227,7 +227,7 @@ body {
   animation: combineLeft 1.15s steps(45);
 }
 
-@-webkit-keyframes combineLeft {
+@keyframes combineLeft {
   from {
     transform: translate(0px, 0px);
   }
@@ -241,7 +241,7 @@ body {
   animation: combineRight 1.15s steps(45);
 }
 
-@-webkit-keyframes combineRight {
+@keyframes combineRight {
   from {
     transform: translate(0px, 0px);
   }
@@ -473,7 +473,7 @@ body {
   animation: topHeaderGlow 1s ease-in-out infinite alternate;
 }
 
-@-webkit-keyframes topHeaderGlow {
+@keyframes topHeaderGlow {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
   }
@@ -484,10 +484,10 @@ body {
 .won-left {
   -webkit-animation: winLeft 1s alternate;
   -moz-animation: winLeft 1s alternate;
-  animation: winLeft 2s steps(45);
+  animation: winLeft 3s steps(150);
 }
 
-@-webkit-keyframes winLeft {
+@keyframes winLeft {
   from {
     transform: translate(0px, 0px);
   }
@@ -498,10 +498,10 @@ body {
 .won-right {
   -webkit-animation: winRight 1s alternate;
   -moz-animation: winRight 1s alternate;
-  animation: winRight 2s steps(45);
+  animation: winRight 3s steps(150);
 }
 
-@-webkit-keyframes winRight {
+@keyframes winRight {
   from {
     transform: translate(0px, 0px);
   }
