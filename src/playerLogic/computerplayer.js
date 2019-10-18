@@ -27,8 +27,7 @@ export default class ComputerPlayer {
     promptSelect.innerText = input;
   }
 
-  promptAction() {
-  }
+  promptAction() {}
 
   maxBet(num, to_call) {
     return (num + to_call > this.chipstack) ? ['betRaise', this.chipstack] : ['betRaise', num];

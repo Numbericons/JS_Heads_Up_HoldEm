@@ -1,4 +1,5 @@
 
+ $winFrames: 150; 
  .top{
   height: 17vh;
   display: flex;
@@ -68,13 +69,9 @@
 
 @keyframes topHeaderGlow {
   from {
-    // font-size: 40px;
-    // transform: rotate(-5deg);
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
   }
   to {
-    // font-size: 41px;
-    // transform: rotate(5deg);
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
     // text-shadow: 0 0 20px #fff, 0 0 30px #397dd0, 0 0 40px #397dd0, 0 0 50px #397dd0, 0 0 60px #397dd0, 0 0 70px #397dd0, 0 0 80px #397dd0;
   }
@@ -83,7 +80,7 @@
 .won-left {
   -webkit-animation: winLeft 1s alternate;
   -moz-animation: winLeft 1s alternate;
-  animation: winLeft 3s steps(150);
+  animation: winLeft 3s steps($winFrames);
 }
 
 @keyframes winLeft {
@@ -98,7 +95,7 @@
 .won-right {
   -webkit-animation: winRight 1s alternate;
   -moz-animation: winRight 1s alternate;
-  animation: winRight 3s steps(150);
+  animation: winRight 3s steps($winFrames);
 }
 
 @keyframes winRight {
