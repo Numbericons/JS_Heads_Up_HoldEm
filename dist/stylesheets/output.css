@@ -438,8 +438,8 @@ body {
 }
 .top-header {
   font-weight: bolder;
-  font-size: 40px;
-  font-family: "Rye", cursive;
+  font-size: 45px;
+  font-family: "Lora", cursive;
   color: #5e1717;
   transform: translateX(3.5vw);
 }

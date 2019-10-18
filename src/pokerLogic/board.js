@@ -286,7 +286,7 @@ export default class Board {
   async showDown() {
     this.revealCards();
     while (this.boardCards.length < 5) {
-      await this.sleep(this.cardDelay);
+      await this.sleep(this.cardDelay * 1.5);
       this.dealCard(true);
       this.showBoard();
     }

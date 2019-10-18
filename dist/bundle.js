@@ -14252,7 +14252,7 @@ function () {
                 }
 
                 _context6.next = 4;
-                return this.sleep(this.cardDelay);
+                return this.sleep(this.cardDelay * 1.5);
 
               case 4:
                 this.dealCard(true);
