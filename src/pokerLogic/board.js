@@ -163,7 +163,7 @@ export default class Board {
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
     if (sound) {
-      await this.sleep(500);
+      // await this.sleep(250);
       this.cardTurn.play();
     }
   }

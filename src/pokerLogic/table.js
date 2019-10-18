@@ -109,7 +109,7 @@ class Table {
   }
 
   async nextHand(){
-    if (this.handNum > 0) await this.sleep(2000);
+    if (this.handNum > 0) await this.sleep(3000);
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

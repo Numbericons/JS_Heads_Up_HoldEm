@@ -14009,18 +14009,12 @@ function () {
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
 
-                if (!sound) {
-                  _context3.next = 6;
-                  break;
+                if (sound) {
+                  // await this.sleep(250);
+                  this.cardTurn.play();
                 }
 
-                _context3.next = 5;
-                return this.sleep(500);
-
-              case 5:
-                this.cardTurn.play();
-
-              case 6:
+              case 3:
               case "end":
                 return _context3.stop();
             }
@@ -14965,7 +14959,7 @@ function () {
                 }
 
                 _context2.next = 3;
-                return this.sleep(2000);
+                return this.sleep(3000);
 
               case 3:
                 this.togglePlayers();

@@ -159,7 +159,7 @@
 .chip-combine-left{
   -webkit-animation: combineLeft 1s alternate;
   -moz-animation: combineLeft 1s alternate;
-  animation: combineLeft 1s steps(45);
+  animation: combineLeft 1.15s steps(45);
 }
 
 @-webkit-keyframes combineLeft {
@@ -174,7 +174,7 @@
 .chip-combine-right {
   -webkit-animation: combineRight 1s alternate;
   -moz-animation: combineRight 1s alternate;
-  animation: combineRight 1s steps(45);
+  animation: combineRight 1.15s steps(45);
 }
 
 @-webkit-keyframes combineRight {
