@@ -65,7 +65,7 @@ class Table {
   }
 
   async resultSound(){
-    await this.sleep(1500);
+    await this.sleep(3000);
     this.sampleWinLoss();
   }
 
@@ -108,8 +108,8 @@ class Table {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async nextHand(){
-    if (this.handNum > 0) await this.sleep(2000);
+  async nextHand(){600
+    if (this.handNum > 0) await this.sleep(4000);
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();

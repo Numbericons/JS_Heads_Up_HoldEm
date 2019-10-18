@@ -38,13 +38,13 @@ export default class PostFlop {
   }
 
   pairTeir(){
-    if (nPair(1)) {
+    if (this.nPair(1)) {
       return 1;
-    } else if (nPair(2)) {
+    } else if (this.nPair(2)) {
       return 2;
-    } else if (nPair(3)) {
+    } else if (this.nPair(3)) {
       return 3;
-    } else if (nPair(4) || nPair(5)) {
+    } else if (this.nPair(4) || this.nPair(5)) {
       return 4;
     } else {
       return 5;

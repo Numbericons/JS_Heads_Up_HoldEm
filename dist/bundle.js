@@ -13523,10 +13523,27 @@ function () {
       this.handSolved = this.handVal();
     }
   }, {
+    key: "pairTeir",
+    value: function pairTeir() {
+      if (this.nPair(1)) {
+        return 1;
+      } else if (this.nPair(2)) {
+        return 2;
+      } else if (this.nPair(3)) {
+        return 3;
+      } else if (this.nPair(4) || this.nPair(5)) {
+        return 4;
+      } else {
+        return 5;
+      }
+    }
+  }, {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
       this.defineHand(hand, boardCards);
-      if (this.topPair()) return 'Teir2';
+      var pairVal = this.pairTeir();
+      debugger;
+      if (pairVal > 5) return 'Teir' + pairVal;
       return this.beatsBoard() ? 'Teir3' : 'Teir4';
     }
   }, {
@@ -13542,9 +13559,9 @@ function () {
     key: "kicker",
     value: function kicker() {}
   }, {
-    key: "topCard",
-    value: function topCard() {
-      var top = 0;
+    key: "nCard",
+    value: function nCard(num) {
+      var top = num - 1;
 
       for (var i = 0, len = this.boardCards.length; i < len; i++) {
         var val = this.convertVal(this.boardCards[i].rank);
@@ -13554,10 +13571,10 @@ function () {
       return top;
     }
   }, {
-    key: "topPair",
-    value: function topPair() {
-      var top = this.topCard();
-      return this.convertVal(this.hand[0].rank) === top || this.convertVal(this.hand[1].rank) === top ? true : false;
+    key: "nPair",
+    value: function nPair(num) {
+      var nTop = this.nCard(num);
+      return this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop;
     }
   }, {
     key: "secondPair",
@@ -15264,7 +15281,7 @@ function () {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return this.sleep(1500);
+                return this.sleep(3000);
 
               case 2:
                 this.sampleWinLoss();
@@ -15341,15 +15358,17 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                600;
+
                 if (!(this.handNum > 0)) {
-                  _context2.next = 3;
+                  _context2.next = 4;
                   break;
                 }
 
-                _context2.next = 3;
-                return this.sleep(2000);
+                _context2.next = 4;
+                return this.sleep(4000);
 
-              case 3:
+              case 4:
                 this.togglePlayers();
                 this.resetPlayerVars();
                 this.board.clearBoard();
@@ -15357,7 +15376,7 @@ function () {
                 this.handNum += 1;
                 this.playHand();
 
-              case 9:
+              case 10:
               case "end":
                 return _context2.stop();
             }
