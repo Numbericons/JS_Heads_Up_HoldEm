@@ -13879,10 +13879,14 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
-                wait = 1450; // let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 1800 : 1250;
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = 1450;
 
+<<<<<<< HEAD
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', this.board.boardCards);
+=======
+                wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+>>>>>>> modal
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -14198,6 +14202,7 @@ function () {
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
     this.handFinish = false;
+    this.cardDelay = 900;
     this.humanChips = $('#table-felt-board-bet-player-1');
     this.compChips = $('#table-felt-board-bet-player-2');
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
@@ -14407,19 +14412,10 @@ function () {
               case 0:
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
+                if (sound) this.cardTurn.play();
+                this.showBoard();
 
-                if (!sound) {
-                  _context3.next = 6;
-                  break;
-                }
-
-                _context3.next = 5;
-                return this.sleep(500);
-
-              case 5:
-                this.cardTurn.play();
-
-              case 6:
+              case 4:
               case "end":
                 return _context3.stop();
             }
@@ -14435,14 +14431,55 @@ function () {
     }()
   }, {
     key: "dealFlop",
-    value: function dealFlop() {
-      this.currPlayerPos = 1;
-      this.flop.play();
+    value: function () {
+      var _dealFlop = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee4() {
+        var i;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                this.currPlayerPos = 1; // this.flop.play();
 
-      for (var i = 0; i < 3; i++) {
-        this.dealCard(false);
+                i = 0;
+
+              case 2:
+                if (!(i < 3)) {
+                  _context4.next = 10;
+                  break;
+                }
+
+                if (!(i > 0)) {
+                  _context4.next = 6;
+                  break;
+                }
+
+                _context4.next = 6;
+                return this.sleep(this.cardDelay);
+
+              case 6:
+                this.dealCard(true);
+
+              case 7:
+                i++;
+                _context4.next = 2;
+                break;
+
+              case 10:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this);
+      }));
+
+      function dealFlop() {
+        return _dealFlop.apply(this, arguments);
       }
-    }
+
+      return dealFlop;
+    }()
   }, {
     key: "symbolBoard",
     value: function symbolBoard() {
@@ -14532,27 +14569,63 @@ function () {
     }
   }, {
     key: "render",
-    value: function render() {
-      this.renderDealerPlayers();
-      this.showPot();
+    value: function () {
+      var _render = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee5() {
+        return regeneratorRuntime.wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                this.renderDealerPlayers();
+                this.showPot();
 
-      if (this.allIn() && this.handChipDiff() === 0) {
-        this.showDown();
-        this.determineWinner();
-        return;
-      }
+                if (!(this.allIn() && this.handChipDiff() === 0)) {
+                  _context5.next = 7;
+                  break;
+                }
 
-      this.showBoard();
-      this.button.setButtons(this.pfBetSize());
-      this.button.bindEvents();
+                _context5.next = 5;
+                return this.showDown();
 
+<<<<<<< HEAD
       if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
         this.button.$el.empty();
         this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));
       } else if (this.currentPlayer().hand[0]) {
         this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
+=======
+              case 5:
+                this.determineWinner();
+                return _context5.abrupt("return");
+
+              case 7:
+                this.showBoard();
+                this.button.setButtons(this.pfBetSize());
+                this.button.bindEvents();
+
+                if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
+                  this.button.$el.empty();
+                  this.action.promptPlayer();
+                } else if (this.currentPlayer().hand[0]) {
+                  this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
+                }
+
+              case 11:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, this);
+      }));
+
+      function render() {
+        return _render.apply(this, arguments);
+>>>>>>> modal
       }
-    }
+
+      return render;
+    }()
   }, {
     key: "handChipDiff",
     value: function handChipDiff() {
@@ -14569,17 +14642,49 @@ function () {
       this.players.forEach(function (player) {
         player.revealed = true;
       });
+      this.renderPlayers();
     }
   }, {
     key: "showDown",
-    value: function showDown() {
-      this.revealCards();
+    value: function () {
+      var _showDown = _asyncToGenerator(
+      /*#__PURE__*/
+      regeneratorRuntime.mark(function _callee6() {
+        return regeneratorRuntime.wrap(function _callee6$(_context6) {
+          while (1) {
+            switch (_context6.prev = _context6.next) {
+              case 0:
+                this.revealCards();
 
-      while (this.boardCards.length < 5) {
-        this.dealCard(true);
-        this.showBoard();
+              case 1:
+                if (!(this.boardCards.length < 5)) {
+                  _context6.next = 8;
+                  break;
+                }
+
+                _context6.next = 4;
+                return this.sleep(this.cardDelay * 1.5);
+
+              case 4:
+                this.dealCard(true);
+                this.showBoard();
+                _context6.next = 1;
+                break;
+
+              case 8:
+              case "end":
+                return _context6.stop();
+            }
+          }
+        }, _callee6, this);
+      }));
+
+      function showDown() {
+        return _showDown.apply(this, arguments);
       }
-    }
+
+      return showDown;
+    }()
   }, {
     key: "combineChips",
     value: function combineChips() {
@@ -14591,13 +14696,13 @@ function () {
     value: function () {
       var _stepStreet = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee4(flopBool) {
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+      regeneratorRuntime.mark(function _callee7(flopBool) {
+        return regeneratorRuntime.wrap(function _callee7$(_context7) {
           while (1) {
-            switch (_context4.prev = _context4.next) {
+            switch (_context7.prev = _context7.next) {
               case 0:
                 this.combineChips();
-                _context4.next = 3;
+                _context7.next = 3;
                 return this.sleep(1000);
 
               case 3:
@@ -14609,10 +14714,10 @@ function () {
 
               case 8:
               case "end":
-                return _context4.stop();
+                return _context7.stop();
             }
           }
-        }, _callee4, this);
+        }, _callee7, this);
       }));
 
       function stepStreet(_x4) {
@@ -15303,6 +15408,7 @@ function () {
   }, {
     key: "setup",
     value: function setup() {
+      this.modal();
       this.board.renderDealerPlayers();
       this.board.button.bindPlayGame(this);
     }
@@ -15365,8 +15471,13 @@ function () {
                   break;
                 }
 
+<<<<<<< HEAD
                 _context2.next = 4;
                 return this.sleep(4000);
+=======
+                _context2.next = 3;
+                return this.sleep(3000);
+>>>>>>> modal
 
               case 4:
                 this.togglePlayers();
@@ -15390,6 +15501,30 @@ function () {
 
       return nextHand;
     }()
+  }, {
+    key: "modal",
+    value: function modal() {
+      var modalTriggers = document.querySelectorAll('.popup-trigger');
+      var modalCloseTrigger = document.querySelector('.popup-modal__close');
+      var bodyBlackout = document.querySelector('.body-blackout');
+      modalTriggers.forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          var popupTrigger = trigger.dataset.popupTrigger;
+          var popupModal = document.querySelector("[data-popup-modal=\"".concat(popupTrigger, "\"]"));
+          popupModal.classList.add('is--visible');
+          bodyBlackout.classList.add('is-blacked-out');
+          popupModal.querySelector('.popup-modal__close').addEventListener('click', function () {
+            popupModal.classList.remove('is--visible');
+            bodyBlackout.classList.remove('is-blacked-out');
+          });
+          bodyBlackout.addEventListener('click', function () {
+            // TODO: Turn into a function to close modal
+            popupModal.classList.remove('is--visible');
+            bodyBlackout.classList.remove('is-blacked-out');
+          });
+        });
+      });
+    }
   }]);
 
   return Table;

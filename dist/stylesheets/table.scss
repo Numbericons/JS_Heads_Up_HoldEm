@@ -95,6 +95,7 @@
       justify-content: space-around;
       flex-direction: column;
       align-items: center;
+      margin-left: 6vw;
       &-prompt{
         height: 27px;
         font-size: 25px;
@@ -120,8 +121,8 @@
       font-size: 14px;
     }
     &-about{
-      width: 18vw;
-      margin-right: 1.5vw;
+      width: 30vw;
+      margin-right: 1.0vw;
       align-self: flex-end;
       transform: translateY(-3vh);
       &-links{
@@ -159,10 +160,11 @@
 .chip-combine-left{
   -webkit-animation: combineLeft 1s alternate;
   -moz-animation: combineLeft 1s alternate;
-  animation: combineLeft 1s steps(45);
+  animation: combineLeft 1.15s steps(45);
 }
 
-@-webkit-keyframes combineLeft {
+@keyframes combineLeft {
+// @-webkit-keyframes combineLeft {
   from {
     transform: translate(0px,0px);
   }
@@ -174,10 +176,11 @@
 .chip-combine-right {
   -webkit-animation: combineRight 1s alternate;
   -moz-animation: combineRight 1s alternate;
-  animation: combineRight 1s steps(45);
+  animation: combineRight 1.15s steps(45);
 }
 
-@-webkit-keyframes combineRight {
+@keyframes combineRight {
+// @-webkit-keyframes combineRight {
   from {
     transform: translate(0px,0px);
   }

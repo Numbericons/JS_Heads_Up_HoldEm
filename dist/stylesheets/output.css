@@ -2,6 +2,7 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700';
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -163,6 +164,7 @@ body {
   justify-content: space-around;
   flex-direction: column;
   align-items: center;
+  margin-left: 6vw;
 }
 .table-bottom-actions-prompt {
   height: 27px;
@@ -187,8 +189,8 @@ body {
   font-size: 14px;
 }
 .table-bottom-about {
-  width: 18vw;
-  margin-right: 1.5vw;
+  width: 30vw;
+  margin-right: 1vw;
   align-self: flex-end;
   transform: translateY(-3vh);
 }
@@ -224,10 +226,10 @@ body {
 .chip-combine-left {
   -webkit-animation: combineLeft 1s alternate;
   -moz-animation: combineLeft 1s alternate;
-  animation: combineLeft 1s steps(45);
+  animation: combineLeft 1.15s steps(45);
 }
 
-@-webkit-keyframes combineLeft {
+@keyframes combineLeft {
   from {
     transform: translate(0px, 0px);
   }
@@ -238,10 +240,10 @@ body {
 .chip-combine-right {
   -webkit-animation: combineRight 1s alternate;
   -moz-animation: combineRight 1s alternate;
-  animation: combineRight 1s steps(45);
+  animation: combineRight 1.15s steps(45);
 }
 
-@-webkit-keyframes combineRight {
+@keyframes combineRight {
   from {
     transform: translate(0px, 0px);
   }
@@ -436,11 +438,17 @@ body {
   font-size: 18px;
 }
 .top-header {
+<<<<<<< HEAD
   font-weight: 900;
   font-size: 45px;
   font-family: "Merriweather Sans", cursive;
+=======
+  font-weight: bolder;
+  font-size: 45px;
+  font-family: "Lora", cursive;
+>>>>>>> modal
   color: #5e1717;
-  transform: translateX(3.5vw);
+  margin-left: 10vw;
 }
 .top-about {
   width: 18vw;
@@ -472,7 +480,7 @@ body {
   animation: topHeaderGlow 1s ease-in-out infinite alternate;
 }
 
-@-webkit-keyframes topHeaderGlow {
+@keyframes topHeaderGlow {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
   }
@@ -483,10 +491,10 @@ body {
 .won-left {
   -webkit-animation: winLeft 1s alternate;
   -moz-animation: winLeft 1s alternate;
-  animation: winLeft 2s steps(45);
+  animation: winLeft 3s steps(150);
 }
 
-@-webkit-keyframes winLeft {
+@keyframes winLeft {
   from {
     transform: translate(0px, 0px);
   }
@@ -497,10 +505,10 @@ body {
 .won-right {
   -webkit-animation: winRight 1s alternate;
   -moz-animation: winRight 1s alternate;
-  animation: winRight 2s steps(45);
+  animation: winRight 3s steps(150);
 }
 
-@-webkit-keyframes winRight {
+@keyframes winRight {
   from {
     transform: translate(0px, 0px);
   }
@@ -594,6 +602,76 @@ body {
 .chips-text {
   font-family: "Lora";
   font-size: 18px;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.body-blackout {
+  position: absolute;
+  z-index: 1010;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.65);
+  display: none;
+}
+.body-blackout.is-blacked-out {
+  display: block;
+}
+
+.popup-trigger {
+  height: 30px;
+  width: 93px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #222121;
+  color: white;
+  border-color: #222121;
+  font-family: "Cabin", sans-serif;
+  border-radius: 50px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.popup-modal {
+  height: 365px;
+  width: 650px;
+  background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  padding: 45px;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 300ms ease-in-out;
+  z-index: 1011;
+}
+.popup-modal.is--visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.popup-modal__close {
+  width: 3vw;
+  height: 3vh;
+  font-size: 1.2rem;
+  text-align: center;
+  position: absolute;
+  background-color: #545050;
+  right: 0px;
+  top: 0px;
+  cursor: pointer;
+}
+
+.tutorial-button-img {
+  width: 26vw;
+  height: 15vh;
 }
 
 /*# sourceMappingURL=output.css.map */

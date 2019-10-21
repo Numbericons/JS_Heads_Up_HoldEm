@@ -24,6 +24,7 @@ export default class Board {
     this.currStreet = 'preflop';
     this.lastShownCard = 0;
     this.handFinish = false;
+    this.cardDelay = 900;
     this.humanChips = $('#table-felt-board-bet-player-1');
     this.compChips = $('#table-felt-board-bet-player-2');
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
@@ -162,17 +163,16 @@ export default class Board {
   async dealCard(sound) {
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
-    if (sound) {
-      await this.sleep(500);
-      this.cardTurn.play();
-    }
+    if (sound) this.cardTurn.play();
+    this.showBoard();
   }
-
-  dealFlop() {
+  
+  async dealFlop() {
     this.currPlayerPos = 1;
-    this.flop.play();
+    // this.flop.play();
     for (let i = 0; i < 3; i++) {
-      this.dealCard(false);
+      if (i > 0) await this.sleep(this.cardDelay);
+      this.dealCard(true);
     }
   }
 
@@ -248,11 +248,11 @@ export default class Board {
       (!this.streetActions.length || (this.streetActions.length === 1 && this.streetActions[0] === this.sb)); //preflop first to act or 2nd to act after call  
   }
 
-  render() {
+  async render() {
     this.renderDealerPlayers();
     this.showPot();
     if (this.allIn() && this.handChipDiff() === 0) {
-      this.showDown();
+      await this.showDown();
       this.determineWinner();
       return;
     }
@@ -277,12 +277,16 @@ export default class Board {
   }
 
   revealCards() {
-    this.players.forEach(player => { player.revealed = true })
+    this.players.forEach(player => { 
+      player.revealed = true
+    })
+    this.renderPlayers();
   }
 
-  showDown() {
+  async showDown() {
     this.revealCards();
     while (this.boardCards.length < 5) {
+      await this.sleep(this.cardDelay * 1.5);
       this.dealCard(true);
       this.showBoard();
     }
