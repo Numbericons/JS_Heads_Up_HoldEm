@@ -13881,12 +13881,8 @@ function () {
               case 0:
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = 1450;
 
-<<<<<<< HEAD
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop', this.board.boardCards);
-=======
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
->>>>>>> modal
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -14588,13 +14584,6 @@ function () {
                 _context5.next = 5;
                 return this.showDown();
 
-<<<<<<< HEAD
-      if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
-        this.button.$el.empty();
-        this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));
-      } else if (this.currentPlayer().hand[0]) {
-        this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
-=======
               case 5:
                 this.determineWinner();
                 return _context5.abrupt("return");
@@ -14606,7 +14595,7 @@ function () {
 
                 if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
                   this.button.$el.empty();
-                  this.action.promptPlayer();
+                  this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));
                 } else if (this.currentPlayer().hand[0]) {
                   this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
                 }
@@ -14621,7 +14610,6 @@ function () {
 
       function render() {
         return _render.apply(this, arguments);
->>>>>>> modal
       }
 
       return render;
@@ -15471,13 +15459,8 @@ function () {
                   break;
                 }
 
-<<<<<<< HEAD
                 _context2.next = 4;
-                return this.sleep(4000);
-=======
-                _context2.next = 3;
                 return this.sleep(3000);
->>>>>>> modal
 
               case 4:
                 this.togglePlayers();

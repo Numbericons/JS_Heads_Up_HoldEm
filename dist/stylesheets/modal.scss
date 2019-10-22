@@ -118,6 +118,8 @@ a {
 }
 
 .tutorial{
+  display: flex;
+  flex-direction: column;
   &-button-img{
     width: 26vw;
     height: 15vh;

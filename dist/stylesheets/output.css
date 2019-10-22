@@ -438,15 +438,10 @@ body {
   font-size: 18px;
 }
 .top-header {
-<<<<<<< HEAD
   font-weight: 900;
   font-size: 45px;
   font-family: "Merriweather Sans", cursive;
-=======
   font-weight: bolder;
-  font-size: 45px;
-  font-family: "Lora", cursive;
->>>>>>> modal
   color: #5e1717;
   margin-left: 10vw;
 }
@@ -669,6 +664,10 @@ a {
   cursor: pointer;
 }
 
+.tutorial {
+  display: flex;
+  flex-direction: column;
+}
 .tutorial-button-img {
   width: 26vw;
   height: 15vh;
