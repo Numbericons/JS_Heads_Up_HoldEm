@@ -109,7 +109,7 @@ class Table {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  async nextHand(){600
+  async nextHand(){
     if (this.handNum > 0) await this.sleep(3000);
     this.togglePlayers();
     this.resetPlayerVars();

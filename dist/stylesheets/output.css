@@ -631,8 +631,8 @@ a {
 }
 
 .popup-modal {
-  height: 60vh;
-  width: 80vw;
+  height: 40vh;
+  width: 60vw;
   background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
   position: absolute;
   left: 50%;

@@ -13262,8 +13262,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, this.folded, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, this.folded, true);
       }
     }
   }, {
@@ -13411,8 +13411,8 @@ function () {
       if (this.hand[0]) {
         var playerCard1 = document.querySelector(".player-info-".concat(this.side, "-cards-1"));
         var playerCard2 = document.querySelector(".player-info-".concat(this.side, "-cards-2"));
-        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
-        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, true);
+        this.hand[0].render(playerCard1, [this.cardDims[0]], [this.cardDims[1]], this.revealed, this.folded, true);
+        this.hand[1].render(playerCard2, [this.cardDims[0]], [this.cardDims[1]], this.revealed, this.folded, true);
       }
     }
   }, {
@@ -13542,7 +13542,6 @@ function () {
     value: function getTeir(hand, boardCards) {
       this.defineHand(hand, boardCards);
       var pairVal = this.pairTeir();
-      debugger;
       if (pairVal > 5) return 'Teir' + pairVal;
       return this.beatsBoard() ? 'Teir3' : 'Teir4';
     }
@@ -14987,6 +14986,7 @@ function () {
       if (!player) element.style.borderRadius = "7px";
       element.style.marginLeft = "5px";
       element.style.backgroundSize = "";
+      element.style.display = "";
     }
   }, {
     key: "hide",
@@ -14998,10 +14998,17 @@ function () {
       if (!player) element.style.borderRadius = "7px";
       element.style.marginLeft = "5px";
       element.style.backgroundSize = "75px 112px";
+      element.style.display = "";
+    }
+  }, {
+    key: "foldedCard",
+    value: function foldedCard(element) {
+      element.style.display = "none";
     }
   }, {
     key: "render",
-    value: function render(element, width, height, revealed, player) {
+    value: function render(element, width, height, revealed, folded, player) {
+      if (folded) return this.foldedCard(element);
       revealed ? this.display(element, width, height, player) : this.hide(element, width, height, player);
     }
   }, {
@@ -15452,17 +15459,15 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                600;
-
                 if (!(this.handNum > 0)) {
-                  _context2.next = 4;
+                  _context2.next = 3;
                   break;
                 }
 
-                _context2.next = 4;
+                _context2.next = 3;
                 return this.sleep(3000);
 
-              case 4:
+              case 3:
                 this.togglePlayers();
                 this.resetPlayerVars();
                 this.board.clearBoard();
@@ -15470,7 +15475,7 @@ function () {
                 this.handNum += 1;
                 this.playHand();
 
-              case 10:
+              case 9:
               case "end":
                 return _context2.stop();
             }

@@ -14,6 +14,7 @@ export default class Card {
     if (!player) element.style.borderRadius = "7px";
     element.style.marginLeft = "5px";
     element.style.backgroundSize = "";
+    element.style.display = "";
   }
   
   hide(element, width, height, player){
@@ -24,9 +25,15 @@ export default class Card {
     if (!player) element.style.borderRadius = "7px";
     element.style.marginLeft = "5px";
     element.style.backgroundSize = "75px 112px";
+    element.style.display = "";
   }
 
-  render(element, width, height, revealed, player){
+  foldedCard(element){
+    element.style.display = "none";
+  }
+
+  render(element, width, height, revealed, folded, player){
+    if (folded) return this.foldedCard(element);
     (revealed) ? this.display(element, width, height, player) : this.hide(element, width, height, player)
   }
 
