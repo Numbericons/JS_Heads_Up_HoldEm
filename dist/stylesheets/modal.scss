@@ -79,7 +79,7 @@ a {
 }
 
 .popup-modal {
-  height: 40vh;
+  height: 43vh;
   width: 60vw;
   background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
   position: absolute;
@@ -120,11 +120,19 @@ a {
 .tutorial{
   display: flex;
   flex-direction: column;
-  &-img{
-    font-size: 18px;
-    &-button{
+  align-items: center;
+  &-text{
+    font-size: 23px;
+    margin-bottom: 3%;
+  }
+  &-buttons{
+    &-img{
       width: 26vw;
       height: 15vh;
+      margin-bottom: 3%;
+    }
+    &-text li{
+      margin-bottom: .75%;
     }
   }
 }

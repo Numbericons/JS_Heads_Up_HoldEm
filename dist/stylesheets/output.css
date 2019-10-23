@@ -508,7 +508,7 @@ body {
   }
 }
 .actions-cont {
-  width: 50%;
+  width: 58%;
   display: flex;
   justify-content: space-around;
   margin-top: 5px;
@@ -556,10 +556,10 @@ body {
 }
 
 .betsize-cont {
-  width: 52%;
+  width: 57%;
   display: flex;
   justify-content: space-around;
-  margin: 5px 0px 5px 0px;
+  margin-top: 1%;
 }
 .betsize-cont-text {
   height: 3vh;
@@ -631,7 +631,7 @@ a {
 }
 
 .popup-modal {
-  height: 40vh;
+  height: 43vh;
   width: 60vw;
   background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
   position: absolute;
@@ -663,13 +663,19 @@ a {
 .tutorial {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
-.tutorial-img {
-  font-size: 18px;
+.tutorial-text {
+  font-size: 23px;
+  margin-bottom: 3%;
 }
-.tutorial-img-button {
+.tutorial-buttons-img {
   width: 26vw;
   height: 15vh;
+  margin-bottom: 3%;
+}
+.tutorial-buttons-text li {
+  margin-bottom: 0.75%;
 }
 
 /*# sourceMappingURL=output.css.map */
