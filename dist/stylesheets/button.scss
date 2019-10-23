@@ -4,6 +4,7 @@
   justify-content: space-around;
   margin-top: 5px;
   &-text{
+    font-size: 18px;
     height: 9vh;
     width: 7vw;
     display: flex;
@@ -14,7 +15,6 @@
     border-color: #222121;
     font-family: 'Cabin', sans-serif;
     border-radius: 50px;
-    font-size: 16px;
     font-weight: 700;
     cursor: pointer;
   }
