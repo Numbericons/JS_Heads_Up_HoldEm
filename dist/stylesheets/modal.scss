@@ -79,9 +79,10 @@ a {
 }
 
 .popup-modal {
-  height: 50vh;
+  height: 53vh;
   width: 60vw;
-  background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
+  // background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
+  background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
   position: absolute;
   left: 50%;
   top: 50%;
@@ -139,5 +140,6 @@ a {
     font-size: 18px;
     color: blue;
     text-decoration: underline;
+    margin-bottom: 2%;
   }
 }

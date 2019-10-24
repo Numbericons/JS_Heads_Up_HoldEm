@@ -13933,7 +13933,7 @@ function () {
       betRaise = this.board.bet.minBet(betRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
-      this.board.lastActionChat(lastActionChatplayerAction);
+      this.board.lastActionChat(playerAction);
       this.continueAction();
     }
   }, {
