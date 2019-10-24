@@ -112,8 +112,9 @@ export default class Board {
 
   betText(playerAction){
     let retStr = this.actionText(playerAction);
+    // if (playerAction === 'call' && !this.currentPlayer().comp) debugger;
     if (playerAction === 'call') {
-      retStr += ` ${this.streetActions[0]}`;
+      retStr += ` ${this.streetActions[this.streetActions.length - 1]}`;
     } else if (playerAction !== 'check') {
       retStr += ` ${this.currentPlayer().streetChipsInPot}`;
     }

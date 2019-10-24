@@ -13931,7 +13931,7 @@ function () {
 
       var betRaise = this.board.bet.isCompBet(compBetRaise);
       betRaise = this.board.bet.minBet(betRaise);
-      var resolved = this.resolveAction(betRaise, playerAction);
+      var resolved = this.resolveAction(betRaise, playerAction) || 0;
       this.board.streetActions = this.board.streetActions.concat(resolved);
       this.board.lastActionChat(playerAction);
       this.continueAction();
@@ -14319,10 +14319,10 @@ function () {
   }, {
     key: "betText",
     value: function betText(playerAction) {
-      var retStr = this.actionText(playerAction);
+      var retStr = this.actionText(playerAction); // if (playerAction === 'call' && !this.currentPlayer().comp) debugger;
 
       if (playerAction === 'call') {
-        retStr += " ".concat(this.streetActions[0]);
+        retStr += " ".concat(this.streetActions[this.streetActions.length - 1]);
       } else if (playerAction !== 'check') {
         retStr += " ".concat(this.currentPlayer().streetChipsInPot);
       }

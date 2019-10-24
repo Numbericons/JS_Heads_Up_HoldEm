@@ -50,7 +50,7 @@ export default class Action {
     }
     let betRaise = this.board.bet.isCompBet(compBetRaise);
     betRaise = this.board.bet.minBet(betRaise);
-    let resolved = this.resolveAction(betRaise, playerAction);
+    let resolved = this.resolveAction(betRaise, playerAction) || 0;
     this.board.streetActions = this.board.streetActions.concat(resolved);
     this.board.lastActionChat(playerAction);
     this.continueAction();
