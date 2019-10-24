@@ -13103,6 +13103,13 @@ function () {
   }
 
   _createClass(ComputerPlayer, [{
+    key: "sleep",
+    value: function sleep(ms) {
+      return new Promise(function (resolve) {
+        return setTimeout(resolve, ms);
+      });
+    }
+  }, {
     key: "text",
     value: function text(input) {
       var textSelect = document.querySelector(".table-bottom-actions-text");
@@ -13119,8 +13126,9 @@ function () {
     value: function promptAction() {}
   }, {
     key: "maxBet",
-    value: function maxBet(num, to_call) {
-      return num + to_call > this.chipstack ? ['betRaise', this.chipstack] : ['betRaise', num];
+    value: function maxBet(num, to_call, sb) {
+      var amount = num + to_call > this.chipstack ? this.chipstack : num;
+      return sb || to_call > 0 ? ['raise', amount] : ['bet', amount];
     }
   }, {
     key: "genPreflopBetRaise",
@@ -13146,7 +13154,7 @@ function () {
       }
 
       if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-      return this.maxBet(betRaise, to_call);
+      return this.maxBet(betRaise, to_call, sb);
     }
   }, {
     key: "adjByTeir",
@@ -13174,6 +13182,7 @@ function () {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+      // await this.sleep(2500);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
@@ -13864,7 +13873,8 @@ function () {
       } else if (response[0] === 'check') {
         this.startAction(null, 'check');
       } else {
-        this.startAction(null, 'bet', Math.ceil(response[1]));
+        var action = response[0] || 'bet';
+        this.startAction(null, action, Math.ceil(response[1]));
       }
     }
   }, {
@@ -13881,7 +13891,7 @@ function () {
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = 1450;
 
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop');
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -13932,6 +13942,7 @@ function () {
       betRaise = this.board.bet.minBet(betRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
+      this.board.lastActionChat(playerAction);
       this.continueAction();
     }
   }, {
@@ -14291,6 +14302,47 @@ function () {
       } else {
         this.winner(hand2, hand1, 1, 0);
       }
+    }
+  }, {
+    key: "relativeBet",
+    value: function relativeBet(playerAction) {
+      if (playerAction.includes('X')) {
+        return 'raises';
+      } else if (playerAction.includes('/')) {
+        return this.streetActions[this.streetActions.length - 2] > 0 ? 'raises' : 'bets';
+      } else if (playerAction === 'All In') {
+        return 'goes all in for';
+      } else {
+        return playerAction + 's';
+      }
+    }
+  }, {
+    key: "actionText",
+    value: function actionText(playerAction) {
+      var text = this.relativeBet(playerAction);
+      var bbOption = text === 'bet' && this.streetActions[0] === this.sb;
+      var action = bbOption ? 'raises' : text;
+      if (text === 'raise' || bbOption) action += ' to';
+      return "".concat(this.players[this.currPlayerPos].name, " ").concat(action);
+    }
+  }, {
+    key: "betText",
+    value: function betText(playerAction) {
+      var retStr = this.actionText(playerAction);
+
+      if (playerAction === 'call') {
+        retStr += " ".concat(this.streetActions[0]);
+      } else if (playerAction !== 'check') {
+        retStr += " ".concat(this.currentPlayer().streetChipsInPot);
+      }
+
+      return retStr;
+    }
+  }, {
+    key: "lastActionChat",
+    value: function lastActionChat(playerAction) {
+      var output = this.betText(playerAction);
+      this.renderChat(output);
     }
   }, {
     key: "renderChat",

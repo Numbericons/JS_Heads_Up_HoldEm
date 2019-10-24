@@ -23,6 +23,10 @@ export default class ComputerPlayer {
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
+  sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   text(input) {
     let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
@@ -35,8 +39,9 @@ export default class ComputerPlayer {
 
   promptAction() {}
 
-  maxBet(num, to_call) {
-    return (num + to_call > this.chipstack) ? ['betRaise', this.chipstack] : ['betRaise', num];
+  maxBet(num, to_call, sb) {
+    let amount =  (num + to_call > this.chipstack) ? this.chipstack : num;
+    return (sb || to_call > 0) ? ['raise', amount] : ['bet', amount];
   }
 
   genPreflopBetRaise(betRaise){
@@ -57,7 +62,7 @@ export default class ComputerPlayer {
       if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     }
     if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-    return this.maxBet(betRaise, to_call);
+    return this.maxBet(betRaise, to_call, sb);
   }
   
   adjByTeir(handTeir, randNum){
@@ -77,6 +82,7 @@ export default class ComputerPlayer {
   }
 
   promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
+    // await this.sleep(2500);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;

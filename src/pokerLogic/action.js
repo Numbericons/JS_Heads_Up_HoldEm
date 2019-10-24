@@ -15,7 +15,8 @@ export default class Action {
     } else if (response[0] === 'check') {
       this.startAction(null, 'check');
     } else {
-      this.startAction(null, 'bet', Math.ceil(response[1]));
+      let action = response[0] || 'bet';
+      this.startAction(null, action, Math.ceil(response[1]));
     }
   }
 
@@ -23,7 +24,7 @@ export default class Action {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     // let wait = 1450;
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 4000 : 1750;
-    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.sb, this.board.currStreet === 'preflop');
+    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop');
     await this.sleep(wait);
     if (response) this.resolvePlayerPrompt(response);
   }
@@ -52,6 +53,7 @@ export default class Action {
     betRaise = this.board.bet.minBet(betRaise);
     let resolved = this.resolveAction(betRaise, playerAction);
     this.board.streetActions = this.board.streetActions.concat(resolved);
+    this.board.lastActionChat(playerAction);
     this.continueAction();
   }
 

@@ -90,6 +90,41 @@ export default class Board {
     }
   }
 
+  relativeBet(playerAction){
+    if (playerAction.includes('X')) {
+      return 'raises'
+    } else if (playerAction.includes('/')) {
+      return (this.streetActions[this.streetActions.length - 2] > 0) ? 'raises' : 'bets';
+    } else if (playerAction === 'All In') {
+      return 'goes all in for';
+    } else {
+      return playerAction + 's';
+    }
+  }
+
+  actionText(playerAction){
+    let text = this.relativeBet(playerAction);
+    const bbOption = (text === 'bet' && this.streetActions[0] === this.sb);
+    let action = (bbOption) ? 'raises' : text;
+    if (text === 'raise' || bbOption) action += ' to'
+    return `${this.players[this.currPlayerPos].name} ${action}`
+  }
+
+  betText(playerAction){
+    let retStr = this.actionText(playerAction);
+    if (playerAction === 'call') {
+      retStr += ` ${this.streetActions[0]}`;
+    } else if (playerAction !== 'check') {
+      retStr += ` ${this.currentPlayer().streetChipsInPot}`;
+    }
+    return retStr;
+  }
+
+  lastActionChat(playerAction){
+    let output = this.betText(playerAction);
+    this.renderChat(output);
+  }
+
   renderChat(str){
     let chat = $('.table-bottom-text-chat');
     chat.val(str);
