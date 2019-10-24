@@ -139,7 +139,6 @@ export default class Board {
     this.players[0].chipstack += Math.floor(this.pot / 2);
     this.players[1].chipstack += Math.floor(this.pot / 2);
     if (this.chipMissing()) {
-    // if (!this.pot % 2 === 0 && this.chipMissing()) {
       if (Math.random() < .5) {
         this.players[0].chipstack += 1;
       } else {

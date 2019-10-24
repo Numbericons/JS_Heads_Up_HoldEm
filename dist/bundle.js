@@ -13103,13 +13103,6 @@ function () {
   }
 
   _createClass(ComputerPlayer, [{
-    key: "sleep",
-    value: function sleep(ms) {
-      return new Promise(function (resolve) {
-        return setTimeout(resolve, ms);
-      });
-    }
-  }, {
     key: "text",
     value: function text(input) {
       var textSelect = document.querySelector(".table-bottom-actions-text");
@@ -13182,7 +13175,6 @@ function () {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
-      // await this.sleep(2500);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
@@ -13888,8 +13880,7 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate.."); // let wait = 1450;
-
+                this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop');
                 _context.next = 5;
@@ -13942,7 +13933,7 @@ function () {
       betRaise = this.board.bet.minBet(betRaise);
       var resolved = this.resolveAction(betRaise, playerAction);
       this.board.streetActions = this.board.streetActions.concat(resolved);
-      this.board.lastActionChat(playerAction);
+      this.board.lastActionChat(lastActionChatplayerAction);
       this.continueAction();
     }
   }, {
@@ -14363,7 +14354,6 @@ function () {
       this.players[1].chipstack += Math.floor(this.pot / 2);
 
       if (this.chipMissing()) {
-        // if (!this.pot % 2 === 0 && this.chipMissing()) {
         if (Math.random() < .5) {
           this.players[0].chipstack += 1;
         } else {

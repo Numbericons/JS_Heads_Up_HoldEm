@@ -23,10 +23,6 @@ export default class ComputerPlayer {
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   text(input) {
     let textSelect = document.querySelector(".table-bottom-actions-text");
     textSelect.innerText = input;
@@ -82,7 +78,6 @@ export default class ComputerPlayer {
   }
 
   promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
-    // await this.sleep(2500);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
