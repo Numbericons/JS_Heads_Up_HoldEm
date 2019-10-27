@@ -4,6 +4,7 @@ export default class PostFlop {
   constructor() {
     // this.cards = boardCards;
     // this.cardsV2 = Hand.solve(this.cards);
+    this.value = 0;
   }
 
   handVal() {
@@ -62,6 +63,7 @@ export default class PostFlop {
     let wonArr = Hand.winners([this.handSolved, this.boardSolved]);
     return (wonArr.length === 1 && wonArr[0] === this.handSolved);
   };
+
   numCardsUsed(){};
   kicker(){}
 
