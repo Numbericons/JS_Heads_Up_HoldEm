@@ -13047,10 +13047,7 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.setup(); // let wL = {};
-  // for(let i = 0; i < 500; i++) {
-  // }
-  // console.log(wL);
+  table.setup();
 });
 
 /***/ }),
@@ -13476,9 +13473,7 @@ var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/po
 var PostFlop =
 /*#__PURE__*/
 function () {
-  function PostFlop() {// this.cards = boardCards;
-    // this.cardsV2 = Hand.solve(this.cards);
-
+  function PostFlop() {
     _classCallCheck(this, PostFlop);
   }
 
@@ -13719,11 +13714,7 @@ function () {
     key: "pfTierOne",
     value: function pfTierOne(hand) {
       if (this.compHands(["8s", "8h"]) === this.handV2) return true;
-      if (this.compHands(["As", "Jh"]) === this.handV2) return true; // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
-      //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
-      //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
-      // }
-
+      if (this.compHands(["As", "Jh"]) === this.handV2) return true;
       return false;
     }
   }, {
@@ -14089,11 +14080,7 @@ function () {
         min = 2 * (lastBet - this.board.streetActions[this.board.streetActions.length - 2]); //flag
       } else {
         min = this.board.bb + 2 * sb; //flag
-      } // if (bet < min) bet = min;
-      // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
-      // if (bet > oppTotalStack) bet = oppTotalStack;
-      // return bet;
-
+      }
 
       return bet < min ? min : bet;
     }
@@ -14286,7 +14273,6 @@ function () {
       var winners = Hand.winners([hand1, hand2]);
 
       if (winners.length === 2) {
-        // if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
         return this.tie(hand1);
       } else if (this.players[1].folded || !this.players[0].folded && winners[0] === hand1) {
         this.winner(hand1, hand2, 0, 1);
@@ -14319,7 +14305,7 @@ function () {
   }, {
     key: "betText",
     value: function betText(playerAction) {
-      var retStr = this.actionText(playerAction); // if (playerAction === 'call' && !this.currentPlayer().comp) debugger;
+      var retStr = this.actionText(playerAction);
 
       if (playerAction === 'call') {
         retStr += " ".concat(this.streetActions[this.streetActions.length - 1]);
@@ -14477,8 +14463,7 @@ function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                this.currPlayerPos = 1; // this.flop.play();
-
+                this.currPlayerPos = 1;
                 i = 0;
 
               case 2:
@@ -15119,7 +15104,7 @@ function () {
     this.amount = amount;
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
-    this.$stackDiv.addClass("chips"); // if (isPot) this.$stackDiv.addClass("move");
+    this.$stackDiv.addClass("chips");
   }
 
   _createClass(Chipstack, [{
