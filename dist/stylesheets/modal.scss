@@ -1,5 +1,3 @@
-@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700';
-
 // ## Mixins
 // -------------------
 
@@ -26,7 +24,6 @@
 // }
 
 // html, body {
-//   font-family: 'Open Sans', sans-serif;
 //   padding: 0;
 //   margin: 0;
 // }
@@ -71,7 +68,6 @@ a {
   background-color: #222121;
   color: white;
   border-color: #222121;
-  font-family: "Cabin", sans-serif;
   border-radius: 50px;
   font-size: 13px;
   font-weight: 700;
@@ -118,7 +114,6 @@ a {
   flex-direction: column;
   align-items: center;
   &-text{
-    font-family: "Lora";
     font-size: 26px;
     font-weight: 700;
     text-decoration: underline;
@@ -131,7 +126,6 @@ a {
       margin-bottom: 3%;
     }
     &-text li{
-      font-family: "Lora";
       font-size: 16px;
       margin-bottom: .75%;
     }

@@ -1,8 +1,14 @@
+@import 'https://fonts.googleapis.com/css?family=Open+Sans:300,400,700';
+
+body {
+  position: fixed;
+  background: url('../image/bkg.png');
+  overflow-y: noscroll;
+  font-family: 'Open Sans', sans-serif;
+}
+
 .holdem-container{
   width: 100vw;
-  background: linear-gradient(#a6b1b5 0%, #5a7485 67%);
-  // background: linear-gradient(#5a7485 0, #a6b1b5 67%);
-  // background-color: #a6b1b5;
 }
 
 .dealer{
@@ -16,7 +22,11 @@
   }
 }
 
-body{
-  position: fixed;
-  overflow-y: noscroll;
+.fas {
+  margin-right: 5px;
+  background: rgba(0,0,0,0.5);
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  font-weight: 700;
 }

@@ -13250,8 +13250,7 @@ function () {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
 
-      if (gameStarted) {
-        current ? playerChips.className = 'glow' : playerChips.className = '';
+      if (gameStarted) {// (current) ? playerChips.className = 'glow' : playerChips.className = '';
       }
     }
   }, {
@@ -13353,7 +13352,7 @@ function () {
     key: "promptAction",
     value: function promptAction(to_call) {
       if (to_call === 0) {
-        this.promptText("");
+        this.promptText("...");
       } else {
         this.promptText("$".concat(to_call, " to call"));
       }
@@ -13399,8 +13398,7 @@ function () {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
 
-      if (gameStarted) {
-        current ? playerChips.className = "glow" : playerChips.className = "";
+      if (gameStarted) {// (current) ? playerChips.className = "glow" : playerChips.className = "";
       }
     }
   }, {
@@ -14816,8 +14814,9 @@ function () {
     value: function fold($outDiv) {
       var $foldDiv = $("<button>");
       $foldDiv.addClass("actions-cont-text");
+      $foldDiv.addClass("actions-cont-text-fold");
       $foldDiv.data("action", "fold");
-      $foldDiv.html('Fold');
+      $foldDiv.html('<i class="fas fa-times"></i>Fold');
       $outDiv.append($foldDiv);
     }
   }, {
@@ -14825,13 +14824,14 @@ function () {
     value: function callOrCheck($outDiv) {
       var $callDiv = $("<button>");
       $callDiv.addClass("actions-cont-text");
+      $callDiv.addClass("actions-cont-text-callorcheck");
 
       if (this.board.currBet === 0) {
         $callDiv.data("action", "check");
-        $callDiv.html('Check');
+        $callDiv.html('<i class="fas fa-check"></i>Check');
       } else {
         $callDiv.data("action", "call");
-        $callDiv.html('Call');
+        $callDiv.html('<i class="fas fa-phone"></i>Call');
       }
 
       $outDiv.append($callDiv);
@@ -14863,13 +14863,14 @@ function () {
     value: function betOrRaise($outDiv) {
       var $betDiv = $("<button>");
       $betDiv.addClass("actions-cont-text");
+      $betDiv.addClass("actions-cont-text-betorraise");
 
       if (this.board.currBet === 0) {
         $betDiv.data("action", "bet");
-        $betDiv.html('Bet');
+        $betDiv.html('<i class="fas fa-dollar-sign"></i>Bet');
       } else {
         $betDiv.data("action", "raise");
-        $betDiv.html('Raise');
+        $betDiv.html('<i class="fas fa-arrow-up"></i>Raise');
       }
 
       $outDiv.append($betDiv);
@@ -14942,7 +14943,7 @@ function () {
       this.$el.unbind();
       var $outDiv = $("<div>");
       var $newGame = $("<button>");
-      $newGame.html('PLAY GAME');
+      $newGame.html('<i class="fas fa-gamepad"></i>PLAY GAME');
       $newGame.addClass("actions-cont-new-game");
       $outDiv.addClass("actions-cont");
       $outDiv.append($newGame);

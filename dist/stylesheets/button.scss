@@ -1,69 +1,92 @@
 .actions-cont{
-  width: 58%;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
   display: flex;
   justify-content: space-around;
-  margin-top: 5px;
   &-text{
-    font-size: 18px;
-    height: 9vh;
-    width: 7vw;
+    border-radius: 0;
+    border: 0;
+    color: white;
+    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #222121;
-    color: white;
-    border-color: #222121;
-    font-family: 'Cabin', sans-serif;
-    border-radius: 50px;
+    flex-grow: 1;
+    font-size: 18px;
     font-weight: 700;
-    cursor: pointer;
+    outline: 0;
+    padding: 20px 0;
+    transition: 0.5s background;
+
+    &-betorraise {
+      background: greenyellow;
+
+      &:hover {
+        background: lime;
+      }
+    }
+
+    &-callorcheck {
+      background: lightseagreen;
+
+      &:hover {
+        background: deepskyblue;
+      }
+    }
+
+    &-fold {
+      background: orangered;
+
+      &:hover {
+        background: red;
+      }
+    }
   }
   &-bet-amt{
-    height: 8vh;
-    width: 8vw;
     text-align: center;
     background-color: white;
-    border: 2px solid black;
     color: black;
-    font-family: 'Cabin', sans-serif;
-    border-radius: 15px;
     font-size: 20px;
+    border: none;
   }
   &-new-game{
+    background: limegreen;
     height: 55px;
     width: 160px;
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #222121;
     color: white;
     border-color: #222121;
-    font-family: 'Cabin', sans-serif;
     border-radius: 50px;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
+    margin-bottom: 50px;
+
+    i {
+      margin-right: 5px;
+    }
   }
 }
 
 .betsize-cont{
-  width: 57%;
+  bottom: 61px;
   display: flex;
-  justify-content: space-around;
-  margin-top: 1%;
+  justify-content: center;
+  position: fixed;
+  width: 100%;
+
   &-text{
-    height: 3vh;
-    width: 6vw;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #222121;
-    border-color: #222121;
+    background: #555;
+    border: none;
+    border-radius: 10px;
     color: white;
-    font-family: 'Cabin', sans-serif;
-    border-radius: 40px;
+    cursor: pointer;
     font-size: 10px;
     font-weight: 700;
-    cursor: pointer;
+    margin: 20px 10px;
+    padding: 10px;
   }
 }
