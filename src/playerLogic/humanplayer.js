@@ -24,7 +24,7 @@ export default class HumanPlayer {
 
   promptAction(to_call){
     if (to_call === 0) {
-      this.promptText("")
+      this.promptText("...")
     } else {
       this.promptText(`$${to_call} to call`)
     }
