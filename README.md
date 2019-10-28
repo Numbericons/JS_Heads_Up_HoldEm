@@ -3,6 +3,13 @@
 [Live Link](https://acesandeights.firebaseapp.com//)
 ![Screen Shot 2019-10-23 at 2 24 01 PM](https://user-images.githubusercontent.com/16912968/67435368-d0e8c900-f5a0-11e9-9837-55b65db61abe.png)
 
+### Local Installation
+ 1. Enter 'NPM install' in the root directory
+ 2. Enter 'NPM run dev' to run both webpack and sass in one terminal OR complete steps 3 and 4 below
+ 3. Enter 'NPM run webpack' in the current terminal
+ 4. Enter 'NPM run sass' in a new second terminal
+ 5. After step 2 or steps 3 and 4 above, Open 'index.html' in the dist folder or from the root enter 'open dist/index.html'
+ 
 ### Technologies and Libraries:
  1. jQuery
  2. HTML
@@ -34,7 +41,7 @@ The shuffle method referenced above utilizes the Fisher-Yates array shuffling me
 
 JS Heads Up HoldEm was created primarily in simple HTMl SCSS and the JavaScript jQuery library for an added challenge and to drill the fundamentals of these technologies. jQuery is utilized to select and add style and other attributes to elements.
 
-The computer player uses pot odds (the amount wagered compared to the entire amount of the pot) combined with JavaScripts Math.random function to the simulate player actions.
+The computer player uses pot odds (the amount wagered compared to the entire amount of the pot) combined with JavaScripts Math.random function to the simulate player actions. Adjustments are made for categories of preflop hands and postflop considerations.
 
 ``` javascript
   promptResponse(to_call, stack, pot){
