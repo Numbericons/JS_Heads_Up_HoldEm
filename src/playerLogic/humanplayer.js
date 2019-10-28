@@ -64,7 +64,7 @@ export default class HumanPlayer {
     let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
     playerChips.innerText = `$${this.chipstack}`
     if (gameStarted) {
-      (current) ? playerChips.className = "glow" : playerChips.className = "";
+      // (current) ? playerChips.className = "glow" : playerChips.className = "";
     }
   }
 
