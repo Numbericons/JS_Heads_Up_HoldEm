@@ -61,30 +61,32 @@ export default class ComputerPlayer {
     return this.maxBet(betRaise, to_call, sb);
   }
   
-  adjByTeir(handTeir, randNum){
-    let teir = parseInt(handTeir.slice(4));
-    switch (teir) {
-      case 1:
-        return Infinity;
-      case 2:
-        return randNum * 3;
-      case 3:
-        return randNum;
-      case 4:
-        return randNum / 2;
-      case 5:
-        return randNum / 4;
-    }
+  adjByTeir(handTeir){
+    return (handTeir * Math.random()) / 2;
   }
+  // adjByTeir(handTeir, randNum){
+  //   let teir = parseInt(handTeir.slice(4));
+  //   switch (teir) {
+  //     case 1:
+  //       return Infinity;
+  //     case 2:
+  //       return randNum * 3;
+  //     case 3:
+  //       return randNum;
+  //     case 4:
+  //       return randNum / 2;
+  //     case 5:
+  //       return randNum / 4;
+  //   }
+  // }
 
   promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
-    let randNum = Math.random();
     let potOdds = adjToCall / (adjToCall + pot); 
-    randNum = this.adjByTeir(handTeir, randNum);
-    if (randNum < potOdds) {
+    let teiredNum = this.adjByTeir(handTeir);
+    if (teiredNum < potOdds) {
       if (to_call > 0) {
         return ['fold'];
       } else {
@@ -92,7 +94,7 @@ export default class ComputerPlayer {
       }
     } else if (this.chipstack === to_call) {
       return ['call'];
-    } else if (randNum < potOdds * 1.5) {
+    } else if (teiredNum < potOdds * 1.5) {
       if (to_call > 0) {
         return ['call'];
       } else {

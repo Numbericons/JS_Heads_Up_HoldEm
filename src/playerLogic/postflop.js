@@ -1,6 +1,12 @@
 const Hand = require('pokersolver').Hand;
 //Account for length of board cards
 export default class PostFlop {
+  constructor() {
+    // this.cards = boardCards;
+    // this.cardsV2 = Hand.solve(this.cards);
+    this.value = 0;
+  }
+
   handVal() {
     let handArr = [`${this.hand[0].rank}${this.hand[0].suit}`, `${this.hand[1].rank}${this.hand[1].suit}`];
     for(let i = 0, len = this.boardCards.length; i<len; i++){
@@ -57,6 +63,7 @@ export default class PostFlop {
     let wonArr = Hand.winners([this.handSolved, this.boardSolved]);
     return (wonArr.length === 1 && wonArr[0] === this.handSolved);
   };
+
   numCardsUsed(){};
   kicker(){}
 

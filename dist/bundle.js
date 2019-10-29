@@ -13148,26 +13148,24 @@ function () {
     }
   }, {
     key: "adjByTeir",
-    value: function adjByTeir(handTeir, randNum) {
-      var teir = parseInt(handTeir.slice(4));
+    value: function adjByTeir(handTeir) {
+      return handTeir * Math.random() / 2;
+    } // adjByTeir(handTeir, randNum){
+    //   let teir = parseInt(handTeir.slice(4));
+    //   switch (teir) {
+    //     case 1:
+    //       return Infinity;
+    //     case 2:
+    //       return randNum * 3;
+    //     case 3:
+    //       return randNum;
+    //     case 4:
+    //       return randNum / 2;
+    //     case 5:
+    //       return randNum / 4;
+    //   }
+    // }
 
-      switch (teir) {
-        case 1:
-          return Infinity;
-
-        case 2:
-          return randNum * 3;
-
-        case 3:
-          return randNum;
-
-        case 4:
-          return randNum / 2;
-
-        case 5:
-          return randNum / 4;
-      }
-    }
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
@@ -13175,11 +13173,10 @@ function () {
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
-      var randNum = Math.random();
       var potOdds = adjToCall / (adjToCall + pot);
-      randNum = this.adjByTeir(handTeir, randNum);
+      var teiredNum = this.adjByTeir(handTeir);
 
-      if (randNum < potOdds) {
+      if (teiredNum < potOdds) {
         if (to_call > 0) {
           return ['fold'];
         } else {
@@ -13187,7 +13184,7 @@ function () {
         }
       } else if (this.chipstack === to_call) {
         return ['call'];
-      } else if (randNum < potOdds * 1.5) {
+      } else if (teiredNum < potOdds * 1.5) {
         if (to_call > 0) {
           return ['call'];
         } else {
@@ -13473,6 +13470,10 @@ var PostFlop =
 function () {
   function PostFlop() {
     _classCallCheck(this, PostFlop);
+
+    // this.cards = boardCards;
+    // this.cardsV2 = Hand.solve(this.cards);
+    this.value = 0;
   }
 
   _createClass(PostFlop, [{
@@ -13797,7 +13798,7 @@ function () {
       if (this.pfTierTwo()) return 'Teir2';
       if (this.pfTierThree()) return 'Teir3';
       if (this.pfTierFour()) return 'Teir4';
-      return 'Teir5';
+      return '2';
     }
   }]);
 

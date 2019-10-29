@@ -125,6 +125,6 @@ export default class PreFlop {
     if (this.pfTierTwo()) return 'Teir2';
     if (this.pfTierThree()) return 'Teir3';
     if (this.pfTierFour()) return 'Teir4';
-    return 'Teir5';
+    return '2';
   }
 }
