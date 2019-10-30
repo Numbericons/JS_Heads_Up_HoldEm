@@ -13047,10 +13047,7 @@ __webpack_require__.r(__webpack_exports__);
 $(function () {
   var actionsCont = $('.table-bottom-actions');
   var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont);
-  table.setup(); // let wL = {};
-  // for(let i = 0; i < 500; i++) {
-  // }
-  // console.log(wL);
+  table.setup();
 });
 
 /***/ }),
@@ -13250,8 +13247,7 @@ function () {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
 
-      if (gameStarted) {
-        current ? playerChips.className = 'glow' : playerChips.className = '';
+      if (gameStarted) {// (current) ? playerChips.className = 'glow' : playerChips.className = '';
       }
     }
   }, {
@@ -13353,7 +13349,7 @@ function () {
     key: "promptAction",
     value: function promptAction(to_call) {
       if (to_call === 0) {
-        this.promptText("");
+        this.promptText("...");
       } else {
         this.promptText("$".concat(to_call, " to call"));
       }
@@ -13399,8 +13395,7 @@ function () {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
 
-      if (gameStarted) {
-        current ? playerChips.className = "glow" : playerChips.className = "";
+      if (gameStarted) {// (current) ? playerChips.className = "glow" : playerChips.className = "";
       }
     }
   }, {
@@ -13718,11 +13713,7 @@ function () {
     key: "pfTierOne",
     value: function pfTierOne(hand) {
       if (this.compHands(["8s", "8h"]) === this.handV2) return true;
-      if (this.compHands(["As", "Jh"]) === this.handV2) return true; // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
-      //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
-      //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
-      // }
-
+      if (this.compHands(["As", "Jh"]) === this.handV2) return true;
       return false;
     }
   }, {
@@ -13807,7 +13798,7 @@ function () {
       if (this.pfTierTwo()) return 'Teir2';
       if (this.pfTierThree()) return 'Teir3';
       if (this.pfTierFour()) return 'Teir4';
-      return 'Teir5';
+      return '2';
     }
   }]);
 
@@ -14088,11 +14079,7 @@ function () {
         min = 2 * (lastBet - this.board.streetActions[this.board.streetActions.length - 2]); //flag
       } else {
         min = this.board.bb + 2 * sb; //flag
-      } // if (bet < min) bet = min;
-      // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
-      // if (bet > oppTotalStack) bet = oppTotalStack;
-      // return bet;
-
+      }
 
       return bet < min ? min : bet;
     }
@@ -14285,7 +14272,6 @@ function () {
       var winners = Hand.winners([hand1, hand2]);
 
       if (winners.length === 2) {
-        // if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
         return this.tie(hand1);
       } else if (this.players[1].folded || !this.players[0].folded && winners[0] === hand1) {
         this.winner(hand1, hand2, 0, 1);
@@ -14318,7 +14304,7 @@ function () {
   }, {
     key: "betText",
     value: function betText(playerAction) {
-      var retStr = this.actionText(playerAction); // if (playerAction === 'call' && !this.currentPlayer().comp) debugger;
+      var retStr = this.actionText(playerAction);
 
       if (playerAction === 'call') {
         retStr += " ".concat(this.streetActions[this.streetActions.length - 1]);
@@ -14476,8 +14462,7 @@ function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                this.currPlayerPos = 1; // this.flop.play();
-
+                this.currPlayerPos = 1;
                 i = 0;
 
               case 2:
@@ -14830,8 +14815,9 @@ function () {
     value: function fold($outDiv) {
       var $foldDiv = $("<button>");
       $foldDiv.addClass("actions-cont-text");
+      $foldDiv.addClass("actions-cont-text-fold");
       $foldDiv.data("action", "fold");
-      $foldDiv.html('Fold');
+      $foldDiv.html('<i class="fas fa-times"></i>Fold');
       $outDiv.append($foldDiv);
     }
   }, {
@@ -14839,13 +14825,14 @@ function () {
     value: function callOrCheck($outDiv) {
       var $callDiv = $("<button>");
       $callDiv.addClass("actions-cont-text");
+      $callDiv.addClass("actions-cont-text-callorcheck");
 
       if (this.board.currBet === 0) {
         $callDiv.data("action", "check");
-        $callDiv.html('Check');
+        $callDiv.html('<i class="fas fa-check"></i>Check');
       } else {
         $callDiv.data("action", "call");
-        $callDiv.html('Call');
+        $callDiv.html('<i class="fas fa-phone"></i>Call');
       }
 
       $outDiv.append($callDiv);
@@ -14877,13 +14864,14 @@ function () {
     value: function betOrRaise($outDiv) {
       var $betDiv = $("<button>");
       $betDiv.addClass("actions-cont-text");
+      $betDiv.addClass("actions-cont-text-betorraise");
 
       if (this.board.currBet === 0) {
         $betDiv.data("action", "bet");
-        $betDiv.html('Bet');
+        $betDiv.html('<i class="fas fa-dollar-sign"></i>Bet');
       } else {
         $betDiv.data("action", "raise");
-        $betDiv.html('Raise');
+        $betDiv.html('<i class="fas fa-arrow-up"></i>Raise');
       }
 
       $outDiv.append($betDiv);
@@ -14956,7 +14944,7 @@ function () {
       this.$el.unbind();
       var $outDiv = $("<div>");
       var $newGame = $("<button>");
-      $newGame.html('PLAY GAME');
+      $newGame.html('<i class="fas fa-gamepad"></i>PLAY GAME');
       $newGame.addClass("actions-cont-new-game");
       $outDiv.addClass("actions-cont");
       $outDiv.append($newGame);
@@ -15118,7 +15106,7 @@ function () {
     this.amount = amount;
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
-    this.$stackDiv.addClass("chips"); // if (isPot) this.$stackDiv.addClass("move");
+    this.$stackDiv.addClass("chips");
   }
 
   _createClass(Chipstack, [{

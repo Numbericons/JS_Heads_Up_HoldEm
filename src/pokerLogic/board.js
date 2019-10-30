@@ -81,7 +81,6 @@ export default class Board {
     this.outputString = (this.boardCards.length > 0) ? `On a board of ${this.symbolBoard()}, ` : `Preflop, `
     var winners = Hand.winners([hand1, hand2]);
     if (winners.length === 2) {
-    // if (!this.players[0].folded && !this.players[1].folded && winners.length === 2) {
       return this.tie(hand1);
     } else if (this.players[1].folded || (!this.players[0].folded && winners[0] === hand1)) {
       this.winner(hand1, hand2, 0, 1);
@@ -112,7 +111,6 @@ export default class Board {
 
   betText(playerAction){
     let retStr = this.actionText(playerAction);
-    // if (playerAction === 'call' && !this.currentPlayer().comp) debugger;
     if (playerAction === 'call') {
       retStr += ` ${this.streetActions[this.streetActions.length - 1]}`;
     } else if (playerAction !== 'check') {
@@ -204,7 +202,6 @@ export default class Board {
   
   async dealFlop() {
     this.currPlayerPos = 1;
-    // this.flop.play();
     for (let i = 0; i < 3; i++) {
       if (i > 0) await this.sleep(this.cardDelay);
       this.dealCard(true);

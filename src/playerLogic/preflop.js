@@ -41,10 +41,6 @@ export default class PreFlop {
   pfTierOne(hand){
     if (this.compHands(["8s", "8h"]) === this.handV2) return true;
     if (this.compHands(["As", "Jh"]) === this.handV2) return true;
-    // if (this.hand[0][0] === 'A' || this.hand[1][0] === 'A') {
-    //   if (this.hand[0][0] === 'K' || this.hand[1][0] === 'K') return true;
-    //   if (this.hand[0][0] === 'Q' || this.hand[1][0] === 'Q') return true;
-    // }
     return false;
   }
 

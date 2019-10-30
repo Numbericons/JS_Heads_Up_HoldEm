@@ -24,7 +24,7 @@ export default class HumanPlayer {
 
   promptAction(to_call){
     if (to_call === 0) {
-      this.promptText("")
+      this.promptText("...")
     } else {
       this.promptText(`$${to_call} to call`)
     }
@@ -64,7 +64,7 @@ export default class HumanPlayer {
     let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
     playerChips.innerText = `$${this.chipstack}`
     if (gameStarted) {
-      (current) ? playerChips.className = "glow" : playerChips.className = "";
+      // (current) ? playerChips.className = "glow" : playerChips.className = "";
     }
   }
 

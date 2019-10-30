@@ -79,10 +79,6 @@ export default class Bet {
     } else {
       min = this.board.bb + 2 * sb; //flag
     }
-    // if (bet < min) bet = min;
-    // let oppTotalStack = this.board.otherPlayer().chipstack + this.board.handChipDiff();
-    // if (bet > oppTotalStack) bet = oppTotalStack;
-    // return bet;
     return (bet < min) ? min : bet;
   }
 

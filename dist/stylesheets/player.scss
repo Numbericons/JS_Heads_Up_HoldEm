@@ -1,150 +1,74 @@
-.player-info-left{
+.player-info {
+  position: absolute;
+  z-index: 100;
   display: flex;
-  flex-direction: column;
-  transform: translateY(-8vh);
-  height: 40.5%;
-  width: 17%;
-  margin: -5vh -2vw 0vh 0vw;
-  &-cards{
+  align-items: center;
+  justify-content: center;
+
+  img {
+    border: 5px solid white;
+    box-shadow: 0 0 5px black;
+  }
+
+  &-cards {
     display: flex;
-    align-items: flex-end;
-    width: 197px;
-    height: 100%;
-    margin: 7.5vh 0px 0px 1.5vw;
-    &-1{
-      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-top-left-radius: 7px;
-      border-top-right-radius: 7px;
-      transform: translateY(7px);
+    position: absolute;
+    top: -69px;
+
+    &-left {
+      left: 10px;
     }
-    &-2{
-      background-image: url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png");
-      border-top-left-radius: 7px;
-      border-top-right-radius: 7px;
-      transform: translateY(7px);
+
+    &-right {
+      right: 10px;
     }
   }
-  &-chip{
+
+  &-container {
+    background: #111;
+    border-radius: 10px;
     display: flex;
-    justify-content: flex-end;
-    width: 80%;
-    padding: 0 25px;
-    height: 50px;
-    font-size: 16px;
-    line-height: 7vh;
-    border-radius: 25px;
-    background-color: #494747;
+    align-items: center;
     color: white;
-    z-index: 2;
-    &-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin-right: 30px;
+    font-weight: 700;
+  }
+
+  &-left {
+    left: -300px;
+    text-align: right;
+
+    img {
+      margin-left: 20px;
+      margin-right: -50px;
     }
-    &-img{
-      float: left;
-      margin: 0 10px 0 -25px;
-      height: 80px;
-      width: 80px;
-      border-radius: 50%;
-      transform: translate(35px, -10px);
+  }
+
+  &-right {
+    right: -300px;
+
+    img {
+      margin-right: 20px;
+      margin-left: -50px;
     }
   }
 }
 
-.player-info-right{
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  transform: translateY(-8vh);
-  height: 40.5%;
-  width: 17%;
-  margin: -5vh 0vw 0vh -3vw;
-  &-cards{
-    display: flex;
-    width: 197px;
-    height: 100%;
-    margin: 7.5vh 0px 0px 5.25vw;
-    align-items: flex-end;
-    &-1{
-      border-top-left-radius: 7px;
-      border-top-right-radius: 7px;
-      transform: translateY(7px);
-    }
-    &-2{
-      border-top-left-radius: 7px;
-      border-top-right-radius: 7px;
-      transform: translateY(7px);
-    }
-  }
-  &-chip{
-    display: flex;
-    justify-content: flex-end;
-    width: 77%;
-    padding: 0 25px;
-    height: 50px;
-    font-size: 16px;
-    line-height: 7vh;
-    border-radius: 25px;
-    background-color: #494747;
-    color: white;
-    margin-left: 1.9vw;
-    z-index: 2;
-    &-text {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 240px;
-    }
-    &-img{
-      float: left;
-      margin: 0 10px 0 -40px;
-      height: 80px;
-      width: 80px;
-      border-radius: 50%;
-      transform: translateY(-10px);
-    }
-  }
-}
-#player-info-left-chip-line{
-   border-bottom: 1px solid white;
-    width: 170%;
-    transform: translateY(2.2vh);
-}
-#player-info-right-chip-line{
-   border-bottom: 1px solid white;
-    width: 100%;
-    transform: translateY(2.2vh);
+.player-text-container {
+  width: 200px;
 }
 
-#player-info-right-chip-text-name{
-  font-family: 'Lora';
-  font-size: 1.1vw;
-  height: 20px;
+.player-info-img {
+  border-radius: 50%;
+  border: 5px solid white;
+  box-shadow: 0 0 10px black;
 }
 
-#player-info-left-chip-text-name{
-  font-family: 'Lora';
-  font-size: 1.1vw;
-  height: 20px;
-}
-
-#player-info-right-chip-text-chips{
-  font-family: 'Lora';
-  font-size: 16px;
-}
-
-#player-info-left-chip-text-chips{
-  font-family: 'Lora';
-  font-size: 16px;
+.player-info-money {
+  color: gold;
+  margin-top: 5px;
 }
 
 .glow {
-  color: #fff;
-  text-align: center;
   -webkit-animation: glow 1s ease-in-out infinite alternate;
   -moz-animation: glow 1s ease-in-out infinite alternate;
   animation: glow 1s ease-in-out infinite alternate;
@@ -153,15 +77,8 @@
 @-webkit-keyframes glow {
   from {
     text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #ff003c, 0 0 40px #ff003c, 0 0 50px #ff003c, 0 0 60px #ff003c, 0 0 70px #ff003c;
-    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60036, 0 0 40px #e60036, 0 0 50px #e60036, 0 0 60px #e60036, 0 0 70px #e60036;
-    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
   }
   to {
     text-shadow: 0 0 20px #fff, 0 0 30px #f53737, 0 0 40px #f53737, 0 0 50px #f53737, 0 0 60px #f53737, 0 0 70px #f53737, 0 0 80px #f53737;
-    // text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
   }
 }
-
-
-    // text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-//     text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;

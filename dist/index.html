@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>JavaScript Hold'em Poker</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" />
     <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
     <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Rye&display=swap" rel="stylesheet">
@@ -50,22 +51,39 @@
       </div>
       <div class="table">
         <div class="table-row">
-          <div class='player-info-left'>
-            <div class='player-info-left-cards'>
-              <div class='player-info-left-cards-1'></div>
-              <div class='player-info-left-cards-2'></div>
-            </div>
-            <div class="player-info-left-chip">
-              <div class='player-info-left-chip-text'>
-                <h5 id='player-info-left-chip-text-name'></h5>
-                <div id="player-info-left-chip-line"></div>
-                <h5 id='player-info-left-chip-text-chips'></h5>
-              </div>
-              <img class='player-info-left-chip-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/malko5small.png" alt="player" width="96" height="96">
-            </div>
-          </div>
           <div class="table-trim">
+            <div class="player-info player-info-left">
+              <div class='player-info-container'>
+                <div class='player-info-cards player-info-cards-left'>
+                  <div class='player-info-left-cards-1'></div>
+                  <div class='player-info-left-cards-2'></div>
+                </div>
+                <div class="player-text-container player-text-container-left">
+                  <h5 id='player-info-left-chip-text-name' class="player-info-name"></h5>
+                  <div id="player-info-left-chip-line"></div>
+                  <h5 id='player-info-left-chip-text-chips' class="player-info-money"></h5>
+                </div>
+                <img class='player-info-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/malko5small.png" alt="player" width="96" height="96">
+              </div>
+            </div><!-- .player-info .player-info-left -->
+
+            <div class="player-info player-info-right">
+              <div class='player-info-container'>
+                <img class='player-info-img' src="./image/MattDamonScuffedUpSmall.jpg" alt="player" width="96" height="96">
+                <div class='player-text-container player-text-container-right'>
+                  <h5 id='player-info-right-chip-text-name' class="player-info-name"></h5>
+                  <div id="player-info-right-chip-line"></div>
+                  <h5 id='player-info-right-chip-text-chips' class="player-info-money"></h5>
+                </div>
+                <div class='player-info-cards player-info-cards-right'>
+                  <div class='player-info-right-cards-1'></div>
+                  <div class='player-info-right-cards-2'></div>
+                </div>
+              </div>
+            </div><!-- .player-info .player-info-right -->
+
             <div class="table-felt">
+              <div class="table-felt-layover"></div>
               <!-- <div class="top-left-current-pot"> -->
                 <h5 class="top-left-current-pot-text"></h5>
               <!-- </div> -->
@@ -92,25 +110,12 @@
               <!-- <h5 class="table-felt-pot"></h5> -->
             </div>
           </div>
-          <div class='player-info-right'>
-            <div class='player-info-right-cards'>
-              <div class='player-info-right-cards-1'></div>
-              <div class='player-info-right-cards-2'></div>
-            </div>
-            <div class='player-info-right-chip'>
-              <img class='player-info-right-chip-img' src="./image/MattDamonScuffedUpSmall.jpg" alt="player" width="96" height="96">
-              <!-- <img class='player-info-right-chip-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/MattDamonScuffedUp.jpg" alt="player" width="96" height="96"> -->
-              <div class='player-info-right-chip-text'>
-                <h5 id='player-info-right-chip-text-name'></h5>
-                <!-- <h5 class='player-info-right-chip-text-name'></h5> -->
-                <div id="player-info-right-chip-line"></div>
-                <h5 id='player-info-right-chip-text-chips'></h5>
-              </div>
-            </div>
-          </div>
         </div>
         <h3></h3>
-        <h3 class="table-bottom-actions-prompt"></h3>
+        <div class="table-bottom-actions-prompt-container">
+          <i class="fas fa-info"></i>
+          <h3 class="table-bottom-actions-prompt">...</h3>
+        </div>
         <div class="table-bottom">
           <div class="table-bottom-text">
             <h6 class="table-bottom-text-header">Last Action:</h6>
@@ -120,7 +125,6 @@
           <div class="table-bottom-about">
             <div class="table-bottom-about-links">
               <button type="button" class="popup-trigger" data-popup-trigger="one">
-                <!-- <button type="button" class="btn btn-sm btn-primary shadow p-2 px-3 popup-trigger" data-popup-trigger="one"> -->
                 TUTORIAL
               </button>
               <a class="table-bottom-about-links-icons" href="https://github.com/Numbericons/JS_Heads_Up_HoldEm"><img
