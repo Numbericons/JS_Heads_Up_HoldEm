@@ -4,7 +4,6 @@ export default class Chipstack {
     this.$tableEl = $tableEl;
     this.$stackDiv = $('<div>');
     this.$stackDiv.addClass("chips");
-    // if (isPot) this.$stackDiv.addClass("move");
   }
 
   getChips(amount) {

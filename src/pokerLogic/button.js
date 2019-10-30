@@ -22,20 +22,22 @@ export default class Button {
   fold($outDiv) {
     let $foldDiv = $("<button>");
     $foldDiv.addClass("actions-cont-text");
+    $foldDiv.addClass("actions-cont-text-fold");
     $foldDiv.data("action", "fold");
-    $foldDiv.html('Fold');
+    $foldDiv.html('<i class="fas fa-times"></i>Fold');
     $outDiv.append($foldDiv)
   }
 
   callOrCheck($outDiv) {
     let $callDiv = $("<button>");
-    $callDiv.addClass("actions-cont-text")
+    $callDiv.addClass("actions-cont-text");
+    $callDiv.addClass("actions-cont-text-callorcheck");
     if (this.board.currBet === 0) {
       $callDiv.data("action", "check");
-      $callDiv.html('Check');
+      $callDiv.html('<i class="fas fa-check"></i>Check');
     } else {
       $callDiv.data("action", "call");
-      $callDiv.html('Call');
+      $callDiv.html('<i class="fas fa-phone"></i>Call');
     }
 
     $outDiv.append($callDiv)
@@ -63,13 +65,14 @@ export default class Button {
   betOrRaise($outDiv) {
     let $betDiv = $("<button>");
     $betDiv.addClass("actions-cont-text")
+    $betDiv.addClass("actions-cont-text-betorraise");
 
     if (this.board.currBet === 0) {
       $betDiv.data("action", "bet");
-      $betDiv.html('Bet');
+      $betDiv.html('<i class="fas fa-dollar-sign"></i>Bet');
     } else {
       $betDiv.data("action", "raise");
-      $betDiv.html('Raise');
+      $betDiv.html('<i class="fas fa-arrow-up"></i>Raise');
     }
     $outDiv.append($betDiv)
   }
@@ -131,9 +134,9 @@ export default class Button {
     const $outDiv = $("<div>");
     let $newGame = $("<button>");
 
-    $newGame.html('PLAY GAME');
-    $newGame.addClass("actions-cont-new-game")
-    $outDiv.addClass("actions-cont")
+    $newGame.html('<i class="fas fa-gamepad"></i>PLAY GAME');
+    $newGame.addClass("actions-cont-new-game");
+    $outDiv.addClass("actions-cont");
     $outDiv.append($newGame);
     this.$el.append($outDiv);
     this.$el.on("click", "button", (event => {

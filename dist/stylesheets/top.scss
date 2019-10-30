@@ -1,16 +1,11 @@
-
- $winFrames: 150; 
+ $winFrames: 150;
  .top{
   height: 17vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   &-left{
     &-help{
       margin: 0px 150px 0px 20px;
       display: flex;
       align-items: center;
-      font-family: 'Lora';
       &-image{
         width: 50px;
       }
@@ -18,7 +13,6 @@
     &-current-pot{
       margin-left:15px;
       &-text{
-        font-family: 'Lora';
         font-weight: 700;
         transform: translate(0px, 2vh);
         font-size: 18px;
@@ -29,13 +23,11 @@
     font-weight: 900;
     font-size: 45px;
     font-family: 'Merriweather Sans', cursive;
-    // font-family: 'Lora', cursive;
     font-weight: bolder;
     color: #5e1717;
     // color: #543d2f;
     // color: #88330f;
     // transform: translateX(3.5vw);
-    margin-left: 10vw;
   }
   &-about{
     width: 18vw;
@@ -44,14 +36,12 @@
       font-size:16px;
       color: black;
       // font-family: 'Rye', cursive;
-      font-family: 'Lora';
       margin: 20px;
     }
     &-links{
       display: flex;
       align-items: center;
       justify-content: space-around;
-      font-family: 'Lora';
       &-icons{
         width: 2vw;
       }
@@ -63,7 +53,9 @@
 }
 
 .top-header-glow {
-  // color: #fff;
+  color: #fff;
+  margin-top: 50px;
+  z-index: 10;
   text-align: center;
   -webkit-animation: topHeaderGlow 1s ease-in-out infinite alternate;
   -moz-animation: topHeaderGlow 1s ease-in-out infinite alternate;
@@ -72,10 +64,10 @@
 
 @keyframes topHeaderGlow {
   from {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #18057b, 0 0 40px #18057b, 0 0 50px #18057b, 0 0 60px #18057b, 0 0 70px #18057b;
+    text-shadow: 0 0 10px #ccc, 0 0 20px #ccc, 0 0 30px #ccc, 0 0 40px #ccc, 0 0 50px #ccc, 0 0 60px #ccc, 0 0 70px #ccc;
   }
   to {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #230d91, 0 0 40px #230d91, 0 0 50px #230d91, 0 0 60px #230d91, 0 0 70px #230d91;
+    text-shadow: 0 0 10px #aaa, 0 0 20px #aaa, 0 0 30px #aaa, 0 0 40px #aaa, 0 0 50px #aaa, 0 0 60px #aaa, 0 0 70px #aaa;
     // text-shadow: 0 0 20px #fff, 0 0 30px #397dd0, 0 0 40px #397dd0, 0 0 50px #397dd0, 0 0 60px #397dd0, 0 0 70px #397dd0, 0 0 80px #397dd0;
   }
 }
