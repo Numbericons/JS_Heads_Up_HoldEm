@@ -54,7 +54,7 @@ export default class HumanPlayer {
 
   renderName(gameStarted, current) {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
-    playerName.innerText = `${this.name}`;
+    playerName.innerText = this.name;
     if (gameStarted) {
       (current) ? playerName.className = 'glow' : playerName.className = '';
     }

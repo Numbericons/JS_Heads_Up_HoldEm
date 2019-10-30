@@ -13383,7 +13383,7 @@ function () {
     key: "renderName",
     value: function renderName(gameStarted, current) {
       var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
-      playerName.innerText = "".concat(this.name);
+      playerName.innerText = this.name;
 
       if (gameStarted) {
         current ? playerName.className = 'glow' : playerName.className = '';
@@ -15006,13 +15006,23 @@ function () {
   }
 
   _createClass(Card, [{
+    key: "radius",
+    value: function radius(element, player) {
+      if (!player) {
+        element.style.borderRadius = "7px";
+      } else {
+        element.style.borderTopLeftRadius = "7px";
+        element.style.borderTopRightRadius = "7px";
+      }
+    }
+  }, {
     key: "display",
     value: function display(element, width, height, player) {
       element.style.backgroundImage = 'url("https://js-holdem.s3-us-west-1.amazonaws.com/deck400.png")';
       element.style.backgroundPosition = "".concat(this.img_pos_x, "px ").concat(this.img_pos_y, "px");
       element.style.width = width;
       element.style.height = height;
-      if (!player) element.style.borderRadius = "7px";
+      this.radius(element, player);
       element.style.marginLeft = "5px";
       element.style.backgroundSize = "";
       element.style.display = "";
@@ -15024,7 +15034,7 @@ function () {
       element.style.backgroundPosition = ' -2px -4px';
       element.style.width = width;
       element.style.height = height;
-      if (!player) element.style.borderRadius = "7px";
+      this.radius(element, player);
       element.style.marginLeft = "5px";
       element.style.backgroundSize = "75px 112px";
       element.style.display = "";

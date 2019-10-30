@@ -31,10 +31,11 @@
     align-items: center;
     color: white;
     font-weight: 700;
+    width: 12vw;
   }
 
   &-left {
-    left: -300px;
+    left: -15vw;
     text-align: right;
 
     img {
@@ -63,9 +64,9 @@
   box-shadow: 0 0 10px black;
 }
 
-.player-info-money {
+.player-info-chips {
   color: gold;
-  margin-top: 5px;
+  margin: 5px 1vw 0px 2vw;
 }
 
 .glow {

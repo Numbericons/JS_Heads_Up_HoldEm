@@ -189,7 +189,7 @@ body {
   font-size: 16px;
   padding: 10px;
   border-radius: 10px;
-  margin-top: 50px;
+  margin-top: 3vh;
 }
 .table-bottom-text {
   position: fixed;
@@ -316,9 +316,10 @@ body {
   align-items: center;
   color: white;
   font-weight: 700;
+  width: 12vw;
 }
 .player-info-left {
-  left: -300px;
+  left: -15vw;
   text-align: right;
 }
 .player-info-left img {
@@ -343,9 +344,9 @@ body {
   box-shadow: 0 0 10px black;
 }
 
-.player-info-money {
+.player-info-chips {
   color: gold;
-  margin-top: 5px;
+  margin: 5px 1vw 0px 2vw;
 }
 
 .glow {
