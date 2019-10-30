@@ -15122,7 +15122,7 @@ function () {
   _createClass(Chipstack, [{
     key: "getChips",
     value: function getChips(amount) {
-      var denominations = [1, 10, 25, 100, 1000];
+      var denominations = [100, 500, 1000, 5000, 10000];
       var result = [];
 
       while (amount > 0) {
@@ -15138,19 +15138,19 @@ function () {
     key: "colorConverter",
     value: function colorConverter(chipType) {
       switch (chipType) {
-        case 1000:
+        case 10000:
           return 'purple';
 
-        case 100:
+        case 5000:
           return 'black';
 
-        case 25:
+        case 1000:
           return 'blue';
 
-        case 10:
+        case 500:
           return 'red';
 
-        case 1:
+        case 100:
           return 'white';
       }
     }
@@ -15336,9 +15336,9 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 5000;
-    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
-    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50000;
+    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
+    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1000;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);

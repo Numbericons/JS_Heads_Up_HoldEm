@@ -7,7 +7,7 @@ export default class Chipstack {
   }
 
   getChips(amount) {
-    let denominations = [1, 10, 25, 100, 1000];
+    let denominations = [100, 500, 1000, 5000, 10000];
     let result = [];
     while (amount > 0) {
       let coin = denominations.pop();
@@ -20,15 +20,15 @@ export default class Chipstack {
 
   colorConverter(chipType){
     switch (chipType) {
-      case 1000:
+      case 10000:
         return 'purple';
-      case 100:
+      case 5000:
         return 'black';
-      case 25:
+      case 1000:
         return 'blue';
-      case 10:
+      case 500:
         return 'red'
-      case 1:
+      case 100:
         return 'white';
     }
   }

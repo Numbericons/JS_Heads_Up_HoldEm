@@ -304,10 +304,10 @@ body {
   top: -69px;
 }
 .player-info-cards-left {
-  left: 10px;
+  left: 2vw;
 }
 .player-info-cards-right {
-  right: 10px;
+  right: 3vw;
 }
 .player-info-container {
   background: #111;
@@ -316,10 +316,10 @@ body {
   align-items: center;
   color: white;
   font-weight: 700;
-  width: 12vw;
+  width: 16vw;
 }
 .player-info-left {
-  left: -15vw;
+  left: -19vw;
   text-align: right;
 }
 .player-info-left img {
@@ -327,7 +327,7 @@ body {
   margin-right: -50px;
 }
 .player-info-right {
-  right: -300px;
+  right: -19vw;
 }
 .player-info-right img {
   margin-right: 20px;
@@ -336,17 +336,23 @@ body {
 
 .player-text-container {
   width: 200px;
+  margin: 0vw 2vw 0vw 0.5vw;
 }
 
 .player-info-img {
   border-radius: 50%;
-  border: 5px solid white;
+  border: 5px solid #f5f5f5;
   box-shadow: 0 0 10px black;
 }
 
 .player-info-chips {
   color: gold;
   margin: 5px 1vw 0px 2vw;
+  font-size: 0.85vw;
+}
+
+.player-info-name {
+  font-size: 0.85vw;
 }
 
 .glow {
@@ -411,7 +417,7 @@ body {
 }
 
 .top-header-glow {
-  color: #fff;
+  color: #555;
   margin-top: 50px;
   z-index: 10;
   text-align: center;
