@@ -16,6 +16,7 @@ export default class ComputerPlayer {
     this.comp = true;
     this.revealed = false;
     this.cardDims = cardDims;
+    this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -80,7 +81,12 @@ export default class ComputerPlayer {
   //   }
   // }
 
+  aggressor(){
+    if (this.aggressor) return Math.random() >= .7
+    return false;
+  }
   promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
+    if (this.aggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;

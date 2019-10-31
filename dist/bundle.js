@@ -13092,6 +13092,7 @@ function () {
     this.comp = true;
     this.revealed = false;
     this.cardDims = cardDims;
+    this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -13167,9 +13168,16 @@ function () {
     // }
 
   }, {
+    key: "aggressor",
+    value: function aggressor() {
+      if (this.aggressor) return Math.random() >= .7;
+      return false;
+    }
+  }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
+      if (this.aggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
@@ -13332,6 +13340,7 @@ function () {
     this.comp = false;
     this.revealed = true;
     this.cardDims = cardDims;
+    this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -14705,6 +14714,14 @@ function () {
       this.humanChips.addClass('chip-combine-right');
     }
   }, {
+    key: "setAggressor",
+    value: function setAggressor() {
+      if (this.players[0].comp) {
+        debugger;
+        var x;
+      }
+    }
+  }, {
     key: "stepStreet",
     value: function () {
       var _stepStreet = _asyncToGenerator(
@@ -14721,11 +14738,12 @@ function () {
               case 3:
                 this.humanChips.removeClass();
                 this.compChips.removeClass();
+                this.setAggressor();
                 flopBool ? this.dealFlop() : this.dealCard(true);
                 this.showBoard();
                 if (!this.allIn()) this.render();
 
-              case 8:
+              case 9:
               case "end":
                 return _context7.stop();
             }

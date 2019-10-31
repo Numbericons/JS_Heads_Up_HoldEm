@@ -10,6 +10,7 @@ export default class HumanPlayer {
     this.comp = false;
     this.revealed = true;
     this.cardDims = cardDims;
+    this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');

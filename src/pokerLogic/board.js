@@ -329,11 +329,19 @@ export default class Board {
     this.humanChips.addClass('chip-combine-right')
   }
 
+  setAggressor(){
+    if (this.players[0].comp) {
+      debugger
+      let x;
+    }
+  }
+
   async stepStreet(flopBool) {
     this.combineChips();
     await this.sleep(1000);
     this.humanChips.removeClass();
     this.compChips.removeClass();
+    this.setAggressor();
     (flopBool) ? this.dealFlop() : this.dealCard(true);
     this.showBoard();
     if (!this.allIn()) this.render();
