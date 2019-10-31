@@ -330,9 +330,11 @@ export default class Board {
   }
 
   setAggressor(){
-    if (this.players[0].comp) {
-      debugger
-      let x;
+    this.currentPlayer().aggressor = false;
+    if (this.streetActions[this.streetActions.length - 2] > this.sb) {
+      this.otherPlayer().aggressor = true;
+    } else {
+      this.otherPlayer().aggressor = false;
     }
   }
 
@@ -341,13 +343,13 @@ export default class Board {
     await this.sleep(1000);
     this.humanChips.removeClass();
     this.compChips.removeClass();
-    this.setAggressor();
     (flopBool) ? this.dealFlop() : this.dealCard(true);
     this.showBoard();
     if (!this.allIn()) this.render();
   }
-
+  
   nextStreet() {
+    this.setAggressor();
     this.streetActions = [];
     this.currBet = 0;
     this.players[0].streetChipsInPot = 0;

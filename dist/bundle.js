@@ -13151,25 +13151,10 @@ function () {
     key: "adjByTeir",
     value: function adjByTeir(handTeir) {
       return handTeir * Math.random() / 2;
-    } // adjByTeir(handTeir, randNum){
-    //   let teir = parseInt(handTeir.slice(4));
-    //   switch (teir) {
-    //     case 1:
-    //       return Infinity;
-    //     case 2:
-    //       return randNum * 3;
-    //     case 3:
-    //       return randNum;
-    //     case 4:
-    //       return randNum / 2;
-    //     case 5:
-    //       return randNum / 4;
-    //   }
-    // }
-
+    }
   }, {
-    key: "aggressor",
-    value: function aggressor() {
+    key: "isAggressor",
+    value: function isAggressor() {
       if (this.aggressor) return Math.random() >= .7;
       return false;
     }
@@ -13177,7 +13162,7 @@ function () {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
-      if (this.aggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
+      if (this.isAggressor) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
@@ -14716,9 +14701,12 @@ function () {
   }, {
     key: "setAggressor",
     value: function setAggressor() {
-      if (this.players[0].comp) {
-        debugger;
-        var x;
+      this.currentPlayer().aggressor = false;
+
+      if (this.streetActions[this.streetActions.length - 2] > this.sb) {
+        this.otherPlayer().aggressor = true;
+      } else {
+        this.otherPlayer().aggressor = false;
       }
     }
   }, {
@@ -14738,12 +14726,11 @@ function () {
               case 3:
                 this.humanChips.removeClass();
                 this.compChips.removeClass();
-                this.setAggressor();
                 flopBool ? this.dealFlop() : this.dealCard(true);
                 this.showBoard();
                 if (!this.allIn()) this.render();
 
-              case 9:
+              case 8:
               case "end":
                 return _context7.stop();
             }
@@ -14760,6 +14747,7 @@ function () {
   }, {
     key: "nextStreet",
     value: function nextStreet() {
+      this.setAggressor();
       this.streetActions = [];
       this.currBet = 0;
       this.players[0].streetChipsInPot = 0;

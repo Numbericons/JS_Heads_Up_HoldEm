@@ -65,28 +65,13 @@ export default class ComputerPlayer {
   adjByTeir(handTeir){
     return (handTeir * Math.random()) / 2;
   }
-  // adjByTeir(handTeir, randNum){
-  //   let teir = parseInt(handTeir.slice(4));
-  //   switch (teir) {
-  //     case 1:
-  //       return Infinity;
-  //     case 2:
-  //       return randNum * 3;
-  //     case 3:
-  //       return randNum;
-  //     case 4:
-  //       return randNum / 2;
-  //     case 5:
-  //       return randNum / 4;
-  //   }
-  // }
 
-  aggressor(){
+  isAggressor(){
     if (this.aggressor) return Math.random() >= .7
     return false;
   }
   promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
-    if (this.aggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
+    if (this.isAggressor) return this.genBetRaise(to_call, pot, sb, isPreflop);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
