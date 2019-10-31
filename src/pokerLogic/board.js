@@ -25,8 +25,8 @@ export default class Board {
     this.lastShownCard = 0;
     this.handFinish = false;
     this.cardDelay = 900;
-    this.humanChips = $('#table-felt-board-bet-player-1');
-    this.compChips = $('#table-felt-board-bet-player-2');
+    this.rightChips = $('#table-felt-board-bet-player-1');
+    this.leftChips = $('#table-felt-board-bet-player-2');
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -325,8 +325,8 @@ export default class Board {
   }
 
   combineChips(){
-    this.compChips.addClass('chip-combine-left')
-    this.humanChips.addClass('chip-combine-right')
+    this.leftChips.addClass('chip-combine-left')
+    this.rightChips.addClass('chip-combine-right')
   }
 
   setAggressor(){
@@ -341,8 +341,8 @@ export default class Board {
   async stepStreet(flopBool) {
     this.combineChips();
     await this.sleep(1000);
-    this.humanChips.removeClass();
-    this.compChips.removeClass();
+    this.rightChips.removeClass();
+    this.leftChips.removeClass();
     (flopBool) ? this.dealFlop() : this.dealCard(true);
     this.showBoard();
     if (!this.allIn()) this.render();
