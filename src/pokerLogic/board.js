@@ -330,11 +330,11 @@ export default class Board {
   }
 
   setAggressor(){
-    this.currentPlayer().aggressor = false;
+    this.otherPlayer().aggressor = false;
     if (this.streetActions[this.streetActions.length - 2] > this.sb) {
-      this.otherPlayer().aggressor = true;
+      this.currentPlayer().aggressor = true;
     } else {
-      this.otherPlayer().aggressor = false;
+      this.currentPlayer().aggressor = false;
     }
   }
 

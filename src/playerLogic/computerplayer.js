@@ -67,11 +67,11 @@ export default class ComputerPlayer {
   }
 
   isAggressor(){
-    if (this.aggressor) return Math.random() >= .7
+    if (this.aggressor) return Math.random() >= .6;
     return false;
   }
-  promptResponse(to_call, pot, sb, isPreflop, boardCards = []){
-    if (this.isAggressor) return this.genBetRaise(to_call, pot, sb, isPreflop);
+  promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
+    if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;

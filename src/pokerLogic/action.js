@@ -19,11 +19,17 @@ export default class Action {
       this.startAction(null, action, Math.ceil(response[1]));
     }
   }
+  
+  aggAction(){
+    let firstBet = this.board.streetActions.length === 0;
+    let secondBet = this.board.streetActions.length === 1 && this.board.streetActions[0] === 0;
+    return firstBet || secondBet;
+  }
 
   async promptPlayer(handArr) {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 4000 : 1750;
-    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop');
+    let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop', this.board.boardCards, this.aggAction());
     await this.sleep(wait);
     if (response) this.resolvePlayerPrompt(response);
   }

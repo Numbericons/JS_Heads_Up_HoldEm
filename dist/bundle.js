@@ -13155,14 +13155,15 @@ function () {
   }, {
     key: "isAggressor",
     value: function isAggressor() {
-      if (this.aggressor) return Math.random() >= .7;
+      if (this.aggressor) return Math.random() >= .6;
       return false;
     }
   }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
-      if (this.isAggressor) return this.genBetRaise(to_call, pot, sb, isPreflop);
+      var aggAction = arguments.length > 5 ? arguments[5] : undefined;
+      if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
@@ -13854,6 +13855,13 @@ function () {
       }
     }
   }, {
+    key: "aggAction",
+    value: function aggAction() {
+      var firstBet = this.board.streetActions.length === 0;
+      var secondBet = this.board.streetActions.length === 1 && this.board.streetActions[0] === 0;
+      return firstBet || secondBet;
+    }
+  }, {
     key: "promptPlayer",
     value: function () {
       var _promptPlayer = _asyncToGenerator(
@@ -13866,7 +13874,7 @@ function () {
               case 0:
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
-                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop');
+                response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop', this.board.boardCards, this.aggAction());
                 _context.next = 5;
                 return this.sleep(wait);
 
@@ -14701,12 +14709,12 @@ function () {
   }, {
     key: "setAggressor",
     value: function setAggressor() {
-      this.currentPlayer().aggressor = false;
+      this.otherPlayer().aggressor = false;
 
       if (this.streetActions[this.streetActions.length - 2] > this.sb) {
-        this.otherPlayer().aggressor = true;
+        this.currentPlayer().aggressor = true;
       } else {
-        this.otherPlayer().aggressor = false;
+        this.currentPlayer().aggressor = false;
       }
     }
   }, {

@@ -230,8 +230,7 @@ body {
   width: 2vw;
 }
 .table-bottom-about-links-name {
-  transform: translateY(-0.5vh);
-  color: black;
+  color: white;
   font-weight: bold;
   font-size: 18px;
 }
@@ -295,8 +294,9 @@ body {
   justify-content: center;
 }
 .player-info img {
-  border: 5px solid white;
+  border: 5px solid #7d7b7b;
   box-shadow: 0 0 5px black;
+  border-radius: 50%;
 }
 .player-info-cards {
   display: flex;
@@ -337,12 +337,6 @@ body {
 .player-text-container {
   width: 200px;
   margin: 0vw 2vw 0vw 0.5vw;
-}
-
-.player-info-img {
-  border-radius: 50%;
-  border: 5px solid #f5f5f5;
-  box-shadow: 0 0 10px black;
 }
 
 .player-info-chips {
@@ -547,6 +541,16 @@ body {
   padding: 10px;
 }
 
+.fa-github-square {
+  font-size: 27px;
+  color: white;
+}
+
+.fa-linkedin {
+  font-size: 27px;
+  color: white;
+}
+
 .chips {
   display: flex;
   align-items: flex-end;
@@ -589,9 +593,9 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #222121;
+  background-color: darkorange;
   color: white;
-  border-color: #222121;
+  border-color: darkorange;
   border-radius: 50px;
   font-size: 13px;
   font-weight: 700;
