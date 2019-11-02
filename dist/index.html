@@ -21,15 +21,18 @@
     <div class="holdem-container">
       <div class="top">
         <div class="top-left">
-          <div></div>
+          <div>
+            <button type="button" class="popup-trigger" data-popup-trigger="one">
+              TUTORIAL
+            </button>
+          </div>               
           <div class="top-left-help">
-            <!-- body overlay -->
             <div class="body-blackout"></div>
             <div class="popup-modal shadow" data-popup-modal="one">
               <i class="fas fa-2x fa-times text-white bg-primary p-3 popup-modal__close"></i>
               <div class="tutorial">
                 <h2 class="tutorial-text">How to Play:</h2>
-                <a class="tutorial-rules" href="https://upswingpoker.com/no-limit-texas-holdem-rules-poker/">No-Limit Hold'Em Rules</a>
+                <h5 class="tutorial-text-player">You, Mike McDermott, face a heads-up match against Teddy KGB. A man with suspected Russian mob ties, Teddy has agreed to play for 5 stacks of high society, or $50,000 US dollars.</h5>
                 <img class='tutorial-buttons-img' src="./image/button_tutorial2.png" alt="button help" width="96" height="96">
                 <ol class="tutorial-buttons-text" type="A">
                   <li>Fold - Fold your hand, granting your opponent the pot.</li>
@@ -41,6 +44,7 @@
                   <li>5X or Pot - Wager 5 times the big blind for the first bet/raise preflop. Wager the current pot.</li>
                   <li>All In - Wager all of your chips.</li>
                 </ol>
+                <a class="tutorial-rules" href="https://upswingpoker.com/no-limit-texas-holdem-rules-poker/">No-Limit Texas Hold'Em Rules</a>
               </div>
             </div>
           </div>
@@ -65,7 +69,7 @@
                 </div>
                 <img class='player-info-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/malko5small.png" alt="player" width="96" height="96">
               </div>
-            </div><!-- .player-info .player-info-left -->
+            </div>
 
             <div class="player-info player-info-right">
               <div class='player-info-container'>
@@ -80,11 +84,10 @@
                   <div class='player-info-right-cards-2'></div>
                 </div>
               </div>
-            </div><!-- .player-info .player-info-right -->
+            </div>
 
             <div class="table-felt">
               <div class="table-felt-layover"></div>
-              <!-- <div class="top-left-current-pot"> -->
                 <h5 class="top-left-current-pot-text"></h5>
               <!-- </div> -->
               <div class="table-felt-board">
@@ -97,17 +100,14 @@
               <div class="table-felt-dealer-btn">
                 <div class='table-felt-dealer-btn-img-left'>
                   <img id='table-felt-dealer-btn-img-left' src="https://js-holdem.s3-us-west-1.amazonaws.com/poker-chip.svg" alt="Designed by www.flaticon.com">
-                  <!-- <img id='table-felt-dealer-btn-img-left' src="https://js-holdem.s3-us-west-1.amazonaws.com/dealer-badge.svg" alt="Designed by www.flaticon.com"> -->
                   <h5 id="table-felt-board-bet-player-2"></h5>
                 </div>
                 <div class='table-felt-dealer-btn-img-right'>
                   <h5 id="table-felt-board-bet-player-1"></h5>
                   <img id='table-felt-dealer-btn-img-right' src="https://js-holdem.s3-us-west-1.amazonaws.com/poker-chip.svg" alt="Designed by www.flaticon.com">
-                  <!-- <img id='table-felt-dealer-btn-img-right' src="https://js-holdem.s3-us-west-1.amazonaws.com/dealer-badge.svg" alt="Designed by www.flaticon.com"> -->
                 </div>
               </div>
               <div id="table-felt-pot"></div>
-              <!-- <h5 class="table-felt-pot"></h5> -->
             </div>
           </div>
         </div>
@@ -127,7 +127,6 @@
               <button type="button" class="popup-trigger" data-popup-trigger="one">
                 TUTORIAL
               </button>
-              <!-- <i class="fas fa-gamepad"></i> -->
               <a href="https://github.com/Numbericons/JS_Heads_Up_HoldEm">
                 <i class="fab fa-github-square"></i>
               </a>

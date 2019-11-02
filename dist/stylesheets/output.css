@@ -319,7 +319,7 @@ body {
   width: 16vw;
 }
 .player-info-left {
-  left: -19vw;
+  left: -20vw;
   text-align: right;
 }
 .player-info-left img {
@@ -327,7 +327,7 @@ body {
   margin-right: -50px;
 }
 .player-info-right {
-  right: -19vw;
+  right: -20vw;
 }
 .player-info-right img {
   margin-right: 20px;
@@ -605,7 +605,7 @@ a {
 }
 
 .popup-modal {
-  height: 53vh;
+  height: 66vh;
   width: 60vw;
   background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
   position: absolute;
@@ -643,7 +643,13 @@ a {
 .tutorial-text {
   font-size: 26px;
   font-weight: 700;
+  color: #350f47;
   text-decoration: underline;
+  margin-bottom: 3%;
+}
+.tutorial-text-player {
+  font-size: 18px;
+  font-weight: 600;
   margin-bottom: 3%;
 }
 .tutorial-buttons-img {
@@ -657,9 +663,11 @@ a {
 }
 .tutorial-rules {
   font-size: 18px;
-  color: blue;
+  font-weight: 600;
+  color: #1b1bb6;
   text-decoration: underline;
   margin-bottom: 2%;
+  margin: 2% 0% 2% 0%;
 }
 
 /*# sourceMappingURL=output.css.map */
