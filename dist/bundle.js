@@ -13150,8 +13150,10 @@ function () {
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      if (handTeir === 2) return potOdds * 1.5;
-      return handTeir * Math.random() / 2;
+      debugger;
+      var autoAction = Math.random();
+      if (handTeir >= autoAction) return Infiniti;
+      return handTeir + 2 * handTeir * potOdds * Math.random();
     }
   }, {
     key: "isAggressor",
@@ -13168,8 +13170,8 @@ function () {
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall;
       to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
-      var potOdds = adjToCall / (adjToCall + pot);
-      var teiredNum = this.adjByTeir(handTeir);
+      var potOdds = (adjToCall + pot) / adjToCall;
+      var teiredNum = this.adjByTeir(handTeir, potOdds);
 
       if (teiredNum < potOdds) {
         if (to_call > 0) {
@@ -13789,13 +13791,26 @@ function () {
   }, {
     key: "getTeir",
     value: function getTeir(hand) {
-      debugger;
       this.defineHand(hand);
-      if (this.pfTierOne()) return '2';
-      if (this.pfTierTwo()) return 'Teir2';
-      if (this.pfTierThree()) return 'Teir3';
-      if (this.pfTierFour()) return 'Teir4';
-      return '0';
+      if (this.pfTierOne()) return 1; //3:1    1 * 3 * rand compare to .66    
+      // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
+
+      if (this.pfTierTwo()) return .25; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
+      // .25 + (.25 / 3 * Math.random) 
+      //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
+      // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
+      // vill bets 100 into 200 pot >>  final pot 400, 100 to call -> .25 // 4
+      //  current pot / to_call
+      // bet 100 into 200   3:1
+      //.25 + (.25 * 3 * Math.random)   
+      // bet 200 into 100   300 / 200 ->> 1.5
+      // bet 1000 into 100   1100 / 1000 
+      // .25 + (.5 * 3 * random)
+
+      if (this.pfTierThree()) return .15; // .25 + .25 * 3 * rand               
+
+      if (this.pfTierFour()) return .1;
+      return .05;
     }
   }]);
 

@@ -63,8 +63,10 @@ export default class ComputerPlayer {
   }
   
   adjByTeir(handTeir, potOdds){
-    if (handTeir === 2) return potOdds * 1.5;
-    return (handTeir * Math.random()) / 2;
+    debugger
+    const autoAction = Math.random();
+    if (handTeir >= autoAction) return Infiniti;
+    return handTeir + (2 * handTeir * potOdds * Math.random());
   }
 
   isAggressor(){
@@ -76,8 +78,8 @@ export default class ComputerPlayer {
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall;
     (to_call === 0) ? adjToCall = pot / 2: adjToCall = to_call;
-    let potOdds = adjToCall / (adjToCall + pot); 
-    let teiredNum = this.adjByTeir(handTeir);
+    let potOdds = (adjToCall + pot) / adjToCall;
+    let teiredNum = this.adjByTeir(handTeir, potOdds);
     if (teiredNum < potOdds) {
       if (to_call > 0) {
         return ['fold'];
