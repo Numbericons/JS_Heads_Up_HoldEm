@@ -120,11 +120,12 @@ export default class PreFlop {
   }
 
   getTeir(hand){
+    debugger
     this.defineHand(hand);
-    if (this.pfTierOne()) return 'Teir1';
+    if (this.pfTierOne()) return '2';
     if (this.pfTierTwo()) return 'Teir2';
     if (this.pfTierThree()) return 'Teir3';
     if (this.pfTierFour()) return 'Teir4';
-    return '2';
+    return '0';
   }
 }

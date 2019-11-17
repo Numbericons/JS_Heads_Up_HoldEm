@@ -62,7 +62,8 @@ export default class ComputerPlayer {
     return this.maxBet(betRaise, to_call, sb);
   }
   
-  adjByTeir(handTeir){
+  adjByTeir(handTeir, potOdds){
+    if (handTeir === 2) return potOdds * 1.5;
     return (handTeir * Math.random()) / 2;
   }
 

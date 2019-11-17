@@ -342,18 +342,18 @@ body {
 .player-info-chips {
   color: gold;
   margin: 5px 1vw 0px 2vw;
-  font-size: 0.85vw;
+  font-size: 0.9vw;
 }
 
 .player-info-name {
-  font-size: 0.85vw;
+  font-size: 0.9vw;
 }
 
 .glow {
   -webkit-animation: glow 1s ease-in-out infinite alternate;
   -moz-animation: glow 1s ease-in-out infinite alternate;
   animation: glow 1s ease-in-out infinite alternate;
-  font-size: 0.85vw;
+  font-size: 0.9vw;
 }
 
 @-webkit-keyframes glow {

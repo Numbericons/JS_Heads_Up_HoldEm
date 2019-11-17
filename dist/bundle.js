@@ -13149,7 +13149,8 @@ function () {
     }
   }, {
     key: "adjByTeir",
-    value: function adjByTeir(handTeir) {
+    value: function adjByTeir(handTeir, potOdds) {
+      if (handTeir === 2) return potOdds * 1.5;
       return handTeir * Math.random() / 2;
     }
   }, {
@@ -13788,12 +13789,13 @@ function () {
   }, {
     key: "getTeir",
     value: function getTeir(hand) {
+      debugger;
       this.defineHand(hand);
-      if (this.pfTierOne()) return 'Teir1';
+      if (this.pfTierOne()) return '2';
       if (this.pfTierTwo()) return 'Teir2';
       if (this.pfTierThree()) return 'Teir3';
       if (this.pfTierFour()) return 'Teir4';
-      return '2';
+      return '0';
     }
   }]);
 
@@ -15350,9 +15352,9 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50000;
-    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
-    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1000;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 30000;
+    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 250;
+    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 500;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
