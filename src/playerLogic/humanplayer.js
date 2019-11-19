@@ -57,16 +57,13 @@ export default class HumanPlayer {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
     playerName.innerText = this.name;
     if (gameStarted) {
-      (current) ? playerName.className = 'glow' : playerName.className = '';
+      (current) ? playerName.className = 'glow' : playerName.className = 'player-info-name';
     }
   }
 
   renderTextChips(gameStarted, current) {
     let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack}`
-    if (gameStarted) {
-      // (current) ? playerChips.className = "glow" : playerChips.className = "";
-    }
+    playerChips.innerText = `$${this.chipstack}`;
   }
 
   renderCards() {

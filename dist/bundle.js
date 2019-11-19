@@ -13090,7 +13090,7 @@ function () {
     this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
-    this.revealed = false;
+    this.revealed = true;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13150,15 +13150,14 @@ function () {
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      debugger;
       var autoAction = Math.random();
-      if (handTeir >= autoAction) return Infiniti;
+      if (handTeir >= autoAction) return Infinity;
       return handTeir + 2 * handTeir * potOdds * Math.random();
     }
   }, {
     key: "isAggressor",
     value: function isAggressor() {
-      if (this.aggressor) return Math.random() >= .6;
+      if (this.aggressor) return Math.random() >= .5;
       return false;
     }
   }, {
@@ -13166,14 +13165,14 @@ function () {
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
+      // if (boardCards.length === 1 || boardCards.length === 2) return;
       if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      var adjToCall;
-      to_call === 0 ? adjToCall = pot / 2 : adjToCall = to_call;
+      var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(handTeir, potOdds);
 
-      if (teiredNum < potOdds) {
+      if (teiredNum < .333) {
         if (to_call > 0) {
           return ['fold'];
         } else {
@@ -13181,7 +13180,7 @@ function () {
         }
       } else if (this.chipstack === to_call) {
         return ['call'];
-      } else if (teiredNum < potOdds * 1.5) {
+      } else if (teiredNum < .666) {
         if (to_call > 0) {
           return ['call'];
         } else {
@@ -13189,7 +13188,24 @@ function () {
         }
       } else {
         return this.genBetRaise(to_call, pot, sb, isPreflop);
-      }
+      } // if (teiredNum < potOdds) {
+      //   if (to_call > 0) {
+      //     return ['fold'];
+      //   } else {
+      //       return ['check'];
+      //   }
+      // } else if (this.chipstack === to_call) {
+      //   return ['call'];
+      // } else if (teiredNum < potOdds * 1.5) {
+      //   if (to_call > 0) {
+      //     return ['call'];
+      //   } else {
+      //     return ['check'];
+      //   }
+      // } else {
+      //     return this.genBetRaise(to_call, pot, sb, isPreflop);
+      // }
+
     }
   }, {
     key: "resolveCall",
@@ -13235,7 +13251,7 @@ function () {
       playerName.innerText = "".concat(this.name);
 
       if (gameStarted) {
-        current ? playerName.className = 'glow' : playerName.className = '';
+        current ? playerName.className = 'glow' : playerName.className = 'player-info-name';
       }
     }
   }, {
@@ -13243,9 +13259,6 @@ function () {
     value: function renderTextChips(gameStarted, current) {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
-
-      if (gameStarted) {// (current) ? playerChips.className = 'glow' : playerChips.className = '';
-      }
     }
   }, {
     key: "renderCards",
@@ -13284,7 +13297,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
-      this.revealed = false;
+      this.revealed = true;
     }
   }]);
 
@@ -13384,7 +13397,7 @@ function () {
       playerName.innerText = this.name;
 
       if (gameStarted) {
-        current ? playerName.className = 'glow' : playerName.className = '';
+        current ? playerName.className = 'glow' : playerName.className = 'player-info-name';
       }
     }
   }, {
@@ -13392,9 +13405,6 @@ function () {
     value: function renderTextChips(gameStarted, current) {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
-
-      if (gameStarted) {// (current) ? playerChips.className = "glow" : playerChips.className = "";
-      }
     }
   }, {
     key: "renderCards",
@@ -13521,22 +13531,23 @@ function () {
       if (this.nPair(1)) {
         return 1;
       } else if (this.nPair(2)) {
-        return 2;
+        return .25;
       } else if (this.nPair(3)) {
-        return 3;
+        return .15;
       } else if (this.nPair(4) || this.nPair(5)) {
-        return 4;
+        return .1;
       } else {
-        return 5;
+        return .05;
       }
     }
   }, {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
+      debugger;
       this.defineHand(hand, boardCards);
-      var pairVal = this.pairTeir();
-      if (pairVal > 5) return 'Teir' + pairVal;
-      return this.beatsBoard() ? 'Teir3' : 'Teir4';
+      var pairVal = this.pairTeir(); // if (pairVal > 5) return 'Teir' + pairVal;
+
+      return this.beatsBoard() ? pairVal + .1 : pairVal;
     }
   }, {
     key: "beatsBoard",

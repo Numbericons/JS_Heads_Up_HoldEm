@@ -291,7 +291,6 @@ export default class Board {
     this.showBoard();
     this.button.setButtons(this.pfBetSize());
     this.button.bindEvents();
-  
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
       this.button.$el.empty();
       this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));

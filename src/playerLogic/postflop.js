@@ -42,21 +42,22 @@ export default class PostFlop {
     if (this.nPair(1)) {
       return 1;
     } else if (this.nPair(2)) {
-      return 2;
+      return .25;
     } else if (this.nPair(3)) {
-      return 3;
+      return .15;
     } else if (this.nPair(4) || this.nPair(5)) {
-      return 4;
+      return .1;
     } else {
-      return 5;
+      return .05;
     }
   }
 
   getTeir(hand, boardCards) {
+    debugger
     this.defineHand(hand,boardCards);
     let pairVal = this.pairTeir();
-    if (pairVal > 5) return 'Teir' + pairVal;
-    return (this.beatsBoard()) ? 'Teir3' : 'Teir4';
+    // if (pairVal > 5) return 'Teir' + pairVal;
+    return (this.beatsBoard()) ? pairVal + .1 : pairVal;
   }
 
   beatsBoard(){
