@@ -13165,7 +13165,9 @@ function () {
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
-      // if (boardCards.length === 1 || boardCards.length === 2) return;
+      // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
+      // move check if not done dealing to prompt logic
+      debugger;
       if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall = to_call === 0 ? pot : to_call;
@@ -14762,11 +14764,27 @@ function () {
               case 3:
                 this.rightChips.removeClass();
                 this.leftChips.removeClass();
-                flopBool ? this.dealFlop() : this.dealCard(true);
-                this.showBoard();
-                if (!this.allIn()) this.render();
+
+                if (!flopBool) {
+                  _context7.next = 10;
+                  break;
+                }
+
+                _context7.next = 8;
+                return this.dealFlop();
 
               case 8:
+                _context7.next = 12;
+                break;
+
+              case 10:
+                _context7.next = 12;
+                return this.dealCard(true);
+
+              case 12:
+                if (!this.allIn()) this.render();
+
+              case 13:
               case "end":
                 return _context7.stop();
             }

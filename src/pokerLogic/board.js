@@ -342,8 +342,11 @@ export default class Board {
     await this.sleep(1000);
     this.rightChips.removeClass();
     this.leftChips.removeClass();
-    (flopBool) ? this.dealFlop() : this.dealCard(true);
-    this.showBoard();
+    if (flopBool) {
+      await this.dealFlop();
+    } else {
+      await this.dealCard(true);
+    }
     if (!this.allIn()) this.render();
   }
   
