@@ -1,7 +1,7 @@
 ### Heads Up No Limit Hold'em! Play 1v1 hands against the computer until one player has all the monies!
 
 [Live Link](https://acesandeights.firebaseapp.com//)
-![Screen Shot 2019-10-23 at 2 24 01 PM](https://user-images.githubusercontent.com/16912968/67435368-d0e8c900-f5a0-11e9-9837-55b65db61abe.png)
+![image](https://user-images.githubusercontent.com/16912968/78722110-ab951080-78dd-11ea-9029-9eb1775d2bcd.png)
 
 ### Local Installation
  1. Enter 'NPM install' in the root directory
