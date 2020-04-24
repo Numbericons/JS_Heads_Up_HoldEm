@@ -75,7 +75,7 @@ export default class ComputerPlayer {
   promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
     // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
     // move check if not done dealing to prompt logic
-    debugger
+    // debugger
     if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
     let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     let adjToCall = (to_call === 0) ? pot : to_call;

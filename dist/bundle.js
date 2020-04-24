@@ -13167,7 +13167,7 @@ function () {
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
       // move check if not done dealing to prompt logic
-      debugger;
+      // debugger
       if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall = to_call === 0 ? pot : to_call;
@@ -14455,6 +14455,14 @@ function () {
       this.pot = sbTotal + bbTotal;
     }
   }, {
+    key: "hideChips",
+    value: function hideChips() {
+      this.rightChips.removeClass();
+      this.leftChips.removeClass();
+      this.rightChips.addClass('display-none');
+      this.leftChips.addClass('display-none');
+    }
+  }, {
     key: "dealCard",
     value: function () {
       var _dealCard = _asyncToGenerator(
@@ -14464,12 +14472,13 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
+                this.hideChips();
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
                 if (sound) this.cardTurn.play();
                 this.showBoard();
 
-              case 4:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -14494,32 +14503,33 @@ function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
+                this.hideChips();
                 this.currPlayerPos = 1;
                 i = 0;
 
-              case 2:
+              case 3:
                 if (!(i < 3)) {
-                  _context4.next = 10;
+                  _context4.next = 11;
                   break;
                 }
 
                 if (!(i > 0)) {
-                  _context4.next = 6;
+                  _context4.next = 7;
                   break;
                 }
 
-                _context4.next = 6;
+                _context4.next = 7;
                 return this.sleep(this.cardDelay);
 
-              case 6:
+              case 7:
                 this.dealCard(true);
 
-              case 7:
+              case 8:
                 i++;
-                _context4.next = 2;
+                _context4.next = 3;
                 break;
 
-              case 10:
+              case 11:
               case "end":
                 return _context4.stop();
             }
@@ -14632,20 +14642,22 @@ function () {
               case 0:
                 this.renderDealerPlayers();
                 this.showPot();
+                this.rightChips.addClass('chips');
+                this.leftChips.addClass('chips');
 
                 if (!(this.allIn() && this.handChipDiff() === 0)) {
-                  _context5.next = 7;
+                  _context5.next = 9;
                   break;
                 }
 
-                _context5.next = 5;
+                _context5.next = 7;
                 return this.showDown();
 
-              case 5:
+              case 7:
                 this.determineWinner();
                 return _context5.abrupt("return");
 
-              case 7:
+              case 9:
                 this.showBoard();
                 this.button.setButtons(this.pfBetSize());
                 this.button.bindEvents();
@@ -14657,7 +14669,7 @@ function () {
                   this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
                 }
 
-              case 11:
+              case 13:
               case "end":
                 return _context5.stop();
             }
@@ -14762,29 +14774,26 @@ function () {
                 return this.sleep(1000);
 
               case 3:
-                this.rightChips.removeClass();
-                this.leftChips.removeClass();
-
                 if (!flopBool) {
-                  _context7.next = 10;
+                  _context7.next = 8;
                   break;
                 }
 
-                _context7.next = 8;
+                _context7.next = 6;
                 return this.dealFlop();
 
-              case 8:
-                _context7.next = 12;
+              case 6:
+                _context7.next = 10;
                 break;
 
-              case 10:
-                _context7.next = 12;
+              case 8:
+                _context7.next = 10;
                 return this.dealCard(true);
 
-              case 12:
+              case 10:
                 if (!this.allIn()) this.render();
 
-              case 13:
+              case 11:
               case "end":
                 return _context7.stop();
             }

@@ -193,7 +193,15 @@ export default class Board {
     this.pot = sbTotal + bbTotal;
   }
 
+  hideChips() {
+    this.rightChips.removeClass();
+    this.leftChips.removeClass();
+    this.rightChips.addClass('display-none');
+    this.leftChips.addClass('display-none');
+  }
+
   async dealCard(sound) {
+    this.hideChips();
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
     if (sound) this.cardTurn.play();
@@ -201,6 +209,7 @@ export default class Board {
   }
   
   async dealFlop() {
+    this.hideChips();
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
       if (i > 0) await this.sleep(this.cardDelay);
@@ -283,6 +292,8 @@ export default class Board {
   async render() {
     this.renderDealerPlayers();
     this.showPot();
+    this.rightChips.addClass('chips');
+    this.leftChips.addClass('chips');
     if (this.allIn() && this.handChipDiff() === 0) {
       await this.showDown();
       this.determineWinner();
@@ -340,8 +351,6 @@ export default class Board {
   async stepStreet(flopBool) {
     this.combineChips();
     await this.sleep(1000);
-    this.rightChips.removeClass();
-    this.leftChips.removeClass();
     if (flopBool) {
       await this.dealFlop();
     } else {

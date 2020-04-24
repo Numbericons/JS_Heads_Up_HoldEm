@@ -650,17 +650,22 @@ a {
   margin-bottom: 3%;
 }
 .tutorial-text-player {
-  font-size: 18px;
+  font-size: 2.5vh;
+  font-family: "Merriweather Sans", cursive;
   font-weight: 600;
   margin-bottom: 3%;
 }
 .tutorial-buttons-img {
-  width: 30vw;
-  height: 16vh;
+  width: 60vw;
+  height: 22vh;
   margin-bottom: 3%;
 }
 .tutorial-buttons-text li {
-  font-size: 16px;
+  font-size: 2.1vh;
+  font-weight: 700;
+  font-family: "Merriweather Sans", cursive;
+  text-decoration: underline;
+  list-style-position: inside;
   margin-bottom: 0.75%;
 }
 .tutorial-rules {
