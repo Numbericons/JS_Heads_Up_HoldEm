@@ -20,15 +20,15 @@
     transition: 0.5s background;
 
     &-betorraise {
-      background: greenyellow;
+      background: #108810;
 
       &:hover {
-        background: lime;
+        background: #287728;
       }
     }
 
     &-callorcheck {
-      background: lightseagreen;
+      background: #38c3bb;
 
       &:hover {
         background: deepskyblue;
@@ -51,7 +51,7 @@
     border: none;
   }
   &-new-game{
-    background: limegreen;
+    background: #108810;
     height: 55px;
     width: 160px;
     display: flex;

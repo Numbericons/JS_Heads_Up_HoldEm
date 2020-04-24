@@ -137,7 +137,7 @@
       resize: none;
       background: #222;
       color: white;
-      border-left: 5px solid darkorange;
+      border-left: 5px solid #b52a2a;
     }
     &-about{
       align-self: flex-end;
@@ -191,12 +191,12 @@
 
 @keyframes focus {
   from {
-    background: orange;
+    background: #b52a2a;
     box-shadow: 0 2px 5px black;
     transform: scale(1);
   }
   to {
-    background: darkorange;
+    background: #b52a2a;
     box-shadow: 0 5px 5px black;
     transform: scale(1.05);
   }
