@@ -13167,8 +13167,7 @@ function () {
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
       // move check if not done dealing to prompt logic
-      // debugger
-      if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
+      if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
@@ -13545,7 +13544,6 @@ function () {
   }, {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
-      debugger;
       this.defineHand(hand, boardCards);
       var pairVal = this.pairTeir(); // if (pairVal > 5) return 'Teir' + pairVal;
 
@@ -13713,7 +13711,8 @@ function () {
   }, {
     key: "sideCard",
     value: function sideCard(cardRank, min, max) {
-      return this.convertVal(cardRank) >= min && this.convertVal(cardRank) <= max;
+      var rank = this.convertVal(cardRank);
+      return rank >= parseInt(min) && rank <= parseInt(max);
     }
   }, {
     key: "suited",
@@ -13775,14 +13774,12 @@ function () {
       if (this.hand[0].rank === 'Q' || this.hand[1].rank === 'Q') return true;
       if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
       if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
-      if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "6", "6");
-      if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "6", "6");
-      if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "5");
-      if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "5");
-      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "4");
-      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "4");
-      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "4");
-      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "4");
+      if (this.hand[0].rank === 'J' || this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "5", "6");
+      if (this.hand[1].rank === 'J' || this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "5", "6");
+      if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "4", "5");
+      if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "4", "5");
+      if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "4", "5");
+      if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "4", "5");
       if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
       if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
       if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");

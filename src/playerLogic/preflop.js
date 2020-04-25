@@ -31,7 +31,8 @@ export default class PreFlop {
   }
 
   sideCard(cardRank, min, max){
-    return this.convertVal(cardRank) >= min && this.convertVal(cardRank) <= max;
+    let rank = this.convertVal(cardRank);
+    return rank >= parseInt(min) && rank <= parseInt(max);
   }
 
   suited(){
@@ -92,14 +93,12 @@ export default class PreFlop {
     if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
     if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
     
-    if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "6", "6");
-    if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "6", "6");
-    if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "5");
-    if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "5");
-    if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "4");
-    if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "4");
-    if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "4");
-    if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "4");
+    if (this.hand[0].rank === 'J' || this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "5", "6");
+    if (this.hand[1].rank === 'J' || this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "5", "6");
+    if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "4", "5");
+    if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "4", "5");
+    if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "4", "5");
+    if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "4", "5");
     if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
     if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
     if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");
