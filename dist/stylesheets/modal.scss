@@ -79,8 +79,9 @@ a {
   width: 60vw;
   // background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
   // background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
-  background: radial-gradient(#b5c1b5, green);
-  box-shadow: inset 0 0 5px 5px green;
+  // background: radial-gradient(#b5c1b5, green);
+  background: radial-gradient(#abd2ab, #49bb96);
+  box-shadow: inset 0 0 5px 5px #051e22;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -119,7 +120,6 @@ a {
     font-size: 26px;
     font-weight: 700;
     color: #350f47;
-    text-decoration: underline;
     margin-bottom: 3%;
     &-player{
       font-size: 2.5vh;

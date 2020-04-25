@@ -608,8 +608,8 @@ a {
 .popup-modal {
   height: 66vh;
   width: 60vw;
-  background: radial-gradient(#b5c1b5, green);
-  box-shadow: inset 0 0 5px 5px green;
+  background: radial-gradient(#abd2ab, #49bb96);
+  box-shadow: inset 0 0 5px 5px #051e22;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -646,7 +646,6 @@ a {
   font-size: 26px;
   font-weight: 700;
   color: #350f47;
-  text-decoration: underline;
   margin-bottom: 3%;
 }
 .tutorial-text-player {
