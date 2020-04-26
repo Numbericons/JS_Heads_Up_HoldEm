@@ -608,7 +608,7 @@ a {
 .popup-modal {
   height: 66vh;
   width: 60vw;
-  background: radial-gradient(#abd2ab, #49bb96);
+  background: radial-gradient(#abd2ab, #048404);
   box-shadow: inset 0 0 5px 5px #051e22;
   position: absolute;
   left: 50%;
