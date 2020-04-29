@@ -54,9 +54,11 @@ export default class PostFlop {
 
   getTeir(hand, boardCards) {
     this.defineHand(hand,boardCards);
+    if (this.handSolved.rank > 7) return Infinity;
     debugger;
     let pairVal = this.pairTeir();
     // if (pairVal > 5) return 'Teir' + pairVal;
+    if (this.trips()) return 
     return (this.beatsBoard()) ? pairVal + .05 : pairVal;
   }
 
@@ -67,6 +69,7 @@ export default class PostFlop {
 
   numCardsUsed(){};
   kicker(){}
+  //calc nut kicker
 
   nCard(num){
     let top = num - 1;
@@ -98,7 +101,9 @@ export default class PostFlop {
   gapThreeStraight(){}
   gapFourStraight(){}
 
-  trips(){}
+  trips(){
+    debugger
+  }
 
   rainbow() { }
   twoFlush() { };
@@ -108,3 +113,13 @@ export default class PostFlop {
 
   quadsPlus(){}
 }
+
+//first define things like if the board is a certain hand based on the rank of the board cards
+//  also check if board is 3 to a suit, 3 to a straight etc.
+
+//second step is to check for best hands on down for return value
+//  straight flush plus returns Infinity
+
+//Ideas:
+//slowplay a certain % 
+//  flop only?
