@@ -54,9 +54,10 @@ export default class PostFlop {
 
   getTeir(hand, boardCards) {
     this.defineHand(hand,boardCards);
+    debugger
     let pairVal = this.pairTeir();
     // if (pairVal > 5) return 'Teir' + pairVal;
-    return (this.beatsBoard()) ? pairVal + .1 : pairVal;
+    return (this.beatsBoard()) ? pairVal + .05 : pairVal;
   }
 
   beatsBoard(){
