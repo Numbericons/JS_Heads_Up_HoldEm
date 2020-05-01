@@ -13150,8 +13150,8 @@ function () {
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      var autoAction = Math.random();
-      if (handTeir >= autoAction) return Infinity;
+      // const autoAction = Math.random();
+      // if (handTeir >= autoAction) return Infinity;
       return handTeir + 2 * handTeir * potOdds * Math.random();
     }
   }, {
@@ -13161,6 +13161,13 @@ function () {
       return false;
     }
   }, {
+    key: "autoAction",
+    value: function autoAction(evalArr, to_call, pot, sb, isPreflop) {
+      if (evalArr[1] === 'agg') return this.genBetRaise(to_call, pot, sb, isPreflop);
+      if (evalArr[1] === 'call') return to_call > 0 ? ['call'] : ['check'];
+      if (evalArr[1] === 'fold') return ['fold'];
+    }
+  }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
@@ -13168,45 +13175,21 @@ function () {
       // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
       // move check if not done dealing to prompt logic
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
-      var handTeir = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+      if (evalArr[1]) return this.autoAction(to_call, pot, sb, isPreflop);
       var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
-      var teiredNum = this.adjByTeir(handTeir, potOdds);
+      var teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
       if (teiredNum < .333) {
-        if (to_call > 0) {
-          return ['fold'];
-        } else {
-          return ['check'];
-        }
+        return to_call > 0 ? ['fold'] : ['check'];
       } else if (this.chipstack === to_call) {
         return ['call'];
       } else if (teiredNum < .666) {
-        if (to_call > 0) {
-          return ['call'];
-        } else {
-          return ['check'];
-        }
+        return to_call > 0 ? ['call'] : ['check'];
       } else {
         return this.genBetRaise(to_call, pot, sb, isPreflop);
-      } // if (teiredNum < potOdds) {
-      //   if (to_call > 0) {
-      //     return ['fold'];
-      //   } else {
-      //       return ['check'];
-      //   }
-      // } else if (this.chipstack === to_call) {
-      //   return ['call'];
-      // } else if (teiredNum < potOdds * 1.5) {
-      //   if (to_call > 0) {
-      //     return ['call'];
-      //   } else {
-      //     return ['check'];
-      //   }
-      // } else {
-      //     return this.genBetRaise(to_call, pot, sb, isPreflop);
-      // }
-
+      }
     }
   }, {
     key: "resolveCall",
@@ -13648,7 +13631,7 @@ function () {
     key: "house",
     value: function house(beatsBoard) {
       if (this.boardSolved.rank === 6) {
-        if (beatsBoard) return Infinity;
+        if (beatsBoard) return 1;
       }
     }
   }, {
@@ -13657,7 +13640,7 @@ function () {
   }, {
     key: "fHousePlus",
     value: function fHousePlus(kicker) {
-      if (this.handSolved.rank > 7) return Infinity;
+      if (this.handSolved.rank > 7) return 1;
       var quads = this.quads(kicker);
       if (quads) return quads;
       return this.house(beatsBoard);
@@ -13674,8 +13657,8 @@ function () {
 //  flop only?
 //never fold option but no bets/raises
 //  Get teir function returns an array of 2 elements
-//    first is one of: foldChk, callChk, betRaise
-//    second is the number used for calculations
+//    first is the number used for calculations
+//    second is one of: foldChk, callChk, betRaise
 //Kicker function
 //  calc nut kicker
 //  doesnt bluff if it's kicker is the board and it doesnt have a quad card in hand 
@@ -13840,10 +13823,10 @@ function () {
     key: "getTeir",
     value: function getTeir(hand) {
       this.defineHand(hand);
-      if (this.pfTierOne()) return 1; //3:1    1 * 3 * rand compare to .66    
+      if (this.pfTierOne()) return [1, 'agg']; //3:1    1 * 3 * rand compare to .66    
       // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
 
-      if (this.pfTierTwo()) return .25; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
+      if (this.pfTierTwo()) return [.25]; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
       // .25 + (.25 / 3 * Math.random) 
       //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
       // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
@@ -13855,10 +13838,10 @@ function () {
       // bet 1000 into 100   1100 / 1000 
       // .25 + (.5 * 3 * random)
 
-      if (this.pfTierThree()) return .15; // .25 + .25 * 3 * rand               
+      if (this.pfTierThree()) return [.15]; // .25 + .25 * 3 * rand               
 
-      if (this.pfTierFour()) return .1;
-      return .05;
+      if (this.pfTierFour()) return [.1];
+      return [.05];
     }
   }]);
 

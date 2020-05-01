@@ -63,8 +63,8 @@ export default class ComputerPlayer {
   }
   
   adjByTeir(handTeir, potOdds){
-    const autoAction = Math.random();
-    if (handTeir >= autoAction) return Infinity;
+    // const autoAction = Math.random();
+    // if (handTeir >= autoAction) return Infinity;
     return handTeir + (2 * handTeir * potOdds * Math.random());
   }
 
@@ -72,48 +72,31 @@ export default class ComputerPlayer {
     if (this.aggressor) return Math.random() >= .5;
     return false;
   }
+
+  autoAction(evalArr, to_call, pot, sb, isPreflop) {
+    if (evalArr[1] === 'agg') return this.genBetRaise(to_call, pot, sb, isPreflop);
+    if (evalArr[1] === 'call') return to_call > 0 ? ['call'] : ['check'];
+    if (evalArr[1] === 'fold') return ['fold'];
+  }
+
   promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
     // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
     // move check if not done dealing to prompt logic
     if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
-    let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+    let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+    if (evalArr[1]) return this.autoAction(to_call, pot, sb, isPreflop);
     let adjToCall = (to_call === 0) ? pot : to_call;
     let potOdds = (adjToCall + pot) / adjToCall;
-    let teiredNum = this.adjByTeir(handTeir, potOdds);
+    let teiredNum = this.adjByTeir(evalArr[0], potOdds);
     if (teiredNum < .333) {
-      if (to_call > 0) {
-        return ['fold'];
-      } else {
-          return ['check'];
-      }
+      return to_call > 0 ? ['fold'] : ['check'];
     } else if (this.chipstack === to_call) {
       return ['call'];
     } else if (teiredNum < .666) {
-      if (to_call > 0) {
-        return ['call'];
-      } else {
-        return ['check'];
-      }
+      return to_call > 0 ? ['call'] : ['check'];
     } else {
-        return this.genBetRaise(to_call, pot, sb, isPreflop);
+      return this.genBetRaise(to_call, pot, sb, isPreflop);
     }
-    // if (teiredNum < potOdds) {
-    //   if (to_call > 0) {
-    //     return ['fold'];
-    //   } else {
-    //       return ['check'];
-    //   }
-    // } else if (this.chipstack === to_call) {
-    //   return ['call'];
-    // } else if (teiredNum < potOdds * 1.5) {
-    //   if (to_call > 0) {
-    //     return ['call'];
-    //   } else {
-    //     return ['check'];
-    //   }
-    // } else {
-    //     return this.genBetRaise(to_call, pot, sb, isPreflop);
-    // }
   }
 
   resolveCall(to_call){

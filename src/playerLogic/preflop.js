@@ -120,9 +120,9 @@ export default class PreFlop {
 
   getTeir(hand){
     this.defineHand(hand);
-    if (this.pfTierOne()) return 1; //3:1    1 * 3 * rand compare to .66    
+    if (this.pfTierOne()) return [1, 'agg']; //3:1    1 * 3 * rand compare to .66    
     // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
-    if (this.pfTierTwo()) return .25;
+    if (this.pfTierTwo()) return [.25];
     // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
     // .25 + (.25 / 3 * Math.random) 
     //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
@@ -134,9 +134,9 @@ export default class PreFlop {
     // bet 200 into 100   300 / 200 ->> 1.5
     // bet 1000 into 100   1100 / 1000 
     // .25 + (.5 * 3 * random)
-    if (this.pfTierThree()) return .15;
+    if (this.pfTierThree()) return [.15];
     // .25 + .25 * 3 * rand               
-    if (this.pfTierFour()) return .1;
-    return .05;
+    if (this.pfTierFour()) return [.1];
+    return [.05];
   }
 }

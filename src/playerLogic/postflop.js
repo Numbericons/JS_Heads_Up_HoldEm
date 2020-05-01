@@ -115,7 +115,7 @@ export default class PostFlop {
 
   house(beatsBoard) {
     if (this.boardSolved.rank === 6) {
-      if (beatsBoard) return Infinity;
+      if (beatsBoard) return 1;
     } 
   }
 
@@ -124,7 +124,7 @@ export default class PostFlop {
   }
 
   fHousePlus(kicker,){
-    if (this.handSolved.rank > 7) return Infinity;
+    if (this.handSolved.rank > 7) return 1;
     const quads = this.quads(kicker);
     if (quads) return quads;
     return this.house(beatsBoard);
@@ -142,8 +142,8 @@ export default class PostFlop {
 //  flop only?
 //never fold option but no bets/raises
 //  Get teir function returns an array of 2 elements
-//    first is one of: foldChk, callChk, betRaise
-//    second is the number used for calculations
+//    first is the number used for calculations
+//    second is one of: foldChk, callChk, betRaise
 
 //Kicker function
 //  calc nut kicker
