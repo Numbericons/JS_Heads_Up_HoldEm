@@ -56,7 +56,6 @@ export default class PostFlop {
     this.defineHand(hand,boardCards);
     const kicker = this.kicker();
     const beatsBoard = this.beatsBoard();
-    debugger;
     if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
     if (this.handSolved.rank === 5) return this.flush(kicker);
     if (this.handSolved.rank === 4) return this.straight(kicker);
@@ -104,7 +103,6 @@ export default class PostFlop {
   gapFourStraight(){}
 
   trips(){
-    debugger
   }
 
   rainbow() { }
@@ -114,39 +112,17 @@ export default class PostFlop {
   fiveFlush() { };
 
   house(beatsBoard) {
-    if (this.boardSolved.rank === 6) {
-      if (beatsBoard) return 1;
-    } 
+    if (this.boardSolved.rank === 6) return beatsBoard ? [1,'agg'] : [.5,'call'];
   }
 
   quads(kicker){
 
   }
 
-  fHousePlus(kicker,){
+  fHousePlus(kicker, beatsBoard){
     if (this.handSolved.rank > 7) return 1;
     const quads = this.quads(kicker);
     if (quads) return quads;
     return this.house(beatsBoard);
   }
 }
-
-//first define things like if the board is a certain hand based on the rank of the board cards
-//  also check if board is 3 to a suit, 3 to a straight etc.
-
-//second step is to check for best hands on down for return value
-//  straight flush plus returns Infinity
-
-//Ideas:
-//slowplay a certain % 
-//  flop only?
-//never fold option but no bets/raises
-//  Get teir function returns an array of 2 elements
-//    first is the number used for calculations
-//    second is one of: foldChk, callChk, betRaise
-
-//Kicker function
-//  calc nut kicker
-//  doesnt bluff if it's kicker is the board and it doesnt have a quad card in hand 
-
-//Full house, doesnt bluff is full house on board, if board is a house and hand beats board, return infinity
