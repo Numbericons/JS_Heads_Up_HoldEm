@@ -13090,7 +13090,7 @@ function () {
     this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
-    this.revealed = false;
+    this.revealed = true;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13281,7 +13281,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
-      this.revealed = false;
+      this.revealed = true;
     }
   }]);
 
@@ -13480,6 +13480,17 @@ function () {
       return Hand.solve(handArr);
     }
   }, {
+    key: "boardVal",
+    value: function boardVal() {
+      var cardArr = [];
+
+      for (var i = 0; i < this.boardCards.length; i++) {
+        cardArr.push("".concat(this.boardCards[i].rank).concat(this.boardCards[i].suit));
+      }
+
+      return Hand.solve(cardArr);
+    }
+  }, {
     key: "convertVal",
     value: function convertVal(rank) {
       if (parseInt(rank)) return parseInt(rank);
@@ -13506,7 +13517,7 @@ function () {
     value: function defineHand(hand, boardCards) {
       this.hand = hand;
       this.boardCards = boardCards;
-      this.boardSolved = Hand.solve(boardCards);
+      this.boardSolved = this.boardVal();
       this.handSolved = this.handVal();
     }
   }, {
@@ -13530,6 +13541,7 @@ function () {
       this.defineHand(hand, boardCards);
       var kicker = this.kicker();
       var beatsBoard = this.beatsBoard();
+      debugger;
       if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
       if (this.handSolved.rank === 5) return this.flush(kicker);
       if (this.handSolved.rank === 4) return this.straight(kicker);

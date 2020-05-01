@@ -21,6 +21,8 @@ straight draw
       do need to determine if we have the sucker end draw vs. nut etc.
         could we do this by seeing where the cards we are playing fall within the cards?
           playing 1 card at bottom, 2 cards at bottom, vs 1 at top, 2 at top
+Pair
+  if board makes a pair and we dont beat board...
 
 Kicker function
   calc nut kicker

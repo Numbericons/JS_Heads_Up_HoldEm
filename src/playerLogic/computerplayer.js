@@ -14,7 +14,7 @@ export default class ComputerPlayer {
     this.postFlop = new PostFlop();
     this.hand = [];
     this.comp = true;
-    this.revealed = false;
+    this.revealed = true;
     this.cardDims = cardDims;
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
@@ -175,7 +175,7 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
-    this.revealed = false;
+    this.revealed = true;
   }
 }
 

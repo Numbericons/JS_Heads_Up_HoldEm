@@ -15,6 +15,14 @@ export default class PostFlop {
     return Hand.solve(handArr);
   }
 
+  boardVal() {
+    let cardArr = [];
+    for (let i = 0; i < this.boardCards.length; i++) {
+      cardArr.push(`${this.boardCards[i].rank}${this.boardCards[i].suit}`)
+    }
+    return Hand.solve(cardArr);
+  }
+
   convertVal(rank) {
     if (parseInt(rank)) return parseInt(rank);
     switch (rank) {
@@ -34,7 +42,7 @@ export default class PostFlop {
   defineHand(hand, boardCards) {
     this.hand = hand;
     this.boardCards = boardCards;
-    this.boardSolved = Hand.solve(boardCards);
+    this.boardSolved = this.boardVal();
     this.handSolved = this.handVal();
   }
 
@@ -56,6 +64,7 @@ export default class PostFlop {
     this.defineHand(hand,boardCards);
     const kicker = this.kicker();
     const beatsBoard = this.beatsBoard();
+    debugger
     if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
     if (this.handSolved.rank === 5) return this.flush(kicker);
     if (this.handSolved.rank === 4) return this.straight(kicker);
