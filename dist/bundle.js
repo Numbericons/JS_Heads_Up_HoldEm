@@ -13527,8 +13527,8 @@ function () {
       this.handSolved = this.handVal();
     }
   }, {
-    key: "pairTeir",
-    value: function pairTeir() {
+    key: "pairMinus",
+    value: function pairMinus() {
       if (this.nPair(1)) {
         return 1;
       } else if (this.nPair(2)) {
@@ -13545,12 +13545,15 @@ function () {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
       this.defineHand(hand, boardCards);
-      if (this.handSolved.rank > 7) return Infinity;
+      var kicker = this.kicker();
+      var beatsBoard = this.beatsBoard();
       debugger;
-      var pairVal = this.pairTeir(); // if (pairVal > 5) return 'Teir' + pairVal;
-
-      if (this.trips()) return;
-      return this.beatsBoard() ? pairVal + .05 : pairVal;
+      if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
+      if (this.handSolved.rank === 5) return this.flush(kicker);
+      if (this.handSolved.rank === 4) return this.straight(kicker);
+      if (this.handSolved.rank === 3) return this.trips(kicker);
+      var val = this.pairMinus();
+      return beatsBoard ? val + .05 : val;
     }
   }, {
     key: "beatsBoard",
@@ -13563,8 +13566,7 @@ function () {
     value: function numCardsUsed() {}
   }, {
     key: "kicker",
-    value: function kicker() {} //calc nut kicker
-
+    value: function kicker() {}
   }, {
     key: "nCard",
     value: function nCard(num) {
@@ -13643,8 +13645,23 @@ function () {
     key: "fiveFlush",
     value: function fiveFlush() {}
   }, {
-    key: "quadsPlus",
-    value: function quadsPlus() {}
+    key: "house",
+    value: function house(beatsBoard) {
+      if (this.boardSolved.rank === 6) {
+        if (beatsBoard) return Infinity;
+      }
+    }
+  }, {
+    key: "quads",
+    value: function quads(kicker) {}
+  }, {
+    key: "fHousePlus",
+    value: function fHousePlus(kicker) {
+      if (this.handSolved.rank > 7) return Infinity;
+      var quads = this.quads(kicker);
+      if (quads) return quads;
+      return this.house(beatsBoard);
+    }
   }]);
 
   return PostFlop;
@@ -13655,6 +13672,14 @@ function () {
 //Ideas:
 //slowplay a certain % 
 //  flop only?
+//never fold option but no bets/raises
+//  Get teir function returns an array of 2 elements
+//    first is one of: foldChk, callChk, betRaise
+//    second is the number used for calculations
+//Kicker function
+//  calc nut kicker
+//  doesnt bluff if it's kicker is the board and it doesnt have a quad card in hand 
+//Full house, doesnt bluff is full house on board, if board is a house and hand beats board, return infinity
 
 
 

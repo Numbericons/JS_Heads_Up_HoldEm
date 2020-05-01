@@ -38,7 +38,7 @@ export default class PostFlop {
     this.handSolved = this.handVal();
   }
 
-  pairTeir(){
+  pairMinus(){
     if (this.nPair(1)) {
       return 1;
     } else if (this.nPair(2)) {
@@ -54,12 +54,15 @@ export default class PostFlop {
 
   getTeir(hand, boardCards) {
     this.defineHand(hand,boardCards);
-    if (this.handSolved.rank > 7) return Infinity;
+    const kicker = this.kicker();
+    const beatsBoard = this.beatsBoard();
     debugger;
-    let pairVal = this.pairTeir();
-    // if (pairVal > 5) return 'Teir' + pairVal;
-    if (this.trips()) return 
-    return (this.beatsBoard()) ? pairVal + .05 : pairVal;
+    if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
+    if (this.handSolved.rank === 5) return this.flush(kicker);
+    if (this.handSolved.rank === 4) return this.straight(kicker);
+    if (this.handSolved.rank === 3) return this.trips(kicker);
+    const val = this.pairMinus();
+    return beatsBoard ? val + .05 : val;
   }
 
   beatsBoard(){
@@ -69,7 +72,6 @@ export default class PostFlop {
 
   numCardsUsed(){};
   kicker(){}
-  //calc nut kicker
 
   nCard(num){
     let top = num - 1;
@@ -111,7 +113,22 @@ export default class PostFlop {
   fourFlush() { };
   fiveFlush() { };
 
-  quadsPlus(){}
+  house(beatsBoard) {
+    if (this.boardSolved.rank === 6) {
+      if (beatsBoard) return Infinity;
+    } 
+  }
+
+  quads(kicker){
+
+  }
+
+  fHousePlus(kicker,){
+    if (this.handSolved.rank > 7) return Infinity;
+    const quads = this.quads(kicker);
+    if (quads) return quads;
+    return this.house(beatsBoard);
+  }
 }
 
 //first define things like if the board is a certain hand based on the rank of the board cards
@@ -123,3 +140,13 @@ export default class PostFlop {
 //Ideas:
 //slowplay a certain % 
 //  flop only?
+//never fold option but no bets/raises
+//  Get teir function returns an array of 2 elements
+//    first is one of: foldChk, callChk, betRaise
+//    second is the number used for calculations
+
+//Kicker function
+//  calc nut kicker
+//  doesnt bluff if it's kicker is the board and it doesnt have a quad card in hand 
+
+//Full house, doesnt bluff is full house on board, if board is a house and hand beats board, return infinity
