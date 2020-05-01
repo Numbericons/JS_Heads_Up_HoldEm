@@ -13090,7 +13090,7 @@ function () {
     this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
-    this.revealed = true;
+    this.revealed = false;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13281,7 +13281,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
-      this.revealed = true;
+      this.revealed = false;
     }
   }]);
 
