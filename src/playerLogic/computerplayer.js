@@ -139,7 +139,7 @@ export default class ComputerPlayer {
     }
   }
   
-  renderTextChips(gameStarted, current) {
+  renderTextChips() {
     let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
     playerChips.innerText = `$${this.chipstack}`;
   }

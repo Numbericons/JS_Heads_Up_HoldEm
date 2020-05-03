@@ -13240,7 +13240,7 @@ function () {
     }
   }, {
     key: "renderTextChips",
-    value: function renderTextChips(gameStarted, current) {
+    value: function renderTextChips() {
       var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
       playerChips.innerText = "$".concat(this.chipstack);
     }
@@ -14452,10 +14452,9 @@ function () {
   }, {
     key: "dealInPlayers",
     value: function dealInPlayers() {
-      this.dealPlayerCard(1, !this.players[1].comp);
-      this.dealPlayerCard(0, !this.players[0].comp);
-      this.dealPlayerCard(1, !this.players[1].comp);
-      this.dealPlayerCard(0, !this.players[0].comp);
+      for (var z = 1; z < 5; z++) {
+        this.dealPlayerCard(z % 2, !this.players[z % 2].comp);
+      }
     }
   }, {
     key: "takeBlinds",
@@ -14597,20 +14596,12 @@ function () {
   }, {
     key: "toggleCurrPlayer",
     value: function toggleCurrPlayer() {
-      if (this.currPlayerPos === 0) {
-        this.currPlayerPos = 1;
-      } else {
-        this.currPlayerPos = 0;
-      }
+      this.currPlayerPos = this.currPlayerPos === 0 ? 1 : 0;
     }
   }, {
     key: "allIn",
     value: function allIn() {
-      if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) {
-        return true;
-      }
-
-      return false;
+      return this.players[0].chipstack === 0 || this.players[1].chipstack === 0;
     }
   }, {
     key: "showPot",
