@@ -321,8 +321,8 @@ export default class Board {
   }
 
   combineChips(){
-    this.leftChips.addClass('chip-combine-left')
-    this.rightChips.addClass('chip-combine-right')
+    this.leftChips.addClass('chip-combine-left');
+    this.rightChips.addClass('chip-combine-right');
   }
 
   setAggressor(){

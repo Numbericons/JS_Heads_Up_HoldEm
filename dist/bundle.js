@@ -13090,7 +13090,7 @@ function () {
     this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
-    this.revealed = true;
+    this.revealed = false;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13281,7 +13281,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
-      this.revealed = true;
+      this.revealed = false;
     }
   }]);
 
@@ -13541,7 +13541,6 @@ function () {
       this.defineHand(hand, boardCards);
       var kicker = this.kicker();
       var beatsBoard = this.beatsBoard();
-      debugger;
       if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
       if (this.handSolved.rank === 5) return this.flush(kicker);
       if (this.handSolved.rank === 4) return this.straight(kicker);
@@ -15406,9 +15405,9 @@ var Table =
 /*#__PURE__*/
 function () {
   function Table($el) {
-    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 30000;
-    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 250;
-    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 500;
+    var initialChipstack = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 50000;
+    var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 500;
+    var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 1000;
     var cardDims = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ["72px", "68px"];
 
     _classCallCheck(this, Table);

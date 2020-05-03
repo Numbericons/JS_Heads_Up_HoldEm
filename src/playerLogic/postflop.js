@@ -64,7 +64,6 @@ export default class PostFlop {
     this.defineHand(hand,boardCards);
     const kicker = this.kicker();
     const beatsBoard = this.beatsBoard();
-    debugger
     if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
     if (this.handSolved.rank === 5) return this.flush(kicker);
     if (this.handSolved.rank === 4) return this.straight(kicker);
