@@ -13463,8 +13463,6 @@ function () {
   function PostFlop() {
     _classCallCheck(this, PostFlop);
 
-    // this.cards = boardCards;
-    // this.cardsV2 = Hand.solve(this.cards);
     this.value = 0;
   }
 
@@ -13513,6 +13511,16 @@ function () {
       }
     }
   }, {
+    key: "getTeir",
+    value: function getTeir(hand, boardCards) {
+      this.defineHand(hand, boardCards);
+      var texture = this.texture();
+      var handAttr = this.handAttr();
+      debugger;
+      if (this.handSolved.rank > 5) return this.fHousePlus(texture, handAttr);
+      return this.flushMinus(texture, handAttr);
+    }
+  }, {
     key: "defineHand",
     value: function defineHand(hand, boardCards) {
       this.hand = hand;
@@ -13521,35 +13529,50 @@ function () {
       this.handSolved = this.handVal();
     }
   }, {
-    key: "pairMinus",
-    value: function pairMinus() {
-      if (this.nPair(1)) {
-        return 1;
-      } else if (this.nPair(2)) {
-        return .25;
-      } else if (this.nPair(3)) {
-        return .15;
-      } else if (this.nPair(4) || this.nPair(5)) {
-        return .1;
-      } else {
-        return .05;
-      }
+    key: "texture",
+    value: function texture() {
+      var texture = {};
+      texture['pair'] = this.boardSolved.rank === 2;
+      texture['twoPair'] = this.boardSolved.rank === 3;
+      texture['trips'] = this.boardSolved.rank === 4;
+      texture['fCards'] = this.flushCards(true);
+      return texture;
     }
   }, {
-    key: "getTeir",
-    value: function getTeir(hand, boardCards) {
-      this.defineHand(hand, boardCards);
-      var kicker = this.kicker();
-      var beatsBoard = this.beatsBoard();
-      debugger;
-      var hCards = cardsUsed();
-      this.flush(beatsBoard);
-      if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
-      if (this.handSolved.rank === 5) return this.flush(kicker);
-      if (this.handSolved.rank === 4) return this.straight(kicker);
-      if (this.handSolved.rank === 3) return this.trips(kicker);
-      var val = this.pairMinus();
-      return beatsBoard ? val + .05 : val;
+    key: "handAttr",
+    value: function handAttr() {
+      var handAttr = {};
+      handAttr['kicker'] = this.kicker();
+      handAttr['beatsBoard'] = this.beatsBoard();
+      handAttr['cardsUsed'] = this.cardsUsed();
+      return handAttr;
+    }
+  }, {
+    key: "flushMinus",
+    value: function flushMinus(texture, handArr) {
+      if (this.handSolved.rank === 5) return this.flush(texture, handArr);
+      if (this.handSolved.rank === 4) return this.straight(texture, handArr);
+      if (this.handSolved.rank === 3) return this.trips(texture, handArr);
+      return this.pairMinus(texture, handArr);
+    }
+  }, {
+    key: "pairMinus",
+    value: function pairMinus(texture, handAttr) {
+      var val = handAttr['beatsBoard'] ? .05 : 0;
+
+      if (this.nPair(1)) {
+        val += 1;
+      } else if (this.nPair(2)) {
+        val += .25;
+      } else if (this.nPair(3)) {
+        val += .15;
+      } else if (this.nPair(4) || this.nPair(5)) {
+        val += .1;
+      } else {
+        val += .05;
+      }
+
+      return [val];
     }
   }, {
     key: "beatsBoard",
@@ -13636,42 +13659,47 @@ function () {
     key: "trips",
     value: function trips() {}
   }, {
+    key: "quads",
+    value: function quads(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
+    }
+  }, {
+    key: "house",
+    value: function house(texture, handAttr) {
+      if (this.boardSolved.rank === 6) return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
+    }
+  }, {
+    key: "fHousePlus",
+    value: function fHousePlus(texture, handAttr) {
+      if (this.handSolved.rank > 7) return [1, 'agg'];
+      var quads = this.quads(texture, handAttr);
+      if (quads) return quads;
+      return this.house(texture, handAttr);
+    }
+  }, {
     key: "flushCards",
     value: function flushCards(player) {
       var fCards = 1;
+      var suit = "";
       var cards = player ? this.handSolved.suits : this.boardSolved.suits;
       var keys = player ? Object.keys(cards) : Object.keys(cards);
 
       for (var s = 0; s < keys.length; s++) {
         var suitCnt = cards[keys[s]].length;
-        if (suitCnt > fCards) fCards = suitCnt;
+
+        if (suitCnt > fCards) {
+          fCards = suitCnt;
+          suit = keys[s];
+        }
       }
 
-      return fCards;
+      return [fCards, suit];
     }
   }, {
     key: "flush",
-    value: function flush(beatsBoard, hCards) {
-      var pFlush = this.flushCards(true);
-      var bFlush = this.flushCards(false); //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
-    }
-  }, {
-    key: "house",
-    value: function house(beatsBoard) {
-      if (this.boardSolved.rank === 6) return beatsBoard ? [1, 'agg'] : [.5, 'call'];
-    }
-  }, {
-    key: "quads",
-    value: function quads(kicker, beatsBoard) {
-      return beatsBoard ? [1, 'agg'] : [.5, 'call'];
-    }
-  }, {
-    key: "fHousePlus",
-    value: function fHousePlus(kicker, beatsBoard) {
-      if (this.handSolved.rank > 7) return [1, 'agg'];
-      var quads = this.quads(kicker, beatsBoard);
-      if (quads) return quads;
-      return this.house(beatsBoard);
+    value: function flush(texture, handAttr) {
+      var pFlush = this.flushCards(true); // if (hCards === 2) 
+      //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
     }
   }]);
 
