@@ -64,6 +64,9 @@ export default class PostFlop {
     this.defineHand(hand,boardCards);
     const kicker = this.kicker();
     const beatsBoard = this.beatsBoard();
+    debugger
+    const hCards = cardsUsed();
+    this.flush(beatsBoard);
     if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
     if (this.handSolved.rank === 5) return this.flush(kicker);
     if (this.handSolved.rank === 4) return this.straight(kicker);
@@ -77,7 +80,18 @@ export default class PostFlop {
     return (wonArr.length === 1 && wonArr[0] === this.handSolved);
   };
 
-  numCardsUsed(){};
+  chkCard(card, idx) {
+    return card.suit === this.hand[idx] && card.value === this.hand[idx].rank;
+  }
+  cardsUsed(){
+    let used = 0;
+    this.handSolved.cards.forEach(card => {
+      if (chkCard(card,0)) used += 1;
+      if (chkCard(card,1)) used += 1;
+    })
+    return used;
+  };
+
   kicker(){}
 
   nCard(num){
@@ -113,23 +127,35 @@ export default class PostFlop {
   trips(){
   }
 
-  rainbow() { }
-  twoFlush() { };
-  threeFlush() { };
-  fourFlush() { };
-  fiveFlush() { };
+  flushCards(player){
+    let fCards = 1;
+    const cards = player ? this.handSolved.suits : this.boardSolved.suits;
+    const keys = player ? Object.keys(cards) : Object.keys(cards);
+
+    for (let s=0;s<keys.length;s++) {
+      const suitCnt = cards[keys[s]].length;
+      if (suitCnt > fCards) fCards = suitCnt;
+    }
+    return fCards;
+  }
+
+  flush(beatsBoard, hCards){
+    const pFlush = this.flushCards(true);
+    const bFlush = this.flushCards(false);
+    //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
+  }
 
   house(beatsBoard) {
     if (this.boardSolved.rank === 6) return beatsBoard ? [1,'agg'] : [.5,'call'];
   }
 
-  quads(kicker){
-
+  quads(kicker, beatsBoard){
+    return beatsBoard ? [1, 'agg'] : [.5, 'call'];
   }
 
   fHousePlus(kicker, beatsBoard){
-    if (this.handSolved.rank > 7) return 1;
-    const quads = this.quads(kicker);
+    if (this.handSolved.rank > 7) return [1,'agg'];
+    const quads = this.quads(kicker, beatsBoard);
     if (quads) return quads;
     return this.house(beatsBoard);
   }

@@ -13541,6 +13541,9 @@ function () {
       this.defineHand(hand, boardCards);
       var kicker = this.kicker();
       var beatsBoard = this.beatsBoard();
+      debugger;
+      var hCards = cardsUsed();
+      this.flush(beatsBoard);
       if (this.handSolved.rank > 5) return this.fHousePlus(kicker);
       if (this.handSolved.rank === 5) return this.flush(kicker);
       if (this.handSolved.rank === 4) return this.straight(kicker);
@@ -13555,8 +13558,20 @@ function () {
       return wonArr.length === 1 && wonArr[0] === this.handSolved;
     }
   }, {
-    key: "numCardsUsed",
-    value: function numCardsUsed() {}
+    key: "chkCard",
+    value: function chkCard(card, idx) {
+      return card.suit === this.hand[idx] && card.value === this.hand[idx].rank;
+    }
+  }, {
+    key: "cardsUsed",
+    value: function cardsUsed() {
+      var used = 0;
+      this.handSolved.cards.forEach(function (card) {
+        if (chkCard(card, 0)) used += 1;
+        if (chkCard(card, 1)) used += 1;
+      });
+      return used;
+    }
   }, {
     key: "kicker",
     value: function kicker() {}
@@ -13621,20 +13636,25 @@ function () {
     key: "trips",
     value: function trips() {}
   }, {
-    key: "rainbow",
-    value: function rainbow() {}
+    key: "flushCards",
+    value: function flushCards(player) {
+      var fCards = 1;
+      var cards = player ? this.handSolved.suits : this.boardSolved.suits;
+      var keys = player ? Object.keys(cards) : Object.keys(cards);
+
+      for (var s = 0; s < keys.length; s++) {
+        var suitCnt = cards[keys[s]].length;
+        if (suitCnt > fCards) fCards = suitCnt;
+      }
+
+      return fCards;
+    }
   }, {
-    key: "twoFlush",
-    value: function twoFlush() {}
-  }, {
-    key: "threeFlush",
-    value: function threeFlush() {}
-  }, {
-    key: "fourFlush",
-    value: function fourFlush() {}
-  }, {
-    key: "fiveFlush",
-    value: function fiveFlush() {}
+    key: "flush",
+    value: function flush(beatsBoard, hCards) {
+      var pFlush = this.flushCards(true);
+      var bFlush = this.flushCards(false); //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
+    }
   }, {
     key: "house",
     value: function house(beatsBoard) {
@@ -13642,12 +13662,14 @@ function () {
     }
   }, {
     key: "quads",
-    value: function quads(kicker) {}
+    value: function quads(kicker, beatsBoard) {
+      return beatsBoard ? [1, 'agg'] : [.5, 'call'];
+    }
   }, {
     key: "fHousePlus",
     value: function fHousePlus(kicker, beatsBoard) {
-      if (this.handSolved.rank > 7) return 1;
-      var quads = this.quads(kicker);
+      if (this.handSolved.rank > 7) return [1, 'agg'];
+      var quads = this.quads(kicker, beatsBoard);
       if (quads) return quads;
       return this.house(beatsBoard);
     }
