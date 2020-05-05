@@ -22,6 +22,8 @@ straight draw
         could we do this by seeing where the cards we are playing fall within the cards?
           playing 1 card at bottom, 2 cards at bottom, vs 1 at top, 2 at top
 Straight possible / 3+ to a flush
+PromptResonse
+  Adjust to .5 (not fold) and .8 (bet/raise)
 
 Pair
   if board makes a pair and we dont beat board...
@@ -56,3 +58,5 @@ Full house, doesnt bluff is full house on board, if board is a house and hand be
 
 Weaknesses:
 Always call on fullhouse if not beating board
+Computerplayer promptresponse static values
+if auto is call and its put all in it folds

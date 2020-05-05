@@ -13161,31 +13161,21 @@ function () {
       return false;
     }
   }, {
-    key: "autoAction",
-    value: function autoAction(evalArr, to_call, pot, sb, isPreflop) {
-      if (evalArr[1] === 'agg') return this.genBetRaise(to_call, pot, sb, isPreflop);
-      if (evalArr[1] === 'call') return to_call > 0 ? ['call'] : ['check'];
-      if (evalArr[1] === 'fold') return ['fold'];
-    }
-  }, {
     key: "promptResponse",
     value: function promptResponse(to_call, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
-      // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
-      // move check if not done dealing to prompt logic
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      if (evalArr[1]) return this.autoAction(to_call, pot, sb, isPreflop);
+      var auto = evalArr[1];
+      if (auto === 'agg') this.genBetRaise(to_call, pot, sb, isPreflop);
       var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
-      if (teiredNum < .333) {
+      if (auto === 'fold' || teiredNum < .5) {
         return to_call > 0 ? ['fold'] : ['check'];
-      } else if (this.chipstack === to_call) {
-        return ['call'];
-      } else if (teiredNum < .666) {
+      } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .80) {
         return to_call > 0 ? ['call'] : ['check'];
       } else {
         return this.genBetRaise(to_call, pot, sb, isPreflop);
@@ -13454,8 +13444,7 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand; //Account for length of board cards
-
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
 
 var PostFlop =
 /*#__PURE__*/
@@ -13577,8 +13566,15 @@ function () {
   }, {
     key: "beatsBoard",
     value: function beatsBoard() {
+      if (this.handSolved.rank > this.boardSolved.rank) return true;
+      if (this.boardSolved.cards.length < 5) return false;
       var wonArr = Hand.winners([this.handSolved, this.boardSolved]);
       return wonArr.length === 1 && wonArr[0] === this.handSolved;
+    }
+  }, {
+    key: "bPairedPlus",
+    value: function bPairedPlus(texture) {
+      return texture['pair'] || texture['twoPair'] || texture['trips'];
     }
   }, {
     key: "chkCard",
@@ -13588,10 +13584,12 @@ function () {
   }, {
     key: "cardsUsed",
     value: function cardsUsed() {
+      var _this = this;
+
       var used = 0;
       this.handSolved.cards.forEach(function (card) {
-        if (chkCard(card, 0)) used += 1;
-        if (chkCard(card, 1)) used += 1;
+        if (_this.chkCard(card, 0)) used += 1;
+        if (_this.chkCard(card, 1)) used += 1;
       });
       return used;
     }
@@ -13698,13 +13696,20 @@ function () {
   }, {
     key: "flush",
     value: function flush(texture, handAttr) {
-      var pFlush = this.flushCards(true); // if (hCards === 2) 
-      //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
+      var pFlush = this.flushCards(true);
+
+      if (this.bPairedPlus()) {
+        if (handAttr['cardsUsed'] === 2) return [.5];
+      } else {
+        if (handAttr['cardsUsed'] === 2) return [1, 'agg'];
+        return [.25];
+      }
     }
   }]);
 
   return PostFlop;
-}();
+}(); //account flush/straight draws
+
 
 
 

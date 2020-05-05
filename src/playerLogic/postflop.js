@@ -1,5 +1,4 @@
 const Hand = require('pokersolver').Hand;
-//Account for length of board cards
 export default class PostFlop {
   constructor() {
     this.value = 0;
@@ -94,9 +93,15 @@ export default class PostFlop {
   }
 
   beatsBoard(){
+    if (this.handSolved.rank > this.boardSolved.rank) return true;
+    if (this.boardSolved.cards.length < 5) return false;
     let wonArr = Hand.winners([this.handSolved, this.boardSolved]);
     return (wonArr.length === 1 && wonArr[0] === this.handSolved);
   };
+
+  bPairedPlus(texture){
+    return texture['pair'] || texture['twoPair'] || texture['trips'];
+  }
 
   chkCard(card, idx) {
     return card.suit === this.hand[idx] && card.value === this.hand[idx].rank;
@@ -105,8 +110,8 @@ export default class PostFlop {
   cardsUsed(){
     let used = 0;
     this.handSolved.cards.forEach(card => {
-      if (chkCard(card,0)) used += 1;
-      if (chkCard(card,1)) used += 1;
+      if (this.chkCard(card,0)) used += 1;
+      if (this.chkCard(card,1)) used += 1;
     })
     return used;
   };
@@ -179,7 +184,13 @@ export default class PostFlop {
 
   flush(texture, handAttr) {
     const pFlush = this.flushCards(true);
-    // if (hCards === 2) 
-    //num cards used, if beats board and using both cards and board isnt paired+ return [1,'agg']
+    if (this.bPairedPlus()) {
+      if (handAttr['cardsUsed'] === 2) return [.5];
+    } else {
+      if (handAttr['cardsUsed'] === 2) return [1,'agg'];
+      return [.25]
+    }
   }
 }
+
+//account flush/straight draws
