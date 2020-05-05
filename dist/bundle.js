@@ -13167,18 +13167,19 @@ function () {
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      var auto = evalArr[1];
-      if (auto === 'agg') this.genBetRaise(to_call, pot, sb, isPreflop);
+      var auto = evalArr[1] ? evalArr[1] : null;
+      var betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
+      if (auto === 'agg') return betRaise;
       var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
-      if (auto === 'fold' || teiredNum < .5) {
+      if (auto === 'fold' || teiredNum < .45) {
         return to_call > 0 ? ['fold'] : ['check'];
-      } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .80) {
-        return to_call > 0 ? ['call'] : ['check'];
+      } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .85) {
+        return to_call > 0 ? ['call'] : betRaise;
       } else {
-        return this.genBetRaise(to_call, pot, sb, isPreflop);
+        return betRaise;
       }
     }
   }, {
@@ -13679,6 +13680,7 @@ function () {
     value: function flushCards(player) {
       var fCards = 1;
       var suit = "";
+      var kicker = "";
       var cards = player ? this.handSolved.suits : this.boardSolved.suits;
       var keys = player ? Object.keys(cards) : Object.keys(cards);
 
@@ -13694,10 +13696,24 @@ function () {
       return [fCards, suit];
     }
   }, {
+    key: "flushKicker",
+    value: function flushKicker(suit) {
+      var higher = this.convertVal(this.hand[0].rank) > this.convertVal(this.hand[1].rank) ? this.hand[0] : this.hand[1];
+      return higher.suit === suit ? higher.rank : null;
+    }
+  }, {
+    key: "flushDraw",
+    value: function flushDraw() {
+      var fCards = this.flushCards(true)[0];
+      return {
+        'fourFlush': this.boardCards.length < 5 && fCards === 4,
+        'threeFlush': this.boardCards.length === 3 && fCards === 3,
+        'suitCard': this.flushKicker(fCards[1])
+      };
+    }
+  }, {
     key: "flush",
     value: function flush(texture, handAttr) {
-      var pFlush = this.flushCards(true);
-
       if (this.bPairedPlus()) {
         if (handAttr['cardsUsed'] === 2) return [.5];
       } else {

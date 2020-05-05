@@ -169,11 +169,12 @@ export default class PostFlop {
   flushCards(player) {
     let fCards = 1;
     let suit = "";
+    let kicker = "";
     const cards = player ? this.handSolved.suits : this.boardSolved.suits;
     const keys = player ? Object.keys(cards) : Object.keys(cards);
 
     for (let s = 0; s < keys.length; s++) {
-      const suitCnt = cards[keys[s]].length;
+      let suitCnt = cards[keys[s]].length;
       if (suitCnt > fCards) {
         fCards = suitCnt;
         suit = keys[s];
@@ -182,8 +183,21 @@ export default class PostFlop {
     return [fCards, suit];
   }
 
+  flushKicker(suit) {
+    const higher = this.convertVal(this.hand[0].rank) > this.convertVal(this.hand[1].rank) ? this.hand[0] : this.hand[1];
+    return higher.suit === suit ? higher.rank : null;
+  }
+
+  flushDraw() {
+    const fCards = this.flushCards(true)[0];
+    return {
+      'fourFlush': this.boardCards.length < 5 && fCards === 4,
+      'threeFlush': this.boardCards.length === 3 && fCards === 3,
+      'suitCard': this.flushKicker(fCards[1])
+    }
+  }
+
   flush(texture, handAttr) {
-    const pFlush = this.flushCards(true);
     if (this.bPairedPlus()) {
       if (handAttr['cardsUsed'] === 2) return [.5];
     } else {

@@ -76,19 +76,20 @@ export default class ComputerPlayer {
   promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
     if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
     let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-    const auto = evalArr[1];
-    if (auto === 'agg') this.genBetRaise(to_call, pot, sb, isPreflop);
-    
-    let adjToCall = (to_call === 0) ? pot : to_call;
-    let potOdds = (adjToCall + pot) / adjToCall;
-    let teiredNum = this.adjByTeir(evalArr[0], potOdds);
+    const auto = evalArr[1] ? evalArr[1] : null;
+    const betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
+    if (auto === 'agg') return betRaise;
 
-    if (auto === 'fold' || teiredNum < .5) {
+    const adjToCall = (to_call === 0) ? pot : to_call;
+    const potOdds = (adjToCall + pot) / adjToCall;
+    const teiredNum = this.adjByTeir(evalArr[0], potOdds);
+
+    if (auto === 'fold' || teiredNum < .45) {
       return to_call > 0 ? ['fold'] : ['check'];
-    } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .80) {
-      return to_call > 0 ? ['call'] : ['check'];
+    } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .85) {
+      return to_call > 0 ? ['call'] : betRaise;
     } else {
-      return this.genBetRaise(to_call, pot, sb, isPreflop);
+      return betRaise;
     }
   }
   
