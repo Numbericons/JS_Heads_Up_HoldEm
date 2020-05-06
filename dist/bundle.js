@@ -13540,8 +13540,9 @@ function () {
   }, {
     key: "flushMinus",
     value: function flushMinus(texture, handArr) {
-      if (this.handSolved.rank === 5) return this.flush(texture, handArr);
-      if (this.handSolved.rank === 4) return this.straight(texture, handArr);
+      if (this.handSolved.rank === 6) return this.flush(texture, handArr);
+      if (this.handSolved.rank === 5) return this.straight(texture, handArr);
+      if (this.handSolved.rank === 4) return this.twoPair(texture, handArr);
       if (this.handSolved.rank === 3) return this.trips(texture, handArr);
       return this.pairMinus(texture, handArr);
     }
@@ -13635,7 +13636,14 @@ function () {
     value: function paired() {}
   }, {
     key: "twoPair",
-    value: function twoPair() {}
+    value: function twoPair(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+    }
+  }, {
+    key: "straight",
+    value: function straight(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [.7] : [.55, 'call'];
+    }
   }, {
     key: "twoStraight",
     value: function twoStraight() {}
@@ -13656,7 +13664,9 @@ function () {
     value: function gapFourStraight() {}
   }, {
     key: "trips",
-    value: function trips() {}
+    value: function trips(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
+    }
   }, {
     key: "quads",
     value: function quads(texture, handAttr) {

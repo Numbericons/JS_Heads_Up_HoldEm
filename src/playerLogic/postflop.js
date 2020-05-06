@@ -70,8 +70,9 @@ export default class PostFlop {
   }
 
   flushMinus(texture, handArr){
-    if (this.handSolved.rank === 5) return this.flush(texture, handArr);
-    if (this.handSolved.rank === 4) return this.straight(texture, handArr);
+    if (this.handSolved.rank === 6) return this.flush(texture, handArr);
+    if (this.handSolved.rank === 5) return this.straight(texture, handArr);
+    if (this.handSolved.rank === 4) return this.twoPair(texture, handArr);
     if (this.handSolved.rank === 3) return this.trips(texture, handArr);
     return this.pairMinus(texture, handArr);
   }
@@ -139,8 +140,15 @@ export default class PostFlop {
 
   loLoHigh(){};
   paired(){};
-  twoPair(){};
 
+  twoPair(texture, handAttr){
+    return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+  };
+  
+  straight(texture, handAttr) {
+    return handAttr['beatsBoard'] ? [.7] : [.55, 'call'];
+  }
+  
   twoStraight(){};
   threeStraight(){};
   fourStraight(){};
@@ -148,7 +156,8 @@ export default class PostFlop {
   gapThreeStraight(){}
   gapFourStraight(){}
 
-  trips(){
+  trips(texture, handAttr){
+    return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
   }
 
   quads(texture, handAttr) {
