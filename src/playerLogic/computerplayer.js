@@ -4,7 +4,7 @@ import PostFlop from './postflop';
 
 
 export default class ComputerPlayer {
-  constructor(position, chipstack, cardDims) {
+  constructor(position, chipstack, cardDims, reveal) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -14,7 +14,8 @@ export default class ComputerPlayer {
     this.postFlop = new PostFlop();
     this.hand = [];
     this.comp = true;
-    this.revealed = false;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
@@ -170,7 +171,7 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
-    this.revealed = false;
+    this.revealed = this.reveal;
   }
 }
 

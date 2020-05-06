@@ -13078,7 +13078,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ComputerPlayer =
 /*#__PURE__*/
 function () {
-  function ComputerPlayer(position, chipstack, cardDims) {
+  function ComputerPlayer(position, chipstack, cardDims, reveal) {
     _classCallCheck(this, ComputerPlayer);
 
     this.position = position;
@@ -13090,7 +13090,8 @@ function () {
     this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
     this.hand = [];
     this.comp = true;
-    this.revealed = false;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13272,7 +13273,7 @@ function () {
       this.folded = false;
       this.chipsInPot = 0;
       this.hand = [];
-      this.revealed = false;
+      this.revealed = this.reveal;
     }
   }]);
 
@@ -13305,7 +13306,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var HumanPlayer =
 /*#__PURE__*/
 function () {
-  function HumanPlayer(position, chipstack, cardDims) {
+  function HumanPlayer(position, chipstack, cardDims, reveal) {
     _classCallCheck(this, HumanPlayer);
 
     this.position = position;
@@ -13315,7 +13316,8 @@ function () {
     this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = false;
-    this.revealed = true;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
@@ -13419,6 +13421,7 @@ function () {
       this.chipsInPot = 0;
       this.streetChipsInPot = 0;
       this.hand = [];
+      this.revealed = this.reveal;
     }
   }]);
 
@@ -13507,7 +13510,7 @@ function () {
       var texture = this.texture();
       var handAttr = this.handAttr();
       debugger;
-      if (this.handSolved.rank > 5) return this.fHousePlus(texture, handAttr);
+      if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
       return this.flushMinus(texture, handAttr);
     }
   }, {
@@ -13542,8 +13545,8 @@ function () {
     value: function flushMinus(texture, handArr) {
       if (this.handSolved.rank === 6) return this.flush(texture, handArr);
       if (this.handSolved.rank === 5) return this.straight(texture, handArr);
-      if (this.handSolved.rank === 4) return this.twoPair(texture, handArr);
-      if (this.handSolved.rank === 3) return this.trips(texture, handArr);
+      if (this.handSolved.rank === 4) return this.trips(texture, handArr);
+      if (this.handSolved.rank === 3) return this.twoPair(texture, handArr);
       return this.pairMinus(texture, handArr);
     }
   }, {
@@ -15493,7 +15496,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, false)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;

@@ -1,6 +1,6 @@
 import Chipstack from '../pokerLogic/chipstack';
 export default class HumanPlayer {
-  constructor(position, chipstack, cardDims){
+  constructor(position, chipstack, cardDims, reveal){
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -8,7 +8,8 @@ export default class HumanPlayer {
     this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = false;
-    this.revealed = true;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
@@ -98,5 +99,6 @@ export default class HumanPlayer {
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
     this.hand = [];
+    this.revealed = this.reveal
   }
 }

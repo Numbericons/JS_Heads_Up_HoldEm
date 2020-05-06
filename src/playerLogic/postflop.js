@@ -41,7 +41,7 @@ export default class PostFlop {
     const texture = this.texture();
     const handAttr = this.handAttr();
     debugger
-    if (this.handSolved.rank > 5) return this.fHousePlus(texture, handAttr);
+    if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
     return this.flushMinus(texture, handAttr);
   }
 
@@ -72,8 +72,8 @@ export default class PostFlop {
   flushMinus(texture, handArr){
     if (this.handSolved.rank === 6) return this.flush(texture, handArr);
     if (this.handSolved.rank === 5) return this.straight(texture, handArr);
-    if (this.handSolved.rank === 4) return this.twoPair(texture, handArr);
-    if (this.handSolved.rank === 3) return this.trips(texture, handArr);
+    if (this.handSolved.rank === 4) return this.trips(texture, handArr);
+    if (this.handSolved.rank === 3) return this.twoPair(texture, handArr);
     return this.pairMinus(texture, handArr);
   }
 
@@ -148,7 +148,7 @@ export default class PostFlop {
   straight(texture, handAttr) {
     return handAttr['beatsBoard'] ? [.7] : [.55, 'call'];
   }
-  
+
   twoStraight(){};
   threeStraight(){};
   fourStraight(){};
