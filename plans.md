@@ -71,8 +71,8 @@ Idea bubble: Key in on different values for gaps
           MVP: Having a 2 is a gutter
             Need to consider that the card can come above the highest/lowest ranked cards
               Unless ace this is ok that there will be a 1
-                Unless K or a 2 could have 2 gappers at poles to consider
-                
+              Unless K or a 2 could have 2 gappers at poles to consider
+
 
 
 
