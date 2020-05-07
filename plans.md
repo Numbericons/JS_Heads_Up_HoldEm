@@ -61,7 +61,18 @@ Idea bubble: Key in on different values for gaps
     having a 1 + 2 is a 3 straight with a gap
     having a 1 + 1 + 1 is a 3 straight
     having a 3 1's and a 2 is a 4 straight w/ a gap
+      on the turn this is minimum for a straight draw
     having having for 1s is a 4 straight
+    Issue: double belly busters
+      6 cards with a total of 2 2's
+      AQ on J 10 8 -> K or 9    [1],2,1,1,2
+        Top card can only tolerate one 2 before it is rejected > need to see 3 elements with 1 or 0 2+'s
+          Not MVP: having a 3 would be a backdoor
+          MVP: Having a 2 is a gutter
+            Need to consider that the card can come above the highest/lowest ranked cards
+              Unless ace this is ok that there will be a 1
+                Unless K or a 2 could have 2 gappers at poles to consider
+                
 
 
 
