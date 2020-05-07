@@ -40,7 +40,6 @@ export default class PostFlop {
     this.defineHand(hand, boardCards);
     const texture = this.texture();
     const handAttr = this.handAttr();
-    debugger
     if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
     return this.flushMinus(texture, handAttr);
   }

@@ -97,17 +97,17 @@ a {
   }
   
   &__close {
-    width: 3vw;
-    height: 3vh;
+    width: 2vw;
+    height: 2vh;
     font-size: 1.2rem;
     text-align: center;
     position: absolute;
-    // background-color: #545050;
     background-color: #242323;
     color: #d7cfcf;
     right: 0px;
     top: 0px;
     cursor: pointer;
+    margin-top: 0.5vh;
   }
 }
 

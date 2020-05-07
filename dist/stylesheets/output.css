@@ -625,8 +625,8 @@ a {
   pointer-events: auto;
 }
 .popup-modal__close {
-  width: 3vw;
-  height: 3vh;
+  width: 2vw;
+  height: 2vh;
   font-size: 1.2rem;
   text-align: center;
   position: absolute;
@@ -635,6 +635,7 @@ a {
   right: 0px;
   top: 0px;
   cursor: pointer;
+  margin-top: 0.5vh;
 }
 
 .tutorial {
