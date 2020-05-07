@@ -52,12 +52,15 @@ export default class PostFlop {
   }
 
   texture(){
-    let texture = {};
-    texture['pair'] = this.boardSolved.rank === 2;
-    texture['twoPair'] = this.boardSolved.rank === 3;
-    texture['trips'] = this.boardSolved.rank === 4;
-    texture['fCards'] = this.flushCards(true);
-    return texture;
+    return {
+      fCards: this.flushCards(true),
+      fCards: this.flushCards(true),
+      fourStr: this.fourStraight(),
+      pair: this.boardSolved.rank === 2,
+      twoPair: this.boardSolved.rank === 3,
+      trips: this.boardSolved.rank === 4,
+
+    }
   }
 
   handAttr() {
@@ -139,20 +142,18 @@ export default class PostFlop {
     return this.house(texture, handAttr);
   }
 
-  secondPair(){};
-  thirdPair(){};
-  forthPair(){};
-  bottomPair(){};
+  // secondPair(){};
+  // thirdPair(){};
+  // forthPair(){};
+  // bottomPair(){};
 
-  loLoHigh(){};
-  paired(){};
+  // loLoHigh(){};
 
-  twoStraight(){};
-  threeStraight(){};
-  fourStraight(){};
-  fiveStraight(){};
-  gapThreeStraight(){}
-  gapFourStraight(){}
+  // twoStraight(){};
+  // threeStraight(){};
+  // fiveStraight(){};
+  // gapThreeStraight(){}
+  // gapFourStraight(){}
 
   quads(texture, handAttr) {
     return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
@@ -202,8 +203,22 @@ export default class PostFlop {
     }
   }
 
+  gaps(){
+    const ranks = this.boardSolved.cards.map(card => (card.rank));
+    let gaps = ranks.map((rank,i)=> {
+      if (ranks[i] - ranks[i + 1] === 0) continue;
+      return ranks[i+1] ? ranks[i] - ranks[i + 1] : 1;
+    });
+    debugger
+    return gaps;
+  }
+
+  gaps(cards, num) {
+    const max = this.boardCards.length;
+  }
+
   straightDraw() {
-    
+
   }
 
   straight(texture, handAttr) {
@@ -219,5 +234,3 @@ export default class PostFlop {
     return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
   };
 }
-
-//account flush/straight draws

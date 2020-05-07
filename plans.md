@@ -41,8 +41,32 @@ General Danger factors to board to know how strong hands need to be
   Quads, straight flushes don't have fears (simpler implementation)
 
   
+Straight Draws
+  Have an array of ranks of the cards
+  Map the cards to the gaps to the next card
+    Rejecting elements based on number of cards
+      Board: if gaps length is 5 then remove highest gap
+      Player (Turn or pre): If count hand + board > 7, reject 2 biggests gaps
+    Take the sum of the gaps, if 4 then 4 straight
+      *Gap will be 0 for pairs, hence ignore
+        *Diminish value if 1 gap straight draw includes an ace
+      *Last element/gap will always equal 1
+      *Ace can't start a new chain check unless it has an index of 0
+      *Ace for low
+
+Idea bubble: Key in on different values for gaps
+  On flop, having a 2 or 3 has some backdoor straight value
+    Simple version, just give this an adjusted bonus, discounted if an ace is needed
+    Having a 1 is some strength
+    having a 1 + 2 is a 3 straight with a gap
+    having a 1 + 1 + 1 is a 3 straight
+    having a 3 1's and a 2 is a 4 straight w/ a gap
+    having having for 1s is a 4 straight
 
 
+
+
+  
 Flop
   Check If board is a pair or trips
   Check If board is 3 to flush
