@@ -13619,6 +13619,14 @@ function () {
       return this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop;
     }
   }, {
+    key: "fHousePlus",
+    value: function fHousePlus(texture, handAttr) {
+      if (this.handSolved.rank > 7) return [1, 'agg'];
+      var quads = this.quads(texture, handAttr);
+      if (quads) return quads;
+      return this.house(texture, handAttr);
+    }
+  }, {
     key: "secondPair",
     value: function secondPair() {}
   }, {
@@ -13636,16 +13644,6 @@ function () {
   }, {
     key: "paired",
     value: function paired() {}
-  }, {
-    key: "twoPair",
-    value: function twoPair(texture, handAttr) {
-      return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
-    }
-  }, {
-    key: "straight",
-    value: function straight(texture, handAttr) {
-      return handAttr['beatsBoard'] ? [.7] : [.55, 'call'];
-    }
   }, {
     key: "twoStraight",
     value: function twoStraight() {}
@@ -13665,11 +13663,6 @@ function () {
     key: "gapFourStraight",
     value: function gapFourStraight() {}
   }, {
-    key: "trips",
-    value: function trips(texture, handAttr) {
-      return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
-    }
-  }, {
     key: "quads",
     value: function quads(texture, handAttr) {
       return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
@@ -13678,14 +13671,6 @@ function () {
     key: "house",
     value: function house(texture, handAttr) {
       if (this.boardSolved.rank === 6) return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
-    }
-  }, {
-    key: "fHousePlus",
-    value: function fHousePlus(texture, handAttr) {
-      if (this.handSolved.rank > 7) return [1, 'agg'];
-      var quads = this.quads(texture, handAttr);
-      if (quads) return quads;
-      return this.house(texture, handAttr);
     }
   }, {
     key: "flushCards",
@@ -13732,6 +13717,25 @@ function () {
         if (handAttr['cardsUsed'] === 2) return [1, 'agg'];
         return [.25];
       }
+    }
+  }, {
+    key: "straightDraw",
+    value: function straightDraw() {}
+  }, {
+    key: "straight",
+    value: function straight(texture, handAttr) {
+      if (texture['fCards'] === 3 || bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
+      return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
+    }
+  }, {
+    key: "trips",
+    value: function trips(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
+    }
+  }, {
+    key: "twoPair",
+    value: function twoPair(texture, handAttr) {
+      return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
     }
   }]);
 

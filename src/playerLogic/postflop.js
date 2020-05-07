@@ -132,6 +132,13 @@ export default class PostFlop {
     return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
   };
 
+  fHousePlus(texture, handAttr) {
+    if (this.handSolved.rank > 7) return [1, 'agg'];
+    const quads = this.quads(texture, handAttr);
+    if (quads) return quads;
+    return this.house(texture, handAttr);
+  }
+
   secondPair(){};
   thirdPair(){};
   forthPair(){};
@@ -140,14 +147,6 @@ export default class PostFlop {
   loLoHigh(){};
   paired(){};
 
-  twoPair(texture, handAttr){
-    return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
-  };
-  
-  straight(texture, handAttr) {
-    return handAttr['beatsBoard'] ? [.7] : [.55, 'call'];
-  }
-
   twoStraight(){};
   threeStraight(){};
   fourStraight(){};
@@ -155,23 +154,12 @@ export default class PostFlop {
   gapThreeStraight(){}
   gapFourStraight(){}
 
-  trips(texture, handAttr){
-    return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
-  }
-
   quads(texture, handAttr) {
     return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
   }
 
   house(texture, handAttr) {
     if (this.boardSolved.rank === 6) return handAttr['beatsBoard'] ? [1,'agg'] : [.5,'call'];
-  }
-
-  fHousePlus(texture, handAttr){
-    if (this.handSolved.rank > 7) return [1,'agg'];
-    const quads = this.quads(texture, handAttr);
-    if (quads) return quads;
-    return this.house(texture, handAttr);
   }
 
   flushCards(player) {
@@ -213,6 +201,23 @@ export default class PostFlop {
       return [.25]
     }
   }
+
+  straightDraw() {
+    
+  }
+
+  straight(texture, handAttr) {
+    if (texture['fCards'] === 3 || bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
+    return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
+  }
+
+  trips(texture, handAttr) {
+    return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
+  }
+
+  twoPair(texture, handAttr) {
+    return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+  };
 }
 
 //account flush/straight draws

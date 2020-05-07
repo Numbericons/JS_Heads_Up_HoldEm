@@ -4,6 +4,7 @@
 
 first define things like if the board is a certain hand based on the rank of the board cards
   also check if board is 3 to a suit, 3 to a straight etc.
+**Handled in texture object, straight tbd
 
 second step is to check for best hands on down for return value
   straight flush plus returns Infinity
