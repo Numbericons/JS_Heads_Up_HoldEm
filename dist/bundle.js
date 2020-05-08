@@ -13721,7 +13721,6 @@ function () {
   }, {
     key: "straightTexture",
     value: function straightTexture() {
-      debugger;
       var gaps = this.gaps(this.boardSolved.cards);
       var strTexture = {
         gutters: 0,
@@ -13754,7 +13753,7 @@ function () {
   }, {
     key: "straight",
     value: function straight(texture, handAttr) {
-      if (texture['fCards'] === 3 || bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
+      if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
       return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
     }
   }, {

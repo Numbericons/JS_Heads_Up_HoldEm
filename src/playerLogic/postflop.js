@@ -212,7 +212,6 @@ export default class PostFlop {
   }
 
   straightTexture() {
-    debugger
     const gaps = this.gaps(this.boardSolved.cards);
     const strTexture = { gutters: 0, threeStr: false, openEnd: false, smThreeStr: false }
     for (let g=0; g<gaps.length;g++) { //[1, 6, 3, 1], 0, 2  arguments to sumGaps
@@ -232,7 +231,7 @@ export default class PostFlop {
   }
 
   straight(texture, handAttr) {
-    if (texture['fCards'] === 3 || bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
+    if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
     return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
   }
 

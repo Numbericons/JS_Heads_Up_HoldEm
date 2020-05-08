@@ -73,6 +73,8 @@ Idea bubble: Key in on different values for gaps
             Need to consider that the card can come above the highest/lowest ranked cards
               Unless ace this is ok that there will be a 1
               Unless K or a 2 could have 2 gappers at poles to consider
+              Possible straights
+                3 straight w/ a gap
 
 
 
