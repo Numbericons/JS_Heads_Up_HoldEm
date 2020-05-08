@@ -25,6 +25,7 @@ straight draw
 Straight possible / 3+ to a flush
 PromptResonse
   Adjust to .5 (not fold) and .8 (bet/raise)
+If straights (or higher hands possible) bet bigger with hands above (flush, house etc.)
 
 Pair
   if board makes a pair and we dont beat board...
