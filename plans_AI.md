@@ -103,3 +103,12 @@ if auto is call and its put all in it folds
 Comp v. Comp
   1 comp is right but thinks its left
   render and non render
+
+Methods:
+
+// secondPair(){};
+// thirdPair(){};
+// forthPair(){};
+// bottomPair(){};
+
+// loLoHigh(){};

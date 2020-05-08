@@ -142,19 +142,6 @@ export default class PostFlop {
     return this.house(texture, handAttr);
   }
 
-  // secondPair(){};
-  // thirdPair(){};
-  // forthPair(){};
-  // bottomPair(){};
-
-  // loLoHigh(){};
-
-  // twoStraight(){};
-  // threeStraight(){};
-  // fiveStraight(){};
-  // gapThreeStraight(){}
-  // gapFourStraight(){}
-
   quads(texture, handAttr) {
     return handAttr['beatsBoard'] ? [1, 'agg'] : [.5, 'call'];
   }
@@ -206,7 +193,6 @@ export default class PostFlop {
   gaps(cards) {
     const ranks = cards.map(card => (card.rank+1)).sort((a,b) => (b - a));
     let gaps = [];
-    debugger
     for (let z=0; z< ranks.length;z++) {
       if (z === ranks.length - 1) {
         gaps.push([1,ranks[z]]);
@@ -226,6 +212,7 @@ export default class PostFlop {
   }
 
   straightTexture() {
+    debugger
     const gaps = this.gaps(this.boardSolved.cards);
     const strTexture = { gutters: 0, threeStr: false, openEnd: false, smThreeStr: false }
     for (let g=0; g<gaps.length;g++) { //[1, 6, 3, 1], 0, 2  arguments to sumGaps

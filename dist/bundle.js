@@ -13626,17 +13626,7 @@ function () {
       var quads = this.quads(texture, handAttr);
       if (quads) return quads;
       return this.house(texture, handAttr);
-    } // secondPair(){};
-    // thirdPair(){};
-    // forthPair(){};
-    // bottomPair(){};
-    // loLoHigh(){};
-    // twoStraight(){};
-    // threeStraight(){};
-    // fiveStraight(){};
-    // gapThreeStraight(){}
-    // gapFourStraight(){}
-
+    }
   }, {
     key: "quads",
     value: function quads(texture, handAttr) {
@@ -13702,7 +13692,6 @@ function () {
         return b - a;
       });
       var gaps = [];
-      debugger;
 
       for (var z = 0; z < ranks.length; z++) {
         if (z === ranks.length - 1) {
@@ -13732,6 +13721,7 @@ function () {
   }, {
     key: "straightTexture",
     value: function straightTexture() {
+      debugger;
       var gaps = this.gaps(this.boardSolved.cards);
       var strTexture = {
         gutters: 0,
