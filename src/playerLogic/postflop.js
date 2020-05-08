@@ -55,7 +55,8 @@ export default class PostFlop {
     return {
       fCards: this.flushCards(true),
       fCards: this.flushCards(true),
-      fourStr: this.fourStraight(),
+      // fourStr: this.fourStraight(),
+      gaps: this.gaps(),
       pair: this.boardSolved.rank === 2,
       twoPair: this.boardSolved.rank === 3,
       trips: this.boardSolved.rank === 4,
@@ -203,13 +204,19 @@ export default class PostFlop {
     }
   }
 
-  gaps(){
+  gaps() {
     const ranks = this.boardSolved.cards.map(card => (card.rank));
-    let gaps = ranks.map((rank,i)=> {
-      if (ranks[i] - ranks[i + 1] === 0) continue;
-      return ranks[i+1] ? ranks[i] - ranks[i + 1] : 1;
-    });
+    let gaps = [];
     debugger
+
+    for (let z=0; z< ranks.length;z++) {
+      if (z === ranks.length - 1) {
+        gaps.push(1);
+        break;
+      }
+      const gap = ranks[i] - ranks[i + 1];
+      if (gap > 0) gaps.push(gap);
+    }
     return gaps;
   }
 
