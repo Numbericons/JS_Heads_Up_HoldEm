@@ -13698,8 +13698,11 @@ function () {
     value: function gaps(cards) {
       var ranks = cards.map(function (card) {
         return card.rank + 1;
+      }).sort(function (a, b) {
+        return b - a;
       });
       var gaps = [];
+      debugger;
 
       for (var z = 0; z < ranks.length; z++) {
         if (z === ranks.length - 1) {
@@ -13719,8 +13722,10 @@ function () {
   }, {
     key: "sumGaps",
     value: function sumGaps(gaps, idx, cnt) {
-      if (!gaps[idx + 1 + cnt]) return null;
-      return gaps.slice(idx, idx + cnt).reduce(function (acc, gap) {
+      if (!gaps[idx + cnt]) return null;
+      return gaps.slice(idx, idx + cnt).map(function (gap) {
+        return gap[0];
+      }).reduce(function (acc, gap) {
         return acc + gap;
       });
     }
@@ -13735,21 +13740,23 @@ function () {
         smThreeStr: false
       };
 
-      for (var g = 0; g < gaps.length - 2; g++) {
+      for (var g = 0; g < gaps.length; g++) {
         //[1, 6, 3, 1], 0, 2  arguments to sumGaps
         var firstRank = gaps[g][1];
 
-        if (this.sumGaps(gaps, g, 2) === 3) {
+        if (this.sumGaps(gaps, g, 3) === 3) {
           //4 straight
           if (firstRank === 14) {
             strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
           } else {
             strTexture['openEnd'] = true;
           }
+
+          continue;
         }
 
-        if (this.sumGaps(gaps, g, 2) === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
-        if (!firstRank === 14 && this.sumGaps(gaps, g, 1) === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThreeStr'] = true : strTexture['threeStr'] = true;
+        if (this.sumGaps(gaps, g, 3) === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+        if (!firstRank === 14 && this.sumGaps(gaps, g, 2) === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThreeStr'] = true : strTexture['threeStr'] = true;
       }
 
       return strTexture;
