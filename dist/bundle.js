@@ -13466,8 +13466,8 @@ function () {
     value: function handVal() {
       var handArr = ["".concat(this.hand[0].rank).concat(this.hand[0].suit), "".concat(this.hand[1].rank).concat(this.hand[1].suit)];
 
-      for (var _i = 0, len = this.boardCards.length; _i < len; _i++) {
-        handArr.push("".concat(this.boardCards[_i].rank).concat(this.boardCards[_i].suit));
+      for (var i = 0, len = this.boardCards.length; i < len; i++) {
+        handArr.push("".concat(this.boardCards[i].rank).concat(this.boardCards[i].suit));
       }
 
       return Hand.solve(handArr);
@@ -13477,8 +13477,8 @@ function () {
     value: function boardVal() {
       var cardArr = [];
 
-      for (var _i2 = 0; _i2 < this.boardCards.length; _i2++) {
-        cardArr.push("".concat(this.boardCards[_i2].rank).concat(this.boardCards[_i2].suit));
+      for (var i = 0; i < this.boardCards.length; i++) {
+        cardArr.push("".concat(this.boardCards[i].rank).concat(this.boardCards[i].suit));
       }
 
       return Hand.solve(cardArr);
@@ -13529,7 +13529,7 @@ function () {
 
       return _ref = {
         fCards: this.flushCards(true)
-      }, _defineProperty(_ref, "fCards", this.flushCards(true)), _defineProperty(_ref, "gaps", this.gaps()), _defineProperty(_ref, "pair", this.boardSolved.rank === 2), _defineProperty(_ref, "twoPair", this.boardSolved.rank === 3), _defineProperty(_ref, "trips", this.boardSolved.rank === 4), _ref;
+      }, _defineProperty(_ref, "fCards", this.flushCards(true)), _defineProperty(_ref, "straight", this.straightTexture()), _defineProperty(_ref, "pair", this.boardSolved.rank === 2), _defineProperty(_ref, "twoPair", this.boardSolved.rank === 3), _defineProperty(_ref, "trips", this.boardSolved.rank === 4), _ref;
     }
   }, {
     key: "handAttr",
@@ -13606,8 +13606,8 @@ function () {
     value: function nCard(num) {
       var top = num - 1;
 
-      for (var _i3 = 0, len = this.boardCards.length; _i3 < len; _i3++) {
-        var val = this.convertVal(this.boardCards[_i3].rank);
+      for (var i = 0, len = this.boardCards.length; i < len; i++) {
+        var val = this.convertVal(this.boardCards[i].rank);
         if (val > top) top = val;
       }
 
@@ -13695,33 +13695,65 @@ function () {
     }
   }, {
     key: "gaps",
-    value: function gaps() {
-      var ranks = this.boardSolved.cards.map(function (card) {
-        return card.rank;
+    value: function gaps(cards) {
+      var ranks = cards.map(function (card) {
+        return card.rank + 1;
       });
       var gaps = [];
-      debugger;
 
       for (var z = 0; z < ranks.length; z++) {
         if (z === ranks.length - 1) {
-          gaps.push(1);
+          gaps.push([1, ranks[z]]);
           break;
         }
 
-        var gap = ranks[i] - ranks[i + 1];
-        if (gap > 0) gaps.push(gap);
+        var gap = ranks[z] - ranks[z + 1];
+        if (gap > 0) gaps.push([gap, ranks[z]]);
       }
 
       return gaps;
     }
   }, {
-    key: "gaps",
-    value: function gaps(cards, num) {
-      var max = this.boardCards.length;
-    }
-  }, {
     key: "straightDraw",
     value: function straightDraw() {}
+  }, {
+    key: "sumGaps",
+    value: function sumGaps(gaps, idx, cnt) {
+      if (!gaps[idx + 1 + cnt]) return null;
+      return gaps.slice(idx, idx + cnt).reduce(function (acc, gap) {
+        return acc + gap;
+      });
+    }
+  }, {
+    key: "straightTexture",
+    value: function straightTexture() {
+      var gaps = this.gaps(this.boardSolved.cards);
+      var strTexture = {
+        gutters: 0,
+        threeStr: false,
+        openEnd: false,
+        smThreeStr: false
+      };
+
+      for (var g = 0; g < gaps.length - 2; g++) {
+        //[1, 6, 3, 1], 0, 2  arguments to sumGaps
+        var firstRank = gaps[g][1];
+
+        if (this.sumGaps(gaps, g, 2) === 3) {
+          //4 straight
+          if (firstRank === 14) {
+            strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+          } else {
+            strTexture['openEnd'] = true;
+          }
+        }
+
+        if (this.sumGaps(gaps, g, 2) === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+        if (!firstRank === 14 && this.sumGaps(gaps, g, 1) === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThreeStr'] = true : strTexture['threeStr'] = true;
+      }
+
+      return strTexture;
+    }
   }, {
     key: "straight",
     value: function straight(texture, handAttr) {

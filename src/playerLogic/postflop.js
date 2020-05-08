@@ -55,8 +55,7 @@ export default class PostFlop {
     return {
       fCards: this.flushCards(true),
       fCards: this.flushCards(true),
-      // fourStr: this.fourStraight(),
-      gaps: this.gaps(),
+      straight: this.straightTexture(),
       pair: this.boardSolved.rank === 2,
       twoPair: this.boardSolved.rank === 3,
       trips: this.boardSolved.rank === 4,
@@ -204,28 +203,47 @@ export default class PostFlop {
     }
   }
 
-  gaps() {
-    const ranks = this.boardSolved.cards.map(card => (card.rank));
+  gaps(cards) {
+    const ranks = cards.map(card => (card.rank+1));
     let gaps = [];
-    debugger
-
     for (let z=0; z< ranks.length;z++) {
       if (z === ranks.length - 1) {
-        gaps.push(1);
+        gaps.push([1,ranks[z]]);
         break;
       }
-      const gap = ranks[i] - ranks[i + 1];
-      if (gap > 0) gaps.push(gap);
+      const gap = ranks[z] - ranks[z + 1];
+      if (gap > 0) gaps.push([gap,ranks[z]]);
     }
     return gaps;
   }
 
-  gaps(cards, num) {
-    const max = this.boardCards.length;
-  }
-
   straightDraw() {
 
+  }
+
+  sumGaps(gaps,idx,cnt){
+    if (!gaps[idx+1+cnt]) return null;
+    return gaps.slice(idx, idx+cnt).reduce((acc,gap)=> (acc + gap));
+  }
+
+  straightTexture() {
+    const gaps = this.gaps(this.boardSolved.cards);
+    const strTexture = { gutters: 0, threeStr: false,
+                         openEnd: false, smThreeStr: false
+                        }
+    for (let g=0; g<gaps.length-2;g++) { //[1, 6, 3, 1], 0, 2  arguments to sumGaps
+      let firstRank = gaps[g][1];
+      if (this.sumGaps(gaps,g,2) === 3) { //4 straight
+        if (firstRank === 14) {
+          strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+        } else {
+          strTexture['openEnd'] = true;
+        }
+      } 
+      if (this.sumGaps(gaps,g,2) === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+      if (!firstRank === 14 && this.sumGaps(gaps, g, 1) === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThreeStr'] = true : strTexture['threeStr'] = true;
+    }
+    return strTexture;
   }
 
   straight(texture, handAttr) {
