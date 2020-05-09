@@ -153,7 +153,6 @@ export default class PostFlop {
   flushCards(player) {
     let fCards = 1;
     let suit = "";
-    let kicker = "";
     const cards = player ? this.handSolved.suits : this.boardSolved.suits;
     const keys = player ? Object.keys(cards) : Object.keys(cards);
 
@@ -195,7 +194,7 @@ export default class PostFlop {
     let gaps = [];
     for (let z=0; z< ranks.length;z++) {
       if (z === ranks.length - 1) {
-        gaps.push([1,ranks[z]]);
+        ranks[0] === 14 ? gaps.push([ranks[z] - 1,ranks[z]], [1,1]) : gaps.push([1,ranks[z]]); //when including ace
         break;
       }
       let gap = ranks[z] - ranks[z+1];
@@ -211,21 +210,32 @@ export default class PostFlop {
     return gaps.slice(idx, idx+cnt).map(gap=> (gap[0])).reduce((acc,gap)=> (acc + gap));
   }
 
+  fourCardStr(gaps, strTexture, firstRank, idx){
+    const sum = this.sumGaps(gaps, idx, 3);
+    if (sum === 3) {
+      if (firstRank === 14) {
+        strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+      } else {
+        strTexture['openEnd'] = true;
+      }
+    }
+    if (sum === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
+  }
+  
+  threeCardStr(gaps, strTexture, firstRank, idx) {
+    const sum = this.sumGaps(gaps, idx, 2);
+    if (firstRank !== 14 && sum === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThree'] = true : strTexture['three'] = true;
+    if (sum === 3 || sum === 4) sum === 3 ? strTexture['threeGap'] = true : strTexture['threeTwoGap'] = true
+  }
+
   straightTexture() {
     const gaps = this.gaps(this.boardSolved.cards);
-    const strTexture = { gutters: 0, threeStr: false, openEnd: false, smThreeStr: false }
+    const strTexture = { gutters: 0, three: false, openEnd: false, smThree: false, threeGap: false, threeTwoGap: false }
+    debugger
     for (let g=0; g<gaps.length;g++) { //[1, 6, 3, 1], 0, 2  arguments to sumGaps
       let firstRank = gaps[g][1];
-      if (this.sumGaps(gaps,g,3) === 3) { //4 straight
-        if (firstRank === 14) {
-          strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
-        } else {
-          strTexture['openEnd'] = true;
-        }
-        continue;
-      } 
-      if (this.sumGaps(gaps,g,3) === 4) strTexture['gutters'] = strTexture['gutters'] ? strTexture['gutters'] + 1 : 1;
-      if (!firstRank === 14 && this.sumGaps(gaps, g, 2) === 2) firstRank === 13 || firstRank === 2 ? strTexture['smThreeStr'] = true : strTexture['threeStr'] = true;
+      this.fourCardStr(gaps, strTexture, firstRank, g);
+      this.threeCardStr(gaps, strTexture, firstRank, g);
     }
     return strTexture;
   }
