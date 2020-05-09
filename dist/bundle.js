@@ -13442,8 +13442,6 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PostFlop; });
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13525,20 +13523,22 @@ function () {
   }, {
     key: "texture",
     value: function texture() {
-      var _ref;
-
-      return _ref = {
-        fCards: this.flushCards(true)
-      }, _defineProperty(_ref, "fCards", this.flushCards(true)), _defineProperty(_ref, "straight", this.straightTexture()), _defineProperty(_ref, "pair", this.boardSolved.rank === 2), _defineProperty(_ref, "twoPair", this.boardSolved.rank === 3), _defineProperty(_ref, "trips", this.boardSolved.rank === 4), _ref;
+      return {
+        fCards: this.flushCards(true),
+        straight: this.straightTexture(this.boardSolved.cards),
+        pair: this.boardSolved.rank === 2,
+        twoPair: this.boardSolved.rank === 3,
+        trips: this.boardSolved.rank === 4
+      };
     }
   }, {
     key: "handAttr",
     value: function handAttr() {
-      var handAttr = {};
-      handAttr['kicker'] = this.kicker();
-      handAttr['beatsBoard'] = this.beatsBoard();
-      handAttr['cardsUsed'] = this.cardsUsed();
-      return handAttr;
+      return {
+        kicker: this.kicker(),
+        beatsBoard: this.beatsBoard(),
+        cardsUsed: this.cardsUsed()
+      };
     }
   }, {
     key: "flushMinus",
@@ -13706,9 +13706,6 @@ function () {
       return gaps;
     }
   }, {
-    key: "straightDraw",
-    value: function straightDraw() {}
-  }, {
     key: "sumGaps",
     value: function sumGaps(gaps, idx, cnt) {
       if (!gaps[idx + cnt]) return null;
@@ -13742,8 +13739,8 @@ function () {
     }
   }, {
     key: "straightTexture",
-    value: function straightTexture() {
-      var gaps = this.gaps(this.boardSolved.cards);
+    value: function straightTexture(cards) {
+      var gaps = this.gaps(cards);
       var strTexture = {
         gutters: 0,
         three: false,
@@ -13752,7 +13749,6 @@ function () {
         threeGap: false,
         threeTwoGap: false
       };
-      debugger;
 
       for (var g = 0; g < gaps.length; g++) {
         //[1, 6, 3, 1], 0, 2  arguments to sumGaps
@@ -13779,6 +13775,9 @@ function () {
     value: function twoPair(texture, handAttr) {
       return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
     }
+  }, {
+    key: "lowHigh",
+    value: function lowHigh() {}
   }]);
 
   return PostFlop;

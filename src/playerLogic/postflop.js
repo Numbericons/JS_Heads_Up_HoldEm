@@ -54,8 +54,7 @@ export default class PostFlop {
   texture(){
     return {
       fCards: this.flushCards(true),
-      fCards: this.flushCards(true),
-      straight: this.straightTexture(),
+      straight: this.straightTexture(this.boardSolved.cards),
       pair: this.boardSolved.rank === 2,
       twoPair: this.boardSolved.rank === 3,
       trips: this.boardSolved.rank === 4,
@@ -64,11 +63,11 @@ export default class PostFlop {
   }
 
   handAttr() {
-    let handAttr = {};
-    handAttr['kicker'] = this.kicker();
-    handAttr['beatsBoard'] = this.beatsBoard();
-    handAttr['cardsUsed'] = this.cardsUsed();
-    return handAttr;
+    return {
+      kicker: this.kicker(),
+      beatsBoard: this.beatsBoard(),
+      cardsUsed: this.cardsUsed(),
+    }
   }
 
   flushMinus(texture, handArr){
@@ -119,7 +118,7 @@ export default class PostFlop {
     return used;
   };
 
-  kicker(){}
+  kicker(){  }
 
   nCard(num){
     let top = num - 1;
@@ -203,8 +202,6 @@ export default class PostFlop {
     return gaps;
   }
 
-  straightDraw() { }
-
   sumGaps(gaps,idx,cnt){
     if (!gaps[idx+cnt]) return null;
     return gaps.slice(idx, idx+cnt).map(gap=> (gap[0])).reduce((acc,gap)=> (acc + gap));
@@ -228,10 +225,9 @@ export default class PostFlop {
     if (sum === 3 || sum === 4) sum === 3 ? strTexture['threeGap'] = true : strTexture['threeTwoGap'] = true
   }
 
-  straightTexture() {
-    const gaps = this.gaps(this.boardSolved.cards);
+  straightTexture(cards) {
+    const gaps = this.gaps(cards);
     const strTexture = { gutters: 0, three: false, openEnd: false, smThree: false, threeGap: false, threeTwoGap: false }
-    debugger
     for (let g=0; g<gaps.length;g++) { //[1, 6, 3, 1], 0, 2  arguments to sumGaps
       let firstRank = gaps[g][1];
       this.fourCardStr(gaps, strTexture, firstRank, g);
@@ -252,4 +248,6 @@ export default class PostFlop {
   twoPair(texture, handAttr) {
     return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
   };
+
+  lowHigh() {}
 }
