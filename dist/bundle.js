@@ -13096,6 +13096,7 @@ function () {
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -13187,7 +13188,7 @@ function () {
     key: "resolveCall",
     value: function resolveCall(to_call) {
       var callAmt = to_call > this.chipstack ? this.chipstack : to_call;
-      this.chipsCall.play();
+      if (this.sound) this.chipsCall.play();
       this.chipstack -= callAmt;
       this.chipsInPot += callAmt;
       this.streetChipsInPot += callAmt;
@@ -13200,7 +13201,7 @@ function () {
       this.chipstack -= betAmt;
       this.chipsInPot += betAmt;
       this.streetChipsInPot += betAmt;
-      this.chipsBet.play();
+      if (this.sound) this.chipsBet.play();
       return betAmt;
     }
   }, {
@@ -13209,7 +13210,7 @@ function () {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
       if (textInput === 'check') {
-        this.check.play();
+        if (this.sound) this.check.play();
         return 0;
       } else if (textInput === 'fold') {
         this.folded = true;
@@ -13322,6 +13323,7 @@ function () {
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -13348,19 +13350,19 @@ function () {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
       if (textInput === 'check') {
-        this.check.play();
+        if (this.sound) this.check.play();
         return 0;
       } else if (textInput === 'fold') {
         this.folded = true;
         return null;
       } else if (textInput === 'call') {
-        this.chipsCall.play();
+        if (this.sound) this.chipsCall.play();
         this.chipstack -= to_call;
         this.chipsInPot += to_call;
         this.streetChipsInPot += to_call;
         return to_call;
       } else {
-        this.chipsBet.play();
+        if (this.sound) this.chipsBet.play();
         this.chipstack = this.chipstack - betInput + sb;
         this.chipsInPot += betInput - sb;
         this.streetChipsInPot += betInput - sb;
@@ -14356,6 +14358,7 @@ function () {
     this.cardDelay = 900;
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
+    this.sound = true;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -14411,7 +14414,7 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                this.shuffle.play();
+                if (this.sound) this.shuffle.play();
                 this.dealInPlayers();
                 this.takeBlinds();
                 this.render();
@@ -14607,7 +14610,7 @@ function () {
     value: function () {
       var _dealCard = _asyncToGenerator(
       /*#__PURE__*/
-      regeneratorRuntime.mark(function _callee3(sound) {
+      regeneratorRuntime.mark(function _callee3() {
         return regeneratorRuntime.wrap(function _callee3$(_context3) {
           while (1) {
             switch (_context3.prev = _context3.next) {
@@ -14616,7 +14619,7 @@ function () {
                 this.dispDealing();
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
-                if (sound) this.cardTurn.play();
+                if (this.sound) this.cardTurn.play();
                 this.showBoard();
 
               case 6:
@@ -14627,7 +14630,7 @@ function () {
         }, _callee3, this);
       }));
 
-      function dealCard(_x3) {
+      function dealCard() {
         return _dealCard.apply(this, arguments);
       }
 
@@ -14664,7 +14667,7 @@ function () {
                 return this.sleep(this.cardDelay);
 
               case 8:
-                this.dealCard(true);
+                this.dealCard();
 
               case 9:
                 i++;
@@ -14689,7 +14692,7 @@ function () {
     key: "dispDealing",
     value: function dispDealing() {
       var textSelect = document.querySelector(".table-bottom-actions-prompt");
-      textSelect.innerText = "Dealing ".concat(this.currStreet[0].toUpperCase() + this.currStreet.slice(1));
+      textSelect.innerText = "Dealing ".concat(this.currStreet[0].toUpperCase() + this.currStreet.slice(1), "...");
     }
   }, {
     key: "symbolBoard",
@@ -14863,7 +14866,7 @@ function () {
                 return this.sleep(this.cardDelay * 1.5);
 
               case 4:
-                this.dealCard(true);
+                this.dealCard();
                 this.showBoard();
                 _context6.next = 1;
                 break;
@@ -14885,7 +14888,6 @@ function () {
   }, {
     key: "combineChips",
     value: function combineChips() {
-      this.hideButtons();
       this.leftChips.addClass('chip-combine-left');
       this.rightChips.addClass('chip-combine-right');
     }
@@ -14910,31 +14912,32 @@ function () {
           while (1) {
             switch (_context7.prev = _context7.next) {
               case 0:
+                this.hideButtons();
                 this.combineChips();
-                _context7.next = 3;
+                _context7.next = 4;
                 return this.sleep(1000);
 
-              case 3:
+              case 4:
                 if (!flopBool) {
-                  _context7.next = 8;
+                  _context7.next = 9;
                   break;
                 }
 
-                _context7.next = 6;
+                _context7.next = 7;
                 return this.dealFlop();
 
-              case 6:
-                _context7.next = 10;
+              case 7:
+                _context7.next = 11;
                 break;
 
-              case 8:
-                _context7.next = 10;
-                return this.dealCard(true);
-
-              case 10:
-                if (!this.allIn()) this.render();
+              case 9:
+                _context7.next = 11;
+                return this.dealCard();
 
               case 11:
+                if (!this.allIn()) this.render();
+
+              case 12:
               case "end":
                 return _context7.stop();
             }
@@ -14942,7 +14945,7 @@ function () {
         }, _callee7, this);
       }));
 
-      function stepStreet(_x4) {
+      function stepStreet(_x3) {
         return _stepStreet.apply(this, arguments);
       }
 
@@ -15558,12 +15561,14 @@ function () {
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
+    this.sound = true;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
     this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
     this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
     this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
     this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
     this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    this.bindMuteBtn();
   }
 
   _createClass(Table, [{
@@ -15582,6 +15587,8 @@ function () {
   }, {
     key: "winSound",
     value: function winSound(rng) {
+      if (!sound) return;
+
       if (rng < .333) {
         this.win1.play();
       } else if (rng < .666) {
@@ -15593,6 +15600,8 @@ function () {
   }, {
     key: "lossSound",
     value: function lossSound(rng) {
+      if (!sound) return;
+
       if (rng < .333) {
         this.loss1.play();
       } else if (rng < .666) {
@@ -15604,6 +15613,7 @@ function () {
   }, {
     key: "sampleWinLoss",
     value: function sampleWinLoss() {
+      if (!sound) return;
       var rng = Math.random();
 
       if (this.board.currentPlayer().chipstack === 0) {
@@ -15630,13 +15640,21 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return this.sleep(3000);
+                if (sound) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
 
               case 2:
+                _context.next = 4;
+                return this.sleep(3000);
+
+              case 4:
                 this.sampleWinLoss();
 
-              case 3:
+              case 5:
               case "end":
                 return _context.stop();
             }
@@ -15762,6 +15780,23 @@ function () {
           });
         });
       });
+    }
+  }, {
+    key: "toggleSound",
+    value: function toggleSound(e) {
+      // $("#mute").removeClass().addClass();
+      // <i class="fas fa-volume"></i>
+      var volume = $("#volume-btn").removeClass();
+      this.sound = this.sound ? false : true;
+      this.sound ? volume.addClass("fas fa-volume-up") : volume.addClass("fas fa-volume-mute");
+      this.board.sound = this.board.sound ? false : true;
+      this.players[0].sound = this.players[0].sound ? false : true;
+      this.players[1].sound = this.players[1].sound ? false : true;
+    }
+  }, {
+    key: "bindMuteBtn",
+    value: function bindMuteBtn() {
+      $("#volume-btn").click(this.toggleSound.bind(this));
     }
   }]);
 

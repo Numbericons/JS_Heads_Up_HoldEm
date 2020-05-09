@@ -27,6 +27,7 @@ export default class Board {
     this.cardDelay = 900;
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
+    this.sound = true;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -68,7 +69,7 @@ export default class Board {
   }
 
   async playHand() {
-    this.shuffle.play();
+    if (this.sound) this.shuffle.play();
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
@@ -201,12 +202,12 @@ export default class Board {
     this.button.$el.empty();
   }
 
-  async dealCard(sound) {
+  async dealCard() {
     this.hideChips();
     this.dispDealing();
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
-    if (sound) this.cardTurn.play();
+    if (this.sound) this.cardTurn.play();
     this.showBoard();
   }
   
@@ -216,13 +217,13 @@ export default class Board {
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
       if (i > 0) await this.sleep(this.cardDelay);
-      this.dealCard(true);
+      this.dealCard();
     }
   }
 
   dispDealing() {
     let textSelect = document.querySelector(".table-bottom-actions-prompt");
-    textSelect.innerText = `Dealing ${this.currStreet[0].toUpperCase() + this.currStreet.slice(1)}`
+    textSelect.innerText = `Dealing ${this.currStreet[0].toUpperCase() + this.currStreet.slice(1)}...`
   }
 
   symbolBoard() {
@@ -326,13 +327,12 @@ export default class Board {
     this.revealCards();
     while (this.boardCards.length < 5) {
       await this.sleep(this.cardDelay * 1.5);
-      this.dealCard(true);
+      this.dealCard();
       this.showBoard();
     }
   }
 
   combineChips(){
-    this.hideButtons();
     this.leftChips.addClass('chip-combine-left');
     this.rightChips.addClass('chip-combine-right');
   }
@@ -347,12 +347,13 @@ export default class Board {
   }
 
   async stepStreet(flopBool) {
+    this.hideButtons();
     this.combineChips();
     await this.sleep(1000);
     if (flopBool) {
       await this.dealFlop();
     } else {
-      await this.dealCard(true);
+      await this.dealCard();
     }
     if (!this.allIn()) this.render();
   }

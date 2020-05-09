@@ -14,6 +14,7 @@ export default class HumanPlayer {
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -34,19 +35,19 @@ export default class HumanPlayer {
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
-      this.check.play();
+      if (this.sound) this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;
       return null;
     } else if (textInput === 'call') {
-      this.chipsCall.play();
+      if (this.sound) this.chipsCall.play();
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
       this.streetChipsInPot += to_call;
       return to_call;
     } else {
-      this.chipsBet.play();
+      if (this.sound) this.chipsBet.play();
       this.chipstack = this.chipstack - betInput + sb;
       this.chipsInPot += betInput - sb;
       this.streetChipsInPot += betInput - sb;

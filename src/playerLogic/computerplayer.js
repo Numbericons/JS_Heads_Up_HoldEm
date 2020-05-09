@@ -20,6 +20,7 @@ export default class ComputerPlayer {
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -97,7 +98,7 @@ export default class ComputerPlayer {
 
   resolveCall(to_call){
     let callAmt = (to_call > this.chipstack) ? this.chipstack : to_call;
-    this.chipsCall.play();
+    if (this.sound) this.chipsCall.play();
     this.chipstack -= callAmt;
     this.chipsInPot += callAmt;
     this.streetChipsInPot += callAmt;
@@ -109,13 +110,13 @@ export default class ComputerPlayer {
     this.chipstack -= betAmt;
     this.chipsInPot += betAmt;
     this.streetChipsInPot += betAmt;
-    this.chipsBet.play();
+    if (this.sound) this.chipsBet.play();
     return betAmt;
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
-      this.check.play();
+      if (this.sound) this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;

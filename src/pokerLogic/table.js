@@ -10,12 +10,14 @@ class Table {
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
 
+    this.sound = true;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
     this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
     this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
     this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
     this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
     this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    this.bindMuteBtn();
   }
 
   resetPlayerVars() {
@@ -30,6 +32,7 @@ class Table {
   }
 
   winSound(rng){
+    if (!sound) return;
     if (rng < .333) {
       this.win1.play();
     } else if (rng < .666) {
@@ -38,7 +41,9 @@ class Table {
       this.win3.play();
     }
   }
+  
   lossSound(rng){
+    if (!sound) return;
     if (rng < .333) {
       this.loss1.play();
     } else if (rng < .666) {
@@ -47,7 +52,9 @@ class Table {
       this.loss3.play();
     }
   }
+  
   sampleWinLoss(){
+    if (!sound) return;
     let rng = Math.random();
     if (this.board.currentPlayer().chipstack === 0) {
       if (this.board.currentPlayer().comp){
@@ -65,6 +72,7 @@ class Table {
   }
 
   async resultSound(){
+    if (!sound) return;
     await this.sleep(3000);
     this.sampleWinLoss();
   }
@@ -144,6 +152,21 @@ class Table {
         })
       })
     })
+  }
+
+  toggleSound(e) {
+    // $("#mute").removeClass().addClass();
+    // <i class="fas fa-volume"></i>
+    let volume = $("#volume-btn").removeClass()
+    this.sound = this.sound ? false : true;
+    this.sound ? volume.addClass("fas fa-volume-up") : volume.addClass("fas fa-volume-mute");
+    this.board.sound = this.board.sound ? false : true;
+    this.players[0].sound = this.players[0].sound ? false : true;
+    this.players[1].sound = this.players[1].sound ? false : true;
+  }
+
+  bindMuteBtn() {
+    $("#volume-btn").click(this.toggleSound.bind(this));
   }
 }
 
