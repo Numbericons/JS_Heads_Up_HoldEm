@@ -197,8 +197,13 @@ export default class Board {
     this.leftChips.addClass('display-none');
   }
 
+  hideButtons() {
+    this.button.$el.empty();
+  }
+
   async dealCard(sound) {
     this.hideChips();
+    this.dispDealing();
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
     if (sound) this.cardTurn.play();
@@ -207,11 +212,17 @@ export default class Board {
   
   async dealFlop() {
     this.hideChips();
+    this.dispDealing();
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
       if (i > 0) await this.sleep(this.cardDelay);
       this.dealCard(true);
     }
+  }
+
+  dispDealing() {
+    let textSelect = document.querySelector(".table-bottom-actions-prompt");
+    textSelect.innerText = `Dealing ${this.currStreet[0].toUpperCase() + this.currStreet.slice(1)}`
   }
 
   symbolBoard() {
@@ -321,6 +332,7 @@ export default class Board {
   }
 
   combineChips(){
+    this.hideButtons();
     this.leftChips.addClass('chip-combine-left');
     this.rightChips.addClass('chip-combine-right');
   }
@@ -346,6 +358,7 @@ export default class Board {
   }
   
   nextStreet() {
+    // this.dealing = true;
     this.setAggressor();
     this.streetActions = [];
     this.currBet = 0;

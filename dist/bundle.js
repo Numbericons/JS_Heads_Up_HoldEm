@@ -14598,6 +14598,11 @@ function () {
       this.leftChips.addClass('display-none');
     }
   }, {
+    key: "hideButtons",
+    value: function hideButtons() {
+      this.button.$el.empty();
+    }
+  }, {
     key: "dealCard",
     value: function () {
       var _dealCard = _asyncToGenerator(
@@ -14608,12 +14613,13 @@ function () {
             switch (_context3.prev = _context3.next) {
               case 0:
                 this.hideChips();
+                this.dispDealing();
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
                 if (sound) this.cardTurn.play();
                 this.showBoard();
 
-              case 5:
+              case 6:
               case "end":
                 return _context3.stop();
             }
@@ -14639,32 +14645,33 @@ function () {
             switch (_context4.prev = _context4.next) {
               case 0:
                 this.hideChips();
+                this.dispDealing();
                 this.currPlayerPos = 1;
                 i = 0;
 
-              case 3:
+              case 4:
                 if (!(i < 3)) {
-                  _context4.next = 11;
+                  _context4.next = 12;
                   break;
                 }
 
                 if (!(i > 0)) {
-                  _context4.next = 7;
+                  _context4.next = 8;
                   break;
                 }
 
-                _context4.next = 7;
+                _context4.next = 8;
                 return this.sleep(this.cardDelay);
 
-              case 7:
+              case 8:
                 this.dealCard(true);
 
-              case 8:
+              case 9:
                 i++;
-                _context4.next = 3;
+                _context4.next = 4;
                 break;
 
-              case 11:
+              case 12:
               case "end":
                 return _context4.stop();
             }
@@ -14678,6 +14685,12 @@ function () {
 
       return dealFlop;
     }()
+  }, {
+    key: "dispDealing",
+    value: function dispDealing() {
+      var textSelect = document.querySelector(".table-bottom-actions-prompt");
+      textSelect.innerText = "Dealing ".concat(this.currStreet[0].toUpperCase() + this.currStreet.slice(1));
+    }
   }, {
     key: "symbolBoard",
     value: function symbolBoard() {
@@ -14872,6 +14885,7 @@ function () {
   }, {
     key: "combineChips",
     value: function combineChips() {
+      this.hideButtons();
       this.leftChips.addClass('chip-combine-left');
       this.rightChips.addClass('chip-combine-right');
     }
@@ -14937,6 +14951,7 @@ function () {
   }, {
     key: "nextStreet",
     value: function nextStreet() {
+      // this.dealing = true;
       this.setAggressor();
       this.streetActions = [];
       this.currBet = 0;
