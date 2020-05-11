@@ -13530,7 +13530,8 @@ function () {
         straight: this.straightTexture(this.boardSolved.cards),
         pair: this.boardSolved.rank === 2,
         twoPair: this.boardSolved.rank === 3,
-        trips: this.boardSolved.rank === 4
+        trips: this.boardSolved.rank === 4,
+        lowHigh: this.lowHigh()
       };
     }
   }, {
@@ -13748,25 +13749,27 @@ function () {
     key: "straight",
     value: function straight(texture, handAttr) {
       if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
-      return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
+      return handAttr['beatsBoard'] ? [1] : [.55, 'call'];
     }
   }, {
     key: "trips",
     value: function trips(texture, handAttr) {
-      return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
+      if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [1] : [.25];
+      return handAttr['beatsBoard'] ? [.8] : [.45, 'call'];
     }
   }, {
     key: "twoPair",
     value: function twoPair(texture, handAttr) {
-      return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+      if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.6] : [.15];
+      return handAttr['beatsBoard'] ? [.7] : [.35, 'call'];
     }
   }, {
     key: "pairMinus",
     value: function pairMinus(texture, handAttr) {
-      var val = handAttr['beatsBoard'] ? .05 : 0;
+      var val = handAttr['beatsBoard'] ? .1 : .05;
 
       if (this.nPair(1)) {
-        val += 1;
+        val += .75;
       } else if (this.nPair(2)) {
         val += .25;
       } else if (this.nPair(3)) {
@@ -13777,11 +13780,32 @@ function () {
         val += .05;
       }
 
+      if (texture['fCards'] === 3) val /= 1.5;
+      if (texture['fCards'] === 4) val /= 4;
       return [val];
     }
   }, {
+    key: "xHigh",
+    value: function xHigh(num) {
+      return this.boardSolved.cards.filter(function (card) {
+        return card.rank > 9;
+      }).length === num;
+    }
+  }, {
+    key: "xLow",
+    value: function xLow(num) {
+      return this.boardSolved.cards.filter(function (card) {
+        return card.rank < 10;
+      }).length === num;
+    }
+  }, {
     key: "lowHigh",
-    value: function lowHigh() {}
+    value: function lowHigh() {
+      if (this.bPairedPlus()) return false;
+      if (!this.xHigh(1)) return false;
+      if (!xLow(1)) return false;
+      return true;
+    }
   }]);
 
   return PostFlop;
@@ -15589,7 +15613,7 @@ function () {
   }, {
     key: "winSound",
     value: function winSound(rng) {
-      if (!sound) return;
+      if (!this.sound) return;
 
       if (rng < .333) {
         this.win1.play();
@@ -15602,7 +15626,7 @@ function () {
   }, {
     key: "lossSound",
     value: function lossSound(rng) {
-      if (!sound) return;
+      if (!this.sound) return;
 
       if (rng < .333) {
         this.loss1.play();
@@ -15615,7 +15639,7 @@ function () {
   }, {
     key: "sampleWinLoss",
     value: function sampleWinLoss() {
-      if (!sound) return;
+      if (!this.sound) return;
       var rng = Math.random();
 
       if (this.board.currentPlayer().chipstack === 0) {
@@ -15642,7 +15666,7 @@ function () {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                if (sound) {
+                if (this.sound) {
                   _context.next = 2;
                   break;
                 }

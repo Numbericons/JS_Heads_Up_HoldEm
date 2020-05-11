@@ -58,7 +58,7 @@ export default class PostFlop {
       pair: this.boardSolved.rank === 2,
       twoPair: this.boardSolved.rank === 3,
       trips: this.boardSolved.rank === 4,
-      
+      lowHigh: this.lowHigh(),
     }
   }
   
@@ -224,21 +224,23 @@ export default class PostFlop {
 
   straight(texture, handAttr) {
     if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.50] : [.25, 'call'];
-    return handAttr['beatsBoard'] ? [.75] : [.55, 'call'];
+    return handAttr['beatsBoard'] ? [1] : [.55, 'call'];
   }
-
+  
   trips(texture, handAttr) {
-    return handAttr['beatsBoard'] ? [.7] : [.45, 'call'];
+    if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [1] : [.25];
+    return handAttr['beatsBoard'] ? [.8] : [.45, 'call'];
   }
-
+  
   twoPair(texture, handAttr) {
-    return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+    if (texture['fCards'] === 3 || this.bPairedPlus(texture)) return handAttr['beatsBoard'] ? [.6] : [.15];
+    return handAttr['beatsBoard'] ? [.7] : [.35, 'call'];
   };
 
   pairMinus(texture, handAttr) {
-    let val = handAttr['beatsBoard'] ? .05 : 0;
+    let val = handAttr['beatsBoard'] ? .1 : .05;
     if (this.nPair(1)) {
-      val += 1;
+      val += .75;
     } else if (this.nPair(2)) {
       val += .25;
     } else if (this.nPair(3)) {
@@ -248,8 +250,23 @@ export default class PostFlop {
     } else {
       val += .05;
     }
+    if (texture['fCards'] === 3) val /= 1.5;
+    if (texture['fCards'] === 4) val /= 4;
     return [val];
   }
 
-  lowHigh() {}
+  xHigh(num) {
+    return this.boardSolved.cards.filter(card => (card.rank > 9)).length === num;
+  }
+
+  xLow(num) {
+    return this.boardSolved.cards.filter(card => (card.rank < 10)).length === num;
+  }
+
+  lowHigh() {
+    if (this.bPairedPlus()) return false;
+    if (!this.xHigh(1)) return false;
+    if (!xLow(1)) return false;
+    return true;
+  }
 }

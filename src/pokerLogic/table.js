@@ -32,7 +32,7 @@ class Table {
   }
 
   winSound(rng){
-    if (!sound) return;
+    if (!this.sound) return;
     if (rng < .333) {
       this.win1.play();
     } else if (rng < .666) {
@@ -43,7 +43,7 @@ class Table {
   }
   
   lossSound(rng){
-    if (!sound) return;
+    if (!this.sound) return;
     if (rng < .333) {
       this.loss1.play();
     } else if (rng < .666) {
@@ -54,7 +54,7 @@ class Table {
   }
   
   sampleWinLoss(){
-    if (!sound) return;
+    if (!this.sound) return;
     let rng = Math.random();
     if (this.board.currentPlayer().chipstack === 0) {
       if (this.board.currentPlayer().comp){
@@ -72,7 +72,7 @@ class Table {
   }
 
   async resultSound(){
-    if (!sound) return;
+    if (!this.sound) return;
     await this.sleep(3000);
     this.sampleWinLoss();
   }
@@ -169,5 +169,4 @@ class Table {
     $("#volume-btn").click(this.toggleSound.bind(this));
   }
 }
-
 export default Table;
