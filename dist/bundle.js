@@ -13526,7 +13526,7 @@ function () {
     key: "texture",
     value: function texture() {
       return {
-        fCards: this.flushCards(true),
+        fCards: this.flushCards(false),
         straight: this.straightTexture(this.boardSolved.cards),
         pair: this.boardSolved.rank === 2,
         twoPair: this.boardSolved.rank === 3,
@@ -13538,6 +13538,8 @@ function () {
     value: function handAttr() {
       return {
         kicker: this.kicker(),
+        fCards: this.flushCards(true),
+        straight: this.straightTexture(this.handSolved.cards),
         beatsBoard: this.beatsBoard(),
         cardsUsed: this.cardsUsed()
       };
@@ -13550,25 +13552,6 @@ function () {
       if (this.handSolved.rank === 4) return this.trips(texture, handArr);
       if (this.handSolved.rank === 3) return this.twoPair(texture, handArr);
       return this.pairMinus(texture, handArr);
-    }
-  }, {
-    key: "pairMinus",
-    value: function pairMinus(texture, handAttr) {
-      var val = handAttr['beatsBoard'] ? .05 : 0;
-
-      if (this.nPair(1)) {
-        val += 1;
-      } else if (this.nPair(2)) {
-        val += .25;
-      } else if (this.nPair(3)) {
-        val += .15;
-      } else if (this.nPair(4) || this.nPair(5)) {
-        val += .1;
-      } else {
-        val += .05;
-      }
-
-      return [val];
     }
   }, {
     key: "beatsBoard",
@@ -13776,6 +13759,25 @@ function () {
     key: "twoPair",
     value: function twoPair(texture, handAttr) {
       return handAttr['beatsBoard'] ? [.5] : [.35, 'call'];
+    }
+  }, {
+    key: "pairMinus",
+    value: function pairMinus(texture, handAttr) {
+      var val = handAttr['beatsBoard'] ? .05 : 0;
+
+      if (this.nPair(1)) {
+        val += 1;
+      } else if (this.nPair(2)) {
+        val += .25;
+      } else if (this.nPair(3)) {
+        val += .15;
+      } else if (this.nPair(4) || this.nPair(5)) {
+        val += .1;
+      } else {
+        val += .05;
+      }
+
+      return [val];
     }
   }, {
     key: "lowHigh",
