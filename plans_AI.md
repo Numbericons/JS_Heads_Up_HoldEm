@@ -31,6 +31,9 @@ If straights (or higher hands possible) bet bigger with hands above (flush, hous
 Pair
   if board makes a pair and we dont beat board...
 
+No Pair
+  Don't call (maybe bet) when no pair can't beat board except maybe ace/king highs sometimes
+
 General Danger factors to board to know how strong hands need to be
   Thought: Dry: No pairs, 3 straights, 3 flushes, trips, 2 pairs
     Can use rank of the board cards help classify
@@ -119,4 +122,3 @@ Methods:
 // loLoHigh(){};
   Unpaired, contains one card jack or higher and 2 cards 6 or lower
     some value offset by presence of straight draws
-    
