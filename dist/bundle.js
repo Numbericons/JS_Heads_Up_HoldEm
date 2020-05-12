@@ -14837,23 +14837,18 @@ function () {
                 this.leftChips.addClass('chips');
 
                 if (!(this.allIn() && this.handChipDiff() === 0)) {
-                  _context5.next = 10;
+                  _context5.next = 9;
                   break;
                 }
 
-                if (!this.delay) {
-                  _context5.next = 8;
-                  break;
-                }
-
-                _context5.next = 8;
+                _context5.next = 7;
                 return this.showDown();
 
-              case 8:
+              case 7:
                 this.determineWinner();
                 return _context5.abrupt("return");
 
-              case 10:
+              case 9:
                 this.showBoard();
                 this.button.setButtons(this.pfBetSize());
                 this.button.bindEvents();
@@ -14865,7 +14860,7 @@ function () {
                   this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
                 }
 
-              case 14:
+              case 13:
               case "end":
                 return _context5.stop();
             }
@@ -14983,35 +14978,25 @@ function () {
 
               case 5:
                 if (!flopBool) {
-                  _context7.next = 11;
+                  _context7.next = 10;
                   break;
                 }
 
-                if (!this.delay) {
-                  _context7.next = 9;
-                  break;
-                }
-
-                _context7.next = 9;
+                _context7.next = 8;
                 return this.dealFlop();
 
-              case 9:
-                _context7.next = 14;
+              case 8:
+                _context7.next = 12;
                 break;
 
-              case 11:
-                if (!this.delay) {
-                  _context7.next = 14;
-                  break;
-                }
-
-                _context7.next = 14;
+              case 10:
+                _context7.next = 12;
                 return this.dealCard();
 
-              case 14:
+              case 12:
                 if (!this.allIn()) this.render();
 
-              case 15:
+              case 13:
               case "end":
                 return _context7.stop();
             }

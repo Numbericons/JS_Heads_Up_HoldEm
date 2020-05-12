@@ -294,7 +294,7 @@ export default class Board {
     this.rightChips.addClass('chips');
     this.leftChips.addClass('chips');
     if (this.allIn() && this.handChipDiff() === 0) {
-      if (this.delay) await this.showDown();
+      await this.showDown();
       this.determineWinner();
       return;
     }
@@ -352,9 +352,9 @@ export default class Board {
     this.combineChips();
     if (this.delay) await this.sleep(1000);
     if (flopBool) {
-      if (this.delay) await this.dealFlop();
+      await this.dealFlop();
     } else {
-      if (this.delay) await this.dealCard();
+      await this.dealCard();
     }
     if (!this.allIn()) this.render();
   }
