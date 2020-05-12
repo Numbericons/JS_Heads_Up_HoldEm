@@ -13770,12 +13770,15 @@ function () {
 
       if (this.nPair(1)) {
         val += .75;
+        if (texture['lowHigh']) val *= 1.5;
       } else if (this.nPair(2)) {
-        val += .25;
+        val += .3;
+        if (texture['lowHigh']) val *= 1.3;
       } else if (this.nPair(3)) {
-        val += .15;
+        val += .25;
+        if (texture['lowHigh']) val *= 1.1;
       } else if (this.nPair(4) || this.nPair(5)) {
-        val += .1;
+        val += .15;
       } else {
         val += .05;
       }
