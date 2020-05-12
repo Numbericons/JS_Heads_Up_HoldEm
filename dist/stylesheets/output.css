@@ -486,20 +486,20 @@ body {
   background: #053aba;
 }
 .actions-cont-text-betorraise:hover {
-  background: #287728;
+  background: #076cd9;
 }
 .actions-cont-text-callorcheck {
   background: #38c3bb;
   background: #34477f;
 }
 .actions-cont-text-callorcheck:hover {
-  background: deepskyblue;
+  background: #6465a6;
 }
 .actions-cont-text-fold {
   background: #6e2a39;
 }
 .actions-cont-text-fold:hover {
-  background: red;
+  background: #a80f0f;
 }
 .actions-cont-bet-amt {
   text-align: center;
