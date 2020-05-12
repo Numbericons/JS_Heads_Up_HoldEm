@@ -20,7 +20,8 @@
     transition: 0.5s background;
 
     &-betorraise {
-      background: #108810;
+      background: #053aba;
+      // background: #108810;
 
       &:hover {
         background: #287728;
@@ -29,6 +30,7 @@
 
     &-callorcheck {
       background: #38c3bb;
+      background: #34477f;
 
       &:hover {
         background: deepskyblue;
@@ -36,7 +38,8 @@
     }
 
     &-fold {
-      background: orangered;
+      // background: orangered;
+      background: #6e2a39;
 
       &:hover {
         background: red;
@@ -45,13 +48,14 @@
   }
   &-bet-amt{
     text-align: center;
-    background-color: #959090;
+    background-color: #868a99;
     color: black;
     font-size: 20px;
     border: none;
   }
   &-new-game{
-    background: #108810;
+    // background: #108810;
+    background: #b52a2b;
     height: 55px;
     width: 160px;
     display: flex;
@@ -79,7 +83,7 @@
   width: 100%;
 
   &-text{
-    background: #555;
+    background: #0531b4;
     border: none;
     border-radius: 10px;
     color: white;

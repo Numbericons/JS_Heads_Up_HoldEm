@@ -483,32 +483,33 @@ body {
   transition: 0.5s background;
 }
 .actions-cont-text-betorraise {
-  background: #108810;
+  background: #053aba;
 }
 .actions-cont-text-betorraise:hover {
   background: #287728;
 }
 .actions-cont-text-callorcheck {
   background: #38c3bb;
+  background: #34477f;
 }
 .actions-cont-text-callorcheck:hover {
   background: deepskyblue;
 }
 .actions-cont-text-fold {
-  background: orangered;
+  background: #6e2a39;
 }
 .actions-cont-text-fold:hover {
   background: red;
 }
 .actions-cont-bet-amt {
   text-align: center;
-  background-color: #959090;
+  background-color: #868a99;
   color: black;
   font-size: 20px;
   border: none;
 }
 .actions-cont-new-game {
-  background: #108810;
+  background: #b52a2b;
   height: 55px;
   width: 160px;
   display: flex;
@@ -534,7 +535,7 @@ body {
   width: 100%;
 }
 .betsize-cont-text {
-  background: #555;
+  background: #0531b4;
   border: none;
   border-radius: 10px;
   color: white;
