@@ -13525,14 +13525,15 @@ function () {
   }, {
     key: "texture",
     value: function texture() {
-      return {
+      var textObj = {
         fCards: this.flushCards(false),
         straight: this.straightTexture(this.boardSolved.cards),
         pair: this.boardSolved.rank === 2,
         twoPair: this.boardSolved.rank === 3,
-        trips: this.boardSolved.rank === 4,
-        lowHigh: this.lowHigh()
+        trips: this.boardSolved.rank === 4
       };
+      textObj['lowHigh'] = this.lowHigh(textObj);
+      return textObj;
     }
   }, {
     key: "handAttr",
@@ -13553,14 +13554,14 @@ function () {
       var val;
 
       if (this.handSolved.rank === 5) {
-        return this.straight(texture, handArr);
-        val[0] *= 2;
+        val = this.straight(texture, handArr);
+        val *= 2;
       } else if (this.handSolved.rank === 4 || this.handSolved.rank === 3) {
         val = this.handSolved.rank === 4 ? this.trips(texture, handArr) : this.twoPair(texture, handArr);
-        val[0] *= 1.25;
+        val *= 1.25;
       } else {
         val = this.pairMinus(texture, handArr);
-        val[0] = val[0] * 1.5 + .5;
+        val = val * 1.5 + .5;
       }
 
       return val;
@@ -13672,7 +13673,7 @@ function () {
   }, {
     key: "flush",
     value: function flush(texture, handAttr) {
-      if (this.bPairedPlus()) {
+      if (this.bPairedPlus(texture)) {
         if (handAttr['cardsUsed'] === 2) return [.5];
       } else {
         if (handAttr['cardsUsed'] === 2) return [1, 'agg'];
@@ -13814,8 +13815,8 @@ function () {
     }
   }, {
     key: "lowHigh",
-    value: function lowHigh() {
-      if (this.bPairedPlus()) return false;
+    value: function lowHigh(texture) {
+      if (this.bPairedPlus(texture)) return false;
       if (!this.xHigh(1)) return false;
       if (!xLow(1)) return false;
       return true;
