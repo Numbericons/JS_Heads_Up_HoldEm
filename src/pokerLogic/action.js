@@ -30,7 +30,7 @@ export default class Action {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 4000 : 1750;
     let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop', this.board.boardCards, this.aggAction());
-    await this.sleep(wait);
+    if (this.board.delay) await this.sleep(wait);
     if (response) this.resolvePlayerPrompt(response);
   }
 

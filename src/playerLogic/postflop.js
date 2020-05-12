@@ -280,7 +280,7 @@ export default class PostFlop {
   lowHigh(texture) {
     if (this.bPairedPlus(texture)) return false;
     if (!this.xHigh(1)) return false;
-    if (!xLow(1)) return false;
+    if (!this.xLow(1)) return false;
     return true;
   }
 }

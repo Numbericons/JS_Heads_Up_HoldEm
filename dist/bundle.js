@@ -13818,7 +13818,7 @@ function () {
     value: function lowHigh(texture) {
       if (this.bPairedPlus(texture)) return false;
       if (!this.xHigh(1)) return false;
-      if (!xLow(1)) return false;
+      if (!this.xLow(1)) return false;
       return true;
     }
   }]);
@@ -14084,13 +14084,19 @@ function () {
                 this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..");
                 wait = this.board.currStreet === 'flop' && this.board.streetActions.length === 0 ? 4000 : 1750;
                 response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop', this.board.boardCards, this.aggAction());
-                _context.next = 5;
+
+                if (!this.board.delay) {
+                  _context.next = 6;
+                  break;
+                }
+
+                _context.next = 6;
                 return this.sleep(wait);
 
-              case 5:
+              case 6:
                 if (response) this.resolvePlayerPrompt(response);
 
-              case 6:
+              case 7:
               case "end":
                 return _context.stop();
             }
@@ -14400,6 +14406,7 @@ function () {
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
     this.sound = true;
+    this.delay = true;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -14699,7 +14706,7 @@ function () {
                   break;
                 }
 
-                if (!(i > 0)) {
+                if (!(this.delay && i > 0)) {
                   _context4.next = 8;
                   break;
                 }
@@ -14830,18 +14837,23 @@ function () {
                 this.leftChips.addClass('chips');
 
                 if (!(this.allIn() && this.handChipDiff() === 0)) {
-                  _context5.next = 9;
+                  _context5.next = 10;
                   break;
                 }
 
-                _context5.next = 7;
+                if (!this.delay) {
+                  _context5.next = 8;
+                  break;
+                }
+
+                _context5.next = 8;
                 return this.showDown();
 
-              case 7:
+              case 8:
                 this.determineWinner();
                 return _context5.abrupt("return");
 
-              case 9:
+              case 10:
                 this.showBoard();
                 this.button.setButtons(this.pfBetSize());
                 this.button.bindEvents();
@@ -14853,7 +14865,7 @@ function () {
                   this.currentPlayer().promptAction(this.handChipDiff(), this.currentPlayer.chipstack);
                 }
 
-              case 13:
+              case 14:
               case "end":
                 return _context5.stop();
             }
@@ -14899,20 +14911,25 @@ function () {
 
               case 1:
                 if (!(this.boardCards.length < 5)) {
-                  _context6.next = 8;
+                  _context6.next = 9;
                   break;
                 }
 
-                _context6.next = 4;
+                if (!this.delay) {
+                  _context6.next = 5;
+                  break;
+                }
+
+                _context6.next = 5;
                 return this.sleep(this.cardDelay * 1.5);
 
-              case 4:
+              case 5:
                 this.dealCard();
                 this.showBoard();
                 _context6.next = 1;
                 break;
 
-              case 8:
+              case 9:
               case "end":
                 return _context6.stop();
             }
@@ -14955,30 +14972,46 @@ function () {
               case 0:
                 this.hideButtons();
                 this.combineChips();
-                _context7.next = 4;
+
+                if (!this.delay) {
+                  _context7.next = 5;
+                  break;
+                }
+
+                _context7.next = 5;
                 return this.sleep(1000);
 
-              case 4:
+              case 5:
                 if (!flopBool) {
+                  _context7.next = 11;
+                  break;
+                }
+
+                if (!this.delay) {
                   _context7.next = 9;
                   break;
                 }
 
-                _context7.next = 7;
+                _context7.next = 9;
                 return this.dealFlop();
 
-              case 7:
-                _context7.next = 11;
+              case 9:
+                _context7.next = 14;
                 break;
 
-              case 9:
-                _context7.next = 11;
+              case 11:
+                if (!this.delay) {
+                  _context7.next = 14;
+                  break;
+                }
+
+                _context7.next = 14;
                 return this.dealCard();
 
-              case 11:
+              case 14:
                 if (!this.allIn()) this.render();
 
-              case 12:
+              case 15:
               case "end":
                 return _context7.stop();
             }
@@ -14995,7 +15028,6 @@ function () {
   }, {
     key: "nextStreet",
     value: function nextStreet() {
-      // this.dealing = true;
       this.setAggressor();
       this.streetActions = [];
       this.currBet = 0;
@@ -15609,7 +15641,9 @@ function () {
     this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
     this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
     this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    this.delay = true;
     this.bindMuteBtn();
+    this.bindDelayBtn();
   }
 
   _createClass(Table, [{
@@ -15689,13 +15723,18 @@ function () {
                 return _context.abrupt("return");
 
               case 2:
-                _context.next = 4;
+                if (!this.delay) {
+                  _context.next = 5;
+                  break;
+                }
+
+                _context.next = 5;
                 return this.sleep(3000);
 
-              case 4:
+              case 5:
                 this.sampleWinLoss();
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -15768,7 +15807,7 @@ function () {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                if (!(this.handNum > 0)) {
+                if (!(this.delay && this.handNum > 0)) {
                   _context2.next = 3;
                   break;
                 }
@@ -15824,20 +15863,31 @@ function () {
     }
   }, {
     key: "toggleSound",
-    value: function toggleSound(e) {
-      // $("#mute").removeClass().addClass();
-      // <i class="fas fa-volume"></i>
+    value: function toggleSound() {
       var volume = $("#volume-btn").removeClass();
+      this.board.sound = this.board.sound ? false : true;
       this.sound = this.sound ? false : true;
       this.sound ? volume.addClass("fas fa-volume-up") : volume.addClass("fas fa-volume-mute");
-      this.board.sound = this.board.sound ? false : true;
       this.players[0].sound = this.players[0].sound ? false : true;
       this.players[1].sound = this.players[1].sound ? false : true;
+    }
+  }, {
+    key: "toggleDelay",
+    value: function toggleDelay() {
+      var delay = $("#delay-btn").removeClass();
+      this.board.delay = this.board.delay ? false : true;
+      this.delay = this.delay ? false : true;
+      this.delay ? delay.addClass("fas fa-play") : delay.addClass("fas fa-fast-forward");
     }
   }, {
     key: "bindMuteBtn",
     value: function bindMuteBtn() {
       $("#volume-btn").click(this.toggleSound.bind(this));
+    }
+  }, {
+    key: "bindDelayBtn",
+    value: function bindDelayBtn() {
+      $("#delay-btn").click(this.toggleDelay.bind(this));
     }
   }]);
 

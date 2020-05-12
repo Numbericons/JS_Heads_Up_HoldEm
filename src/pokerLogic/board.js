@@ -28,6 +28,7 @@ export default class Board {
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
     this.sound = true;
+    this.delay = true;
     this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
     this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
     this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
@@ -216,7 +217,7 @@ export default class Board {
     this.dispDealing();
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
-      if (i > 0) await this.sleep(this.cardDelay);
+      if (this.delay && i > 0) await this.sleep(this.cardDelay);
       this.dealCard();
     }
   }
@@ -293,7 +294,7 @@ export default class Board {
     this.rightChips.addClass('chips');
     this.leftChips.addClass('chips');
     if (this.allIn() && this.handChipDiff() === 0) {
-      await this.showDown();
+      if (this.delay) await this.showDown();
       this.determineWinner();
       return;
     }
@@ -326,7 +327,7 @@ export default class Board {
   async showDown() {
     this.revealCards();
     while (this.boardCards.length < 5) {
-      await this.sleep(this.cardDelay * 1.5);
+      if (this.delay) await this.sleep(this.cardDelay * 1.5);
       this.dealCard();
       this.showBoard();
     }
@@ -349,17 +350,16 @@ export default class Board {
   async stepStreet(flopBool) {
     this.hideButtons();
     this.combineChips();
-    await this.sleep(1000);
+    if (this.delay) await this.sleep(1000);
     if (flopBool) {
-      await this.dealFlop();
+      if (this.delay) await this.dealFlop();
     } else {
-      await this.dealCard();
+      if (this.delay) await this.dealCard();
     }
     if (!this.allIn()) this.render();
   }
   
   nextStreet() {
-    // this.dealing = true;
     this.setAggressor();
     this.streetActions = [];
     this.currBet = 0;

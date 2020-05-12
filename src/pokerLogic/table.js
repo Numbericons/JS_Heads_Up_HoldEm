@@ -17,7 +17,9 @@ class Table {
     this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
     this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
     this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    this.delay = true;
     this.bindMuteBtn();
+    this.bindDelayBtn();
   }
 
   resetPlayerVars() {
@@ -73,7 +75,7 @@ class Table {
 
   async resultSound(){
     if (!this.sound) return;
-    await this.sleep(3000);
+    if (this.delay) await this.sleep(3000);
     this.sampleWinLoss();
   }
 
@@ -118,7 +120,7 @@ class Table {
   }
 
   async nextHand(){
-    if (this.handNum > 0) await this.sleep(3000);
+    if (this.delay && this.handNum > 0) await this.sleep(3000);
     this.togglePlayers();
     this.resetPlayerVars();
     this.board.clearBoard();
@@ -154,19 +156,28 @@ class Table {
     })
   }
 
-  toggleSound(e) {
-    // $("#mute").removeClass().addClass();
-    // <i class="fas fa-volume"></i>
+  toggleSound() {
     let volume = $("#volume-btn").removeClass()
+    this.board.sound = this.board.sound ? false : true;
     this.sound = this.sound ? false : true;
     this.sound ? volume.addClass("fas fa-volume-up") : volume.addClass("fas fa-volume-mute");
-    this.board.sound = this.board.sound ? false : true;
     this.players[0].sound = this.players[0].sound ? false : true;
     this.players[1].sound = this.players[1].sound ? false : true;
   }
 
+  toggleDelay() {
+    let delay = $("#delay-btn").removeClass()
+    this.board.delay = this.board.delay ? false : true;
+    this.delay = this.delay ? false : true;
+    this.delay ? delay.addClass("fas fa-play") : delay.addClass("fas fa-fast-forward");
+  }
+
   bindMuteBtn() {
     $("#volume-btn").click(this.toggleSound.bind(this));
+  }
+
+  bindDelayBtn() {
+    $("#delay-btn").click(this.toggleDelay.bind(this));
   }
 }
 export default Table;
