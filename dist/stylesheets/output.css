@@ -150,7 +150,7 @@ body {
   align-items: baseline;
 }
 .table-felt-dealer-btn-img-left-board {
-  width: 2vw;
+  width: 1.5vw;
   display: flex;
   margin-right: 15px;
 }
@@ -161,7 +161,7 @@ body {
   align-items: baseline;
 }
 .table-felt-dealer-btn-img-right-board {
-  width: 2vw;
+  width: 1.5vw;
   display: flex;
   justify-content: flex-end;
 }
@@ -319,6 +319,7 @@ body {
   width: 16vw;
 }
 .player-info-left {
+  top: 10vh;
   left: -20vw;
   text-align: right;
 }
@@ -327,6 +328,7 @@ body {
   margin-right: -50px;
 }
 .player-info-right {
+  top: 10vh;
   right: -20vw;
 }
 .player-info-right img {
@@ -365,6 +367,7 @@ body {
   }
 }
 .top {
+  margin-bottom: 5vh;
   height: 17vh;
 }
 .top-left-help {
@@ -385,7 +388,7 @@ body {
 }
 .top-header {
   font-weight: 900;
-  font-size: 45px;
+  font-size: 6.25vh;
   font-family: "Merriweather Sans", cursive;
   font-weight: bolder;
   color: #5e1717;
@@ -499,7 +502,7 @@ body {
 }
 .actions-cont-bet-amt {
   text-align: center;
-  background-color: white;
+  background-color: #959090;
   color: black;
   font-size: 20px;
   border: none;

@@ -11,13 +11,13 @@ class Table {
     this.initialChipstack = initialChipstack;
 
     this.sound = true;
+    this.delay = true;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
     this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
     this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
     this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
     this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
     this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
-    this.delay = true;
     this.bindMuteBtn();
     this.bindDelayBtn();
   }
@@ -166,10 +166,10 @@ class Table {
   }
 
   toggleDelay() {
-    let delay = $("#delay-btn").removeClass()
+    let delay = $("#delay-btn").removeClass();
     this.board.delay = this.board.delay ? false : true;
     this.delay = this.delay ? false : true;
-    this.delay ? delay.addClass("fas fa-play") : delay.addClass("fas fa-fast-forward");
+    this.delay ? delay.addClass("fas fa-fast-forward") : delay.addClass("fas fa-play");
   }
 
   bindMuteBtn() {
