@@ -13561,7 +13561,7 @@ function () {
         val *= 1.25;
       } else {
         val = this.pairMinus(texture, handArr);
-        val = val * 1.5 + .5;
+        val = val * 1.25 + .5;
       }
 
       return val;

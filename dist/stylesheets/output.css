@@ -181,7 +181,6 @@ body {
 }
 .table-bottom-actions-prompt-container {
   animation: focus 1s infinite alternate;
-  background: orange;
   color: white;
   display: flex;
   justify-content: center;
@@ -189,7 +188,7 @@ body {
   font-size: 16px;
   padding: 10px;
   border-radius: 10px;
-  margin-top: 3vh;
+  margin-top: 1vh;
 }
 .table-bottom-text {
   position: fixed;
@@ -542,7 +541,7 @@ body {
   cursor: pointer;
   font-size: 10px;
   font-weight: 700;
-  margin: 20px 10px;
+  margin: 1.5vh 0.5vh;
   padding: 10px;
 }
 
