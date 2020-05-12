@@ -558,16 +558,16 @@ body {
 }
 
 #volume-btn {
-  font-size: 15px;
-  width: 15px;
+  font-size: 2.25vh;
+  width: 2.25vh;
   background-color: white;
   color: black;
   cursor: pointer;
 }
 
 #delay-btn {
-  font-size: 15px;
-  width: 15px;
+  font-size: 2.25vh;
+  width: 2.25vh;
   background-color: white;
   color: black;
   cursor: pointer;
@@ -610,8 +610,8 @@ a {
 }
 
 .popup-trigger {
-  height: 30px;
-  width: 93px;
+  height: 4vh;
+  width: 6vw;
   display: flex;
   justify-content: center;
   align-items: center;
