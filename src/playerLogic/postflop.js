@@ -74,10 +74,20 @@ export default class PostFlop {
 
   flushMinus(texture, handArr){
     if (this.handSolved.rank === 6) return this.flush(texture, handArr);
-    if (this.handSolved.rank === 5) return this.straight(texture, handArr);
-    if (this.handSolved.rank === 4) return this.trips(texture, handArr);
-    if (this.handSolved.rank === 3) return this.twoPair(texture, handArr);
-    return this.pairMinus(texture, handArr);
+
+    const flushCards = handArr['fcards'];
+    let val;
+    if (this.handSolved.rank === 5) {
+      return this.straight(texture, handArr);
+      val[0] *= 2;
+    } else if (this.handSolved.rank === 4 || this.handSolved.rank === 3) {
+      val = this.handSolved.rank === 4 ? this.trips(texture,handArr) : this.twoPair(texture, handArr);
+      val[0] *= 1.25;
+    } else {
+      val = this.pairMinus(texture, handArr);
+      val[0] = val[0] * 1.5 + .5
+    }
+    return val;
   }
 
   beatsBoard(){
