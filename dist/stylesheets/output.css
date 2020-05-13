@@ -622,7 +622,7 @@ a {
   color: white;
   border-color: #b52a2a;
   border-radius: 50px;
-  font-size: 13px;
+  font-size: 1.75vh;
   font-weight: 700;
   cursor: pointer;
 }
