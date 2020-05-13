@@ -218,12 +218,15 @@ body {
   bottom: 80px;
   position: fixed;
   right: 0;
-  width: 400px;
+  width: 26vw;
+  margin-right: 0.5vw;
 }
 .table-bottom-about-links {
+  width: 27vw;
+  margin-left: -2vw;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .table-bottom-about-links-icons {
   width: 2vw;
@@ -546,13 +549,13 @@ body {
 }
 
 .fa-github-square {
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
   cursor: pointer;
 }
 
 .fa-linkedin {
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
   cursor: pointer;
 }

@@ -142,11 +142,14 @@
       bottom: 80px;
       position: fixed;
       right: 0;
-      width: 400px;
+      width: 26vw;
+      margin-right: .5vw;
       &-links{
+        width: 27vw;
+        margin-left: -2vw;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         &-icons{
           width: 2vw;
         }
