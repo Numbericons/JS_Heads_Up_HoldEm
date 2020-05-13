@@ -44,12 +44,18 @@ export default class ComputerPlayer {
   }
 
   genPreflopBetRaise(betRaise){
-    let multiplier = Math.random() * 1.3 + 1 //from 1.75
+    let multiplier = this.nRadoms(3) * 1.3 + 1 //from 1.75
     return betRaise * multiplier;
   }
 
+  nRadoms(n) {
+    let result = Math.random();
+    for (let i=1;i<n.length;i++) { result = (result + Math.random()) / 2 }
+    return result;
+  }
+
   genBetRaise(to_call, pot, sb, isPreflop){
-    let randNum = Math.random() * 2 * pot;
+    let randNum = this.nRadoms(3) * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
       betRaise = to_call * 2;
@@ -67,11 +73,11 @@ export default class ComputerPlayer {
   adjByTeir(handTeir, potOdds){
     // const autoAction = Math.random();
     // if (handTeir >= autoAction) return Infinity;
-    return handTeir + (2 * handTeir * potOdds * Math.random());
+    return handTeir + (2 * handTeir * potOdds * this.nRadoms(3));
   }
 
   isAggressor(){
-    if (this.aggressor) return Math.random() >= .5;
+    if (this.aggressor) return this.nRadoms(3) >= .5;
     return false;
   }
 

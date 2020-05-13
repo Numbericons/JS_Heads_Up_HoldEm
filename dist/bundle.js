@@ -13126,14 +13126,25 @@ function () {
   }, {
     key: "genPreflopBetRaise",
     value: function genPreflopBetRaise(betRaise) {
-      var multiplier = Math.random() * 1.3 + 1; //from 1.75
+      var multiplier = this.nRadoms(3) * 1.3 + 1; //from 1.75
 
       return betRaise * multiplier;
     }
   }, {
+    key: "nRadoms",
+    value: function nRadoms(n) {
+      var result = Math.random();
+
+      for (var i = 1; i < n.length; i++) {
+        result = (result + Math.random()) / 2;
+      }
+
+      return result;
+    }
+  }, {
     key: "genBetRaise",
     value: function genBetRaise(to_call, pot, sb, isPreflop) {
-      var randNum = Math.random() * 2 * pot;
+      var randNum = this.nRadoms(3) * 2 * pot;
       var betRaise;
 
       if (randNum < to_call * 2) {
@@ -13154,12 +13165,12 @@ function () {
     value: function adjByTeir(handTeir, potOdds) {
       // const autoAction = Math.random();
       // if (handTeir >= autoAction) return Infinity;
-      return handTeir + 2 * handTeir * potOdds * Math.random();
+      return handTeir + 2 * handTeir * potOdds * this.nRadoms(3);
     }
   }, {
     key: "isAggressor",
     value: function isAggressor() {
-      if (this.aggressor) return Math.random() >= .5;
+      if (this.aggressor) return this.nRadoms(3) >= .5;
       return false;
     }
   }, {
