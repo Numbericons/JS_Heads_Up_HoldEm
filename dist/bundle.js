@@ -15643,7 +15643,7 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, false)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, true)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
