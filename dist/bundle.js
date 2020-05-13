@@ -14948,12 +14948,7 @@ function () {
     key: "setAggressor",
     value: function setAggressor() {
       this.otherPlayer().aggressor = false;
-
-      if (this.streetActions[this.streetActions.length - 2] > this.sb) {
-        this.currentPlayer().aggressor = true;
-      } else {
-        this.currentPlayer().aggressor = false;
-      }
+      this.streetActions[this.streetActions.length - 2] > this.sb ? this.currentPlayer().aggressor = true : this.currentPlayer().aggressor = false;
     }
   }, {
     key: "stepStreet",
@@ -15064,9 +15059,32 @@ function () {
     this.$el = $el;
     this.board = board;
     this.bindEvents = this.bindEvents.bind(this);
+    this.invokeBtn = this.invokeBtn.bind(this);
+    this.bindKeys();
   }
 
   _createClass(Button, [{
+    key: "bindKeys",
+    value: function bindKeys() {
+      $(document).bind('keydown', '', this.invokeBtn);
+    }
+  }, {
+    key: "invokeBtn",
+    value: function invokeBtn(event) {
+      if (event.key !== ' ' || event.key !== 'Enter' || event.key !== 'Escape') return;
+      var $btn;
+
+      if (event.key === ' ') {
+        $btn = this.$callDiv;
+      } else if (event.key === 'Enter') {
+        $btn = this.$betDiv;
+      } else if (event.key === 'Escape') {
+        $btn = this.$foldDiv;
+      }
+
+      this.board.action.startAction($btn);
+    }
+  }, {
     key: "hideDealerBtn",
     value: function hideDealerBtn() {
       $("#table-felt-dealer-btn-img-left").addClass("display-none");
@@ -15090,6 +15108,7 @@ function () {
       $foldDiv.addClass("actions-cont-text-fold");
       $foldDiv.data("action", "fold");
       $foldDiv.html('<i class="fas fa-times"></i>Fold');
+      this.$foldDiv = $foldDiv;
       $outDiv.append($foldDiv);
     }
   }, {
@@ -15107,6 +15126,7 @@ function () {
         $callDiv.html('<i class="fas fa-phone"></i>Call');
       }
 
+      this.$callDiv = $callDiv;
       $outDiv.append($callDiv);
     }
   }, {
@@ -15115,11 +15135,7 @@ function () {
       var value;
 
       if (this.board.currBet > 0) {
-        if (this.board.currBet === this.board.sb) {
-          value = this.board.bb * 2;
-        } else {
-          value = this.board.currBet * 2;
-        }
+        value = this.board.currBet === this.board.sb ? this.board.bb * 2 : this.board.currBet * 2;
       } else {
         value = this.board.bb;
       }
@@ -15146,6 +15162,7 @@ function () {
         $betDiv.html('<i class="fas fa-arrow-up"></i>Raise');
       }
 
+      this.$betDiv = $betDiv;
       $outDiv.append($betDiv);
     }
   }, {

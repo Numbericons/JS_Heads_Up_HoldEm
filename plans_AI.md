@@ -114,11 +114,8 @@ Comp v. Comp
 
 Methods:
 
-// secondPair(){};
-// thirdPair(){};
-// forthPair(){};
-// bottomPair(){};
-
 // loLoHigh(){};
   Unpaired, contains one card jack or higher and 2 cards 6 or lower
     some value offset by presence of straight draws
+
+//need to add checks for 4 flushes to below flush hands (higher than pair)

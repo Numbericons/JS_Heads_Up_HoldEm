@@ -340,11 +340,7 @@ export default class Board {
 
   setAggressor(){
     this.otherPlayer().aggressor = false;
-    if (this.streetActions[this.streetActions.length - 2] > this.sb) {
-      this.currentPlayer().aggressor = true;
-    } else {
-      this.currentPlayer().aggressor = false;
-    }
+    this.streetActions[this.streetActions.length - 2] > this.sb ? this.currentPlayer().aggressor = true : this.currentPlayer().aggressor = false;
   }
 
   async stepStreet(flopBool) {

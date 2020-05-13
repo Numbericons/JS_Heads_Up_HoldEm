@@ -3,6 +3,25 @@ export default class Button {
     this.$el = $el;
     this.board = board;
     this.bindEvents = this.bindEvents.bind(this);
+    this.invokeBtn = this.invokeBtn.bind(this);
+    this.bindKeys();
+  }
+
+  bindKeys() {
+    $(document).bind('keydown','', this.invokeBtn);
+  }
+
+  invokeBtn(event) {
+    if (event.key !== ' ' || event.key !== 'Enter' || event.key !== 'Escape') return;
+    let $btn;
+    if (event.key === ' ') {
+      $btn = this.$callDiv;
+    } else if (event.key === 'Enter') {
+      $btn = this.$betDiv;
+    } else if (event.key === 'Escape') {
+      $btn = this.$foldDiv;
+    }
+    this.board.action.startAction($btn);
   }
 
   hideDealerBtn(){
@@ -25,6 +44,7 @@ export default class Button {
     $foldDiv.addClass("actions-cont-text-fold");
     $foldDiv.data("action", "fold");
     $foldDiv.html('<i class="fas fa-times"></i>Fold');
+    this.$foldDiv = $foldDiv;
     $outDiv.append($foldDiv)
   }
 
@@ -39,26 +59,18 @@ export default class Button {
       $callDiv.data("action", "call");
       $callDiv.html('<i class="fas fa-phone"></i>Call');
     }
-
+    this.$callDiv = $callDiv;
     $outDiv.append($callDiv)
   }
 
   betAmount($outDiv) {
     let value;
     if (this.board.currBet > 0) {
-      if (this.board.currBet === this.board.sb) {
-        value = this.board.bb * 2;
-      } else {
-        value = this.board.currBet * 2;
-      }
+      value = this.board.currBet === this.board.sb ? this.board.bb * 2 : this.board.currBet * 2;
     } else {
       value = this.board.bb
     }
-    let $betAmtDiv = $("<input/>", {
-      type: 'text',
-      class: 'actions-cont-bet-amt',
-      value: `${value}`
-    })
+    let $betAmtDiv = $("<input/>", { type: 'text', class: 'actions-cont-bet-amt', value: `${value}`})
     $outDiv.append($betAmtDiv)
   }
 
@@ -74,6 +86,7 @@ export default class Button {
       $betDiv.data("action", "raise");
       $betDiv.html('<i class="fas fa-arrow-up"></i>Raise');
     }
+    this.$betDiv = $betDiv;
     $outDiv.append($betDiv)
   }
   
