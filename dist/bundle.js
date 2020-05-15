@@ -13105,14 +13105,12 @@ function () {
   _createClass(ComputerPlayer, [{
     key: "text",
     value: function text(input) {
-      var textSelect = document.querySelector(".table-bottom-actions-text");
-      textSelect.innerText = input;
+      document.querySelector(".table-bottom-actions-text").innerText = input;
     }
   }, {
     key: "promptText",
     value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-bottom-actions-prompt");
-      promptSelect.innerText = input;
+      document.querySelector(".table-bottom-actions-prompt").innerText = input;
     }
   }, {
     key: "promptAction",
@@ -13126,9 +13124,7 @@ function () {
   }, {
     key: "genPreflopBetRaise",
     value: function genPreflopBetRaise(betRaise) {
-      var multiplier = this.nRadoms(3) * 1.3 + 1; //from 1.75
-
-      return betRaise * multiplier;
+      return betRaise * this.nRadoms(3) * 1.3 + 1; //from 1.75
     }
   }, {
     key: "nRadoms",
@@ -13163,15 +13159,12 @@ function () {
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      // const autoAction = Math.random();
-      // if (handTeir >= autoAction) return Infinity;
       return handTeir + 2 * handTeir * potOdds * this.nRadoms(3);
     }
   }, {
     key: "isAggressor",
     value: function isAggressor() {
       if (this.aggressor) return this.nRadoms(3) >= .5;
-      return false;
     }
   }, {
     key: "promptResponse",
@@ -15631,6 +15624,7 @@ function () {
 
     _classCallCheck(this, Table);
 
+    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
     this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, true)];
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;

@@ -27,13 +27,11 @@ export default class ComputerPlayer {
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-bottom-actions-text");
-    textSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-text").innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
-    promptSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-prompt").innerText = input;
   }
 
   promptAction() {}
@@ -44,8 +42,7 @@ export default class ComputerPlayer {
   }
 
   genPreflopBetRaise(betRaise){
-    let multiplier = this.nRadoms(3) * 1.3 + 1 //from 1.75
-    return betRaise * multiplier;
+    return betRaise * this.nRadoms(3) * 1.3 + 1; //from 1.75
   }
 
   nRadoms(n) {
@@ -71,14 +68,11 @@ export default class ComputerPlayer {
   }
   
   adjByTeir(handTeir, potOdds){
-    // const autoAction = Math.random();
-    // if (handTeir >= autoAction) return Infinity;
     return handTeir + (2 * handTeir * potOdds * this.nRadoms(3));
   }
 
   isAggressor(){
     if (this.aggressor) return this.nRadoms(3) >= .5;
-    return false;
   }
 
   promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
