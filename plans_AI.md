@@ -119,3 +119,5 @@ Methods:
     some value offset by presence of straight draws
 
 //need to add checks for 4 flushes to below flush hands (higher than pair)
+
+//Barreling off too often

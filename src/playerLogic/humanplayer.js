@@ -21,16 +21,11 @@ export default class HumanPlayer {
   }
 
   promptText(input){
-    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
-    promptSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-prompt").innerText = input;
   }
 
   promptAction(to_call){
-    if (to_call === 0) {
-      this.promptText("...")
-    } else {
-      this.promptText(`$${to_call} to call`)
-    }
+    (to_call === 0) ? this.promptText("...") : this.promptText(`$${to_call} to call`);
   }
 
   resolve_action(to_call, betInput, textInput, sb = 0) {
@@ -58,14 +53,11 @@ export default class HumanPlayer {
   renderName(gameStarted, current) {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
     playerName.innerText = this.name;
-    if (gameStarted) {
-      (current) ? playerName.className = 'glow' : playerName.className = 'player-info-name';
-    }
+    if (gameStarted) (current) ? playerName.className = 'glow' : playerName.className = 'player-info-name';
   }
 
-  renderTextChips(gameStarted, current) {
-    let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack}`;
+  renderTextChips() {
+    document.querySelector(`#player-info-${this.side}-chip-text-chips`).innerText = `$${this.chipstack}`;
   }
 
   renderCards() {
@@ -78,14 +70,11 @@ export default class HumanPlayer {
   }
 
   renderChips() {
-    let $stackDiv = $(`#table-felt-board-bet-player-1`);
-    let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
-    stack.render();
+    new Chipstack(this.streetChipsInPot, $(`#table-felt-board-bet-player-1`)).render();
   }
 
   unrenderChips(){
-    let $stackDiv = $(`#table-felt-board-bet-player-1`);
-    $stackDiv.empty();
+    $(`#table-felt-board-bet-player-1`).empty();
   }
 
   render(gameStarted, current){

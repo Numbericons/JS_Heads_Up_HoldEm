@@ -13343,17 +13343,12 @@ function () {
   _createClass(HumanPlayer, [{
     key: "promptText",
     value: function promptText(input) {
-      var promptSelect = document.querySelector(".table-bottom-actions-prompt");
-      promptSelect.innerText = input;
+      document.querySelector(".table-bottom-actions-prompt").innerText = input;
     }
   }, {
     key: "promptAction",
     value: function promptAction(to_call) {
-      if (to_call === 0) {
-        this.promptText("...");
-      } else {
-        this.promptText("$".concat(to_call, " to call"));
-      }
+      to_call === 0 ? this.promptText("...") : this.promptText("$".concat(to_call, " to call"));
     }
   }, {
     key: "resolve_action",
@@ -13385,16 +13380,12 @@ function () {
     value: function renderName(gameStarted, current) {
       var playerName = document.querySelector("#player-info-".concat(this.side, "-chip-text-name"));
       playerName.innerText = this.name;
-
-      if (gameStarted) {
-        current ? playerName.className = 'glow' : playerName.className = 'player-info-name';
-      }
+      if (gameStarted) current ? playerName.className = 'glow' : playerName.className = 'player-info-name';
     }
   }, {
     key: "renderTextChips",
-    value: function renderTextChips(gameStarted, current) {
-      var playerChips = document.querySelector("#player-info-".concat(this.side, "-chip-text-chips"));
-      playerChips.innerText = "$".concat(this.chipstack);
+    value: function renderTextChips() {
+      document.querySelector("#player-info-".concat(this.side, "-chip-text-chips")).innerText = "$".concat(this.chipstack);
     }
   }, {
     key: "renderCards",
@@ -13409,15 +13400,12 @@ function () {
   }, {
     key: "renderChips",
     value: function renderChips() {
-      var $stackDiv = $("#table-felt-board-bet-player-1");
-      var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
-      stack.render();
+      new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $("#table-felt-board-bet-player-1")).render();
     }
   }, {
     key: "unrenderChips",
     value: function unrenderChips() {
-      var $stackDiv = $("#table-felt-board-bet-player-1");
-      $stackDiv.empty();
+      $("#table-felt-board-bet-player-1").empty();
     }
   }, {
     key: "render",
