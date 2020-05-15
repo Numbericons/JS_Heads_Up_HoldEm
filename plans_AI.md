@@ -121,3 +121,6 @@ Methods:
 //need to add checks for 4 flushes to below flush hands (higher than pair)
 
 //Barreling off too often
+
+//Cap the amount that pot odds can favor a situation
+  //or maybe tilt it towards calling when benefitting from big pot odds

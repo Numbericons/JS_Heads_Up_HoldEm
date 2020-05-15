@@ -13095,6 +13095,7 @@ function () {
     this.cardDims = cardDims;
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
+    position === 'sb' ? this.num = 1 : this.num = 2;
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -13254,14 +13255,14 @@ function () {
   }, {
     key: "renderChips",
     value: function renderChips() {
-      var $stackDiv = $("#table-felt-board-bet-player-2");
+      var $stackDiv = $("#table-felt-board-bet-player-".concat(this.num));
       var stack = new _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__["default"](this.streetChipsInPot, $stackDiv);
       stack.render();
     }
   }, {
     key: "unrenderChips",
     value: function unrenderChips() {
-      var $stackDiv = $("#table-felt-board-bet-player-2");
+      var $stackDiv = $("#table-felt-board-bet-player-".concat(this.num));
       $stackDiv.empty();
     }
   }, {
@@ -15624,8 +15625,8 @@ function () {
 
     _classCallCheck(this, Table);
 
-    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_2__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, true)];
+    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("bb", initialChipstack, cardDims, true)]; // this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+
     this.board = new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;

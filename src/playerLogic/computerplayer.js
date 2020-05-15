@@ -19,6 +19,7 @@ export default class ComputerPlayer {
     this.cardDims = cardDims;
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
+    (position === 'sb') ? this.num = 1 : this.num = 2;
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.sound = true;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
@@ -151,13 +152,13 @@ export default class ComputerPlayer {
   }
 
   renderChips(){
-    let $stackDiv = $(`#table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-${this.num}`);
     let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
     stack.render();
   }
 
   unrenderChips() {
-    let $stackDiv = $(`#table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-${this.num}`);
     $stackDiv.empty();
   }
 
