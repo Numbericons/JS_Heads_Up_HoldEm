@@ -10,7 +10,6 @@ class Table {
     this.board = new Board($el, this.players, sb, bb, this)
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
-
     this.sound = true;
     this.delay = true;
     this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
@@ -35,7 +34,7 @@ class Table {
   }
 
   winSound(rng){
-    if (!this.sound) return;
+    if (this.monte || !this.sound) return;
     if (rng < .333) {
       this.win1.play();
     } else if (rng < .666) {
@@ -46,7 +45,7 @@ class Table {
   }
   
   lossSound(rng){
-    if (!this.sound) return;
+    if (this.monte || !this.sound) return;
     if (rng < .333) {
       this.loss1.play();
     } else if (rng < .666) {
@@ -80,19 +79,21 @@ class Table {
     this.sampleWinLoss();
   }
 
-  setup(){
+  async setup(monte){
+    this.monte = monte;
     this.modal();
     this.board.renderDealerPlayers();
-    this.board.button.bindPlayGame(this);
+    monte ? this.playHand(monte) : this.board.button.bindPlayGame(this);
   }
-
+  
   newGame(){
     location.reload();
   }
-
+  
   result(){
     this.removeButtons();
     this.resultSound();
+    // return this.board.players[0].chipstack > 0 ? 1 : 2;
     this.board.button.bindNewGame(this);
   }
 
@@ -112,8 +113,8 @@ class Table {
     this.board.button.$el.empty();
   }
 
-  playHand(){
-    this.board.playHand();
+  playHand(monte){
+    this.board.playHand(monte);
   }
 
   sleep(ms) {

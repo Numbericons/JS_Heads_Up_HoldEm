@@ -124,3 +124,5 @@ Methods:
 
 //Cap the amount that pot odds can favor a situation
   //or maybe tilt it towards calling when benefitting from big pot odds
+
+//Add object to computer when created so stats can be changed more dynamically
