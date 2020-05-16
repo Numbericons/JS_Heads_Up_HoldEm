@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "My webpack project",
   "main": "index.js",
+  
   "dependencies": {
     "async": "^3.1.0",
     "braces": "^3.0.2",

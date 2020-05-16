@@ -9,16 +9,17 @@ export default class Monte extends Board {
   begin() {
     this.monte = true;
     this.resultMode();
-    this.takeBlinds();
-    this.dealInPlayers();
   }
 
   promptComp(){
+    // let hand = this.currentPlayer().hand;
     const response = this.currentPlayer().promptResponse(this.currBet, this.pot, this.isSb(), this.currStreet === 'preflop', this.boardCards, this.action.aggAction());
     if (response) this.action.resolvePlayerPrompt(response);
   }
 
   playMonte() {
+    this.takeBlinds();
+    this.dealInPlayers();
     if (this.allIn() && this.handChipDiff() === 0) {
       this.showDown();
       this.determineWinner();
@@ -62,17 +63,17 @@ export default class Monte extends Board {
         this.players[1].chipstack += 1;
       }
     }
-    // this.table.handOver();
+    this.table.nextHand();
   }
 
   winner(winHand, loseHand, wonPos, lostPos) {
     this.players[wonPos].chipstack += this.pot;
-    // this.table.handOver();
+    this.table.nextHand();
   }
 
   stepStreet(flopBool) {
     (flopBool) ? this.dealFlop() : this.dealCard();
+    this.promptComp();
   }
 }
-
 //resetVars()

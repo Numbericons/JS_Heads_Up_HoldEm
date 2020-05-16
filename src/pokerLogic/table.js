@@ -97,9 +97,7 @@ class Table {
     this.sound = false;
     while (!this.gameOver()) {
       this.board.playMonte();
-      debugger
     }
-    debugger
     return this.board.players[0].chipstack === 0 ? 'player2' : 'player1';
   }
   
@@ -142,10 +140,10 @@ class Table {
     if (this.delay && this.handNum > 0) await this.sleep(3000);
     this.togglePlayers();
     this.resetPlayerVars();
-    this.board.clearBoard();
+    if (!this.monte) this.board.clearBoard();
     this.board.resetVars();
     this.handNum += 1;
-    this.playHand();
+    if (!this.monte) this.playHand();
   }
 
   modal(){

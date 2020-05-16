@@ -87,19 +87,19 @@ export default class Action {
     let handChipsEqual = this.board.handChipDiff() === 0;
     let multipleActions = this.board.streetActions.length > 1;
     if (this.board.players[0].folded || this.board.players[1].folded) {
-      this.board.determineWinner();
+      return this.board.determineWinner();
     } else if (handChipsEqual) {
-      if (this.board.allIn() && this.board.handChipDiff() === 0) {
+      if (this.board.allIn() && handChipsEqual) {
         this.board.showDown();
-        this.board.determineWinner();
+        return this.board.determineWinner();
       } else if (this.board.currStreet === 'river' && multipleActions) {
         if (!this.board.monte) this.board.revealCards();
-        this.board.determineWinner();
+        return this.board.determineWinner();
       } else if (multipleActions) {
         this.board.nextStreet();
       }
-    } else if (this.board.monte) {
-      this.board.promptComp();
     }
+    // if (this.board.monte && !this.board.handFinish) this.board.promptComp();
+    if (this.board.monte && this.board.players[0].hand.length) this.board.promptComp();
   }
 }

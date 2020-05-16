@@ -204,17 +204,21 @@ export default class Board {
   }
 
   async dealCard() {
-    this.hideChips();
-    this.dispDealing();
+    if (!this.monte) {
+      this.hideChips();
+      this.dispDealing();
+    }
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
     if (this.sound) this.cardTurn.play();
-    this.showBoard();
+    if (!this.monte) this.showBoard();
   }
   
   async dealFlop() {
-    this.hideChips();
-    this.dispDealing();
+    if (!this.monte) {
+      this.hideChips();
+      this.dispDealing();
+    }
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
       if (this.delay && i > 0) await this.sleep(this.cardDelay);

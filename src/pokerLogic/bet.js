@@ -71,7 +71,7 @@ export default class Bet {
     if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
     if (this.board.streetActions.length === 0) return (bet < this.board.bb) ? this.board.bb : bet;
     let lastBet = this.board.streetActions[this.board.streetActions.length - 1] || 0;
-    let sb = this.board.isSb();
+    // let sb = this.board.isSb();
     let min;
     if (this.board.streetActions.length === 1) {
       min = (lastBet === this.board.sb || lastBet === 0) ? this.board.bb : lastBet * 2;

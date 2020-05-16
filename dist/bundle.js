@@ -13056,7 +13056,7 @@ $(
 _asyncToGenerator(
 /*#__PURE__*/
 regeneratorRuntime.mark(function _callee() {
-  var wins, table, winner;
+  var wins, z, table, winner;
   return regeneratorRuntime.wrap(function _callee$(_context) {
     while (1) {
       switch (_context.prev = _context.next) {
@@ -13066,16 +13066,18 @@ regeneratorRuntime.mark(function _callee() {
           // table.setup();
           wins = {
             player1: 0,
-            player2: 0 // for (let z=0; z<100; z++) {
-
+            player2: 0
           };
-          table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
-          winner = table.setup(true);
-          if (winner) wins[winner] += 1; // }
+
+          for (z = 0; z < 1000; z++) {
+            table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
+            winner = table.setup(true);
+            if (winner) wins[winner] += 1;
+          }
 
           console.log(wins);
 
-        case 5:
+        case 3:
         case "end":
           return _context.stop();
       }
@@ -14200,20 +14202,21 @@ function () {
       var multipleActions = this.board.streetActions.length > 1;
 
       if (this.board.players[0].folded || this.board.players[1].folded) {
-        this.board.determineWinner();
+        return this.board.determineWinner();
       } else if (handChipsEqual) {
-        if (this.board.allIn() && this.board.handChipDiff() === 0) {
+        if (this.board.allIn() && handChipsEqual) {
           this.board.showDown();
-          this.board.determineWinner();
+          return this.board.determineWinner();
         } else if (this.board.currStreet === 'river' && multipleActions) {
           if (!this.board.monte) this.board.revealCards();
-          this.board.determineWinner();
+          return this.board.determineWinner();
         } else if (multipleActions) {
           this.board.nextStreet();
         }
-      } else if (this.board.monte) {
-        this.board.promptComp();
-      }
+      } // if (this.board.monte && !this.board.handFinish) this.board.promptComp();
+
+
+      if (this.board.monte && this.board.players[0].hand.length) this.board.promptComp();
     }
   }]);
 
@@ -14331,8 +14334,8 @@ function () {
       if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
 
       if (this.board.streetActions.length === 0) return bet < this.board.bb ? this.board.bb : bet;
-      var lastBet = this.board.streetActions[this.board.streetActions.length - 1] || 0;
-      var sb = this.board.isSb();
+      var lastBet = this.board.streetActions[this.board.streetActions.length - 1] || 0; // let sb = this.board.isSb();
+
       var min;
 
       if (this.board.streetActions.length === 1) {
@@ -14707,14 +14710,17 @@ function () {
           while (1) {
             switch (_context3.prev = _context3.next) {
               case 0:
-                this.hideChips();
-                this.dispDealing();
+                if (!this.monte) {
+                  this.hideChips();
+                  this.dispDealing();
+                }
+
                 this.currPlayerPos = 1;
                 this.boardCards.push(this.deck.draw());
                 if (this.sound) this.cardTurn.play();
-                this.showBoard();
+                if (!this.monte) this.showBoard();
 
-              case 6:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -14739,34 +14745,37 @@ function () {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
-                this.hideChips();
-                this.dispDealing();
+                if (!this.monte) {
+                  this.hideChips();
+                  this.dispDealing();
+                }
+
                 this.currPlayerPos = 1;
                 i = 0;
 
-              case 4:
+              case 3:
                 if (!(i < 3)) {
-                  _context4.next = 12;
+                  _context4.next = 11;
                   break;
                 }
 
                 if (!(this.delay && i > 0)) {
-                  _context4.next = 8;
+                  _context4.next = 7;
                   break;
                 }
 
-                _context4.next = 8;
+                _context4.next = 7;
                 return this.sleep(this.cardDelay);
 
-              case 8:
+              case 7:
                 this.dealCard();
 
-              case 9:
+              case 8:
                 i++;
-                _context4.next = 4;
+                _context4.next = 3;
                 break;
 
-              case 12:
+              case 11:
               case "end":
                 return _context4.stop();
             }
@@ -15693,18 +15702,20 @@ function (_Board) {
     value: function begin() {
       this.monte = true;
       this.resultMode();
-      this.takeBlinds();
-      this.dealInPlayers();
     }
   }, {
     key: "promptComp",
     value: function promptComp() {
+      // let hand = this.currentPlayer().hand;
       var response = this.currentPlayer().promptResponse(this.currBet, this.pot, this.isSb(), this.currStreet === 'preflop', this.boardCards, this.action.aggAction());
       if (response) this.action.resolvePlayerPrompt(response);
     }
   }, {
     key: "playMonte",
     value: function playMonte() {
+      this.takeBlinds();
+      this.dealInPlayers();
+
       if (this.allIn() && this.handChipDiff() === 0) {
         this.showDown();
         this.determineWinner();
@@ -15756,18 +15767,21 @@ function (_Board) {
         } else {
           this.players[1].chipstack += 1;
         }
-      } // this.table.handOver();
+      }
 
+      this.table.nextHand();
     }
   }, {
     key: "winner",
     value: function winner(winHand, loseHand, wonPos, lostPos) {
-      this.players[wonPos].chipstack += this.pot; // this.table.handOver();
+      this.players[wonPos].chipstack += this.pot;
+      this.table.nextHand();
     }
   }, {
     key: "stepStreet",
     value: function stepStreet(flopBool) {
       flopBool ? this.dealFlop() : this.dealCard();
+      this.promptComp();
     }
   }]);
 
@@ -15962,10 +15976,8 @@ function () {
 
       while (!this.gameOver()) {
         this.board.playMonte();
-        debugger;
       }
 
-      debugger;
       return this.board.players[0].chipstack === 0 ? 'player2' : 'player1';
     }
   }, {
@@ -16032,10 +16044,10 @@ function () {
               case 3:
                 this.togglePlayers();
                 this.resetPlayerVars();
-                this.board.clearBoard();
+                if (!this.monte) this.board.clearBoard();
                 this.board.resetVars();
                 this.handNum += 1;
-                this.playHand();
+                if (!this.monte) this.playHand();
 
               case 9:
               case "end":
