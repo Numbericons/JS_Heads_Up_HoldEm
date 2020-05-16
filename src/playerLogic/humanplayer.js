@@ -28,7 +28,7 @@ export default class HumanPlayer {
     (to_call === 0) ? this.promptText("...") : this.promptText(`$${to_call} to call`);
   }
 
-  resolve_action(to_call, betInput, textInput, sb = 0) {
+  resolveAction(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
       if (this.sound) this.check.play();
       return 0;

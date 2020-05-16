@@ -13048,24 +13048,16 @@ __webpack_require__.r(__webpack_exports__);
 // }
 
 $(function () {
-  // const actionsCont = $('.table-bottom-actions');
-  // const table = new Table(actionsCont);
-  // table.setup();
-  var wins = {
-    player1: 0,
-    player2: 0
-  };
-
-  for (var z = 0; z < 1000; z++) {
-    var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
-    var winner = table.setup(true);
-    if (winner) wins[winner] += 1;
-  } // document.querySelector(".result-text-1").innerText = wins;
-  // document.querySelector(".result-text-2").innerText = wins;
-
-
-  $(".result-text-1").text("Comp Player 1 wins: ".concat(wins['player1'], " games"));
-  $(".result-text-2").text("Comp Player 2 wins: ".concat(wins['player2'], " games"));
+  var actionsCont = $('.table-bottom-actions');
+  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false);
+  table.setup(); // let wins = { player1: 0, player2: 0 }
+  // for (let z=0; z<1000; z++) {
+  //   const table = new Table(null, true);
+  //   const winner =  table.setup(true);
+  //   if (winner) wins[winner] += 1;
+  // }
+  // $(".result-text-1").text(`Comp Player 1 wins: ${wins['player1']} games`)
+  // $(".result-text-2").text(`Comp Player 2 wins: ${wins['player2']} games`)
 });
 
 /***/ }),
@@ -13363,8 +13355,8 @@ function () {
       to_call === 0 ? this.promptText("...") : this.promptText("$".concat(to_call, " to call"));
     }
   }, {
-    key: "resolve_action",
-    value: function resolve_action(to_call, betInput, textInput) {
+    key: "resolveAction",
+    value: function resolveAction(to_call, betInput, textInput) {
       var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0;
 
       if (textInput === 'check') {
@@ -15818,8 +15810,8 @@ function () {
 
     _classCallCheck(this, Table);
 
-    this.players = [new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true)]; // this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-
+    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true)];
     this.board = !monte ? new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this) : new _monteboard_js__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;

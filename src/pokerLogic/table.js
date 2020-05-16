@@ -6,8 +6,8 @@ import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
   constructor($el, monte, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
-    this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-    // this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+    this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
     this.board = !monte ? new Board($el, this.players, sb, bb, this) : new MonteBoard($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
