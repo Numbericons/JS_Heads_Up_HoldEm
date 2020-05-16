@@ -13043,47 +13043,30 @@ module.exports = g;
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./pokerLogic/table */ "./src/pokerLogic/table.js");
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
  // sleep(ms){
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
 
-$(
-/*#__PURE__*/
-_asyncToGenerator(
-/*#__PURE__*/
-regeneratorRuntime.mark(function _callee() {
-  var wins, z, table, winner;
-  return regeneratorRuntime.wrap(function _callee$(_context) {
-    while (1) {
-      switch (_context.prev = _context.next) {
-        case 0:
-          // const actionsCont = $('.table-bottom-actions');
-          // const table = new Table(actionsCont);
-          // table.setup();
-          wins = {
-            player1: 0,
-            player2: 0
-          };
+$(function () {
+  // const actionsCont = $('.table-bottom-actions');
+  // const table = new Table(actionsCont);
+  // table.setup();
+  var wins = {
+    player1: 0,
+    player2: 0
+  };
 
-          for (z = 0; z < 1000; z++) {
-            table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
-            winner = table.setup(true);
-            if (winner) wins[winner] += 1;
-          }
+  for (var z = 0; z < 1000; z++) {
+    var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
+    var winner = table.setup(true);
+    if (winner) wins[winner] += 1;
+  } // document.querySelector(".result-text-1").innerText = wins;
+  // document.querySelector(".result-text-2").innerText = wins;
 
-          console.log(wins);
 
-        case 3:
-        case "end":
-          return _context.stop();
-      }
-    }
-  }, _callee);
-})));
+  $(".result-text-1").text("Comp Player 1 wins: ".concat(wins['player1'], " games"));
+  $(".result-text-2").text("Comp Player 2 wins: ".concat(wins['player2'], " games"));
+});
 
 /***/ }),
 
