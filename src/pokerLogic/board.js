@@ -44,7 +44,7 @@ export default class Board {
   }
 
   resetVars() {
-    if (!this.monte) this.$currPot.removeClass();
+    if (this.monte !== true) this.$currPot.removeClass();
     this.deck = new Deck;
     this.boardCards = [];
     this.pot = 0;
@@ -69,18 +69,7 @@ export default class Board {
     this.players[1].resetVars();
   }
 
-  resultMode(slow) {
-    if (!slow) this.table.delay = false;
-    if (!slow) this.table.sound = false;
-    this.players[0].sound = false;
-    this.players[1].sound = false;
-    this.sound = false;
-    this.delay = false;
-  }
-
   async playHand(monte) {
-    this.monte = monte;
-    if (monte) this.resultMode();
     if (this.sound) this.shuffle.play();
     this.dealInPlayers();
     this.takeBlinds();
@@ -168,7 +157,7 @@ export default class Board {
     this.players[wonPos].chipstack += this.pot;
     this.renderPlayers();
     this.renderChat(this.outputString);
-    if (!this.monte) this.$currPot.addClass(`won-${this.players[wonPos].side}`);
+    this.$currPot.addClass(`won-${this.players[wonPos].side}`);
     this.players[0].unrenderChips();
     this.players[1].unrenderChips();
     this.table.handOver();
@@ -298,8 +287,8 @@ export default class Board {
   }
 
   async render() {
-    if (!this.monte) this.renderDealerPlayers();
-    if (!this.monte) this.showPot();
+    this.renderDealerPlayers();
+    this.showPot();
     this.rightChips.addClass('chips');
     this.leftChips.addClass('chips');
     if (this.allIn() && this.handChipDiff() === 0) {
@@ -307,11 +296,9 @@ export default class Board {
       this.determineWinner();
       return;
     }
-    if (!this.monte) {
-      this.showBoard();
-      this.button.setButtons(this.pfBetSize());
-      this.button.bindEvents();
-    }
+    this.showBoard();
+    this.button.setButtons(this.pfBetSize());
+    this.button.bindEvents();
     if (this.currentPlayer().comp && (this.streetActions.length < 2 || this.handChipDiff() !== 0)) {
       this.button.$el.empty();
       this.action.promptPlayer(this.handToStrArr(this.currentPlayer()));

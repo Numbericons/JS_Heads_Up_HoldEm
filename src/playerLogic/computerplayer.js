@@ -115,7 +115,7 @@ export default class ComputerPlayer {
     return betAmt;
   }
 
-  resolve_action(to_call, betInput, textInput, sb = 0) {
+  resolveAction(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
       if (this.sound) this.check.play();
       return 0;

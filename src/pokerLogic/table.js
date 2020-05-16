@@ -1,13 +1,14 @@
 import "babel-polyfill";
 import Board from "./board.js";
+import MonteBoard from "./monteboard.js";
 import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
+  constructor($el, monte, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
     this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
     // this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-    this.board = new Board($el, this.players, sb, bb, this)
+    this.board = !monte ? new Board($el, this.players, sb, bb, this) : new MonteBoard($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
     this.sound = true;
@@ -79,15 +80,27 @@ class Table {
     this.sampleWinLoss();
   }
 
-  async setup(monte){
+  setup(monte){
     this.monte = monte;
+    if (monte) return this.playGame();
     this.modal();
     this.board.renderDealerPlayers();
-    monte ? this.playHand(monte) : this.board.button.bindPlayGame(this);
+    this.board.button.bindPlayGame(this);
   }
   
   newGame(){
     location.reload();
+  }
+
+  playGame() {
+    this.delay = false;
+    this.sound = false;
+    while (!this.gameOver()) {
+      this.board.playMonte();
+      debugger
+    }
+    debugger
+    return this.board.players[0].chipstack === 0 ? 'player2' : 'player1';
   }
   
   result(){
@@ -119,6 +132,10 @@ class Table {
 
   sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  gameOver() {
+    if (this.board.players[0].chipstack === 0 || this.board.players[1].chipstack === 0) return this.board.players[0].chipstack === 0 ? 1 : 2;
   }
 
   async nextHand(){
