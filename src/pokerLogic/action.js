@@ -98,6 +98,8 @@ export default class Action {
       } else if (multipleActions) {
         this.board.nextStreet();
       }
+    } else if (this.board.monte) {
+      this.board.promptComp();
     }
   }
 }

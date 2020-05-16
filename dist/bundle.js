@@ -14211,6 +14211,8 @@ function () {
         } else if (multipleActions) {
           this.board.nextStreet();
         }
+      } else if (this.board.monte) {
+        this.board.promptComp();
       }
     }
   }]);
@@ -15695,6 +15697,12 @@ function (_Board) {
       this.dealInPlayers();
     }
   }, {
+    key: "promptComp",
+    value: function promptComp() {
+      var response = this.currentPlayer().promptResponse(this.currBet, this.pot, this.isSb(), this.currStreet === 'preflop', this.boardCards, this.action.aggAction());
+      if (response) this.action.resolvePlayerPrompt(response);
+    }
+  }, {
     key: "playMonte",
     value: function playMonte() {
       if (this.allIn() && this.handChipDiff() === 0) {
@@ -15703,8 +15711,7 @@ function (_Board) {
         return;
       }
 
-      var response = this.currentPlayer().promptResponse(this.currBet, this.pot, this.isSb(), this.currStreet === 'preflop', this.boardCards, this.action.aggAction());
-      if (response) this.action.resolvePlayerPrompt(response);
+      this.promptComp();
     }
   }, {
     key: "resultMode",
@@ -15756,6 +15763,11 @@ function (_Board) {
     key: "winner",
     value: function winner(winHand, loseHand, wonPos, lostPos) {
       this.players[wonPos].chipstack += this.pot; // this.table.handOver();
+    }
+  }, {
+    key: "stepStreet",
+    value: function stepStreet(flopBool) {
+      flopBool ? this.dealFlop() : this.dealCard();
     }
   }]);
 

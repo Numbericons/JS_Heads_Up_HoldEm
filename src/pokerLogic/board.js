@@ -345,11 +345,7 @@ export default class Board {
     this.hideButtons();
     this.combineChips();
     if (this.delay) await this.sleep(1000);
-    if (flopBool) {
-      await this.dealFlop();
-    } else {
-      await this.dealCard();
-    }
+    flopBool ? await this.dealFlop() : await this.dealCard();
     if (!this.allIn()) this.render();
   }
   
