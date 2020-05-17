@@ -13049,7 +13049,8 @@ __webpack_require__.r(__webpack_exports__);
 
 $(function () {
   var actionsCont = $('.table-bottom-actions');
-  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false);
+  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, false); //3rd arg is watch mode
+
   table.setup(); // let wins = { player1: 0, player2: 0 }
   // for (let z=0; z<1000; z++) {
   //   const table = new Table(null, true);
@@ -13108,6 +13109,7 @@ function () {
     position === 'sb' ? this.num = 1 : this.num = 2;
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.sound = true;
+    this.stats = stats;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -15802,16 +15804,29 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Table =
 /*#__PURE__*/
 function () {
-  function Table($el, monte) {
-    var initialChipstack = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50000;
-    var sb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 500;
-    var bb = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 1000;
-    var cardDims = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : ["72px", "68px"];
+  function Table($el, monte, watch) {
+    var initialChipstack = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50000;
+    var sb = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 500;
+    var bb = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1000;
+    var cardDims = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
 
-    // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-    this.players = [new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true), new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true)];
+    var stats = {
+      pfAgg: 1,
+      pfCall: 1,
+      flopAgg: 1,
+      flopCall: 1,
+      turnAgg: 1,
+      turnCall: 1,
+      riverAgg: 1,
+      riverCall: 1,
+      semiBluff: 1,
+      drawCall: 1
+    };
+    var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true); // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+
+    this.players = [player1, new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true, stats)];
     this.board = !monte ? new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this) : new _monteboard_js__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;

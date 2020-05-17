@@ -6,7 +6,7 @@ import Table from './pokerLogic/table';
 
 $(() => {
   const actionsCont = $('.table-bottom-actions');
-  const table = new Table(actionsCont, false);
+  const table = new Table(actionsCont, false, false); //3rd arg is watch mode
   table.setup();
   
   // let wins = { player1: 0, player2: 0 }

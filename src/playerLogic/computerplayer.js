@@ -22,6 +22,7 @@ export default class ComputerPlayer {
     (position === 'sb') ? this.num = 1 : this.num = 2;
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
     this.sound = true;
+    this.stats = stats;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');

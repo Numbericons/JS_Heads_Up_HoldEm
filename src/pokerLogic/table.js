@@ -5,9 +5,13 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, monte, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
+  constructor($el, monte, watch, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
+    const stats = { pfAgg: 1, pfCall: 1, flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
+      semiBluff: 1, drawCall: 1
+    }
+    const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats) : new HumanPlayer("sb", initialChipstack, cardDims, true);
     // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
-    this.players = [new HumanPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
+    this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, true, stats)];
     this.board = !monte ? new Board($el, this.players, sb, bb, this) : new MonteBoard($el, this.players, sb, bb, this);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
