@@ -15827,7 +15827,9 @@ function () {
       riverAgg: 1,
       riverCall: 1,
       semiBluff: 1,
-      drawCall: 1
+      drawCall: 1,
+      threeAgg: 1,
+      threeCall: 1
     };
     var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true); // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
 
