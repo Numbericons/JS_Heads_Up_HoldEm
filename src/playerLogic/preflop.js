@@ -29,88 +29,74 @@ export default class PreFlop {
     }
   }
 
-  sideCard(rank, min, max){
-    let rank = this.convertVal(rank);
-    return rank >= parseInt(min) && rank <= parseInt(max);
-  }
-
   suited(){
     return this.hand[0][1] === this.hand[1][1];
   }
 
-  pfTierOne(hand){
-    if (this.compHands(["8s", "8h"]) === this.handSolved) return true;
-    if (this.compHands(["As", "Jh"]) === this.handSolved) return true;
-    return false;
+  sideCard(side, min, max, attr) {
+    let rank = this.convertVal(side);
+    if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return [true, attr];
   }
 
-  sideRank(main, minRank, maxRank) {
+  sideRank(main, minRank, maxRank, attr) {
     const side = this.hand[0].rank === main ? 1 : 0;
-    return this.sideCard(this.hand[side], minRank, maxRank);
+    return this.sideCard(this.hand[side], minRank, maxRank, attr);
   }
 
   inclRank(rank) {
     return this.hand[0].rank === rank || this.hand[1].rank === rank;
   }
 
+  pfTierOne() {
+    if (this.compHands(["8s", "8h"]) === this.handSolved) return ['pfPair'];
+    if (this.handSolved.rank === 1 && this.compHands(["As", "Jh"]) === this.handSolved) return ['pfHigh'];
+    return false;
+  }
+
   pfTierTwo(){
-    if (this.compHands(["1s", "1h"]) === this.handSolved) return true;
-    if (inclRank('A')) return true;
-    if (inclRank('K') && this.suited()) return true;
-    if (this.inclRank("K")) return sideRank("K", "T", "Q");
-    if (this.inclRank("Q")) return sideRank("Q", "9", "J");
-    if (this.inclRank("J")) return sideRank("J", "T", "T");
-    if (this.inclRank("T") && this.suited) return sideRank("T", "9", "9");
-    if (this.inclRank("9") && this.suited) return sideRank("9", "8", "8");
+    if (this.compHands(["1s", "1h"]) === this.handSolved) return ['pfPair'];
+    if (this.inclRank("A")) return ['pfHigh'];
+    if (this.inclRank("K") && this.suited()) return ['pfHigh', 'pfSuit'];
+
+    if (this.inclRank("K")) return sideRank("K", "T", "Q", ['pfHigh']);
+    if (this.inclRank("Q")) return sideRank("Q", "9", "J", ['pfHigh']);
+    if (this.inclRank("J")) return sideRank("J", "T", "T", ['pfHigh']);
+
+    if (this.inclRank("T") && this.suited) return sideRank("T", "9", "9", ['pfSuit', 'pfConn']);
+    if (this.inclRank("9") && this.suited) return sideRank("9", "8", "8", ['pfSuit', 'pfConn']);
     
     return false;
   }
   
   pfTierThree(){
-    if (inclRank('K') && this.suited()) return true;
-    if (inclRank('Q') && this.suited()) return true;
-    if (inclRank('J') && this.suited()) return true;
+    if (this.inclRank("K") && this.suited()) return ['pfSuit', 'pfHigh'];
+    if (this.inclRank("Q") && this.suited()) return ['pfSuit'];
+    if (this.inclRank("J") && this.suited()) return ['pfSuit'];
     
-    if (this.hand[0].rank === 'Q') return this.sideCard(this.hand[1].rank, "8", "8");
-    if (this.hand[1].rank === 'Q') return this.sideCard(this.hand[0].rank, "8", "8");
-    if (this.hand[0].rank === 'J') return this.sideCard(this.hand[1].rank, "7", "9");
-    if (this.hand[1].rank === 'J') return this.sideCard(this.hand[0].rank, "7", "9");
-    if (this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "6", "8");
-    if (this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "6", "8");
-    if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "5", "7");
-    if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "5", "7");
-    if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "5", "6");
-    if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "5", "6");
-    if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "5", "6");
-    if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "5", "6");
-    if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "5", "5");
-    if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "5", "5");
-    if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "4", "4");
-    if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "4", "4");
+    if (this.inclRank("Q")) return this.sideRank("Q", "8", "8", ['pfConn', 'pfHigh']);
+    if (this.inclRank("J")) return this.sideRank("J", "7", "9", ['pfConn']);
+    if (this.inclRank("T")) return this.sideRank("T", "6", "8", ['pfConn']);
+    if (this.inclRank("9")) return this.sideRank("9", "5", "7", ['pfConn']);
+    if (this.inclRank("8")) return this.sideRank("8", "5", "6", ['pfConn']);
+    if (this.inclRank("7")) return this.sideRank("7", "5", "6", ['pfConn']);
+    if (this.inclRank("6")) return this.sideRank("6", "5", "5", ['pfConn']);
+    if (this.inclRank("5")) return this.sideRank("5", "4", "4", ['pfConn']);
 
     return false;
   }
   pfTierFour(){
-    if (inclRank('Q')) return true;
-    if ((this.hand[0].rank === 'T' || this.hand[1].rank === 'T') && this.suited()) return true;
-    if ((this.hand[0].rank === '9' || this.hand[1].rank === '9') && this.suited()) return true;
-    
-    if (this.hand[0].rank === 'J' || this.hand[0].rank === 'T') return this.sideCard(this.hand[1].rank, "5", "6");
-    if (this.hand[1].rank === 'J' || this.hand[1].rank === 'T') return this.sideCard(this.hand[0].rank, "5", "6");
-    if (this.hand[0].rank === '9') return this.sideCard(this.hand[1].rank, "4", "5");
-    if (this.hand[1].rank === '9') return this.sideCard(this.hand[0].rank, "4", "5");
-    if (this.hand[0].rank === '8') return this.sideCard(this.hand[1].rank, "4", "5");
-    if (this.hand[1].rank === '8') return this.sideCard(this.hand[0].rank, "4", "5");
-    if (this.hand[0].rank === '7') return this.sideCard(this.hand[1].rank, "4", "4");
-    if (this.hand[1].rank === '7') return this.sideCard(this.hand[0].rank, "4", "4");
-    if (this.hand[0].rank === '6') return this.sideCard(this.hand[1].rank, "4", "4");
-    if (this.hand[1].rank === '6') return this.sideCard(this.hand[0].rank, "4", "4");
-    if (this.hand[0].rank === '5') return this.sideCard(this.hand[1].rank, "3", "3");
-    if (this.hand[1].rank === '5') return this.sideCard(this.hand[0].rank, "3", "3");
-    if (this.hand[0].rank === '4') return this.sideCard(this.hand[1].rank, "3", "3");
-    if (this.hand[1].rank === '4') return this.sideCard(this.hand[0].rank, "3", "3");
-    if (this.hand[0].rank === '3') return this.sideCard(this.hand[1].rank, "2", "2");
-    if (this.hand[1].rank === '3') return this.sideCard(this.hand[0].rank, "2", "2");
+    if (this.inclRank("Q")) return [];
+    if (this.inclRank("T") && this.suited()) return ['pfSuit'];
+    if (this.inclRank("9") && this.suited()) return ['pfSuit'];
+
+    if (this.inclRank("J")) return this.sideRank("J", "5", "6");
+    if (this.inclRank("T")) return this.sideRank("T", "5", "6");
+    if (this.inclRank("9")) return this.sideRank("9", "4", "5");
+    if (this.inclRank("8")) return this.sideRank("8", "4", "5");
+    if (this.inclRank("7")) return this.sideRank("7", "4", "4");
+    if (this.inclRank("6")) return this.sideRank("6", "4", "4", ['pfConn']);
+    if (this.inclRank("5")) return this.sideRank("5", "3", "3", ['pfConn']);
+    if (this.inclRank("4")) return this.sideRank("4", "3", "3", ['pfConn']);
 
     return false;
   }
@@ -120,11 +106,26 @@ export default class PreFlop {
     this.handSolved = this.handVal(hand);
   }
 
-  getTeir(hand){
+  attrAdj(num, stats, attr) {
+    attr.forEach(k => { num *= stats[k] });
+    return num;
+  }
+
+  // pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
+  // flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
+  // semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1
+
+  statAdj(num, stats, attr) {
+    return this.attrAdj(num, stats, attr) * stats[pfAgg] * stats[pfCall];
+  }
+
+  getTeir(hand, stats){
     this.defineHand(hand);
-    if (this.pfTierOne()) return [1, 'agg']; //3:1    1 * 3 * rand compare to .66    
+    const t1 = this.pfTierOne();
+    if (t1) return [this.statAdj(1, stats), 'agg']; //3:1    1 * 3 * rand compare to .66    
     // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
-    if (this.pfTierTwo()) return [.25];
+    const t2 = this.pfTierTwo();
+    if (t2) return [this.statAdj(.25, stats)];
     // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
     // .25 + (.25 / 3 * Math.random) 
     //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
@@ -136,9 +137,11 @@ export default class PreFlop {
     // bet 200 into 100   300 / 200 ->> 1.5
     // bet 1000 into 100   1100 / 1000 
     // .25 + (.5 * 3 * random)
-    if (this.pfTierThree()) return [.15];
-    // .25 + .25 * 3 * rand               
-    if (this.pfTierFour()) return [.1];
-    return [.05];
+    const t3 = this.pfTierThree();
+    if (t3) return [this.statAdj(.15, stats)];
+    // .25 + .25 * 3 * rand
+    const t4 = this.pfTierFour();     
+    if (t4) return [this.statAdj(.1, stats)];
+    return [this.statAdj(.05, stats)];
   }
 }

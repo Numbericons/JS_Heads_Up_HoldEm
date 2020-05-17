@@ -13846,9 +13846,189 @@ function () {
   !*** ./src/playerLogic/preflop.js ***!
   \************************************/
 /*! exports provided: default */
-/***/ (function(module, exports) {
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
 
-throw new Error("Module build failed (from ./node_modules/babel-loader/lib/index.js):\nSyntaxError: /Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/src/playerLogic/preflop.js: Identifier 'rank' has already been declared (33:8)\n\n\u001b[0m \u001b[90m 31 | \u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 32 | \u001b[39m  sideCard(rank\u001b[33m,\u001b[39m min\u001b[33m,\u001b[39m max){\u001b[0m\n\u001b[0m\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 33 | \u001b[39m    let rank \u001b[33m=\u001b[39m \u001b[36mthis\u001b[39m\u001b[33m.\u001b[39mconvertVal(rank)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m    | \u001b[39m        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 34 | \u001b[39m    \u001b[36mreturn\u001b[39m rank \u001b[33m>=\u001b[39m parseInt(min) \u001b[33m&&\u001b[39m rank \u001b[33m<=\u001b[39m parseInt(max)\u001b[33m;\u001b[39m\u001b[0m\n\u001b[0m \u001b[90m 35 | \u001b[39m  }\u001b[0m\n\u001b[0m \u001b[90m 36 | \u001b[39m\u001b[0m\n    at Parser.raise (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:6325:17)\n    at ScopeHandler.checkRedeclarationInScope (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:3759:12)\n    at ScopeHandler.declareName (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:3725:12)\n    at Parser.checkLVal (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:8021:22)\n    at Parser.parseVarId (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10502:10)\n    at Parser.parseVar (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10477:12)\n    at Parser.parseVarStatement (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10299:10)\n    at Parser.parseStatementContent (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9896:21)\n    at Parser.parseStatement (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9829:17)\n    at Parser.parseBlockOrModuleBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10405:25)\n    at Parser.parseBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10392:10)\n    at Parser.parseBlock (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10376:10)\n    at Parser.parseFunctionBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9424:24)\n    at Parser.parseFunctionBodyAndFinish (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9394:10)\n    at Parser.parseMethod (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9348:10)\n    at Parser.pushClassMethod (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10804:30)\n    at Parser.parseClassMemberWithIsStatic (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10729:12)\n    at Parser.parseClassMember (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10668:10)\n    at withTopicForbiddingContext (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10623:14)\n    at Parser.withTopicForbiddingContext (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9702:14)\n    at Parser.parseClassBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10600:10)\n    at Parser.parseClass (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10574:22)\n    at Parser.parseExportDefaultExpression (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10999:19)\n    at Parser.parseExport (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10905:31)\n    at Parser.parseStatementContent (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9933:27)\n    at Parser.parseStatement (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9829:17)\n    at Parser.parseBlockOrModuleBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10405:25)\n    at Parser.parseBlockBody (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:10392:10)\n    at Parser.parseTopLevel (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:9758:10)\n    at Parser.parse (/Users/zacharyoliver/Downloads/Code/App_Academy/a:A Online/JavascriptProject/JS_Heads_Up_HoldEm/node_modules/@babel/parser/lib/index.js:11270:17)");
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PreFlop; });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/pokersolver.js").Hand;
+
+var PreFlop =
+/*#__PURE__*/
+function () {
+  function PreFlop() {
+    _classCallCheck(this, PreFlop);
+  }
+
+  _createClass(PreFlop, [{
+    key: "handVal",
+    value: function handVal(hand) {
+      return Hand.solve(["".concat(hand[0].rank).concat(hand[0].suit), "".concat(hand[1].rank).concat(hand[1].suit)]);
+    }
+  }, {
+    key: "compHands",
+    value: function compHands(oppHand) {
+      oppHand = Hand.solve(oppHand);
+      return Hand.winners([this.handSolved, oppHand])[0] === this.handSolved ? this.handSolved : oppHand;
+    }
+  }, {
+    key: "convertVal",
+    value: function convertVal(rank) {
+      if (parseInt(rank)) return parseInt(rank);
+
+      switch (rank) {
+        case "T":
+          return 10;
+
+        case "J":
+          return 11;
+
+        case "Q":
+          return 12;
+
+        case "K":
+          return 13;
+
+        case "A":
+          return 14;
+      }
+    }
+  }, {
+    key: "suited",
+    value: function suited() {
+      return this.hand[0][1] === this.hand[1][1];
+    }
+  }, {
+    key: "sideCard",
+    value: function sideCard(side, min, max, attr) {
+      var rank = this.convertVal(side);
+      if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return [true, attr];
+    }
+  }, {
+    key: "sideRank",
+    value: function sideRank(main, minRank, maxRank, attr) {
+      var side = this.hand[0].rank === main ? 1 : 0;
+      return this.sideCard(this.hand[side], minRank, maxRank, attr);
+    }
+  }, {
+    key: "inclRank",
+    value: function inclRank(rank) {
+      return this.hand[0].rank === rank || this.hand[1].rank === rank;
+    }
+  }, {
+    key: "pfTierOne",
+    value: function pfTierOne() {
+      if (this.compHands(["8s", "8h"]) === this.handSolved) return ['pfPair'];
+      if (this.handSolved.rank === 1 && this.compHands(["As", "Jh"]) === this.handSolved) return ['pfHigh'];
+      return false;
+    }
+  }, {
+    key: "pfTierTwo",
+    value: function pfTierTwo() {
+      if (this.compHands(["1s", "1h"]) === this.handSolved) return ['pfPair'];
+      if (this.inclRank("A")) return ['pfHigh'];
+      if (this.inclRank("K") && this.suited()) return ['pfHigh', 'pfSuit'];
+      if (this.inclRank("K")) return sideRank("K", "T", "Q", ['pfHigh']);
+      if (this.inclRank("Q")) return sideRank("Q", "9", "J", ['pfHigh']);
+      if (this.inclRank("J")) return sideRank("J", "T", "T", ['pfHigh']);
+      if (this.inclRank("T") && this.suited) return sideRank("T", "9", "9", ['pfSuit', 'pfConn']);
+      if (this.inclRank("9") && this.suited) return sideRank("9", "8", "8", ['pfSuit', 'pfConn']);
+      return false;
+    }
+  }, {
+    key: "pfTierThree",
+    value: function pfTierThree() {
+      if (this.inclRank("K") && this.suited()) return ['pfSuit', 'pfHigh'];
+      if (this.inclRank("Q") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("J") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("Q")) return this.sideRank("Q", "8", "8", ['pfConn', 'pfHigh']);
+      if (this.inclRank("J")) return this.sideRank("J", "7", "9", ['pfConn']);
+      if (this.inclRank("T")) return this.sideRank("T", "6", "8", ['pfConn']);
+      if (this.inclRank("9")) return this.sideRank("9", "5", "7", ['pfConn']);
+      if (this.inclRank("8")) return this.sideRank("8", "5", "6", ['pfConn']);
+      if (this.inclRank("7")) return this.sideRank("7", "5", "6", ['pfConn']);
+      if (this.inclRank("6")) return this.sideRank("6", "5", "5", ['pfConn']);
+      if (this.inclRank("5")) return this.sideRank("5", "4", "4", ['pfConn']);
+      return false;
+    }
+  }, {
+    key: "pfTierFour",
+    value: function pfTierFour() {
+      if (this.inclRank("Q")) return [];
+      if (this.inclRank("T") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("9") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("J")) return this.sideRank("J", "5", "6");
+      if (this.inclRank("T")) return this.sideRank("T", "5", "6");
+      if (this.inclRank("9")) return this.sideRank("9", "4", "5");
+      if (this.inclRank("8")) return this.sideRank("8", "4", "5");
+      if (this.inclRank("7")) return this.sideRank("7", "4", "4");
+      if (this.inclRank("6")) return this.sideRank("6", "4", "4", ['pfConn']);
+      if (this.inclRank("5")) return this.sideRank("5", "3", "3", ['pfConn']);
+      if (this.inclRank("4")) return this.sideRank("4", "3", "3", ['pfConn']);
+      return false;
+    }
+  }, {
+    key: "defineHand",
+    value: function defineHand(hand) {
+      this.hand = hand;
+      this.handSolved = this.handVal(hand);
+    }
+  }, {
+    key: "attrAdj",
+    value: function attrAdj(num, stats, attr) {
+      attr.forEach(function (k) {
+        num *= stats[k];
+      });
+      return num;
+    } // pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
+    // flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
+    // semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1
+
+  }, {
+    key: "statAdj",
+    value: function statAdj(num, stats, attr) {
+      return this.attrAdj(num, stats, attr) * stats[pfAgg] * stats[pfCall];
+    }
+  }, {
+    key: "getTeir",
+    value: function getTeir(hand, stats) {
+      this.defineHand(hand);
+      var t1 = this.pfTierOne();
+      if (t1) return [this.statAdj(1, stats), 'agg']; //3:1    1 * 3 * rand compare to .66    
+      // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
+
+      var t2 = this.pfTierTwo();
+      if (t2) return [this.statAdj(.25, stats)]; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
+      // .25 + (.25 / 3 * Math.random) 
+      //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
+      // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
+      // vill bets 100 into 200 pot >>  final pot 400, 100 to call -> .25 // 4
+      //  current pot / to_call
+      // bet 100 into 200   3:1
+      //.25 + (.25 * 3 * Math.random)   
+      // bet 200 into 100   300 / 200 ->> 1.5
+      // bet 1000 into 100   1100 / 1000 
+      // .25 + (.5 * 3 * random)
+
+      var t3 = this.pfTierThree();
+      if (t3) return [this.statAdj(.15, stats)]; // .25 + .25 * 3 * rand
+
+      var t4 = this.pfTierFour();
+      if (t4) return [this.statAdj(.1, stats)];
+      return [this.statAdj(.05, stats)];
+    }
+  }]);
+
+  return PreFlop;
+}();
+
+
 
 /***/ }),
 
@@ -15649,6 +15829,10 @@ function () {
     var stats = {
       pfAgg: 1,
       pfCall: 1,
+      pfHigh: 1,
+      pfPair: 1,
+      pfSuit: 1,
+      pfConn: 1,
       flopAgg: 1,
       flopCall: 1,
       turnAgg: 1,
