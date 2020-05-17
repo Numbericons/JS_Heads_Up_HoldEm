@@ -4,7 +4,7 @@ import PostFlop from './postflop';
 
 
 export default class ComputerPlayer {
-  constructor(position, chipstack, cardDims, reveal) {
+  constructor(position, chipstack, cardDims, reveal, stats) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
