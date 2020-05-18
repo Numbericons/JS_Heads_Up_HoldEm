@@ -128,25 +128,11 @@ export default class PreFlop {
   getTeir(hand, stats){
     this.defineHand(hand);
     const t1 = this.pfTierOne();
-    debugger
     if (t1) return [this.statAdj(1, stats, t1), 'agg']; //3:1    1 * 3 * rand compare to .66    
-    // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
     const t2 = this.pfTierTwo();
     if (t2) return [this.statAdj(.35, stats, t2)];
-    // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
-    // .25 + (.25 / 3 * Math.random) 
-    //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
-    // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
-    // vill bets 100 into 200 pot >>  final pot 400, 100 to call -> .25 // 4
-    //  current pot / to_call
-    // bet 100 into 200   3:1
-    //.25 + (.25 * 3 * Math.random)   
-    // bet 200 into 100   300 / 200 ->> 1.5
-    // bet 1000 into 100   1100 / 1000 
-    // .25 + (.5 * 3 * random)
     const t3 = this.pfTierThree();
     if (t3) return [this.statAdj(.25, stats, t3)];
-    // .25 + .25 * 3 * rand
     const t4 = this.pfTierFour();     
     if (t4) return [this.statAdj(.15, stats, t4)];
     const t5 = this.pfTierFive();     
@@ -155,3 +141,20 @@ export default class PreFlop {
     return [this.statAdj(.05, stats)];
   }
 }
+
+//t1
+  // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
+//t2
+  // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
+  // .25 + (.25 / 3 * Math.random) 
+  //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
+  // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
+  // vill bets 100 into 200 pot >>  final pot 400, 100 to call -> .25 // 4
+  //  current pot / to_call
+  // bet 100 into 200   3:1
+  //.25 + (.25 * 3 * Math.random)   
+  // bet 200 into 100   300 / 200 ->> 1.5
+  // bet 1000 into 100   1100 / 1000 
+  // .25 + (.5 * 3 * random)
+//t3
+  // .25 + .25 * 3 * rand
