@@ -13190,8 +13190,7 @@ function () {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
-      debugger;
-      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, stats, boardCards) : this.preFlop.getTeir(this.hand, stats);
       var auto = evalArr[1] ? evalArr[1] : null;
       var betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
       if (auto === 'agg') return betRaise;
@@ -13518,7 +13517,7 @@ function () {
     }
   }, {
     key: "getTeir",
-    value: function getTeir(hand, boardCards) {
+    value: function getTeir(hand, stats, boardCards) {
       this.defineHand(hand, boardCards);
       var texture = this.texture();
       var handAttr = this.handAttr();
@@ -13902,7 +13901,7 @@ function () {
   }, {
     key: "suited",
     value: function suited() {
-      return this.hand[0][1] === this.hand[1][1];
+      return this.hand[0].suit === this.hand[1].suit;
     }
   }, {
     key: "sideCard",
@@ -13933,20 +13932,20 @@ function () {
     value: function pfTierTwo() {
       if (this.compHands(["1s", "1h"]) === this.handSolved) return ['pfPair'];
       if (this.inclRank("A")) return ['pfHigh'];
-      if (this.inclRank("K") && this.suited()) return ['pfHigh', 'pfSuit'];
-      if (this.inclRank("K")) return sideRank("K", "T", "Q", ['pfHigh']);
-      if (this.inclRank("Q")) return sideRank("Q", "9", "J", ['pfHigh']);
-      if (this.inclRank("J")) return sideRank("J", "T", "T", ['pfHigh']);
-      if (this.inclRank("T") && this.suited) return sideRank("T", "9", "9", ['pfSuit', 'pfConn']);
-      if (this.inclRank("9") && this.suited) return sideRank("9", "8", "8", ['pfSuit', 'pfConn']);
+      if (this.inclRank("K") && this.suited()) return ['pfHigh'];
+      if (this.inclRank("K")) return this.sideRank("K", "T", "Q", ['pfHigh']);
+      if (this.inclRank("Q")) return this.sideRank("Q", "9", "J", ['pfHigh']);
+      if (this.inclRank("J")) return this.sideRank("J", "T", "T", ['pfHigh']);
+      if (this.inclRank("T") && this.suited) return this.sideRank("T", "9", "9", ['pfConn']);
+      if (this.inclRank("9") && this.suited) return this.sideRank("9", "8", "8", ['pfConn']);
       return false;
     }
   }, {
     key: "pfTierThree",
     value: function pfTierThree() {
-      if (this.inclRank("K") && this.suited()) return ['pfSuit', 'pfHigh'];
-      if (this.inclRank("Q") && this.suited()) return ['pfSuit'];
-      if (this.inclRank("J") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("K") && this.suited()) return ['pfHigh'];
+      if (this.inclRank("Q") && this.suited()) return [];
+      if (this.inclRank("J") && this.suited()) return [];
       if (this.inclRank("Q")) return this.sideRank("Q", "8", "8", ['pfConn', 'pfHigh']);
       if (this.inclRank("J")) return this.sideRank("J", "7", "9", ['pfConn']);
       if (this.inclRank("T")) return this.sideRank("T", "6", "8", ['pfConn']);
@@ -13961,8 +13960,8 @@ function () {
     key: "pfTierFour",
     value: function pfTierFour() {
       if (this.inclRank("Q")) return [];
-      if (this.inclRank("T") && this.suited()) return ['pfSuit'];
-      if (this.inclRank("9") && this.suited()) return ['pfSuit'];
+      if (this.inclRank("T") && this.suited()) return [];
+      if (this.inclRank("9") && this.suited()) return [];
       if (this.inclRank("J")) return this.sideRank("J", "5", "6");
       if (this.inclRank("T")) return this.sideRank("T", "5", "6");
       if (this.inclRank("9")) return this.sideRank("9", "4", "5");
@@ -13982,7 +13981,8 @@ function () {
   }, {
     key: "attrAdj",
     value: function attrAdj(num, stats, attr) {
-      attr.forEach(function (k) {
+      if (this.suited()) attr.push('pfSuit');
+      if (attr) attr.forEach(function (k) {
         num *= stats[k];
       });
       return num;
@@ -13999,12 +13999,13 @@ function () {
     key: "getTeir",
     value: function getTeir(hand, stats) {
       this.defineHand(hand);
+      debugger;
       var t1 = this.pfTierOne();
-      if (t1) return [this.statAdj(1, stats), 'agg']; //3:1    1 * 3 * rand compare to .66    
+      if (t1) return [this.statAdj(1, stats, t1), 'agg']; //3:1    1 * 3 * rand compare to .66    
       // 1 + (1 * 3 * Math.random) >= .66      1.x >= .66   always yes
 
       var t2 = this.pfTierTwo();
-      if (t2) return [this.statAdj(.25, stats)]; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
+      if (t2) return [this.statAdj(.25, stats, t2)]; // .5 + (.5 * 3 * Math.random) >= .66       .5 + 1.5 * rand   [1.5 * rand compared to .16]
       // .25 + (.25 / 3 * Math.random) 
       //villan bets 200 into 100 pot -> final pot 500, 200 to call   -> .4   //2.5
       // .25 + (.25 + .4 ( Math.random)) => .25 + .65 * rand  [0 -> .65]
@@ -14017,10 +14018,10 @@ function () {
       // .25 + (.5 * 3 * random)
 
       var t3 = this.pfTierThree();
-      if (t3) return [this.statAdj(.15, stats)]; // .25 + .25 * 3 * rand
+      if (t3) return [this.statAdj(.15, stats, t3)]; // .25 + .25 * 3 * rand
 
       var t4 = this.pfTierFour();
-      if (t4) return [this.statAdj(.1, stats)];
+      if (t4) return [this.statAdj(.1, stats, t4)];
       return [this.statAdj(.05, stats)];
     }
   }]);

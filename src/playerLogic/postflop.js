@@ -36,7 +36,7 @@ export default class PostFlop {
     }
   }
 
-  getTeir(hand, boardCards) {
+  getTeir(hand, stats, boardCards) {
     this.defineHand(hand, boardCards);
     const texture = this.texture();
     const handAttr = this.handAttr();
