@@ -13102,8 +13102,8 @@ function () {
     this.folded = false;
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
-    this.preFlop = new _preflop__WEBPACK_IMPORTED_MODULE_1__["default"]();
-    this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"]();
+    this.preFlop = new _preflop__WEBPACK_IMPORTED_MODULE_1__["default"](stats);
+    this.postFlop = new _postflop__WEBPACK_IMPORTED_MODULE_2__["default"](stats);
     this.hand = [];
     this.comp = true;
     this.reveal = reveal;
@@ -13465,9 +13465,10 @@ var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/po
 var PostFlop =
 /*#__PURE__*/
 function () {
-  function PostFlop() {
+  function PostFlop(stats) {
     _classCallCheck(this, PostFlop);
 
+    this.stats = stats;
     this.value = 0;
   }
 
@@ -13861,8 +13862,10 @@ var Hand = __webpack_require__(/*! pokersolver */ "./node_modules/pokersolver/po
 var PreFlop =
 /*#__PURE__*/
 function () {
-  function PreFlop() {
+  function PreFlop(stats) {
     _classCallCheck(this, PreFlop);
+
+    this.stats = stats;
   }
 
   _createClass(PreFlop, [{
@@ -13990,34 +13993,35 @@ function () {
     }
   }, {
     key: "attrAdj",
-    value: function attrAdj(num, stats, attr) {
+    value: function attrAdj(num, attr) {
+      var _this = this;
+
       if (this.suited()) attr.push('pfSuit');
-      if (attr) attr.forEach(function (k) {
-        num *= stats[k];
+      attr.forEach(function (k) {
+        num *= _this.stats[k];
       });
       return num;
     }
   }, {
     key: "statAdj",
-    value: function statAdj(num, stats, attr) {
-      return this.attrAdj(num, stats, attr) * stats['pfAgg'] * stats['pfCall'];
+    value: function statAdj(num, attr) {
+      return this.attrAdj(num, attr) * this.stats['pfAgg'] * this.stats['pfCall'];
     }
   }, {
     key: "getTeir",
-    value: function getTeir(hand, stats) {
+    value: function getTeir(hand) {
       this.defineHand(hand);
       var t1 = this.pfTierOne();
-      if (t1) return [this.statAdj(1, stats, t1), 'agg']; //3:1    1 * 3 * rand compare to .66    
-
+      if (t1) return [this.statAdj(1, t1), 'agg'];
       var t2 = this.pfTierTwo();
-      if (t2) return [this.statAdj(.35, stats, t2)];
+      if (t2) return [this.statAdj(.35, t2)];
       var t3 = this.pfTierThree();
-      if (t3) return [this.statAdj(.25, stats, t3)];
+      if (t3) return [this.statAdj(.25, t3)];
       var t4 = this.pfTierFour();
-      if (t4) return [this.statAdj(.15, stats, t4)];
+      if (t4) return [this.statAdj(.15, t4)];
       var t5 = this.pfTierFive();
-      if (t5) return [this.statAdj(.1, stats, t5)];
-      return [this.statAdj(.05, stats)];
+      if (t5) return [this.statAdj(.1, t5)];
+      return [this.statAdj(.05, [])];
     }
   }]);
 
@@ -14336,7 +14340,11 @@ function () {
     value: function minBet(bet) {
       if (bet === this.board.otherPlayer().chipstack + this.board.isSb()) return bet; //bet is already opponents remaining chips and min legal would otherwise be higher
 
-      if (this.board.streetActions.length === 0) return bet < this.board.bb ? this.board.bb : bet;
+      if (this.board.streetActions.length === 0) {
+        if (this.board.isSb()) return bet < this.board.bb + this.board.sb ? this.board.bb + this.board.sb : bet;
+        return bet < this.board.bb ? this.board.bb : bet;
+      }
+
       var lastBet = this.board.streetActions[this.board.streetActions.length - 1] || 0; // let sb = this.board.isSb();
 
       var min;

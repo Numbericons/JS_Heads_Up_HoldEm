@@ -1,6 +1,7 @@
 const Hand = require('pokersolver').Hand;
 export default class PostFlop {
-  constructor() {
+  constructor(stats) {
+    this.stats = stats;
     this.value = 0;
   }
 

@@ -1,7 +1,8 @@
 const Hand = require('pokersolver').Hand;
 
 export default class PreFlop {
-  constructor() {
+  constructor(stats) {
+    this.stats = stats;
   }
   
   handVal(hand){
@@ -115,30 +116,31 @@ export default class PreFlop {
     this.handSolved = this.handVal(hand);
   }
 
-  attrAdj(num, stats, attr) {
+  attrAdj(num, attr) {
     if (this.suited()) attr.push('pfSuit');
-    if (attr) attr.forEach(k => { num *= stats[k] });
+    attr.forEach(k => { num *= this.stats[k] });
     return num;
   }
 
-  statAdj(num, stats, attr) {
-    return this.attrAdj(num, stats, attr) * stats['pfAgg'] * stats['pfCall'];
+  statAdj(num, attr) {
+    return this.attrAdj(num, attr) * this.stats['pfAgg'] * this.stats['pfCall'];
   }
 
-  getTeir(hand, stats){
+  getTeir(hand){
     this.defineHand(hand);
-    const t1 = this.pfTierOne();
-    if (t1) return [this.statAdj(1, stats, t1), 'agg']; //3:1    1 * 3 * rand compare to .66    
-    const t2 = this.pfTierTwo();
-    if (t2) return [this.statAdj(.35, stats, t2)];
-    const t3 = this.pfTierThree();
-    if (t3) return [this.statAdj(.25, stats, t3)];
-    const t4 = this.pfTierFour();     
-    if (t4) return [this.statAdj(.15, stats, t4)];
-    const t5 = this.pfTierFive();     
-    if (t5) return [this.statAdj(.1, stats, t5)];
 
-    return [this.statAdj(.05, stats)];
+    const t1 = this.pfTierOne();
+    if (t1) return [this.statAdj(1, t1), 'agg'];    
+    const t2 = this.pfTierTwo();
+    if (t2) return [this.statAdj(.35, t2)];
+    const t3 = this.pfTierThree();
+    if (t3) return [this.statAdj(.25, t3)];
+    const t4 = this.pfTierFour();     
+    if (t4) return [this.statAdj(.15, t4)];
+    const t5 = this.pfTierFive();     
+    if (t5) return [this.statAdj(.1, t5)];
+
+    return [this.statAdj(.05, [])];
   }
 }
 

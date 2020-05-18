@@ -10,8 +10,8 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
-    this.preFlop = new PreFlop();
-    this.postFlop = new PostFlop();
+    this.preFlop = new PreFlop(stats);
+    this.postFlop = new PostFlop(stats);
     this.hand = [];
     this.comp = true;
     this.reveal = reveal;
