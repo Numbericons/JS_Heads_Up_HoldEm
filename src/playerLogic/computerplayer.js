@@ -44,17 +44,17 @@ export default class ComputerPlayer {
   }
 
   genPreflopBetRaise(betRaise){
-    return betRaise * this.nRadoms(3) * 1.3 + 1; //from 1.75
+    return betRaise * this.nRandoms(3) * 1.3 + 1; //from 1.75
   }
 
-  nRadoms(n) {
+  nRandoms(n) {
     let result = Math.random();
     for (let i=1;i<n.length;i++) { result = (result + Math.random()) / 2 }
     return result;
   }
 
   genBetRaise(to_call, pot, sb, isPreflop){
-    let randNum = this.nRadoms(3) * 2 * pot;
+    let randNum = this.nRandoms(3) * 2 * pot;
     let betRaise;
     if (randNum < to_call * 2) {
       betRaise = to_call * 2;
@@ -70,11 +70,11 @@ export default class ComputerPlayer {
   }
   
   adjByTeir(handTeir, potOdds){
-    return handTeir + (2 * handTeir * potOdds * this.nRadoms(3));
+    return handTeir + (2 * handTeir * potOdds * this.nRandoms(3));
   }
 
   isAggressor(){
-    if (this.aggressor) return this.nRadoms(3) >= .5;
+    if (this.aggressor) return this.nRandoms(3) >= .5;
   }
 
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
