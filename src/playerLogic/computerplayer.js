@@ -91,7 +91,6 @@ export default class ComputerPlayer {
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
     if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
     let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand); 
-    debugger
     const betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
     if (evalArr[1] === 'agg') return betRaise;
 
