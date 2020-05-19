@@ -36,7 +36,7 @@ export default class PreFlop {
 
   sideCard(side, min, max, attr) {
     let rank = this.convertVal(side.rank);
-    if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return [true, attr];
+    if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return attr;
   }
 
   sideRank(main, minRank, maxRank, attr) {
@@ -86,7 +86,7 @@ export default class PreFlop {
     if (this.inclRank("Q")) return this.sideRank("Q", "8", "8", ['pfConn', 'pfHigh']);
     if (this.inclRank("J")) return this.sideRank("J", "7", "9", ['pfConn']);
     if (this.inclRank("T")) return this.sideRank("T", "6", "9", ['pfConn']);
-    if (this.inclRank("9")) return this.sideRank("9", "5", "8", ['pfConn']);
+    if (this.inclRank("9")) return this.sideRank("9", "6", "8", ['pfConn']);
     if (this.inclRank("8")) return this.sideRank("8", "5", "7", ['pfConn']);
     if (this.inclRank("7")) return this.sideRank("7", "5", "6", ['pfConn']);
     if (this.inclRank("6")) return this.sideRank("6", "5", "5", ['pfConn']);
@@ -99,11 +99,11 @@ export default class PreFlop {
     if (this.inclRank("T") && this.suited()) return [];
     if (this.inclRank("9") && this.suited()) return [];
 
-    if (this.inclRank("J")) return this.sideRank("J", "5", "6");
-    if (this.inclRank("T")) return this.sideRank("T", "5", "5");
-    if (this.inclRank("9")) return this.sideRank("9", "4", "4");
-    if (this.inclRank("8")) return this.sideRank("8", "4", "4");
-    if (this.inclRank("7")) return this.sideRank("7", "4", "4");
+    if (this.inclRank("J")) return this.sideRank("J", "5", "6", []);
+    if (this.inclRank("T")) return this.sideRank("T", "5", "5", []);
+    if (this.inclRank("9")) return this.sideRank("9", "4", "5", []);
+    if (this.inclRank("8")) return this.sideRank("8", "4", "4", []);
+    if (this.inclRank("7")) return this.sideRank("7", "4", "4", []);
     if (this.inclRank("6")) return this.sideRank("6", "4", "4", ['pfConn']);
     if (this.inclRank("5")) return this.sideRank("5", "3", "3", ['pfConn']);
     if (this.inclRank("4")) return this.sideRank("4", "3", "3", ['pfConn']);
@@ -118,7 +118,8 @@ export default class PreFlop {
 
   attrAdj(num, attr) {
     if (this.suited()) attr.push('pfSuit');
-    attr.forEach(k => { num *= this.stats[k] });
+    const stats = this.stats
+    attr.forEach(k => { num *= stats[k] });
     return num;
   }
 

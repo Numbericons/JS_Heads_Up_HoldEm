@@ -13135,14 +13135,14 @@ function () {
     value: function promptAction() {}
   }, {
     key: "maxBet",
-    value: function maxBet(num, to_call, sb) {
-      var amount = num + to_call > this.chipstack ? this.chipstack : num;
-      return sb || to_call > 0 ? ['raise', amount] : ['bet', amount];
+    value: function maxBet(num, toCall, sb) {
+      var amount = num + toCall > this.chipstack ? this.chipstack : num;
+      return sb || toCall > 0 ? ['raise', amount] : ['bet', amount];
     }
   }, {
     key: "genPreflopBetRaise",
     value: function genPreflopBetRaise(betRaise) {
-      return betRaise * this.nRandoms(3) * 1.3 + 1; //from 1.75
+      return betRaise * this.nRandoms(3) * 1.3 + betRaise; //from 1.75
     }
   }, {
     key: "nRandoms",
@@ -13158,26 +13158,38 @@ function () {
   }, {
     key: "genBetRaise",
     value: function genBetRaise(toCall, pot, sb, isPreflop) {
-      var randNum = this.nRandoms(3) * 2 * pot;
+      var randNum = this.nRandoms(3) * 3 * pot;
       var betRaise;
 
       if (randNum < toCall * 2) {
-        betRaise = toCall * 2;
-        if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
-      } else if (randNum > 1.6 * pot) {
-        if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
+        betRaise = toCall * 2; // if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
+        // } else if (randNum > 1.6 * pot) {
+        //   if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
       } else {
-        betRaise = randNum > pot ? pot : randNum;
-        if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
+        var rand = this.nRandoms(1);
+
+        if (rand > .5) {
+          betRaise = randNum > pot ? pot : randNum;
+        } else {
+          betRaise = randNum > 2 * pot ? 2 * pot : randNum;
+        } // if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
+
       }
 
+      if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
       if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
       return this.maxBet(betRaise, toCall, sb);
     }
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      return handTeir + 2 * handTeir * potOdds * this.nRandoms(3);
+      //.25
+      //return 2 * handTeir * potOdds * this.nRandoms(3)) + handTeir;
+      var max = 2 * handTeir * potOdds;
+      var inverse = 1 / max;
+      var rng = this.nRandoms(3);
+      if (rng / inverse > max * .85) return 1;
+      return max * rng;
     }
   }, {
     key: "isAggressor",
@@ -13190,14 +13202,13 @@ function () {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
-      debugger;
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+      debugger;
       var betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
       if (evalArr[1] === 'agg') return betRaise;
       var adjToCall = toCall === 0 ? pot : toCall;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
-      debugger;
 
       if (evalArr[1] === 'fold' || teiredNum < .45) {
         return toCall > 0 ? ['fold'] : ['check'];
@@ -13961,7 +13972,7 @@ function () {
     key: "sideCard",
     value: function sideCard(side, min, max, attr) {
       var rank = this.convertVal(side.rank);
-      if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return [true, attr];
+      if (rank >= this.convertVal(min) && rank <= this.convertVal(max)) return attr;
     }
   }, {
     key: "sideRank",
@@ -14013,7 +14024,7 @@ function () {
       if (this.inclRank("Q")) return this.sideRank("Q", "8", "8", ['pfConn', 'pfHigh']);
       if (this.inclRank("J")) return this.sideRank("J", "7", "9", ['pfConn']);
       if (this.inclRank("T")) return this.sideRank("T", "6", "9", ['pfConn']);
-      if (this.inclRank("9")) return this.sideRank("9", "5", "8", ['pfConn']);
+      if (this.inclRank("9")) return this.sideRank("9", "6", "8", ['pfConn']);
       if (this.inclRank("8")) return this.sideRank("8", "5", "7", ['pfConn']);
       if (this.inclRank("7")) return this.sideRank("7", "5", "6", ['pfConn']);
       if (this.inclRank("6")) return this.sideRank("6", "5", "5", ['pfConn']);
@@ -14026,11 +14037,11 @@ function () {
       if (this.inclRank("Q")) return [];
       if (this.inclRank("T") && this.suited()) return [];
       if (this.inclRank("9") && this.suited()) return [];
-      if (this.inclRank("J")) return this.sideRank("J", "5", "6");
-      if (this.inclRank("T")) return this.sideRank("T", "5", "5");
-      if (this.inclRank("9")) return this.sideRank("9", "4", "4");
-      if (this.inclRank("8")) return this.sideRank("8", "4", "4");
-      if (this.inclRank("7")) return this.sideRank("7", "4", "4");
+      if (this.inclRank("J")) return this.sideRank("J", "5", "6", []);
+      if (this.inclRank("T")) return this.sideRank("T", "5", "5", []);
+      if (this.inclRank("9")) return this.sideRank("9", "4", "5", []);
+      if (this.inclRank("8")) return this.sideRank("8", "4", "4", []);
+      if (this.inclRank("7")) return this.sideRank("7", "4", "4", []);
       if (this.inclRank("6")) return this.sideRank("6", "4", "4", ['pfConn']);
       if (this.inclRank("5")) return this.sideRank("5", "3", "3", ['pfConn']);
       if (this.inclRank("4")) return this.sideRank("4", "3", "3", ['pfConn']);
@@ -14045,11 +14056,10 @@ function () {
   }, {
     key: "attrAdj",
     value: function attrAdj(num, attr) {
-      var _this = this;
-
       if (this.suited()) attr.push('pfSuit');
+      var stats = this.stats;
       attr.forEach(function (k) {
-        num *= _this.stats[k];
+        num *= stats[k];
       });
       return num;
     }
@@ -15913,7 +15923,8 @@ function () {
       semiBluff: 1,
       drawCall: 1,
       threeAgg: 1,
-      threeCall: 1
+      threeCall: 1,
+      betSize: 1
     };
     var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true); // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];
 

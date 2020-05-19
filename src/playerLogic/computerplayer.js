@@ -38,13 +38,13 @@ export default class ComputerPlayer {
 
   promptAction() {}
 
-  maxBet(num, to_call, sb) {
-    let amount =  (num + to_call > this.chipstack) ? this.chipstack : num;
-    return (sb || to_call > 0) ? ['raise', amount] : ['bet', amount];
+  maxBet(num, toCall, sb) {
+    let amount =  (num + toCall > this.chipstack) ? this.chipstack : num;
+    return (sb || toCall > 0) ? ['raise', amount] : ['bet', amount];
   }
 
   genPreflopBetRaise(betRaise){
-    return betRaise * this.nRandoms(3) * 1.3 + 1; //from 1.75
+    return betRaise * this.nRandoms(3) * 1.3 + betRaise; //from 1.75
   }
 
   nRandoms(n) {
@@ -54,23 +54,34 @@ export default class ComputerPlayer {
   }
 
   genBetRaise(toCall, pot, sb, isPreflop){
-    let randNum = this.nRandoms(3) * 2 * pot;
+    let randNum = this.nRandoms(3) * 3 * pot;
     let betRaise;
     if (randNum < toCall * 2) {
       betRaise = toCall * 2;
-      if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
-    } else if (randNum > 1.6 * pot) {
-      if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
+      // if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
+    // } else if (randNum > 1.6 * pot) {
+    //   if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
     } else {
-      betRaise = (randNum > pot) ? pot : randNum;
-      if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
+      let rand = this.nRandoms(1);
+      if (rand > .5) {
+        betRaise = (randNum > pot) ? pot : randNum;
+      } else {
+        betRaise = (randNum > 2 * pot) ? 2 * pot : randNum;
+      }
+      // if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     }
+    if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
     return this.maxBet(betRaise, toCall, sb);
   }
   
-  adjByTeir(handTeir, potOdds){
-    return handTeir + (2 * handTeir * potOdds * this.nRandoms(3));
+  adjByTeir(handTeir, potOdds){ //.25
+    //return 2 * handTeir * potOdds * this.nRandoms(3)) + handTeir;
+    const max = 2 * handTeir * potOdds
+    const inverse =  1 / max;
+    const rng = this.nRandoms(3);
+    if (rng / inverse > max * .85) return 1;
+    return max * rng;
   }
 
   isAggressor(){
@@ -79,8 +90,8 @@ export default class ComputerPlayer {
 
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
     if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
-    debugger
     let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand); 
+    debugger
     const betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
     if (evalArr[1] === 'agg') return betRaise;
 
@@ -88,7 +99,6 @@ export default class ComputerPlayer {
     const potOdds = (adjToCall + pot) / adjToCall;
     const teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
-    debugger
     if (evalArr[1] === 'fold' || teiredNum < .45) {
       return toCall > 0 ? ['fold'] : ['check'];
     } else if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
@@ -178,4 +188,3 @@ export default class ComputerPlayer {
     this.revealed = this.reveal;
   }
 }
-
