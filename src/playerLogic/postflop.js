@@ -84,7 +84,6 @@ export default class PostFlop {
   }
 
   statAdj(arr, boardCards, handAttr) {
-    debugger
     if (boardCards.length < 5) arr = this.drawAdj(arr, boardCards, handAttr);
     return this.strAdj(arr, boardCards.length);
   }
