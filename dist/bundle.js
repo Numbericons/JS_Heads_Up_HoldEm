@@ -13190,7 +13190,7 @@ function () {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
-      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, this.stats, boardCards) : this.preFlop.getTeir(this.hand, this.stats);
+      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var auto = evalArr[1] ? evalArr[1] : null;
       var betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
       if (auto === 'agg') return betRaise;
@@ -13515,15 +13515,66 @@ function () {
         case "A":
           return 14;
       }
+    } //{ pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
+    // flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
+    // semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1
+    // kicker: this.kicker(),
+    // fCards: this.flushCards(true),
+    // straight: this.straightTexture(this.handSolved.cards),
+    // beatsBoard: this.beatsBoard(),
+    // cardsUsed: this.cardsUsed(),
+    //gutters: 0, three: false, openEnd: false, smThree: false, threeGap: false, threeTwoGap: false }
+
+  }, {
+    key: "strChk",
+    value: function strChk(handAttr, num) {
+      if (num === 4) {
+        if (handAttr['straight']['gutters'] === 2 || handAttr['straight']['openEnd']) return true;
+      } else {
+        if (handAttr['straight']['gutters'] === 1 || handAttr['straight']['three'] || handAttr['straight']['smThree'] || handAttr['straight']['threeGap'] || handAttr['straight']['threeTwoGap']) return true;
+      }
+    }
+  }, {
+    key: "drawAdj",
+    value: function drawAdj(arr, boardCards, handAttr) {
+      var cardsRem = boardCards.length === 3 ? 2 : 1;
+      if (handAttr['fCards'][0] === 4) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
+      if (handAttr['fCards'][0] === 3) arr[0] *= this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem;
+      var three = this.strChk(handAttr, 3);
+      var four = this.strChk(handAttr, 4);
+      if (three) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
+      if (four) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
+      return arr;
+    }
+  }, {
+    key: "getStr",
+    value: function getStr(len) {
+      if (len === 3) return 'flop';
+      if (len === 4) return 'turn';
+      if (len === 5) return 'river';
+    }
+  }, {
+    key: "strAdj",
+    value: function strAdj(arr, len) {
+      var street = this.getStr(len);
+      arr[0] *= this.stats["".concat(street, "Agg")] * this.stats["".concat(street, "Call")];
+      return arr;
+    }
+  }, {
+    key: "statAdj",
+    value: function statAdj(arr, boardCards, handAttr) {
+      debugger;
+      if (boardCards.length < 5) arr = this.drawAdj(arr, boardCards, handAttr);
+      return this.strAdj(arr, boardCards.length);
     }
   }, {
     key: "getTeir",
-    value: function getTeir(hand, stats, boardCards) {
+    value: function getTeir(hand, boardCards) {
       this.defineHand(hand, boardCards);
       var texture = this.texture();
       var handAttr = this.handAttr();
-      if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
-      return this.flushMinus(texture, handAttr);
+      var arr = this.handSolved.rank > 6 ? this.fHousePlus(texture, handAttr) : this.flushMinus(texture, handAttr);
+      return this.statAdj(arr, boardCards, handAttr);
     }
   }, {
     key: "defineHand",
@@ -13562,20 +13613,20 @@ function () {
     value: function flushMinus(texture, handArr) {
       if (this.handSolved.rank === 6) return this.flush(texture, handArr);
       var flushCards = handArr['fcards'];
-      var val;
+      var arr;
 
       if (this.handSolved.rank === 5) {
-        val = this.straight(texture, handArr);
-        val *= 2;
+        arr = this.straight(texture, handArr);
+        arr[0] *= 2;
       } else if (this.handSolved.rank === 4 || this.handSolved.rank === 3) {
-        val = this.handSolved.rank === 4 ? this.trips(texture, handArr) : this.twoPair(texture, handArr);
-        val *= 1.25;
+        arr = this.handSolved.rank === 4 ? this.trips(texture, handArr) : this.twoPair(texture, handArr);
+        arr[0] *= 1.25;
       } else {
-        val = this.pairMinus(texture, handArr);
-        val = val * 1.25 + .5;
+        arr = this.pairMinus(texture, handArr);
+        arr[0] = arr[0] * 1.25 + .5;
       }
 
-      return val;
+      return arr;
     }
   }, {
     key: "beatsBoard",
