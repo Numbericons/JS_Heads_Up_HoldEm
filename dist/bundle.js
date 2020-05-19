@@ -13142,11 +13142,11 @@ function () {
   }, {
     key: "genPreflopBetRaise",
     value: function genPreflopBetRaise(betRaise) {
-      return betRaise * this.nRadoms(3) * 1.3 + 1; //from 1.75
+      return betRaise * this.nRandoms(3) * 1.3 + 1; //from 1.75
     }
   }, {
-    key: "nRadoms",
-    value: function nRadoms(n) {
+    key: "nRandoms",
+    value: function nRandoms(n) {
       var result = Math.random();
 
       for (var i = 1; i < n.length; i++) {
@@ -13157,12 +13157,12 @@ function () {
     }
   }, {
     key: "genBetRaise",
-    value: function genBetRaise(to_call, pot, sb, isPreflop) {
-      var randNum = this.nRadoms(3) * 2 * pot;
+    value: function genBetRaise(toCall, pot, sb, isPreflop) {
+      var randNum = this.nRandoms(3) * 2 * pot;
       var betRaise;
 
-      if (randNum < to_call * 2) {
-        betRaise = to_call * 2;
+      if (randNum < toCall * 2) {
+        betRaise = toCall * 2;
         if (sb) betRaise = betRaise >= 3 * sb ? betRaise : 3 * sb;
       } else if (randNum > 1.6 * pot) {
         if (sb) betRaise = randNum > 3 * sb ? randNum : 3 * sb;
@@ -13172,17 +13172,17 @@ function () {
       }
 
       if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-      return this.maxBet(betRaise, to_call, sb);
+      return this.maxBet(betRaise, toCall, sb);
     }
   }, {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
-      return handTeir + 2 * handTeir * potOdds * this.nRadoms(3);
+      return handTeir + 2 * handTeir * potOdds * this.nRandoms(3);
     }
   }, {
     key: "isAggressor",
     value: function isAggressor() {
-      if (this.aggressor) return this.nRadoms(3) >= .5;
+      if (this.aggressor) return this.nRandoms(3) >= .5;
     }
   }, {
     key: "promptResponse",

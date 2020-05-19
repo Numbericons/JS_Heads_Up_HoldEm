@@ -53,11 +53,11 @@ export default class ComputerPlayer {
     return result;
   }
 
-  genBetRaise(to_call, pot, sb, isPreflop){
+  genBetRaise(toCall, pot, sb, isPreflop){
     let randNum = this.nRandoms(3) * 2 * pot;
     let betRaise;
-    if (randNum < to_call * 2) {
-      betRaise = to_call * 2;
+    if (randNum < toCall * 2) {
+      betRaise = toCall * 2;
       if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
     } else if (randNum > 1.6 * pot) {
       if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
@@ -66,7 +66,7 @@ export default class ComputerPlayer {
       if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     }
     if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-    return this.maxBet(betRaise, to_call, sb);
+    return this.maxBet(betRaise, toCall, sb);
   }
   
   adjByTeir(handTeir, potOdds){
