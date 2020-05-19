@@ -13203,7 +13203,6 @@ function () {
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      debugger;
       var betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
       if (evalArr[1] === 'agg') return betRaise;
       var adjToCall = toCall === 0 ? pot : toCall;
