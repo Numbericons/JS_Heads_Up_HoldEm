@@ -87,9 +87,9 @@ export default class ComputerPlayer {
     const potOdds = (adjToCall + pot) / adjToCall;
     const teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
-    if (auto === 'fold' || teiredNum < .45) {
+    if (evalArr[1] === 'fold' || teiredNum < .45) {
       return to_call > 0 ? ['fold'] : ['check'];
-    } else if (auto === 'call' || this.chipstack === to_call || teiredNum < .85) {
+    } else if (evalArr[1] === 'call' || this.chipstack === to_call || teiredNum < .85) {
       return to_call > 0 ? ['call'] : betRaise;
     } else {
       return betRaise;
