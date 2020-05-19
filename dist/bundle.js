@@ -13186,21 +13186,23 @@ function () {
     }
   }, {
     key: "promptResponse",
-    value: function promptResponse(to_call, pot, sb, isPreflop) {
+    value: function promptResponse(toCall, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
-      if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
+      if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
+      debugger;
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      var betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
+      var betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
       if (evalArr[1] === 'agg') return betRaise;
-      var adjToCall = to_call === 0 ? pot : to_call;
+      var adjToCall = toCall === 0 ? pot : toCall;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
+      debugger;
 
       if (evalArr[1] === 'fold' || teiredNum < .45) {
-        return to_call > 0 ? ['fold'] : ['check'];
-      } else if (evalArr[1] === 'call' || this.chipstack === to_call || teiredNum < .85) {
-        return to_call > 0 ? ['call'] : betRaise;
+        return toCall > 0 ? ['fold'] : ['check'];
+      } else if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
+        return toCall > 0 ? ['call'] : betRaise;
       } else {
         return betRaise;
       }
