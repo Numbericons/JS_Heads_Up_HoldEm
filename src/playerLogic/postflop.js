@@ -93,8 +93,8 @@ export default class PostFlop {
     this.defineHand(hand, boardCards);
     const texture = this.texture();
     const handAttr = this.handAttr();
-    const arr = (this.handSolved.rank > 6) ? this.fHousePlus(texture, handAttr) : this.flushMinus(texture, handAttr);
-    return this.statAdj(arr, boardCards, handAttr);
+    if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
+    return this.statAdj(this.flushMinus(texture, handAttr), boardCards, handAttr);
   }
 
   defineHand(hand, boardCards) {

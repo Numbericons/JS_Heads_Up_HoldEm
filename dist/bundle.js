@@ -13191,9 +13191,8 @@ function () {
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
       if (aggAction && this.isAggressor()) return this.genBetRaise(to_call, pot, sb, isPreflop);
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-      var auto = evalArr[1] ? evalArr[1] : null;
       var betRaise = this.genBetRaise(to_call, pot, sb, isPreflop);
-      if (auto === 'agg') return betRaise;
+      if (evalArr[1] === 'agg') return betRaise;
       var adjToCall = to_call === 0 ? pot : to_call;
       var potOdds = (adjToCall + pot) / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
@@ -13573,8 +13572,8 @@ function () {
       this.defineHand(hand, boardCards);
       var texture = this.texture();
       var handAttr = this.handAttr();
-      var arr = this.handSolved.rank > 6 ? this.fHousePlus(texture, handAttr) : this.flushMinus(texture, handAttr);
-      return this.statAdj(arr, boardCards, handAttr);
+      if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
+      return this.statAdj(this.flushMinus(texture, handAttr), boardCards, handAttr);
     }
   }, {
     key: "defineHand",
