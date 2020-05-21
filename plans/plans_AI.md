@@ -126,9 +126,14 @@ Methods:
 
 //Barreling off too often
 
+TO DO:
+Straight draws: Determine where the card(s) enabling the draw falls within the cards
+
+Slowplay x%? Currently trying to protect value range by including enough bluffs
+
+//Barreling off too often
+
 //Cap the amount that pot odds can favor a situation
   //or maybe tilt it towards calling when benefitting from big pot odds
-
-
 
 //check for length of board actions or previous raises etc. beyond the .85 threshhold in comp player
