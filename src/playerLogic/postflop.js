@@ -37,24 +37,24 @@ export default class PostFlop {
     }
   }
 
-  strChk(handAttr, num) {
+  strChk(obj, num) {
     if (num === 4) {
-      if (handAttr['straight']['gutters'] === 2 || handAttr['straight']['openEnd']) return true;
+      if (obj['straight']['gutters'] === 2 || obj['straight']['openEnd']) return true;
     } else {
-      if (handAttr['straight']['gutters'] === 1 || handAttr['straight']['three'] || handAttr['straight']['smThree'] || 
-          handAttr['straight']['threeGap'] || handAttr['straight']['threeTwoGap']) return true;
+      if (obj['straight']['gutters'] === 1 || obj['straight']['three'] || obj['straight']['smThree'] || 
+          obj['straight']['threeGap'] || obj['straight']['threeTwoGap']) return true;
     }
   }
 
-  drawAdj(arr, boardCards, handAttr) {
+  drawAdj(arr, boardCards, handAttr, texture) {
     const cardsRem = boardCards.length === 3 ? 2 : 1;
-    if (handAttr['fCards'][0] === 4) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
-    if (handAttr['fCards'][0] === 3) arr[0] *= this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem;
+    if (handAttr['fCards'][0] === 4 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
+    if (handAttr['fCards'][0] === 3 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .04;
 
-    const three = this.strChk(handAttr, 3);
-    const four = this.strChk(handAttr, 4);
-    if (three) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
-    if (four) arr[0] *= this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem;
+    const hand4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
+    const hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
+    if (hand4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
+    if (hand3) arr[0] += this.stats['semiBluff'] + this.stats['drawCall'] * cardsRem * .04;
 
     return arr;
   }
@@ -71,8 +71,8 @@ export default class PostFlop {
     return arr;
   }
 
-  statAdj(arr, boardCards, handAttr) {
-    if (boardCards.length < 5) arr = this.drawAdj(arr, boardCards, handAttr);
+  statAdj(arr, boardCards, handAttr, texture) {
+    if (boardCards.length < 5) arr = this.drawAdj(arr, boardCards, handAttr, texture);
     return this.strAdj(arr, boardCards.length);
   }
 
@@ -81,7 +81,7 @@ export default class PostFlop {
     const texture = this.texture();
     const handAttr = this.handAttr();
     if (this.handSolved.rank > 6) return this.fHousePlus(texture, handAttr);
-    return this.statAdj(this.flushMinus(texture, handAttr), boardCards, handAttr);
+    return this.statAdj(this.flushMinus(texture, handAttr), boardCards, handAttr, texture);
   }
 
   defineHand(hand, boardCards) {
