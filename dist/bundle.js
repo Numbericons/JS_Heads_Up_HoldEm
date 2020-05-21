@@ -13081,6 +13081,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
 /* harmony import */ var _preflop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./preflop */ "./src/playerLogic/preflop.js");
 /* harmony import */ var _postflop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./postflop */ "./src/playerLogic/postflop.js");
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13197,6 +13199,21 @@ function () {
       if (this.aggressor) return this.nRandoms(3) >= .5;
     }
   }, {
+    key: "currStreet",
+    value: function currStreet(boardCards) {
+      if (!boardCards.length) return 'pf';
+      if (boardCards.length === 3) return 'flop';
+      if (boardCards.length === 4) return 'turn';
+      if (boardCards.length === 5) return 'river';
+    }
+  }, {
+    key: "streetAdj",
+    value: function streetAdj(boardCards, num) {
+      var street = this.currStreet(boardCards);
+      var aggFactor = (this.stats["".concat(street, "Agg")] + this.stats["".concat(street, "Call")]) / this.stats["".concat(street, "Call")];
+      return num * aggFactor;
+    }
+  }, {
     key: "promptResponse",
     value: function promptResponse(toCall, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
@@ -13208,10 +13225,10 @@ function () {
       var adjToCall = toCall === 0 ? pot / 2 : toCall;
       var potOdds = pot / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
+      if (evalArr[1] === 'fold' || teiredNum < .45) return toCall > 0 ? ['fold'] : ['check'];
+      teiredNum = (_readOnlyError("teiredNum"), this.streetAdj(boardCards, teiredNum));
 
-      if (evalArr[1] === 'fold' || teiredNum < .45) {
-        return toCall > 0 ? ['fold'] : ['check'];
-      } else if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
+      if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
         return toCall > 0 ? ['call'] : betRaise;
       } else {
         return betRaise;
@@ -13465,8 +13482,6 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PostFlop; });
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13543,7 +13558,7 @@ function () {
     value: function straightAdj(arr, handAttr, texture, cardsRem) {
       var handTwo4 = this.strChk(handAttr, 4) && !this.strChk(texture, 3);
       var handOne4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
-      var hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
+      var hand3 = cardsRem > 1 && this.strChk(handAttr, 3) && !this.strChk(texture, 3);
 
       if (handTwo4) {
         arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .18;
@@ -13561,9 +13576,10 @@ function () {
       var kicker = this.flushKicker(handAttr['fCards'][1]);
       if (!kicker) return arr;
       var cardsUsed = 1;
-      if (this.hand[0].suit === this.hand[1].suit) cardsUsed += (_readOnlyError("cardsUsed"), 1);
+      if (this.hand[0].suit === this.hand[1].suit) cardsUsed += 1;
       if (handAttr['fCards'][0] === 4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .09 * cardsUsed;
-      if (handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .02 * cardsUsed;
+      if (cardsRem > 1 && handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * .02 * cardsUsed;
+      return arr;
     }
   }, {
     key: "drawAdj",
@@ -13911,6 +13927,7 @@ function () {
     value: function rankPair(texture, ranks) {
       var c1Idx = this.inclCard(ranks, 0);
       var c2Idx = this.inclCard(ranks, 1);
+      debugger;
       if (c1Idx > -1 || c2Idx > -1) return this.pairEval(texture, c1Idx > -1 ? c1Idx : c2Idx);
       return this.pocketEval(texture, ranks);
     }
@@ -13921,17 +13938,15 @@ function () {
       var card1Rank = this.convertVal(this.hand[0].rank);
       var card2Rank = this.convertVal(this.hand[1].rank);
       if (card1Rank === card2Rank) return 0;
-      if (card1Rank > ranks[0]) overs += 1;
-      if (card2Rank > ranks[0]) overs += 1;
+      if (card1Rank > ranks[target]) overs += 1;
+      if (card2Rank > ranks[target]) overs += 1;
       return overs * multi * this.stats['overCards'];
     }
   }, {
     key: "pairMinus",
     value: function pairMinus(texture, handAttr) {
       var val = handAttr['beatsBoard'] ? .07 : .05;
-      var ranks = this.boardRanks(); // let pairAdj;
-
-      debugger;
+      var ranks = this.boardRanks();
       if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
       val += this.overCards(ranks, 0, .05);
       val += this.overCards(ranks, 1, .02); //overs to mid card

@@ -49,7 +49,7 @@ export default class PostFlop {
   straightAdj(arr, handAttr, texture, cardsRem) {
     const handTwo4 = this.strChk(handAttr, 4) && !this.strChk(texture, 3);
     const handOne4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
-    const hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
+    const hand3 = cardsRem > 1 && this.strChk(handAttr, 3) && !this.strChk(texture, 3);
 
     if (handTwo4) {
       arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .18;
@@ -64,16 +64,15 @@ export default class PostFlop {
   flushAdj(arr, handAttr, cardsRem) {
     const kicker = this.flushKicker(handAttr['fCards'][1]);
     if (!kicker) return arr;
-    const cardsUsed = 1;
+    let cardsUsed = 1;
     if (this.hand[0].suit === this.hand[1].suit) cardsUsed += 1;
-
     if (handAttr['fCards'][0] === 4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .09 * cardsUsed;
-    if (handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .02 * cardsUsed;
+    if (cardsRem > 1 && handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * .02 * cardsUsed;
+    return arr;
   }
 
   drawAdj(arr, boardCards, handAttr, texture) {
     const cardsRem = boardCards.length === 3 ? 2 : 1;
-
     arr = this.flushAdj(arr, handAttr, cardsRem)
     arr = this.straightAdj(arr, handAttr, texture, cardsRem);
 
@@ -350,6 +349,7 @@ export default class PostFlop {
   rankPair(texture, ranks) {
     const c1Idx = this.inclCard(ranks, 0);
     const c2Idx = this.inclCard(ranks, 1);
+    debugger
     if (c1Idx > -1 || c2Idx > -1) return this.pairEval(texture, c1Idx > -1 ? c1Idx : c2Idx);
     return this.pocketEval(texture, ranks);
   }
@@ -360,16 +360,14 @@ export default class PostFlop {
     const card2Rank = this.convertVal(this.hand[1].rank);
     if (card1Rank === card2Rank) return 0;
 
-    if (card1Rank > ranks[0]) overs += 1; 
-    if (card2Rank > ranks[0]) overs += 1; 
+    if (card1Rank > ranks[target]) overs += 1; 
+    if (card2Rank > ranks[target]) overs += 1; 
     return overs * multi * this.stats['overCards']
   }
 
   pairMinus(texture, handAttr) {
     let val = handAttr['beatsBoard'] ? .07 : .05;
     const ranks = this.boardRanks();
-    // let pairAdj;
-    debugger
     if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
 
     val += this.overCards(ranks, 0, .05);

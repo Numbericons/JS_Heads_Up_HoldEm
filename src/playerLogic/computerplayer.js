@@ -88,6 +88,19 @@ export default class ComputerPlayer {
     if (this.aggressor) return this.nRandoms(3) >= .5;
   }
 
+  currStreet(boardCards) {
+    if (!boardCards.length) return 'pf';
+    if (boardCards.length === 3) return 'flop';
+    if (boardCards.length === 4) return 'turn';
+    if (boardCards.length === 5) return 'river';
+  }
+
+  streetAdj(boardCards, num) {
+    const street = this.currStreet(boardCards);
+    const aggFactor = (this.stats[`${street}Agg`] + this.stats[`${street}Call`]) / this.stats[`${street}Call`]
+    return num * aggFactor;
+  }
+
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
     if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
     let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
@@ -98,9 +111,9 @@ export default class ComputerPlayer {
     const potOdds = pot / adjToCall;
     const teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
-    if (evalArr[1] === 'fold' || teiredNum < .45) {
-      return toCall > 0 ? ['fold'] : ['check'];
-    } else if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
+    if (evalArr[1] === 'fold' || teiredNum < .45) return toCall > 0 ? ['fold'] : ['check'];
+    teiredNum = this.streetAdj(boardCards, teiredNum);
+    if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
       return toCall > 0 ? ['call'] : betRaise;
     } else {
       return betRaise;
