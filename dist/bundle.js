@@ -13081,8 +13081,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _pokerLogic_chipstack__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../pokerLogic/chipstack */ "./src/pokerLogic/chipstack.js");
 /* harmony import */ var _preflop__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./preflop */ "./src/playerLogic/preflop.js");
 /* harmony import */ var _postflop__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./postflop */ "./src/playerLogic/postflop.js");
-function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13226,7 +13224,7 @@ function () {
       var potOdds = pot / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
       if (evalArr[1] === 'fold' || teiredNum < .45) return toCall > 0 ? ['fold'] : ['check'];
-      teiredNum = (_readOnlyError("teiredNum"), this.streetAdj(boardCards, teiredNum));
+      teiredNum = this.streetAdj(boardCards, teiredNum);
 
       if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
         return toCall > 0 ? ['call'] : betRaise;
@@ -13927,7 +13925,6 @@ function () {
     value: function rankPair(texture, ranks) {
       var c1Idx = this.inclCard(ranks, 0);
       var c2Idx = this.inclCard(ranks, 1);
-      debugger;
       if (c1Idx > -1 || c2Idx > -1) return this.pairEval(texture, c1Idx > -1 ? c1Idx : c2Idx);
       return this.pocketEval(texture, ranks);
     }

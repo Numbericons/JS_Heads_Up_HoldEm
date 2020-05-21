@@ -108,7 +108,7 @@ export default class ComputerPlayer {
 
     const adjToCall = (toCall === 0) ? pot / 2 : toCall;
     const potOdds = pot / adjToCall;
-    const teiredNum = this.adjByTeir(evalArr[0], potOdds);
+    let teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
     if (evalArr[1] === 'fold' || teiredNum < .45) return toCall > 0 ? ['fold'] : ['check'];
     teiredNum = this.streetAdj(boardCards, teiredNum);

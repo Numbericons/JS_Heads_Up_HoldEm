@@ -349,7 +349,6 @@ export default class PostFlop {
   rankPair(texture, ranks) {
     const c1Idx = this.inclCard(ranks, 0);
     const c2Idx = this.inclCard(ranks, 1);
-    debugger
     if (c1Idx > -1 || c2Idx > -1) return this.pairEval(texture, c1Idx > -1 ? c1Idx : c2Idx);
     return this.pocketEval(texture, ranks);
   }
