@@ -13526,16 +13526,7 @@ function () {
         case "A":
           return 14;
       }
-    } //{ pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-    // flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-    // semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1
-    // kicker: this.kicker(),
-    // fCards: this.flushCards(true),
-    // straight: this.straightTexture(this.handSolved.cards),
-    // beatsBoard: this.beatsBoard(),
-    // cardsUsed: this.cardsUsed(),
-    //gutters: 0, three: false, openEnd: false, smThree: false, threeGap: false, threeTwoGap: false }
-
+    }
   }, {
     key: "strChk",
     value: function strChk(handAttr, num) {
@@ -13580,7 +13571,6 @@ function () {
   }, {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
-      debugger;
       this.defineHand(hand, boardCards);
       var texture = this.texture();
       var handAttr = this.handAttr();
@@ -13621,20 +13611,17 @@ function () {
     }
   }, {
     key: "flushMinus",
-    value: function flushMinus(texture, handArr) {
-      if (this.handSolved.rank === 6) return this.flush(texture, handArr);
-      var flushCards = handArr['fCards'];
+    value: function flushMinus(texture, handAttr) {
+      if (this.handSolved.rank === 6) return this.flush(texture, handAttr);
+      var flushCards = handAttr['fCards'];
       var arr;
 
       if (this.handSolved.rank === 5) {
-        arr = this.straight(texture, handArr);
-        arr[0] *= 2;
+        arr = this.straight(texture, handAttr); // arr[0] *= 2;
       } else if (this.handSolved.rank === 4 || this.handSolved.rank === 3) {
-        arr = this.handSolved.rank === 4 ? this.trips(texture, handArr) : this.twoPair(texture, handArr);
-        arr[0] *= 1.25;
+        arr = this.handSolved.rank === 4 ? this.trips(texture, handAttr) : this.twoPair(texture, handAttr); // arr[0] *= 1.25;
       } else {
-        arr = this.pairMinus(texture, handArr);
-        arr[0] = arr[0] * 1.25 + .5;
+        arr = this.pairMinus(texture, handAttr); // arr[0] = arr[0] * 1.25 + .5
       }
 
       return arr;
@@ -13829,19 +13816,7 @@ function () {
     }
   }, {
     key: "kicker",
-    value: function kicker() {} // nCard(num) {
-    //   let top = num - 1;
-    //   for (let i = 0, len = this.boardCards.length; i < len; i++) {
-    //     let val = this.convertVal(this.boardCards[i].rank);
-    //     if (val > top) top = val;
-    //   }
-    //   return top;
-    // }
-    // nPair(num) {
-    //   let nTop = this.nCard(num);
-    //   return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
-    // };
-
+    value: function kicker() {}
   }, {
     key: "boardRanks",
     value: function boardRanks() {
@@ -13916,14 +13891,14 @@ function () {
     }
   }, {
     key: "overCards",
-    value: function overCards(ranks) {
+    value: function overCards(ranks, target, multi) {
       var overs = 0;
       var card1Rank = this.convertVal(this.hand[0].rank);
       var card2Rank = this.convertVal(this.hand[1].rank);
       if (card1Rank === card2Rank) return 0;
       if (card1Rank > ranks[0]) overs += 1;
       if (card2Rank > ranks[0]) overs += 1;
-      return overs * .07 * this.stats['overCards'];
+      return overs * multi * this.stats['overCards'];
     }
   }, {
     key: "pairMinus",
@@ -13933,7 +13908,9 @@ function () {
 
       debugger;
       if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
-      val += this.overCards(ranks);
+      val += this.overCards(ranks, 0, .05);
+      val += this.overCards(ranks, 1, .02); //overs to mid card
+
       if (texture['fCards'][0] === 3) val /= 1.5;
       if (texture['fCards'][0] === 4) val /= 4;
       return [val];

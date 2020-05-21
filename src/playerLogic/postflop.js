@@ -77,7 +77,6 @@ export default class PostFlop {
   }
 
   getTeir(hand, boardCards) {
-    debugger
     this.defineHand(hand, boardCards);
     const texture = this.texture();
     const handAttr = this.handAttr();
@@ -114,21 +113,22 @@ export default class PostFlop {
     }
   }
 
-  flushMinus(texture, handArr){
-    if (this.handSolved.rank === 6) return this.flush(texture, handArr);
+  flushMinus(texture, handAttr){
+    if (this.handSolved.rank === 6) return this.flush(texture, handAttr);
 
-    const flushCards = handArr['fCards'];
+    const flushCards = handAttr['fCards'];
     let arr;
     if (this.handSolved.rank === 5) {
-      arr = this.straight(texture, handArr);
-      arr[0] *= 2;
+      arr = this.straight(texture, handAttr);
+      // arr[0] *= 2;
     } else if (this.handSolved.rank === 4 || this.handSolved.rank === 3) {
-      arr = this.handSolved.rank === 4 ? this.trips(texture,handArr) : this.twoPair(texture, handArr);
-      arr[0] *= 1.25;
+      arr = this.handSolved.rank === 4 ? this.trips(texture,handAttr) : this.twoPair(texture, handAttr);
+      // arr[0] *= 1.25;
     } else {
-      arr = this.pairMinus(texture, handArr);
-      arr[0] = arr[0] * 1.25 + .5
+      arr = this.pairMinus(texture, handAttr);
+      // arr[0] = arr[0] * 1.25 + .5
     }
+
     return arr;
   }
 
@@ -333,7 +333,7 @@ export default class PostFlop {
     return this.pocketEval(texture, ranks);
   }
 
-  overCards(ranks) {
+  overCards(ranks, target, multi) {
     let overs = 0;
     const card1Rank = this.convertVal(this.hand[0].rank);
     const card2Rank = this.convertVal(this.hand[1].rank);
@@ -341,7 +341,7 @@ export default class PostFlop {
 
     if (card1Rank > ranks[0]) overs += 1; 
     if (card2Rank > ranks[0]) overs += 1; 
-    return overs * .07 * this.stats['overCards']
+    return overs * multi * this.stats['overCards']
   }
 
   pairMinus(texture, handAttr) {
@@ -351,7 +351,8 @@ export default class PostFlop {
     debugger
     if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
 
-    val += this.overCards(ranks);
+    val += this.overCards(ranks, 0, .05);
+    val += this.overCards(ranks, 1, .02); //overs to mid card
     if (texture['fCards'][0] === 3) val /= 1.5;
     if (texture['fCards'][0] === 4) val /= 4;
     return [val];
