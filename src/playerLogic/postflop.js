@@ -37,18 +37,6 @@ export default class PostFlop {
     }
   }
 
-  //{ pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-  // flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-  // semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1
-
-  // kicker: this.kicker(),
-  // fCards: this.flushCards(true),
-  // straight: this.straightTexture(this.handSolved.cards),
-  // beatsBoard: this.beatsBoard(),
-  // cardsUsed: this.cardsUsed(),
-
-  //gutters: 0, three: false, openEnd: false, smThree: false, threeGap: false, threeTwoGap: false }
-
   strChk(handAttr, num) {
     if (num === 4) {
       if (handAttr['straight']['gutters'] === 2 || handAttr['straight']['openEnd']) return true;
@@ -286,20 +274,6 @@ export default class PostFlop {
   };
 
   kicker() { }
-
-  // nCard(num) {
-  //   let top = num - 1;
-  //   for (let i = 0, len = this.boardCards.length; i < len; i++) {
-  //     let val = this.convertVal(this.boardCards[i].rank);
-  //     if (val > top) top = val;
-  //   }
-  //   return top;
-  // }
-
-  // nPair(num) {
-  //   let nTop = this.nCard(num);
-  //   return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
-  // };
 
   boardRanks() {
     let order = [];
