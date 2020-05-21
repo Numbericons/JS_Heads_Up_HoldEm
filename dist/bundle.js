@@ -13465,6 +13465,8 @@ function () {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return PostFlop; });
+function _readOnlyError(name) { throw new Error("\"" + name + "\" is read-only"); }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -13537,15 +13539,38 @@ function () {
       }
     }
   }, {
+    key: "straightAdj",
+    value: function straightAdj(arr, handAttr, texture, cardsRem) {
+      var handTwo4 = this.strChk(handAttr, 4) && !this.strChk(texture, 3);
+      var handOne4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
+      var hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
+
+      if (handTwo4) {
+        arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .18;
+      } else if (handOne4) {
+        arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .11;
+      } else if (hand3) {
+        arr[0] += this.stats['semiBluff'] + this.stats['drawCall'] * cardsRem * .04;
+      }
+
+      return arr;
+    }
+  }, {
+    key: "flushAdj",
+    value: function flushAdj(arr, handAttr, cardsRem) {
+      var kicker = this.flushKicker(handAttr['fCards'][1]);
+      if (!kicker) return arr;
+      var cardsUsed = 1;
+      if (this.hand[0].suit === this.hand[1].suit) cardsUsed += (_readOnlyError("cardsUsed"), 1);
+      if (handAttr['fCards'][0] === 4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .09 * cardsUsed;
+      if (handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .02 * cardsUsed;
+    }
+  }, {
     key: "drawAdj",
     value: function drawAdj(arr, boardCards, handAttr, texture) {
       var cardsRem = boardCards.length === 3 ? 2 : 1;
-      if (handAttr['fCards'][0] === 4 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
-      if (handAttr['fCards'][0] === 3 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .04;
-      var hand4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
-      var hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
-      if (hand4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
-      if (hand3) arr[0] += this.stats['semiBluff'] + this.stats['drawCall'] * cardsRem * .04;
+      arr = this.flushAdj(arr, handAttr, cardsRem);
+      arr = this.straightAdj(arr, handAttr, texture, cardsRem);
       return arr;
     }
   }, {

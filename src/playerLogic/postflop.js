@@ -46,15 +46,36 @@ export default class PostFlop {
     }
   }
 
+  straightAdj(arr, handAttr, texture, cardsRem) {
+    const handTwo4 = this.strChk(handAttr, 4) && !this.strChk(texture, 3);
+    const handOne4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
+    const hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
+
+    if (handTwo4) {
+      arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .18;
+    } else if (handOne4) {
+      arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .11;
+    } else if (hand3) {
+      arr[0] += this.stats['semiBluff'] + this.stats['drawCall'] * cardsRem * .04;
+    }
+    return arr;
+  }
+
+  flushAdj(arr, handAttr, cardsRem) {
+    const kicker = this.flushKicker(handAttr['fCards'][1]);
+    if (!kicker) return arr;
+    const cardsUsed = 1;
+    if (this.hand[0].suit === this.hand[1].suit) cardsUsed += 1;
+
+    if (handAttr['fCards'][0] === 4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .09 * cardsUsed;
+    if (handAttr['fCards'][0] === 3) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .02 * cardsUsed;
+  }
+
   drawAdj(arr, boardCards, handAttr, texture) {
     const cardsRem = boardCards.length === 3 ? 2 : 1;
-    if (handAttr['fCards'][0] === 4 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
-    if (handAttr['fCards'][0] === 3 && this.flushKicker(handAttr['fCards'][1])) arr[0] += this.stats['threeAgg'] * this.stats['threeCall'] * cardsRem * .04;
 
-    const hand4 = this.strChk(handAttr, 4) && !this.strChk(texture, 4);
-    const hand3 = this.strChk(handAttr, 3) && !this.strChk(texture, 3);
-    if (hand4) arr[0] += this.stats['semiBluff'] * this.stats['drawCall'] * cardsRem * .15;
-    if (hand3) arr[0] += this.stats['semiBluff'] + this.stats['drawCall'] * cardsRem * .04;
+    arr = this.flushAdj(arr, handAttr, cardsRem)
+    arr = this.straightAdj(arr, handAttr, texture, cardsRem);
 
     return arr;
   }
