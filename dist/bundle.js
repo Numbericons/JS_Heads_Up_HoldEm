@@ -13046,25 +13046,31 @@ __webpack_require__.r(__webpack_exports__);
  // sleep(ms){
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
+// $(() => {
+//   const actionsCont = $('.table-bottom-actions');
+//   const table = new Table(actionsCont, false, false); //3rd arg is watch mode
+//   table.setup();
+// });
 
 $(function () {
-  var actionsCont = $('.table-bottom-actions');
-  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, false); //3rd arg is watch mode
+  var results = {
+    player1: 0,
+    player2: 0,
+    numHands: 0
+  };
+  var games = 100;
 
-  table.setup();
-}); // $(() => {
-// let results = { player1: 0, player2: 0 }
-// const games = 1000
-// for (let z=0; z<games; z++) {
-//   const table = new Table(null, true);
-//   const winner =  table.setup(true);
-// if (winner) results[winner] += 1;
-// results[numHands] += table.handNum;
-// }
-// $(".result-text-1").text(`Comp Player 1 wins: ${results['player1']} games`)
-// $(".result-text-2").text(`Comp Player 2 wins: ${results['player2']} games`)
-// $(".stats-1").text(`Average hands per game: ${results['numHands'] / games}`);
-// });
+  for (var z = 0; z < games; z++) {
+    var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
+    var winner = table.setup(true);
+    if (winner) results[winner] += 1;
+    results['numHands'] += table.handNum;
+  }
+
+  $(".result-text-1").text("Comp Player 1 wins: ".concat(results['player1'], " games"));
+  $(".result-text-2").text("Comp Player 2 wins: ".concat(results['player2'], " games"));
+  $(".stats-1").text("Average hands per game: ".concat(results['numHands'] / games));
+});
 
 /***/ }),
 
