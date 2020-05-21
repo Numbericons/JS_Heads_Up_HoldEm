@@ -2,7 +2,6 @@ import Chipstack from '../pokerLogic/chipstack';
 import PreFlop from './preflop';
 import PostFlop from './postflop';
 
-
 export default class ComputerPlayer {
   constructor(position, chipstack, cardDims, reveal, stats) {
     this.position = position;
