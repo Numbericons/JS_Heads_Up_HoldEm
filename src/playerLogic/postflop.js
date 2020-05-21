@@ -89,6 +89,7 @@ export default class PostFlop {
   }
 
   getTeir(hand, boardCards) {
+    debugger
     this.defineHand(hand, boardCards);
     const texture = this.texture();
     const handAttr = this.handAttr();
@@ -128,7 +129,7 @@ export default class PostFlop {
   flushMinus(texture, handArr){
     if (this.handSolved.rank === 6) return this.flush(texture, handArr);
 
-    const flushCards = handArr['fcards'];
+    const flushCards = handArr['fCards'];
     let arr;
     if (this.handSolved.rank === 5) {
       arr = this.straight(texture, handArr);
@@ -165,22 +166,6 @@ export default class PostFlop {
       if (this.chkCard(card,1)) used += 1;
     })
     return used;
-  };
-
-  kicker(){  }
-
-  nCard(num){
-    let top = num - 1;
-    for(let i = 0, len = this.boardCards.length; i < len; i++) {
-      let val = this.convertVal(this.boardCards[i].rank);
-      if(val > top) top = val;
-    }
-    return top;
-  }
-
-  nPair(num){
-    let nTop = this.nCard(num);
-    return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
   };
 
   fHousePlus(texture, handAttr) {
@@ -300,24 +285,101 @@ export default class PostFlop {
     return handAttr['beatsBoard'] ? [.7] : [.35, 'call'];
   };
 
-  pairMinus(texture, handAttr) {
-    let val = handAttr['beatsBoard'] ? .1 : .05;
-    if (this.nPair(1)) {
-      val += .75;
-      if (texture['lowHigh']) val *= 1.5;
-    } else if (this.nPair(2)) {
-      val += .3;
-      if (texture['lowHigh']) val *= 1.3;
-    } else if (this.nPair(3)) {
-      val += .25;
-      if (texture['lowHigh']) val *= 1.1;
-    } else if (this.nPair(4) || this.nPair(5)) {
-      val += .15;
-    } else {
-      val += .05;
+  kicker() { }
+
+  // nCard(num) {
+  //   let top = num - 1;
+  //   for (let i = 0, len = this.boardCards.length; i < len; i++) {
+  //     let val = this.convertVal(this.boardCards[i].rank);
+  //     if (val > top) top = val;
+  //   }
+  //   return top;
+  // }
+
+  // nPair(num) {
+  //   let nTop = this.nCard(num);
+  //   return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
+  // };
+
+  boardRanks() {
+    let order = [];
+    for (let i = 0; i < this.boardCards.length; i++) {
+      const val = this.convertVal(this.boardCards[i].rank);
+      if (!order.includes(val)) order.push(val);
     }
-    if (texture['fCards'] === 3) val /= 1.5;
-    if (texture['fCards'] === 4) val /= 4;
+    return order.sort((a,b) => b - a);
+  }
+
+  inclCard(ranks, idx) {
+    return ranks.indexOf(this.convertVal(this.hand[idx].rank));
+  }
+
+  pocketOvers(ranks) {
+    let overs = 0;
+    const ppRank = this.convertVal(this.hand[0].rank);
+    ranks.forEach(rank => { if (ppRank < rank) overs += 1 })
+    return overs;
+  }
+
+  pocketEval(texture, ranks) {
+    const overs = this.pocketOvers(ranks);
+    const lowHigh = texture['lowHigh'];
+    if (overs === 0) {
+      return lowHigh ? 1 : .75;
+    } else if (overs === 1) {
+      return lowHigh ? .5 : .35;
+    } else if (overs === 2) {
+      return lowHigh ? .35 : .3;
+    } else if (overs === 3) {
+      return lowHigh ? .21 : .18;
+    } else if (overs === 4) {
+      return lowHigh ? .15 : .12;
+    }
+  }
+  
+  pairEval(texture, idx) {
+    const lowHigh = texture['lowHigh'];
+    if (idx === 0) {
+      return lowHigh ? .9 : .6;
+    } else if (idx === 1) {
+      return lowHigh ? .45 : .3;
+    } else if (idx === 2) {
+      return lowHigh ? .3 : .25;
+    } else if (idx === 3) {
+      return lowHigh ? .18 : .15;
+    } else if (idx === 4) {
+      return lowHigh ? .12 : .10;
+    }
+  }
+  
+  rankPair(texture, ranks) {
+    const c1Idx = this.inclCard(ranks, 0);
+    const c2Idx = this.inclCard(ranks, 1);
+    if (c1Idx > -1 || c2Idx > -1) return this.pairEval(c1Idx > -1 ? c1Idx : c2Idx);
+    return this.pocketEval(texture, ranks);
+  }
+
+  overCards(ranks) {
+    let overs = 0;
+    const card1Rank = this.convertVal(this.hand[0].rank);
+    const card2Rank = this.convertVal(this.hand[1].rank);
+    if (card1Rank === card2Rank) return 0;
+
+    if (card1Rank > ranks[0]) overs += 1; 
+    if (card2Rank > ranks[0]) overs += 1; 
+    return overs * .07 * this.stats['overCards']
+  }
+
+  pairMinus(texture, handAttr) {
+    let val = handAttr['beatsBoard'] ? .07 : .05;
+    const ranks = this.boardRanks();
+    // let pairAdj;
+    debugger
+    if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
+
+    val += this.overCards(ranks);
+    if (texture['fCards'][0] === 3) val /= 1.5;
+    if (texture['fCards'][0] === 4) val /= 4;
     return [val];
   }
 

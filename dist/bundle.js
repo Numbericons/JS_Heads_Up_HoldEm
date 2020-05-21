@@ -13205,8 +13205,8 @@ function () {
       var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
       if (evalArr[1] === 'agg') return betRaise;
-      var adjToCall = toCall === 0 ? pot : toCall;
-      var potOdds = (adjToCall + pot) / adjToCall;
+      var adjToCall = toCall === 0 ? pot / 2 : toCall;
+      var potOdds = pot / adjToCall;
       var teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
       if (evalArr[1] === 'fold' || teiredNum < .45) {
@@ -13580,6 +13580,7 @@ function () {
   }, {
     key: "getTeir",
     value: function getTeir(hand, boardCards) {
+      debugger;
       this.defineHand(hand, boardCards);
       var texture = this.texture();
       var handAttr = this.handAttr();
@@ -13622,7 +13623,7 @@ function () {
     key: "flushMinus",
     value: function flushMinus(texture, handArr) {
       if (this.handSolved.rank === 6) return this.flush(texture, handArr);
-      var flushCards = handArr['fcards'];
+      var flushCards = handArr['fCards'];
       var arr;
 
       if (this.handSolved.rank === 5) {
@@ -13667,27 +13668,6 @@ function () {
         if (_this.chkCard(card, 1)) used += 1;
       });
       return used;
-    }
-  }, {
-    key: "kicker",
-    value: function kicker() {}
-  }, {
-    key: "nCard",
-    value: function nCard(num) {
-      var top = num - 1;
-
-      for (var i = 0, len = this.boardCards.length; i < len; i++) {
-        var val = this.convertVal(this.boardCards[i].rank);
-        if (val > top) top = val;
-      }
-
-      return top;
-    }
-  }, {
-    key: "nPair",
-    value: function nPair(num) {
-      var nTop = this.nCard(num);
-      return this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop;
     }
   }, {
     key: "fHousePlus",
@@ -13848,27 +13828,114 @@ function () {
       return handAttr['beatsBoard'] ? [.7] : [.35, 'call'];
     }
   }, {
-    key: "pairMinus",
-    value: function pairMinus(texture, handAttr) {
-      var val = handAttr['beatsBoard'] ? .1 : .05;
+    key: "kicker",
+    value: function kicker() {} // nCard(num) {
+    //   let top = num - 1;
+    //   for (let i = 0, len = this.boardCards.length; i < len; i++) {
+    //     let val = this.convertVal(this.boardCards[i].rank);
+    //     if (val > top) top = val;
+    //   }
+    //   return top;
+    // }
+    // nPair(num) {
+    //   let nTop = this.nCard(num);
+    //   return (this.convertVal(this.hand[0].rank) === nTop || this.convertVal(this.hand[1].rank) === nTop);
+    // };
 
-      if (this.nPair(1)) {
-        val += .75;
-        if (texture['lowHigh']) val *= 1.5;
-      } else if (this.nPair(2)) {
-        val += .3;
-        if (texture['lowHigh']) val *= 1.3;
-      } else if (this.nPair(3)) {
-        val += .25;
-        if (texture['lowHigh']) val *= 1.1;
-      } else if (this.nPair(4) || this.nPair(5)) {
-        val += .15;
-      } else {
-        val += .05;
+  }, {
+    key: "boardRanks",
+    value: function boardRanks() {
+      var order = [];
+
+      for (var i = 0; i < this.boardCards.length; i++) {
+        var val = this.convertVal(this.boardCards[i].rank);
+        if (!order.includes(val)) order.push(val);
       }
 
-      if (texture['fCards'] === 3) val /= 1.5;
-      if (texture['fCards'] === 4) val /= 4;
+      return order.sort(function (a, b) {
+        return b - a;
+      });
+    }
+  }, {
+    key: "inclCard",
+    value: function inclCard(ranks, idx) {
+      return ranks.indexOf(this.convertVal(this.hand[idx].rank));
+    }
+  }, {
+    key: "pocketOvers",
+    value: function pocketOvers(ranks) {
+      var overs = 0;
+      var ppRank = this.convertVal(this.hand[0].rank);
+      ranks.forEach(function (rank) {
+        if (ppRank < rank) overs += 1;
+      });
+      return overs;
+    }
+  }, {
+    key: "pocketEval",
+    value: function pocketEval(texture, ranks) {
+      var overs = this.pocketOvers(ranks);
+      var lowHigh = texture['lowHigh'];
+
+      if (overs === 0) {
+        return lowHigh ? 1 : .75;
+      } else if (overs === 1) {
+        return lowHigh ? .5 : .35;
+      } else if (overs === 2) {
+        return lowHigh ? .35 : .3;
+      } else if (overs === 3) {
+        return lowHigh ? .21 : .18;
+      } else if (overs === 4) {
+        return lowHigh ? .15 : .12;
+      }
+    }
+  }, {
+    key: "pairEval",
+    value: function pairEval(texture, idx) {
+      var lowHigh = texture['lowHigh'];
+
+      if (idx === 0) {
+        return lowHigh ? .9 : .6;
+      } else if (idx === 1) {
+        return lowHigh ? .45 : .3;
+      } else if (idx === 2) {
+        return lowHigh ? .3 : .25;
+      } else if (idx === 3) {
+        return lowHigh ? .18 : .15;
+      } else if (idx === 4) {
+        return lowHigh ? .12 : .10;
+      }
+    }
+  }, {
+    key: "rankPair",
+    value: function rankPair(texture, ranks) {
+      var c1Idx = this.inclCard(ranks, 0);
+      var c2Idx = this.inclCard(ranks, 1);
+      if (c1Idx > -1 || c2Idx > -1) return this.pairEval(c1Idx > -1 ? c1Idx : c2Idx);
+      return this.pocketEval(texture, ranks);
+    }
+  }, {
+    key: "overCards",
+    value: function overCards(ranks) {
+      var overs = 0;
+      var card1Rank = this.convertVal(this.hand[0].rank);
+      var card2Rank = this.convertVal(this.hand[1].rank);
+      if (card1Rank === card2Rank) return 0;
+      if (card1Rank > ranks[0]) overs += 1;
+      if (card2Rank > ranks[0]) overs += 1;
+      return overs * .07 * this.stats['overCards'];
+    }
+  }, {
+    key: "pairMinus",
+    value: function pairMinus(texture, handAttr) {
+      var val = handAttr['beatsBoard'] ? .07 : .05;
+      var ranks = this.boardRanks(); // let pairAdj;
+
+      debugger;
+      if (this.handSolved.rank === 2) val = this.rankPair(texture, ranks);
+      val += this.overCards(ranks);
+      if (texture['fCards'][0] === 3) val /= 1.5;
+      if (texture['fCards'][0] === 4) val /= 4;
       return [val];
     }
   }, {
@@ -15923,6 +15990,7 @@ function () {
       drawCall: 1,
       threeAgg: 1,
       threeCall: 1,
+      overCards: 1,
       betSize: 1
     };
     var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true); // this.players = [new ComputerPlayer("sb", initialChipstack, cardDims, true), new ComputerPlayer("bb", initialChipstack, cardDims, true)];

@@ -90,12 +90,12 @@ export default class ComputerPlayer {
 
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
     if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
-    let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand); 
+    let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     const betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
     if (evalArr[1] === 'agg') return betRaise;
 
-    const adjToCall = (toCall === 0) ? pot : toCall;
-    const potOdds = (adjToCall + pot) / adjToCall;
+    const adjToCall = (toCall === 0) ? pot / 2 : toCall;
+    const potOdds = pot / adjToCall;
     const teiredNum = this.adjByTeir(evalArr[0], potOdds);
 
     if (evalArr[1] === 'fold' || teiredNum < .45) {

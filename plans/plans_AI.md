@@ -112,6 +112,10 @@ Comp v. Comp
   1 comp is right but thinks its left
   render and non render
 
+//Add object to computer when created so stats can be changed more dynamically
+
+//add value for overcards
+
 Methods:
 
 // loLoHigh(){};
@@ -125,4 +129,6 @@ Methods:
 //Cap the amount that pot odds can favor a situation
   //or maybe tilt it towards calling when benefitting from big pot odds
 
-//Add object to computer when created so stats can be changed more dynamically
+
+
+//check for length of board actions or previous raises etc. beyond the .85 threshhold in comp player

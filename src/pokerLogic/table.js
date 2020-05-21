@@ -8,7 +8,7 @@ class Table {
   constructor($el, monte, watch, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
     const stats = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
                     flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-                    semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1,
+                    semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
                     betSize: 1
     }
     const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats) : new HumanPlayer("sb", initialChipstack, cardDims, true);
