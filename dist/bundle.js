@@ -13886,7 +13886,7 @@ function () {
     value: function rankPair(texture, ranks) {
       var c1Idx = this.inclCard(ranks, 0);
       var c2Idx = this.inclCard(ranks, 1);
-      if (c1Idx > -1 || c2Idx > -1) return this.pairEval(c1Idx > -1 ? c1Idx : c2Idx);
+      if (c1Idx > -1 || c2Idx > -1) return this.pairEval(texture, c1Idx > -1 ? c1Idx : c2Idx);
       return this.pocketEval(texture, ranks);
     }
   }, {
