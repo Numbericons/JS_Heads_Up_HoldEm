@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>JavaScript Hold'em Poker</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css" />
     <link rel="stylesheet" type="text/css" href="./stylesheets/output.css" />
     <link href="https://fonts.googleapis.com/css?family=Lora&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Rye&display=swap" rel="stylesheet">
@@ -13,19 +13,139 @@
     <link href="https://fonts.googleapis.com/css?family=Montserrat|Ubuntu&display=swap" rel="stylesheet">
     <link
       href="https://fonts.googleapis.com/css?family=Arvo|Catamaran|Merriweather|Merriweather+Sans|Open+Sans:700|PT+Sans&display=swap"
-      rel="stylesheet"> -->
+      rel="stylesheet">
     <script type="text/javascript" src="bundle.js"></script>
+    <link rel="icon" type="image/png" href="https://js-holdem.s3-us-west-1.amazonaws.com/chip_icon.png">
   </head>
   <body>
-    <div>
-      <h1>JavaScript Hold'em Poker Simulator</h1>
+    <div class="holdem-container">
+      <div class="top">
+        <div class="top-left">
+          <div>
+          </div>               
+          <div class="top-left-help">
+            <div class="body-blackout"></div>
+            <div class="popup-modal shadow" data-popup-modal="one">
+              <i class="fas fa-2x fa-times text-white bg-primary p-3 popup-modal__close"></i>
+              <div class="tutorial">
+                <h2 class="tutorial-text">How to Play:</h2>
+                <h5 class="tutorial-text-player">You, Mike McDermott, face a heads-up match against Teddy KGB. A man with suspected Russian mob ties, Teddy has agreed to play for 5 stacks of high society, or $50,000 US dollars.</h5>
+                <img class='tutorial-buttons-img' src="./image/buttons_tutorial5.png" alt="button help" width="96" height="96">
+                <ol class="tutorial-buttons-text" type="A">
+                  <li>3X or 1/2 Pot (grey): Wager 3 times the big blind for the first bet/raise preflop. Wager 1/2 of the current pot.</li>
+                  <li>4X or 2/3 Pot (grey): Wager 4 times the big blind for the first bet/raise preflop. Wager 2/3 of the current pot.</li>
+                  <li>5X or Pot (grey): Wager 5 times the big blind for the first bet/raise preflop. Wager the current pot.</li>
+                  <li>All In (grey): Wager all of your chips.</li>
+                  <li>Fold (red): Fold your hand, granting your opponent the pot.</li>
+                  <li>Call or Check (blue): Call, match the current bet for this action on this street. Check, decline the option to bet. </li>
+                  <li>Bet or Raise (green): Wager the amount in the Input Box.</li>
+                  <li>Input Box (white): Amount to wager. Default 2x the previous bet/raise or 2x the big blind on first preflop action.</li>
+                </ol>
+                <a class="tutorial-rules" href="https://upswingpoker.com/no-limit-texas-holdem-rules-poker/">No-Limit Texas Hold'Em Rules</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <h1 class="top-header top-header-glow">JavaScript Hold'em Poker</h1>
+        <div class="top-about">
+        </div>
+      </div>
+      <div class="table">
+        <div class="table-row">
+          <div class="table-trim">
+            <div class="player-info player-info-left">
+              <div class='player-info-container'>
+                <div class='player-info-cards player-info-cards-left'>
+                  <div class='player-info-left-cards-1'></div>
+                  <div class='player-info-left-cards-2'></div>
+                </div>
+                <div class="player-text-container player-text-container-left">
+                  <h5 id='player-info-left-chip-text-name' class="player-info-name"></h5>
+                  <div id="player-info-left-chip-line"></div>
+                  <h5 id='player-info-left-chip-text-chips' class="player-info-chips"></h5>
+                </div>
+                <img class='player-info-img' src="https://js-holdem.s3-us-west-1.amazonaws.com/malko5small.png" alt="player" width="96" height="96">
+              </div>
+            </div>
+
+            <div class="player-info player-info-right">
+              <div class='player-info-container'>
+                <img class='player-info-img' src="./image/MattDamonScuffedUpSmall.jpg" alt="player" width="96" height="96">
+                <div class='player-text-container player-text-container-right'>
+                  <h5 id='player-info-right-chip-text-name' class="player-info-name"></h5>
+                  <div id="player-info-right-chip-line"></div>
+                  <h5 id='player-info-right-chip-text-chips' class="player-info-chips"></h5>
+                </div>
+                <div class='player-info-cards player-info-cards-right'>
+                  <div class='player-info-right-cards-1'></div>
+                  <div class='player-info-right-cards-2'></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="table-felt">
+              <div class="table-felt-layover"></div>
+                <h5 class="top-left-current-pot-text"></h5>
+              <!-- </div> -->
+              <div class="table-felt-board">
+                <div class="table-felt-board-card-1"></div>
+                <div class="table-felt-board-card-2"></div>
+                <div class="table-felt-board-card-3"></div>
+                <div class="table-felt-board-card-4"></div>
+                <div class="table-felt-board-card-5"></div>
+              </div>
+              <div class="table-felt-dealer-btn">
+                <div class='table-felt-dealer-btn-img-left'>
+                  <img id='table-felt-dealer-btn-img-left' src="https://js-holdem.s3-us-west-1.amazonaws.com/poker-chip.svg" alt="Designed by www.flaticon.com">
+                  <h5 id="table-felt-board-bet-player-2"></h5>
+                </div>
+                <div class='table-felt-dealer-btn-img-right'>
+                  <h5 id="table-felt-board-bet-player-1"></h5>
+                  <img id='table-felt-dealer-btn-img-right' src="https://js-holdem.s3-us-west-1.amazonaws.com/poker-chip.svg" alt="Designed by www.flaticon.com">
+                </div>
+              </div>
+              <div id="table-felt-pot"></div>
+            </div>
+          </div>
+        </div>
+        <h3></h3>
+        <div class="table-bottom-actions-prompt-container">
+          <i class="fas fa-info"></i>
+          <h3 class="table-bottom-actions-prompt">...</h3>
+        </div>
+        <div class="table-bottom">
+          <div class="table-bottom-text">
+            <h6 class="table-bottom-text-header">Last Action:</h6>
+            <textarea class="table-bottom-text-chat" disabled></textarea>
+          </div>
+          <div class="table-bottom-actions"></div>
+          <div class="table-bottom-about">
+            <div class="table-bottom-about-links">
+              <button type="button" class="popup-trigger" data-popup-trigger="one">
+                TUTORIAL
+              </button>
+              <i class="fas fa-volume-up" id="volume-btn"></i>
+              <i class="fas fa-fast-forward" id="delay-btn"></i>
+              <a href="https://github.com/Numbericons/JS_Heads_Up_HoldEm">
+                <i class="fab fa-github-square"></i>
+              </a>
+              <a href="https://www.linkedin.com/in/zacharyjoliver/">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a class="table-bottom-about-links-name" href="http://zoliver.info/">Zachary Oliver</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="result">
-      <h4 class="result-text-1"></h4>
-      <h4 class="result-text-2"></h4>
+    <div id='keybinds'>
     </div>
-    <div class="stats">
-      <h4 class="stats-1"></h4>
-    </div>
+    <!-- <script src="/__/firebase/6.4.0/firebase-app.js"></script> -->
+    
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+            https://firebase.google.com/docs/web/setup#reserved-urls -->
+    
+    <!-- Initialize Firebase -->
+    <!-- <script src="/__/firebase/init.js"></script> -->
   </body>
 </html>
