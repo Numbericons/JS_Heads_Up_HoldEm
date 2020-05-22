@@ -3,19 +3,12 @@ import Board from "./board.js";
 import MonteBoard from "./monteboard.js";
 import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
+import CompStats from "../monte/compstats100";
 
 class Table {
   constructor($el, monte, watch, sound, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
-    const stats1 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-      flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-      semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
-      betSize: 1
-    }
-    const stats2 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-      flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-      semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
-      betSize: 1
-    }
+    const stats1 = CompStats['base'];
+    const stats2 = CompStats['base'];
     const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats1, sound) : new HumanPlayer("sb", initialChipstack, cardDims, true, true);
     this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, true, stats2, sound)];
     this.board = !monte ? new Board($el, this.players, sb, bb, this, true) : new MonteBoard($el, this.players, sb, bb, this, false);
