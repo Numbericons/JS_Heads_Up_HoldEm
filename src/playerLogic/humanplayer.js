@@ -1,6 +1,6 @@
 import Chipstack from '../pokerLogic/chipstack';
 export default class HumanPlayer {
-  constructor(position, chipstack, cardDims, reveal){
+  constructor(position, chipstack, cardDims, reveal, sound){
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -14,7 +14,7 @@ export default class HumanPlayer {
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.sound = true;
+    this.sound = sound;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');

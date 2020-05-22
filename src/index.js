@@ -6,15 +6,15 @@ import Table from './pokerLogic/table';
 
 // $(() => {
 //   const actionsCont = $('.table-bottom-actions');
-//   const table = new Table(actionsCont, false, false); //3rd arg is watch mode
+//   const table = new Table(actionsCont, false, false, true); //3rd arg is watch mode
 //   table.setup();
 // });
 
 $(() => {
   let results = { player1: 0, player2: 0, numHands: 0 }
-  const games = 100
+  const games = 100;
   for (let z=0; z<games; z++) {
-    const table = new Table(null, true);
+    const table = new Table(null, true,false,false);
     const winner =  table.setup(true);
     if (winner) results[winner] += 1;
     results['numHands'] += table.handNum;

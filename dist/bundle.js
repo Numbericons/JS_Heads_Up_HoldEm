@@ -13048,7 +13048,7 @@ __webpack_require__.r(__webpack_exports__);
 // }
 // $(() => {
 //   const actionsCont = $('.table-bottom-actions');
-//   const table = new Table(actionsCont, false, false); //3rd arg is watch mode
+//   const table = new Table(actionsCont, false, false, true); //3rd arg is watch mode
 //   table.setup();
 // });
 
@@ -13061,7 +13061,7 @@ $(function () {
   var games = 100;
 
   for (var z = 0; z < games; z++) {
-    var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true);
+    var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true, false, false);
     var winner = table.setup(true);
     if (winner) results[winner] += 1;
     results['numHands'] += table.handNum;
@@ -13100,7 +13100,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var ComputerPlayer =
 /*#__PURE__*/
 function () {
-  function ComputerPlayer(position, chipstack, cardDims, reveal, stats) {
+  function ComputerPlayer(position, chipstack, cardDims, reveal, stats, sound) {
     _classCallCheck(this, ComputerPlayer);
 
     this.position = position;
@@ -13119,11 +13119,14 @@ function () {
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     position === 'sb' ? this.num = 1 : this.num = 2;
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.sound = true;
+    this.sound = sound;
     this.stats = stats;
-    this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
-    this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
-    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
+
+    if (sound) {
+      this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+      this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
+      this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
+    }
   }
 
   _createClass(ComputerPlayer, [{
@@ -13361,7 +13364,7 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var HumanPlayer =
 /*#__PURE__*/
 function () {
-  function HumanPlayer(position, chipstack, cardDims, reveal) {
+  function HumanPlayer(position, chipstack, cardDims, reveal, sound) {
     _classCallCheck(this, HumanPlayer);
 
     this.position = position;
@@ -13377,7 +13380,7 @@ function () {
     this.aggressor = false;
     position === 'sb' ? this.side = 'right' : this.side = 'left';
     this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.sound = true;
+    this.sound = sound;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
@@ -14588,6 +14591,7 @@ function () {
     var sb = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 50;
     var bb = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 100;
     var table = arguments.length > 4 ? arguments[4] : undefined;
+    var sound = arguments.length > 5 ? arguments[5] : undefined;
 
     _classCallCheck(this, Board);
 
@@ -14610,11 +14614,14 @@ function () {
     this.cardDelay = 900;
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
-    this.sound = true;
+    this.sound = sound;
     this.delay = true;
-    this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
-    this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
-    this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+
+    if (sound) {
+      this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
+      this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
+      this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+    }
   }
 
   _createClass(Board, [{
@@ -15985,15 +15992,35 @@ function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _d
 var Table =
 /*#__PURE__*/
 function () {
-  function Table($el, monte, watch) {
-    var initialChipstack = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 50000;
-    var sb = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 500;
-    var bb = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 1000;
-    var cardDims = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : ["72px", "68px"];
+  function Table($el, monte, watch, sound) {
+    var initialChipstack = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : 50000;
+    var sb = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : 500;
+    var bb = arguments.length > 6 && arguments[6] !== undefined ? arguments[6] : 1000;
+    var cardDims = arguments.length > 7 && arguments[7] !== undefined ? arguments[7] : ["72px", "68px"];
 
     _classCallCheck(this, Table);
 
-    var stats = {
+    var stats1 = {
+      pfAgg: 1,
+      pfCall: 1,
+      pfHigh: 1,
+      pfPair: 1,
+      pfSuit: 1,
+      pfConn: 1,
+      flopAgg: 5,
+      flopCall: 5,
+      turnAgg: 5,
+      turnCall: 5,
+      riverAgg: 5,
+      riverCall: 5,
+      semiBluff: 1,
+      drawCall: 1,
+      threeAgg: 1,
+      threeCall: 1,
+      overCards: 1,
+      betSize: 1
+    };
+    var stats2 = {
       pfAgg: 1,
       pfCall: 1,
       pfHigh: 1,
@@ -16013,19 +16040,23 @@ function () {
       overCards: 1,
       betSize: 1
     };
-    var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true);
-    this.players = [player1, new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true, stats)];
-    this.board = !monte ? new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this) : new _monteboard_js__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this.players, sb, bb, this);
+    var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats1, sound) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true, true);
+    this.players = [player1, new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true, stats2, sound)];
+    this.board = !monte ? new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this, true) : new _monteboard_js__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this.players, sb, bb, this, false);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
-    this.sound = true;
+    this.sound = sound;
     this.delay = true;
-    this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
-    this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
-    this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
-    this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
-    this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
-    this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+
+    if (this.sound) {
+      this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
+      this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
+      this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
+      this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
+      this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
+      this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    }
+
     this.bindMuteBtn();
     this.bindDelayBtn();
   }

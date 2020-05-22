@@ -5,25 +5,32 @@ import HumanPlayer from "../playerLogic/humanplayer";
 import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
-  constructor($el, monte, watch, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
-    const stats = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
+  constructor($el, monte, watch, sound, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
+    const stats1 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
+      flopAgg: 5, flopCall: 5, turnAgg: 5, turnCall: 5, riverAgg: 5, riverCall: 5,
+      semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
+      betSize: 1
+    }
+    const stats2 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
                     flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
                     semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
                     betSize: 1
     }
-    const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats) : new HumanPlayer("sb", initialChipstack, cardDims, true);
-    this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, true, stats)];
-    this.board = !monte ? new Board($el, this.players, sb, bb, this) : new MonteBoard($el, this.players, sb, bb, this);
+    const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats1, sound) : new HumanPlayer("sb", initialChipstack, cardDims, true, true);
+    this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, true, stats2, sound)];
+    this.board = !monte ? new Board($el, this.players, sb, bb, this, true) : new MonteBoard($el, this.players, sb, bb, this, false);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
-    this.sound = true;
+    this.sound = sound;
     this.delay = true;
-    this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
-    this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
-    this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
-    this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
-    this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
-    this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    if (this.sound) {
+      this.win1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win1.wav');
+      this.win2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win2.wav');
+      this.win3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/win3.mp3');
+      this.loss1 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss1.wav');
+      this.loss2 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss2.wav');
+      this.loss3 = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/loss3.wav');
+    }
     this.bindMuteBtn();
     this.bindDelayBtn();
   }

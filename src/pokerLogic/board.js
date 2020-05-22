@@ -7,7 +7,7 @@ import Action from "./action";
 const Hand = require('pokersolver').Hand;
 
 export default class Board {
-  constructor($el, players, sb = 50, bb = 100, table) {
+  constructor($el, players, sb = 50, bb = 100, table, sound) {
     this.boardCards = [];
     this.deck = new Deck;
     this.button = new Button($el, this);
@@ -27,11 +27,13 @@ export default class Board {
     this.cardDelay = 900;
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
-    this.sound = true;
+    this.sound = sound;
     this.delay = true;
-    this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
-    this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
-    this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+    if (sound) {
+      this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
+      this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
+      this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+    }
   }
 
   currentPlayer() {
