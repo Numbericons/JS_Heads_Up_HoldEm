@@ -12,7 +12,7 @@ import Table from './pokerLogic/table';
 
 $(() => {
   let results = { player1: 0, player2: 0, numHands: 0 }
-  const games = 100;
+  const games = 200;
   for (let z=0; z<games; z++) {
     const table = new Table(null, true,false,false);
     const winner =  table.setup(true);

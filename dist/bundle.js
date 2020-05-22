@@ -13058,7 +13058,7 @@ $(function () {
     player2: 0,
     numHands: 0
   };
-  var games = 100;
+  var games = 200;
 
   for (var z = 0; z < games; z++) {
     var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](null, true, false, false);
@@ -16001,23 +16001,23 @@ function () {
     _classCallCheck(this, Table);
 
     var stats1 = {
-      pfAgg: Infinity,
-      pfCall: Infinity,
-      pfHigh: Infinity,
-      pfPair: Infinity,
-      pfSuit: Infinity,
-      pfConn: Infinity,
-      flopAgg: Infinity,
-      flopCall: Infinity,
-      turnAgg: Infinity,
-      turnCall: Infinity,
-      riverAgg: Infinity,
-      riverCall: Infinity,
-      semiBluff: Infinity,
-      drawCall: Infinity,
-      threeAgg: Infinity,
-      threeCall: Infinity,
-      overCards: Infinity,
+      pfAgg: 5,
+      pfCall: 5,
+      pfHigh: 5,
+      pfPair: 5,
+      pfSuit: 5,
+      pfConn: 5,
+      flopAgg: 1,
+      flopCall: 1,
+      turnAgg: 1,
+      turnCall: 1,
+      riverAgg: 1,
+      riverCall: 1,
+      semiBluff: 1,
+      drawCall: 1,
+      threeAgg: 1,
+      threeCall: 1,
+      overCards: 1,
       betSize: 1
     };
     var stats2 = {
@@ -16027,12 +16027,12 @@ function () {
       pfPair: 1,
       pfSuit: 1,
       pfConn: 1,
-      flopAgg: 1,
-      flopCall: 1,
-      turnAgg: 1,
-      turnCall: 1,
-      riverAgg: 1,
-      riverCall: 1,
+      flopAgg: 2,
+      flopCall: 2,
+      turnAgg: 2,
+      turnCall: 2,
+      riverAgg: 2,
+      riverCall: 2,
       semiBluff: 1,
       drawCall: 1,
       threeAgg: 1,
