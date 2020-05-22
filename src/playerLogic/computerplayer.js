@@ -67,7 +67,7 @@ export default class ComputerPlayer {
       if (rand > .5) {
         betRaise = (randNum > pot) ? pot : randNum;
       } else {
-        betRaise = (randNum > 2 * pot) ? 2 * pot : randNum;
+        betRaise = (randNum > 1.5 * pot) ? 1.5 * pot : randNum;
       }
       // if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     }
