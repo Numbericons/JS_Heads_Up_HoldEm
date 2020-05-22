@@ -6,9 +6,9 @@ import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
   constructor($el, monte, watch, sound, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
-    const stats1 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-      flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
-      semiBluff: 2, drawCall: 2, threeAgg: 2, threeCall: 2, overCards: 2,
+    const stats1 = { pfAgg: Infinity, pfCall: Infinity, pfHigh: Infinity, pfPair: Infinity, pfSuit: Infinity, pfConn: Infinity, 
+      flopAgg: Infinity, flopCall: Infinity, turnAgg: Infinity, turnCall: Infinity, riverAgg: Infinity, riverCall: Infinity,
+      semiBluff: Infinity, drawCall: Infinity, threeAgg: Infinity, threeCall: Infinity, overCards: Infinity,
       betSize: 1
     }
     const stats2 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
