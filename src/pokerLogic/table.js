@@ -7,8 +7,8 @@ import ComputerPlayer from "../playerLogic/computerplayer";
 class Table {
   constructor($el, monte, watch, sound, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
     const stats1 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-      flopAgg: 5, flopCall: 5, turnAgg: 5, turnCall: 5, riverAgg: 5, riverCall: 5,
-      semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
+      flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
+      semiBluff: 2, drawCall: 2, threeAgg: 2, threeCall: 2, overCards: 2,
       betSize: 1
     }
     const stats2 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
