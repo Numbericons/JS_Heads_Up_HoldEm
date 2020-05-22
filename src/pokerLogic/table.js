@@ -6,13 +6,13 @@ import ComputerPlayer from "../playerLogic/computerplayer";
 
 class Table {
   constructor($el, monte, watch, sound, initialChipstack = 50000, sb = 500, bb = 1000, cardDims = ["72px", "68px"]){
-    const stats1 = { pfAgg: 5, pfCall: 5, pfHigh: 5, pfPair: 5, pfSuit: 5, pfConn: 5, 
+    const stats1 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
       flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
       semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
       betSize: 1
     }
     const stats2 = { pfAgg: 1, pfCall: 1, pfHigh: 1, pfPair: 1, pfSuit: 1, pfConn: 1, 
-      flopAgg: 2, flopCall: 2, turnAgg: 2, turnCall: 2, riverAgg: 2, riverCall: 2,
+      flopAgg: 1, flopCall: 1, turnAgg: 1, turnCall: 1, riverAgg: 1, riverCall: 1,
       semiBluff: 1, drawCall: 1, threeAgg: 1, threeCall: 1, overCards: 1,
       betSize: 1
     }
