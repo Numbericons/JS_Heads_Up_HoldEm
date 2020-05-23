@@ -10,7 +10,7 @@ class Table {
     const stats1 = CompStats['base'];
     const stats2 = CompStats['base'];
     const player1 = monte || watch ? new ComputerPlayer("sb", initialChipstack, cardDims, true, stats1, sound) : new HumanPlayer("sb", initialChipstack, cardDims, true, true);
-    this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, true, stats2, sound)];
+    this.players = [player1, new ComputerPlayer("bb", initialChipstack, cardDims, false, stats2, sound)];
     this.board = !monte ? new Board($el, this.players, sb, bb, this, true) : new MonteBoard($el, this.players, sb, bb, this, false);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
