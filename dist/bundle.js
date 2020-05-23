@@ -13049,7 +13049,7 @@ __webpack_require__.r(__webpack_exports__);
 
 $(function () {
   var actionsCont = $('.table-bottom-actions');
-  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, true, true); //3rd arg is watch mode
+  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, false, true); //3rd arg is watch mode
 
   table.setup();
 }); // $(() => {
@@ -16157,7 +16157,7 @@ function () {
     var stats1 = _monte_compstats100__WEBPACK_IMPORTED_MODULE_5__["default"]['base'];
     var stats2 = _monte_compstats100__WEBPACK_IMPORTED_MODULE_5__["default"]['base'];
     var player1 = monte || watch ? new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("sb", initialChipstack, cardDims, true, stats1, sound) : new _playerLogic_humanplayer__WEBPACK_IMPORTED_MODULE_3__["default"]("sb", initialChipstack, cardDims, true, true);
-    this.players = [player1, new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, true, stats2, sound)];
+    this.players = [player1, new _playerLogic_computerplayer__WEBPACK_IMPORTED_MODULE_4__["default"]("bb", initialChipstack, cardDims, false, stats2, sound)];
     this.board = !monte ? new _board_js__WEBPACK_IMPORTED_MODULE_1__["default"]($el, this.players, sb, bb, this, true) : new _monteboard_js__WEBPACK_IMPORTED_MODULE_2__["default"]($el, this.players, sb, bb, this, false);
     this.handNum = 1;
     this.initialChipstack = initialChipstack;
