@@ -98,7 +98,7 @@ export default class ComputerPlayer {
 
   streetAdj(boardCards, num) {
     const street = this.currStreet(boardCards);
-    const aggFactor = (this.stats[`${street}Agg`] + this.stats[`${street}Call`]) / this.stats[`${street}Call`]
+    const aggFactor = this.stats[`${street}Agg`] / this.stats[`${street}Call`]
     return num * aggFactor;
   }
 

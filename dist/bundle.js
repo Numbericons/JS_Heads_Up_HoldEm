@@ -13049,7 +13049,7 @@ __webpack_require__.r(__webpack_exports__);
 
 $(function () {
   var actionsCont = $('.table-bottom-actions');
-  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, false, true); //3rd arg is watch mode
+  var table = new _pokerLogic_table__WEBPACK_IMPORTED_MODULE_0__["default"](actionsCont, false, true, true); //3rd arg is watch mode
 
   table.setup();
 }); // $(() => {
@@ -13369,7 +13369,7 @@ function () {
     key: "streetAdj",
     value: function streetAdj(boardCards, num) {
       var street = this.currStreet(boardCards);
-      var aggFactor = (this.stats["".concat(street, "Agg")] + this.stats["".concat(street, "Call")]) / this.stats["".concat(street, "Call")];
+      var aggFactor = this.stats["".concat(street, "Agg")] / this.stats["".concat(street, "Call")];
       return num * aggFactor;
     }
   }, {
