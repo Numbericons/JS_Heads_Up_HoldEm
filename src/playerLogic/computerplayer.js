@@ -81,7 +81,7 @@ export default class ComputerPlayer {
   }
 
   isAggressor(street){
-    if (this.aggressor) return street === 'pf' ? this.nRandoms(3) * this.stats['cBet'] >= .5 : this.nRandoms(3) * this.stats['barrel'] >= .5;
+    if (this.aggressor) return street === 'flop' ? this.nRandoms(3) * this.stats['cBet'] >= .5 : this.nRandoms(3) * this.stats['barrel'] >= .5;
   }
 
   currStreet(boardCards) {
