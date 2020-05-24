@@ -137,3 +137,7 @@ Slowplay x%? Currently trying to protect value range by including enough bluffs
   //or maybe tilt it towards calling when benefitting from big pot odds
 
 //check for length of board actions or previous raises etc. beyond the .85 threshhold in comp player
+
+//Adjust for position?
+
+//Rotating AI 

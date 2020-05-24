@@ -17,9 +17,9 @@ export default class ComputerPlayer {
     this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
-    (position === 'sb') ? this.side = 'right' : this.side = 'left';
-    (position === 'sb') ? this.num = 1 : this.num = 2;
-    (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.side = (position === 'sb') ? 'right' : this.side = 'left';
+    this.num = (position === 'sb') ? 1 : 2;
+    this.name = (this.side === 'right') ? 'Mike McDermott' : 'Teddy KGB';
     this.sound = sound;
     this.stats = stats;
     if (sound) {
@@ -59,9 +59,6 @@ export default class ComputerPlayer {
     let betRaise;
     if (randNum < toCall * 2) {
       betRaise = toCall * 2;
-      // if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
-    // } else if (randNum > 1.6 * pot) {
-    //   if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
     } else {
       let rand = this.nRandoms(1);
       if (rand > .5) {
@@ -69,7 +66,6 @@ export default class ComputerPlayer {
       } else {
         betRaise = (randNum > 1.5 * pot) ? 1.5 * pot : randNum;
       }
-      // if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     }
     if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
@@ -77,7 +73,6 @@ export default class ComputerPlayer {
   }
   
   adjByTeir(handTeir, potOdds){ //.25
-    //return 2 * handTeir * potOdds * this.nRandoms(3)) + handTeir;
     const max = 2 * handTeir * potOdds
     const inverse =  1 / max;
     const rng = this.nRandoms(3);
@@ -85,8 +80,8 @@ export default class ComputerPlayer {
     return max * rng;
   }
 
-  isAggressor(){
-    if (this.aggressor) return this.nRandoms(3) >= .5;
+  isAggressor(street){
+    if (this.aggressor) return street === 'pf' ? this.nRandoms(3) * this.stats['cBet'] >= .5 : this.nRandoms(3) * this.stats['barrel'] >= .5;
   }
 
   currStreet(boardCards) {
@@ -103,8 +98,9 @@ export default class ComputerPlayer {
   }
 
   promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
-    if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
-    let evalArr = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+    const street = this.currStreet(boardCards);
+    if (aggAction && this.isAggressor(street)) return this.genBetRaise(toCall, pot, sb, isPreflop);
+    let evalArr = (street !== 'pf') ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
     const betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
     if (evalArr[1] === 'agg') return betRaise;
 

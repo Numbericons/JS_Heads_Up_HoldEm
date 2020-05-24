@@ -13097,7 +13097,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   chart: {
     // Chart Reader - 5x all preflop values
@@ -13118,7 +13120,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   postAll2: {
     //All postflop values 2
@@ -13139,7 +13143,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   postAll5: {
     pfAgg: 1,
@@ -13159,7 +13165,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   postAllInf: {
     pfAgg: 1,
@@ -13179,7 +13187,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   potentialPeter: {
     //Draw values double
@@ -13200,7 +13210,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 2,
     threeCall: 2,
     overCards: 2,
-    betSize: 1
+    betSize: 1,
+    cBet: 1,
+    barrel: 1
   },
   doubleDutch: {
     // All values double
@@ -13221,7 +13233,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 2,
     threeCall: 2,
     overCards: 2,
-    betSize: 2
+    betSize: 2,
+    cBet: 1,
+    barrel: 1
   },
   infinityDutch: {
     // All values Infinite 
@@ -13242,7 +13256,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: Infinity,
     threeCall: Infinity,
     overCards: Infinity,
-    betSize: Infinity
+    betSize: Infinity,
+    cBet: 1,
+    barrel: 1
   },
   bigBetBerky: {
     // Matt Berky inspired, bet size 3
@@ -13263,7 +13279,9 @@ __webpack_require__.r(__webpack_exports__);
     threeAgg: 1,
     threeCall: 1,
     overCards: 1,
-    betSize: 3
+    betSize: 3,
+    cBet: 1,
+    barrel: 1
   }
 });
 
@@ -13311,9 +13329,9 @@ function () {
     this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
-    position === 'sb' ? this.side = 'right' : this.side = 'left';
-    position === 'sb' ? this.num = 1 : this.num = 2;
-    this.side === 'right' ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.side = position === 'sb' ? 'right' : this.side = 'left';
+    this.num = position === 'sb' ? 1 : 2;
+    this.name = this.side === 'right' ? 'Mike McDermott' : 'Teddy KGB';
     this.sound = sound;
     this.stats = stats;
 
@@ -13366,9 +13384,7 @@ function () {
       var betRaise;
 
       if (randNum < toCall * 2) {
-        betRaise = toCall * 2; // if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
-        // } else if (randNum > 1.6 * pot) {
-        //   if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
+        betRaise = toCall * 2;
       } else {
         var rand = this.nRandoms(1);
 
@@ -13376,8 +13392,7 @@ function () {
           betRaise = randNum > pot ? pot : randNum;
         } else {
           betRaise = randNum > 1.5 * pot ? 1.5 * pot : randNum;
-        } // if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
-
+        }
       }
 
       if (sb) betRaise = betRaise > 3 * sb ? betRaise : 3 * sb;
@@ -13388,7 +13403,6 @@ function () {
     key: "adjByTeir",
     value: function adjByTeir(handTeir, potOdds) {
       //.25
-      //return 2 * handTeir * potOdds * this.nRandoms(3)) + handTeir;
       var max = 2 * handTeir * potOdds;
       var inverse = 1 / max;
       var rng = this.nRandoms(3);
@@ -13397,8 +13411,8 @@ function () {
     }
   }, {
     key: "isAggressor",
-    value: function isAggressor() {
-      if (this.aggressor) return this.nRandoms(3) >= .5;
+    value: function isAggressor(street) {
+      if (this.aggressor) return street === 'pf' ? this.nRandoms(3) * this.stats['cBet'] >= .5 : this.nRandoms(3) * this.stats['barrel'] >= .5;
     }
   }, {
     key: "currStreet",
@@ -13420,8 +13434,9 @@ function () {
     value: function promptResponse(toCall, pot, sb, isPreflop) {
       var boardCards = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : [];
       var aggAction = arguments.length > 5 ? arguments[5] : undefined;
-      if (aggAction && this.isAggressor()) return this.genBetRaise(toCall, pot, sb, isPreflop);
-      var evalArr = boardCards.length > 0 ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+      var street = this.currStreet(boardCards);
+      if (aggAction && this.isAggressor(street)) return this.genBetRaise(toCall, pot, sb, isPreflop);
+      var evalArr = street !== 'pf' ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
       var betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
       if (evalArr[1] === 'agg') return betRaise;
       var adjToCall = toCall === 0 ? pot / 2 : toCall;
