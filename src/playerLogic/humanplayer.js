@@ -1,6 +1,6 @@
 import Chipstack from '../pokerLogic/chipstack';
 export default class HumanPlayer {
-  constructor(position, chipstack, cardDims){
+  constructor(position, chipstack, cardDims, reveal, sound){
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
@@ -8,44 +8,41 @@ export default class HumanPlayer {
     this.streetChipsInPot = 0;
     this.hand = [];
     this.comp = false;
-    this.revealed = true;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
     (position === 'sb') ? this.side = 'right' : this.side = 'left';
     (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
+    this.sound = sound;
     this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
     this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
     this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
   }
 
   promptText(input){
-    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
-    promptSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-prompt").innerText = input;
   }
 
   promptAction(to_call){
-    if (to_call === 0) {
-      this.promptText("...")
-    } else {
-      this.promptText(`$${to_call} to call`)
-    }
+    (to_call === 0) ? this.promptText("...") : this.promptText(`$${to_call} to call`);
   }
 
-  resolve_action(to_call, betInput, textInput, sb = 0) {
+  resolveAction(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
-      this.check.play();
+      if (this.sound) this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;
       return null;
     } else if (textInput === 'call') {
-      this.chipsCall.play();
+      if (this.sound) this.chipsCall.play();
       this.chipstack -= to_call;
       this.chipsInPot += to_call;
       this.streetChipsInPot += to_call;
       return to_call;
     } else {
-      this.chipsBet.play();
+      if (this.sound) this.chipsBet.play();
       this.chipstack = this.chipstack - betInput + sb;
       this.chipsInPot += betInput - sb;
       this.streetChipsInPot += betInput - sb;
@@ -56,14 +53,11 @@ export default class HumanPlayer {
   renderName(gameStarted, current) {
     let playerName = document.querySelector(`#player-info-${this.side}-chip-text-name`);
     playerName.innerText = this.name;
-    if (gameStarted) {
-      (current) ? playerName.className = 'glow' : playerName.className = 'player-info-name';
-    }
+    if (gameStarted) (current) ? playerName.className = 'glow' : playerName.className = 'player-info-name';
   }
 
-  renderTextChips(gameStarted, current) {
-    let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
-    playerChips.innerText = `$${this.chipstack}`;
+  renderTextChips() {
+    document.querySelector(`#player-info-${this.side}-chip-text-chips`).innerText = `$${this.chipstack}`;
   }
 
   renderCards() {
@@ -76,14 +70,11 @@ export default class HumanPlayer {
   }
 
   renderChips() {
-    let $stackDiv = $(`#table-felt-board-bet-player-1`);
-    let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
-    stack.render();
+    new Chipstack(this.streetChipsInPot, $(`#table-felt-board-bet-player-1`)).render();
   }
 
   unrenderChips(){
-    let $stackDiv = $(`#table-felt-board-bet-player-1`);
-    $stackDiv.empty();
+    $(`#table-felt-board-bet-player-1`).empty();
   }
 
   render(gameStarted, current){
@@ -98,5 +89,6 @@ export default class HumanPlayer {
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
     this.hand = [];
+    this.revealed = this.reveal
   }
 }

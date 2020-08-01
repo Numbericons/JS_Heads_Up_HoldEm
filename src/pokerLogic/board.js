@@ -7,7 +7,7 @@ import Action from "./action";
 const Hand = require('pokersolver').Hand;
 
 export default class Board {
-  constructor($el, players, sb = 50, bb = 100, table) {
+  constructor($el, players, sb = 50, bb = 100, table, sound) {
     this.boardCards = [];
     this.deck = new Deck;
     this.button = new Button($el, this);
@@ -27,9 +27,13 @@ export default class Board {
     this.cardDelay = 900;
     this.rightChips = $('#table-felt-board-bet-player-1');
     this.leftChips = $('#table-felt-board-bet-player-2');
-    this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
-    this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
-    this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+    this.sound = sound;
+    this.delay = true;
+    if (sound) {
+      this.shuffle = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/shuffle2.mp3');
+      this.cardTurn = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/cardTurnOver.mp3');
+      this.flop = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/flop.wav');
+    }
   }
 
   currentPlayer() {
@@ -42,7 +46,7 @@ export default class Board {
   }
 
   resetVars() {
-    this.$currPot.removeClass();
+    if (this.monte !== true) this.$currPot.removeClass();
     this.deck = new Deck;
     this.boardCards = [];
     this.pot = 0;
@@ -67,8 +71,8 @@ export default class Board {
     this.players[1].resetVars();
   }
 
-  async playHand() {
-    this.shuffle.play();
+  async playHand(monte) {
+    if (this.sound) this.shuffle.play();
     this.dealInPlayers();
     this.takeBlinds();
     this.render();
@@ -181,10 +185,7 @@ export default class Board {
   }
 
   dealInPlayers() {
-    this.dealPlayerCard(1, !this.players[1].comp);
-    this.dealPlayerCard(0, !this.players[0].comp);
-    this.dealPlayerCard(1, !this.players[1].comp);
-    this.dealPlayerCard(0, !this.players[0].comp);
+    for (let z=1;z<5;z++) { this.dealPlayerCard(z%2, !this.players[z%2].comp) }
   }
 
   takeBlinds() {
@@ -193,33 +194,51 @@ export default class Board {
     this.pot = sbTotal + bbTotal;
   }
 
-  async dealCard(sound) {
+  hideChips() {
+    this.rightChips.removeClass();
+    this.leftChips.removeClass();
+    this.rightChips.addClass('display-none');
+    this.leftChips.addClass('display-none');
+  }
+
+  hideButtons() {
+    this.button.$el.empty();
+  }
+
+  async dealCard() {
+    if (!this.monte) {
+      this.hideChips();
+      this.dispDealing();
+    }
     this.currPlayerPos = 1;
     this.boardCards.push(this.deck.draw());
-    if (sound) this.cardTurn.play();
-    this.showBoard();
+    if (this.sound) this.cardTurn.play();
+    if (!this.monte) this.showBoard();
   }
   
   async dealFlop() {
+    if (!this.monte) {
+      this.hideChips();
+      this.dispDealing();
+    }
     this.currPlayerPos = 1;
     for (let i = 0; i < 3; i++) {
-      if (i > 0) await this.sleep(this.cardDelay);
-      this.dealCard(true);
+      if (this.delay && i > 0) await this.sleep(this.cardDelay);
+      this.dealCard();
     }
   }
 
+  dispDealing() {
+    let textSelect = document.querySelector(".table-bottom-actions-prompt");
+    textSelect.innerText = `Dealing ${this.currStreet[0].toUpperCase() + this.currStreet.slice(1)}...`
+  }
+
   symbolBoard() {
-    let textBoard = this.boardCards.map(card => {
-      return card.show();
-    })
-    return textBoard;
+    return this.boardCards.map(card => { return card.show() });
   }
 
   textBoard() {
-    let textBoard = this.boardCards.map(card => {
-      return `${card.rank}${card.suit}`;
-    })
-    return textBoard;
+    return this.boardCards.map(card => { return `${card.rank}${card.suit}` })
   }
 
   sleep(ms){
@@ -240,18 +259,11 @@ export default class Board {
   }
 
   toggleCurrPlayer() {
-    if (this.currPlayerPos === 0) {
-      this.currPlayerPos = 1;
-    } else {
-      this.currPlayerPos = 0;
-    }
+    this.currPlayerPos = this.currPlayerPos === 0 ? 1 : 0;
   }
 
   allIn() {
-    if (this.players[0].chipstack === 0 || this.players[1].chipstack === 0) {
-      return true
-    }
-    return false;
+    return this.players[0].chipstack === 0 || this.players[1].chipstack === 0;
   }
 
   showPot() {
@@ -283,6 +295,8 @@ export default class Board {
   async render() {
     this.renderDealerPlayers();
     this.showPot();
+    this.rightChips.addClass('chips');
+    this.leftChips.addClass('chips');
     if (this.allIn() && this.handChipDiff() === 0) {
       await this.showDown();
       this.determineWinner();
@@ -317,36 +331,27 @@ export default class Board {
   async showDown() {
     this.revealCards();
     while (this.boardCards.length < 5) {
-      await this.sleep(this.cardDelay * 1.5);
-      this.dealCard(true);
+      if (this.delay) await this.sleep(this.cardDelay * 1.5);
+      this.dealCard();
       this.showBoard();
     }
   }
 
   combineChips(){
-    this.leftChips.addClass('chip-combine-left')
-    this.rightChips.addClass('chip-combine-right')
+    this.leftChips.addClass('chip-combine-left');
+    this.rightChips.addClass('chip-combine-right');
   }
 
   setAggressor(){
     this.otherPlayer().aggressor = false;
-    if (this.streetActions[this.streetActions.length - 2] > this.sb) {
-      this.currentPlayer().aggressor = true;
-    } else {
-      this.currentPlayer().aggressor = false;
-    }
+    this.streetActions[this.streetActions.length - 2] > this.sb ? this.currentPlayer().aggressor = true : this.currentPlayer().aggressor = false;
   }
 
   async stepStreet(flopBool) {
+    this.hideButtons();
     this.combineChips();
-    await this.sleep(1000);
-    this.rightChips.removeClass();
-    this.leftChips.removeClass();
-    if (flopBool) {
-      await this.dealFlop();
-    } else {
-      await this.dealCard(true);
-    }
+    if (this.delay) await this.sleep(1000);
+    flopBool ? await this.dealFlop() : await this.dealCard();
     if (!this.allIn()) this.render();
   }
   

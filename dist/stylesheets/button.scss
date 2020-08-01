@@ -20,38 +20,42 @@
     transition: 0.5s background;
 
     &-betorraise {
-      background: greenyellow;
+      background: #053aba;
+      // background: #108810;
 
       &:hover {
-        background: lime;
+        background: #076cd9;;
       }
     }
 
     &-callorcheck {
-      background: lightseagreen;
+      background: #38c3bb;
+      background: #34477f;
 
       &:hover {
-        background: deepskyblue;
+        background: #6465a6;
       }
     }
 
     &-fold {
-      background: orangered;
+      // background: orangered;
+      background: #6e2a39;
 
       &:hover {
-        background: red;
+        background: #a80f0f;
       }
     }
   }
   &-bet-amt{
     text-align: center;
-    background-color: white;
+    background-color: #868a99;
     color: black;
     font-size: 20px;
     border: none;
   }
   &-new-game{
-    background: limegreen;
+    // background: #108810;
+    background: #b52a2b;
     height: 55px;
     width: 160px;
     display: flex;
@@ -79,26 +83,42 @@
   width: 100%;
 
   &-text{
-    background: #555;
+    background: #0531b4;
     border: none;
     border-radius: 10px;
     color: white;
     cursor: pointer;
     font-size: 10px;
     font-weight: 700;
-    margin: 20px 10px;
+    margin: 1.5vh .5vh;
     padding: 10px;
   }
 }
 
 .fa-github-square{
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
   cursor: pointer;
 }
 
 .fa-linkedin{
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
+  cursor: pointer;
+}
+
+#volume-btn{
+  font-size: 2.25vh;
+  width: 2.25vh;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+#delay-btn{
+  font-size: 2.25vh;
+  width: 2.25vh;
+  background-color: white;
+  color: black;
   cursor: pointer;
 }

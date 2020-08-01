@@ -2,124 +2,125 @@ import Chipstack from '../pokerLogic/chipstack';
 import PreFlop from './preflop';
 import PostFlop from './postflop';
 
-
 export default class ComputerPlayer {
-  constructor(position, chipstack, cardDims) {
+  constructor(position, chipstack, cardDims, reveal, stats, sound) {
     this.position = position;
     this.chipstack = chipstack;
     this.folded = false;
     this.chipsInPot = 0;
     this.streetChipsInPot = 0;
-    this.preFlop = new PreFlop();
-    this.postFlop = new PostFlop();
+    this.preFlop = new PreFlop(stats);
+    this.postFlop = new PostFlop(stats);
     this.hand = [];
     this.comp = true;
-    this.revealed = true;
+    this.reveal = reveal;
+    this.revealed = reveal;
     this.cardDims = cardDims;
     this.aggressor = false;
-    (position === 'sb') ? this.side = 'right' : this.side = 'left';
-    (this.side === 'right') ? this.name = 'Mike McDermott' : this.name = 'Teddy KGB';
-    this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
-    this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
-    this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
+    this.side = (position === 'sb') ? 'right' : this.side = 'left';
+    this.num = (position === 'sb') ? 1 : 2;
+    this.name = (this.side === 'right') ? 'Mike McDermott' : 'Teddy KGB';
+    this.sound = sound;
+    this.stats = stats;
+    if (sound) {
+      this.chipsBet = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/raise.mp3');
+      this.chipsCall = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/call.wav');
+      this.check = new Audio('https://js-holdem.s3-us-west-1.amazonaws.com/Audio/check.wav');
+    }
   }
 
   text(input) {
-    let textSelect = document.querySelector(".table-bottom-actions-text");
-    textSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-text").innerText = input;
   }
 
   promptText(input) {
-    let promptSelect = document.querySelector(".table-bottom-actions-prompt");
-    promptSelect.innerText = input;
+    document.querySelector(".table-bottom-actions-prompt").innerText = input;
   }
 
   promptAction() {}
 
-  maxBet(num, to_call, sb) {
-    let amount =  (num + to_call > this.chipstack) ? this.chipstack : num;
-    return (sb || to_call > 0) ? ['raise', amount] : ['bet', amount];
+  maxBet(num, toCall, sb) {
+    let amount =  (num + toCall > this.chipstack) ? this.chipstack : num;
+    return (sb || toCall > 0) ? ['raise', amount] : ['bet', amount];
   }
 
   genPreflopBetRaise(betRaise){
-    let multiplier = Math.random() * 1.3 + 1 //from 1.75
-    return betRaise * multiplier;
+    return betRaise * this.nRandoms(3) * 1.3 + betRaise; //from 1.75
   }
 
-  genBetRaise(to_call, pot, sb, isPreflop){
-    let randNum = Math.random() * 2 * pot;
+  nRandoms(n) {
+    let result = Math.random();
+    for (let i=1;i<n.length;i++) { result = (result + Math.random()) / 2 }
+    return result;
+  }
+
+  genBetRaise(toCall, pot, sb, isPreflop){
+    let randNum = this.nRandoms(3) * 3 * pot;
     let betRaise;
-    if (randNum < to_call * 2) {
-      betRaise = to_call * 2;
-      if (sb) betRaise = (betRaise >= 3 * sb) ? betRaise : 3 * sb;
-    } else if (randNum > 1.6 * pot) {
-      if (sb) betRaise = (randNum > 3 * sb) ? randNum : 3 * sb;
+    if (randNum < toCall * 2) {
+      betRaise = toCall * 2;
     } else {
-      betRaise = (randNum > pot) ? pot : randNum;
-      if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
+      let rand = this.nRandoms(1);
+      if (rand > .5) {
+        betRaise = (randNum > pot) ? pot : randNum;
+      } else {
+        betRaise = (randNum > 1.5 * pot) ? 1.5 * pot : randNum;
+      }
     }
+    if (sb) betRaise = (betRaise > 3 * sb) ? betRaise : 3 * sb;
     if (isPreflop) betRaise = this.genPreflopBetRaise(betRaise);
-    return this.maxBet(betRaise, to_call, sb);
+    return this.maxBet(betRaise, toCall, sb);
   }
   
-  adjByTeir(handTeir, potOdds){
-    const autoAction = Math.random();
-    if (handTeir >= autoAction) return Infinity;
-    return handTeir + (2 * handTeir * potOdds * Math.random());
+  adjByTeir(handTeir, potOdds){ //.25
+    const max = 2 * handTeir * potOdds
+    const inverse =  1 / max;
+    const rng = this.nRandoms(3);
+    if (rng / inverse > max * .85) return 1;
+    return max * rng;
   }
 
-  isAggressor(){
-    if (this.aggressor) return Math.random() >= .5;
-    return false;
+  isAggressor(street){
+    if (this.aggressor) return street === 'flop' ? this.nRandoms(3) * this.stats['cBet'] >= .5 : this.nRandoms(3) * this.stats['barrel'] >= .5;
   }
-  promptResponse(to_call, pot, sb, isPreflop, boardCards = [], aggAction){
-    // if (boardCards.length === 1 || boardCards.length === 2) return; // avoid prompting mid flop deal
-    // move check if not done dealing to prompt logic
-    debugger
-    if (this.isAggressor && aggAction) return this.genBetRaise(to_call, pot, sb, isPreflop);
-    let handTeir = (boardCards.length > 0) ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
-    let adjToCall = (to_call === 0) ? pot : to_call;
-    let potOdds = (adjToCall + pot) / adjToCall;
-    let teiredNum = this.adjByTeir(handTeir, potOdds);
-    if (teiredNum < .333) {
-      if (to_call > 0) {
-        return ['fold'];
-      } else {
-          return ['check'];
-      }
-    } else if (this.chipstack === to_call) {
-      return ['call'];
-    } else if (teiredNum < .666) {
-      if (to_call > 0) {
-        return ['call'];
-      } else {
-        return ['check'];
-      }
+
+  currStreet(boardCards) {
+    if (!boardCards.length) return 'pf';
+    if (boardCards.length === 3) return 'flop';
+    if (boardCards.length === 4) return 'turn';
+    if (boardCards.length === 5) return 'river';
+  }
+
+  streetAdj(boardCards, num) {
+    const street = this.currStreet(boardCards);
+    const aggFactor = this.stats[`${street}Agg`] / this.stats[`${street}Call`]
+    return num * aggFactor;
+  }
+
+  promptResponse(toCall, pot, sb, isPreflop, boardCards = [], aggAction){
+    const street = this.currStreet(boardCards);
+    if (aggAction && this.isAggressor(street)) return this.genBetRaise(toCall, pot, sb, isPreflop);
+    let evalArr = (street !== 'pf') ? this.postFlop.getTeir(this.hand, boardCards) : this.preFlop.getTeir(this.hand);
+    const betRaise = this.genBetRaise(toCall, pot, sb, isPreflop);
+    if (evalArr[1] === 'agg') return betRaise;
+
+    const adjToCall = (toCall === 0) ? pot / 2 : toCall;
+    const potOdds = pot / adjToCall;
+    let teiredNum = this.adjByTeir(evalArr[0], potOdds);
+
+    if (evalArr[1] === 'fold' || teiredNum < .45) return toCall > 0 ? ['fold'] : ['check'];
+    teiredNum = this.streetAdj(boardCards, teiredNum);
+    if (evalArr[1] === 'call' || this.chipstack === toCall || teiredNum < .85) {
+      return toCall > 0 ? ['call'] : betRaise;
     } else {
-        return this.genBetRaise(to_call, pot, sb, isPreflop);
+      return betRaise;
     }
-    // if (teiredNum < potOdds) {
-    //   if (to_call > 0) {
-    //     return ['fold'];
-    //   } else {
-    //       return ['check'];
-    //   }
-    // } else if (this.chipstack === to_call) {
-    //   return ['call'];
-    // } else if (teiredNum < potOdds * 1.5) {
-    //   if (to_call > 0) {
-    //     return ['call'];
-    //   } else {
-    //     return ['check'];
-    //   }
-    // } else {
-    //     return this.genBetRaise(to_call, pot, sb, isPreflop);
-    // }
   }
+  
 
   resolveCall(to_call){
     let callAmt = (to_call > this.chipstack) ? this.chipstack : to_call;
-    this.chipsCall.play();
+    if (this.sound) this.chipsCall.play();
     this.chipstack -= callAmt;
     this.chipsInPot += callAmt;
     this.streetChipsInPot += callAmt;
@@ -131,13 +132,13 @@ export default class ComputerPlayer {
     this.chipstack -= betAmt;
     this.chipsInPot += betAmt;
     this.streetChipsInPot += betAmt;
-    this.chipsBet.play();
+    if (this.sound) this.chipsBet.play();
     return betAmt;
   }
 
-  resolve_action(to_call, betInput, textInput, sb = 0) {
+  resolveAction(to_call, betInput, textInput, sb = 0) {
     if (textInput === 'check') {
-      this.check.play();
+      if (this.sound) this.check.play();
       return 0;
     } else if (textInput === 'fold') {
       this.folded = true;
@@ -157,7 +158,7 @@ export default class ComputerPlayer {
     }
   }
   
-  renderTextChips(gameStarted, current) {
+  renderTextChips() {
     let playerChips = document.querySelector(`#player-info-${this.side}-chip-text-chips`);
     playerChips.innerText = `$${this.chipstack}`;
   }
@@ -172,13 +173,13 @@ export default class ComputerPlayer {
   }
 
   renderChips(){
-    let $stackDiv = $(`#table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-${this.num}`);
     let stack = new Chipstack(this.streetChipsInPot, $stackDiv);
     stack.render();
   }
 
   unrenderChips() {
-    let $stackDiv = $(`#table-felt-board-bet-player-2`);
+    let $stackDiv = $(`#table-felt-board-bet-player-${this.num}`);
     $stackDiv.empty();
   }
 
@@ -193,7 +194,6 @@ export default class ComputerPlayer {
     this.folded = false;
     this.chipsInPot = 0;
     this.hand = [];
-    this.revealed = true;
+    this.revealed = this.reveal;
   }
 }
-

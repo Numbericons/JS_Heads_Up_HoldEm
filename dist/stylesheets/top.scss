@@ -1,5 +1,6 @@
  $winFrames: 150;
  .top{
+  margin-bottom: 5vh;
   height: 17vh;
   &-left{
     &-help{
@@ -21,13 +22,10 @@
   }
   &-header{
     font-weight: 900;
-    font-size: 45px;
+    font-size: 6.25vh;
     font-family: 'Merriweather Sans', cursive;
     font-weight: bolder;
     color: #5e1717;
-    // color: #543d2f;
-    // color: #88330f;
-    // transform: translateX(3.5vw);
   }
   &-about{
     width: 18vw;

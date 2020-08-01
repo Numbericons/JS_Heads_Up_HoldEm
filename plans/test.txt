@@ -1,0 +1,13 @@
+async function sleep(ms){
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function x2(num) {
+  let y = function(num) {
+    return num * 2;
+  }
+  await sleep(5);
+  return y(num) * 2
+}
+
+console.log(x2(2));

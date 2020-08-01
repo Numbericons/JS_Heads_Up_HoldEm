@@ -12,7 +12,6 @@
 
 .table{
   height: 87vh;
-  // height: 70%;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -72,7 +71,7 @@
         display: flex;
         align-items: baseline;
         &-board{
-          width: 2vw;
+          width: 1.5vw;
           display: flex;
           margin-right: 15px;
         }
@@ -83,7 +82,7 @@
         justify-content: flex-end;
         align-items: baseline;
         &-board{
-          width: 2vw;
+          width: 1.5vw;
           display: flex;
           justify-content: flex-end;
         }
@@ -104,7 +103,6 @@
 
         &-container {
           animation: focus 1s infinite alternate;
-          background: orange;
           color: white;
           display: flex;
           justify-content: center;
@@ -112,7 +110,7 @@
           font-size: 16px;
           padding: 10px;
           border-radius: 10px;
-          margin-top: 3vh;
+          margin-top: 1vh;
         }
       }
     }
@@ -137,18 +135,21 @@
       resize: none;
       background: #222;
       color: white;
-      border-left: 5px solid darkorange;
+      border-left: 5px solid #b52a2a;
     }
     &-about{
       align-self: flex-end;
       bottom: 80px;
       position: fixed;
       right: 0;
-      width: 400px;
+      width: 26vw;
+      margin-right: .5vw;
       &-links{
+        width: 27vw;
+        margin-left: -2vw;
         display: flex;
         align-items: center;
-        justify-content: space-around;
+        justify-content: space-between;
         &-icons{
           width: 2vw;
         }
@@ -191,12 +192,12 @@
 
 @keyframes focus {
   from {
-    background: orange;
+    background: #b52a2a;
     box-shadow: 0 2px 5px black;
     transform: scale(1);
   }
   to {
-    background: darkorange;
+    background: #b52a2a;
     box-shadow: 0 5px 5px black;
     transform: scale(1.05);
   }

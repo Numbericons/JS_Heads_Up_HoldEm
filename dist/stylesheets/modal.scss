@@ -59,17 +59,16 @@ a {
 }
 
 .popup-trigger {
-  // display: inline-block;
-  height: 30px;
-  width: 93px;
+  height: 4vh;
+  width: 6vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: darkorange;
+  background-color: #b52a2a;
   color: white;
-  border-color: darkorange;
+  border-color: #b52a2a;
   border-radius: 50px;
-  font-size: 13px;
+    font-size: 1.75vh;
   font-weight: 700;
   cursor: pointer;
 }
@@ -78,7 +77,9 @@ a {
   height: 66vh;
   width: 60vw;
   // background: linear-gradient(#a6b1b5 0%, #5a7485 66%);
-  background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
+  // background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
+  background: radial-gradient(#abd2ab, #048404);
+  box-shadow: inset 0 0 5px 5px #051e22;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -95,17 +96,17 @@ a {
   }
   
   &__close {
-    width: 3vw;
-    height: 3vh;
+    width: 2vw;
+    height: 2vh;
     font-size: 1.2rem;
     text-align: center;
     position: absolute;
-    // background-color: #545050;
     background-color: #242323;
     color: #d7cfcf;
     right: 0px;
     top: 0px;
     cursor: pointer;
+    margin-top: 0.5vh;
   }
 }
 
@@ -117,29 +118,33 @@ a {
     font-size: 26px;
     font-weight: 700;
     color: #350f47;
-    text-decoration: underline;
     margin-bottom: 3%;
     &-player{
-      font-size: 18px;
+      font-size: 2.5vh;
+      font-family: "Merriweather Sans", cursive;
       font-weight: 600;
       margin-bottom: 3%;
     }
   }
   &-buttons{
     &-img{
-      width: 30vw;
-      height: 16vh;
+      width: 60vw;
+      height: 22vh;
       margin-bottom: 3%;
     }
     &-text li{
-      font-size: 16px;
+      font-size: 2.1vh;
+      font-weight: 700;
+      font-family: "Merriweather Sans", cursive;
+      text-decoration: underline;
+      list-style-position: inside;
       margin-bottom: .75%;
     }
   }
   &-rules{
     font-size: 18px;
     font-weight: 600;
-    color: #1b1bb6;
+    color: #350f47;
     text-decoration: underline;
     margin-bottom: 2%;
     margin: 2% 0% 2% 0%;

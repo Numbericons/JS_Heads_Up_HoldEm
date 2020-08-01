@@ -150,7 +150,7 @@ body {
   align-items: baseline;
 }
 .table-felt-dealer-btn-img-left-board {
-  width: 2vw;
+  width: 1.5vw;
   display: flex;
   margin-right: 15px;
 }
@@ -161,7 +161,7 @@ body {
   align-items: baseline;
 }
 .table-felt-dealer-btn-img-right-board {
-  width: 2vw;
+  width: 1.5vw;
   display: flex;
   justify-content: flex-end;
 }
@@ -181,7 +181,6 @@ body {
 }
 .table-bottom-actions-prompt-container {
   animation: focus 1s infinite alternate;
-  background: orange;
   color: white;
   display: flex;
   justify-content: center;
@@ -189,7 +188,7 @@ body {
   font-size: 16px;
   padding: 10px;
   border-radius: 10px;
-  margin-top: 3vh;
+  margin-top: 1vh;
 }
 .table-bottom-text {
   position: fixed;
@@ -212,19 +211,22 @@ body {
   resize: none;
   background: #222;
   color: white;
-  border-left: 5px solid darkorange;
+  border-left: 5px solid #b52a2a;
 }
 .table-bottom-about {
   align-self: flex-end;
   bottom: 80px;
   position: fixed;
   right: 0;
-  width: 400px;
+  width: 26vw;
+  margin-right: 0.5vw;
 }
 .table-bottom-about-links {
+  width: 27vw;
+  margin-left: -2vw;
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .table-bottom-about-links-icons {
   width: 2vw;
@@ -262,12 +264,12 @@ body {
 }
 @keyframes focus {
   from {
-    background: orange;
+    background: #b52a2a;
     box-shadow: 0 2px 5px black;
     transform: scale(1);
   }
   to {
-    background: darkorange;
+    background: #b52a2a;
     box-shadow: 0 5px 5px black;
     transform: scale(1.05);
   }
@@ -319,6 +321,7 @@ body {
   width: 16vw;
 }
 .player-info-left {
+  top: 10vh;
   left: -20vw;
   text-align: right;
 }
@@ -327,6 +330,7 @@ body {
   margin-right: -50px;
 }
 .player-info-right {
+  top: 10vh;
   right: -20vw;
 }
 .player-info-right img {
@@ -365,6 +369,7 @@ body {
   }
 }
 .top {
+  margin-bottom: 5vh;
   height: 17vh;
 }
 .top-left-help {
@@ -385,7 +390,7 @@ body {
 }
 .top-header {
   font-weight: 900;
-  font-size: 45px;
+  font-size: 6.25vh;
   font-family: "Merriweather Sans", cursive;
   font-weight: bolder;
   color: #5e1717;
@@ -480,32 +485,33 @@ body {
   transition: 0.5s background;
 }
 .actions-cont-text-betorraise {
-  background: greenyellow;
+  background: #053aba;
 }
 .actions-cont-text-betorraise:hover {
-  background: lime;
+  background: #076cd9;
 }
 .actions-cont-text-callorcheck {
-  background: lightseagreen;
+  background: #38c3bb;
+  background: #34477f;
 }
 .actions-cont-text-callorcheck:hover {
-  background: deepskyblue;
+  background: #6465a6;
 }
 .actions-cont-text-fold {
-  background: orangered;
+  background: #6e2a39;
 }
 .actions-cont-text-fold:hover {
-  background: red;
+  background: #a80f0f;
 }
 .actions-cont-bet-amt {
   text-align: center;
-  background-color: white;
+  background-color: #868a99;
   color: black;
   font-size: 20px;
   border: none;
 }
 .actions-cont-new-game {
-  background: limegreen;
+  background: #b52a2b;
   height: 55px;
   width: 160px;
   display: flex;
@@ -531,26 +537,42 @@ body {
   width: 100%;
 }
 .betsize-cont-text {
-  background: #555;
+  background: #0531b4;
   border: none;
   border-radius: 10px;
   color: white;
   cursor: pointer;
   font-size: 10px;
   font-weight: 700;
-  margin: 20px 10px;
+  margin: 1.5vh 0.5vh;
   padding: 10px;
 }
 
 .fa-github-square {
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
   cursor: pointer;
 }
 
 .fa-linkedin {
-  font-size: 27px;
+  font-size: 4vh;
   color: white;
+  cursor: pointer;
+}
+
+#volume-btn {
+  font-size: 2.25vh;
+  width: 2.25vh;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+#delay-btn {
+  font-size: 2.25vh;
+  width: 2.25vh;
+  background-color: white;
+  color: black;
   cursor: pointer;
 }
 
@@ -591,16 +613,16 @@ a {
 }
 
 .popup-trigger {
-  height: 30px;
-  width: 93px;
+  height: 4vh;
+  width: 6vw;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: darkorange;
+  background-color: #b52a2a;
   color: white;
-  border-color: darkorange;
+  border-color: #b52a2a;
   border-radius: 50px;
-  font-size: 13px;
+  font-size: 1.75vh;
   font-weight: 700;
   cursor: pointer;
 }
@@ -608,7 +630,8 @@ a {
 .popup-modal {
   height: 66vh;
   width: 60vw;
-  background: linear-gradient(#b5a3a3 0%, #855a7e 66%);
+  background: radial-gradient(#abd2ab, #048404);
+  box-shadow: inset 0 0 5px 5px #051e22;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -624,8 +647,8 @@ a {
   pointer-events: auto;
 }
 .popup-modal__close {
-  width: 3vw;
-  height: 3vh;
+  width: 2vw;
+  height: 2vh;
   font-size: 1.2rem;
   text-align: center;
   position: absolute;
@@ -634,6 +657,7 @@ a {
   right: 0px;
   top: 0px;
   cursor: pointer;
+  margin-top: 0.5vh;
 }
 
 .tutorial {
@@ -645,27 +669,31 @@ a {
   font-size: 26px;
   font-weight: 700;
   color: #350f47;
-  text-decoration: underline;
   margin-bottom: 3%;
 }
 .tutorial-text-player {
-  font-size: 18px;
+  font-size: 2.5vh;
+  font-family: "Merriweather Sans", cursive;
   font-weight: 600;
   margin-bottom: 3%;
 }
 .tutorial-buttons-img {
-  width: 30vw;
-  height: 16vh;
+  width: 60vw;
+  height: 22vh;
   margin-bottom: 3%;
 }
 .tutorial-buttons-text li {
-  font-size: 16px;
+  font-size: 2.1vh;
+  font-weight: 700;
+  font-family: "Merriweather Sans", cursive;
+  text-decoration: underline;
+  list-style-position: inside;
   margin-bottom: 0.75%;
 }
 .tutorial-rules {
   font-size: 18px;
   font-weight: 600;
-  color: #1b1bb6;
+  color: #350f47;
   text-decoration: underline;
   margin-bottom: 2%;
   margin: 2% 0% 2% 0%;

@@ -30,7 +30,7 @@ export default class Action {
     this.board.currentPlayer().promptText("Teddy KGB Contemplates Your Fate..")
     let wait = (this.board.currStreet === 'flop' && this.board.streetActions.length === 0) ? 4000 : 1750;
     let response = this.board.currentPlayer().promptResponse(this.board.currBet, this.board.pot, this.board.isSb(), this.board.currStreet === 'preflop', this.board.boardCards, this.aggAction());
-    await this.sleep(wait);
+    if (this.board.delay) await this.sleep(wait);
     if (response) this.resolvePlayerPrompt(response);
   }
 
@@ -41,14 +41,27 @@ export default class Action {
     if (playerAction.includes("X")) betRaise = this.board.bet.pfBet(playerAction, this.board.bb, secondPf);
     let oppChipsRem = this.board.otherPlayer().chipstack + this.board.handChipDiff() + this.board.isSb();
     if (betRaise > oppChipsRem) betRaise = oppChipsRem;
-    let resolvedAction = this.board.currentPlayer().resolve_action(this.board.handChipDiff(), betRaise, playerAction, sb);
+    let resolvedAction = this.board.currentPlayer().resolveAction(this.board.handChipDiff(), betRaise, playerAction, sb);
     if (resolvedAction) {
       this.board.pot += resolvedAction;
       return resolvedAction;
     }
   }
 
+  startMonte(compAction, compBetRaise){
+    if (compAction === 'fold') {
+      this.board.currentPlayer().folded = true;
+      return this.board.determineWinner(); //
+    }
+    let betRaise = this.board.bet.isCompBet(compBetRaise);
+    betRaise = this.board.bet.minBet(betRaise);
+    let resolved = this.resolveAction(betRaise, compAction) || 0;
+    this.board.streetActions = this.board.streetActions.concat(resolved);
+    this.continueAction();
+  }
+
   startAction($button, compAction, compBetRaise) {
+    if (this.board.monte) return this.startMonte(compAction, compBetRaise);
     let playerAction = ($button) ? $button.data().action : compAction;
     if (playerAction === 'fold') {
       this.board.currentPlayer().folded = true;
@@ -65,6 +78,7 @@ export default class Action {
   continueAction() {
     this.board.currBet = this.board.handChipDiff();
     this.board.toggleCurrPlayer();
+    if (this.board.monte) return this.nextAction();
     this.board.render();
     if (!this.board.allIn() && this.board.handChipDiff() === 0 && !this.board.handFinish) this.nextAction();
   }
@@ -73,17 +87,19 @@ export default class Action {
     let handChipsEqual = this.board.handChipDiff() === 0;
     let multipleActions = this.board.streetActions.length > 1;
     if (this.board.players[0].folded || this.board.players[1].folded) {
-      this.board.determineWinner();
+      return this.board.determineWinner();
     } else if (handChipsEqual) {
-      if (this.board.allIn() && this.board.handChipDiff() === 0) {
+      if (this.board.allIn() && handChipsEqual) {
         this.board.showDown();
-        this.board.determineWinner();
+        return this.board.determineWinner();
       } else if (this.board.currStreet === 'river' && multipleActions) {
-        this.board.revealCards();
-        this.board.determineWinner();
+        if (!this.board.monte) this.board.revealCards();
+        return this.board.determineWinner();
       } else if (multipleActions) {
         this.board.nextStreet();
       }
     }
+    // if (this.board.monte && !this.board.handFinish) this.board.promptComp();
+    if (this.board.monte && this.board.players[0].hand.length) this.board.promptComp();
   }
 }
